@@ -1,0 +1,45 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+---
+cff-version: 1.2.0
+title: The Software Gardening Almanac
+message: >-
+  If you use this work in some way, please consider 
+  citing it using the metadata from this file.
+type: software
+authors:
+  - given-names: David
+    family-names: Bunten
+    orcid: "https://orcid.org/0000-0001-6041-3665"
+  - given-names: Faisal
+    family-names: Alquaddoomi
+    orcid: "https://orcid.org/0000-0003-4297-8747"
+  - given-names: Vincent
+    family-names: Rubinetti
+    orcid: "https://orcid.org/0000-0002-4655-3773"
+  - given-names: Gregory
+    family-names: Way
+    orcid: "https://orcid.org/0000-0002-0503-9348"
+repository-code: "https://github.com/software-gardening/almanac"
+abstract: |
+  An open-source handbook of applied guidance and tools for sustainable software development and maintenance.
+keywords:
+  - software-gardening
+  - software-sustainability
+  - open-source
+  - guidance
+  - book
+license: BSD-3-Clause
+references:
+  - authors:
+      - given-names: David
+        family-names: Bunten
+      - family-names: Way
+        given-names: Gregory P.
+    date-published: "2023-08-17"
+    title: Long-Term Software Gardening Strategies for Cultivating Scientific Development Ecosystems
+    type: article
+    url: https://bssw.io/blog_posts/long-term-software-gardening-strategies-for-cultivating-scientific-development-ecosystems
+    notes: |
+      This blog article is a related resource published through the Better Scientific Software (BSSw)
+      organization and serves as inspiration towards related materials.

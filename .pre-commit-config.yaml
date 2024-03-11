@@ -64,3 +64,9 @@ repos:
               .pre-commit-config.yaml |
               src/almanac/_config.yml
           )$
+      - id: cffconvert
+        name: cffconvert check for citation.cff formatting
+        entry: cffconvert --validate
+        language: system
+        pass_filenames: true
+        files: CITATION.cff
