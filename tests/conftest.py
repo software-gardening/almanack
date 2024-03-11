@@ -3,9 +3,10 @@ conftest.py for pytest fixtures and other related aspects.
 see: https://docs.pytest.org/en/7.1.x/reference/fixtures.html
 """
 
-import pytest
-import subprocess
 import pathlib
+import subprocess
+
+import pytest
 
 
 @pytest.fixture()

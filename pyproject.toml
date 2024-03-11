@@ -19,6 +19,9 @@ linkchecker = "^10.4.0"
 [tool.isort]
 profile = "black"
 
+[tool.bandit]
+exclude_dirs = ["tests"]
+
 # defines poe the poet tasks
 [tool.poe.tasks]
 # builds the jupyter book related to this project

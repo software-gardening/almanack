@@ -26,15 +26,15 @@ Please see our [Security policy](https://github.com/software-gardening/almanac?t
 
 ### Reporting bugs or suggesting enhancements
 
-We’re deeply committed to a simple, intuitive user experience which helps people benefit from the content found within this project.
+We’re deeply committed to a smooth and intuitive user experience which helps people benefit from the content found within this project.
 This commitment requires a good relationship and open communication with our users.
 
 We encourage you to report bugs or propose enhancements to improve the Software Gardening Almanac as a [GitHub issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) associated with the repository.
 
-First, figure out if your proposal is already implemented by reading existing isssues or pull requests!
+First, figure out if your proposal is already implemented by reading existing issues or pull requests!
 Next, check the issues (<https://github.com/software-gardening/almanac/issues>) to see if someone else has already reported the bug or proposed the enhancement you have in mind.
 If you do find the suggestion, please comment on the existing issue noting that you are also interested in the functionality.
-If you do not find the suggestion, please open a new issue and clearly document the specific enhancement and why it would be helpful for your particular use case.
+If you do not find the suggestion, please open a new issue and document the specific enhancement and why it would be helpful for your particular use case.
 
 Specifically, the following may help when it comes to addressing the issue:
 
@@ -100,7 +100,7 @@ To enable local development, perform the following steps.
 ### Linting
 
 Work added to this repo is automatically checked using [pre-commit](https://pre-commit.com/) via [GitHub Actions](https://docs.github.com/en/actions).
-Pre-commit can work alongside your local [git with hooks](https://pre-commit.com/index.html#3-install-the-git-hook-scripts)
+Pre-commit can work alongside your local [git with git-hooks](https://pre-commit.com/index.html#3-install-the-git-hook-scripts)
 After [installing pre-commit](https://pre-commit.com/#installation) within your development environment, the following command also can perform the same checks:
 
 ```sh
