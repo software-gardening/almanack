@@ -1,0 +1,5 @@
+# Software Gardening Almanac TOC
+format: jb-book
+root: introduction
+chapters:
+  - file: sandbox

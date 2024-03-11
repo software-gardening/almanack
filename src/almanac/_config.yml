@@ -1,0 +1,24 @@
+#######################################################################################
+# Book settings
+title: The Software Gardening Almanac
+author: The Software Gardening Community
+
+#######################################################################################
+# Execution settings
+execute:
+  execute_notebooks: force
+
+#######################################################################################
+# HTML-specific settings
+html:
+  use_repository_button: true
+  use_issues_button: true
+  use_multitoc_numbering: true
+  home_page_in_navbar: true
+
+#######################################################################################
+# Repository specification settings
+repository:
+  url: https://github.com/software-gardening/almanac
+  path_to_book: "src/almanac"
+  branch: main
