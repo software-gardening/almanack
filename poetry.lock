@@ -390,6 +390,26 @@ files = [
 ]
 
 [[package]]
+name = "dnspython"
+version = "2.6.1"
+description = "DNS toolkit"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "dnspython-2.6.1-py3-none-any.whl", hash = "sha256:5ef3b9680161f6fa89daf8ad451b5f1a33b18ae8a1c6778cdf4b43f08c0a6e50"},
+    {file = "dnspython-2.6.1.tar.gz", hash = "sha256:e8f0f9c23a7b7cb99ded64e6c3a6f3e701d78f50c55e002b839dea7225cff7cc"},
+]
+
+[package.extras]
+dev = ["black (>=23.1.0)", "coverage (>=7.0)", "flake8 (>=7)", "mypy (>=1.8)", "pylint (>=3)", "pytest (>=7.4)", "pytest-cov (>=4.1.0)", "sphinx (>=7.2.0)", "twine (>=4.0.0)", "wheel (>=0.42.0)"]
+dnssec = ["cryptography (>=41)"]
+doh = ["h2 (>=4.1.0)", "httpcore (>=1.0.0)", "httpx (>=0.26.0)"]
+doq = ["aioquic (>=0.9.25)"]
+idna = ["idna (>=3.6)"]
+trio = ["trio (>=0.23)"]
+wmi = ["wmi (>=1.5.1)"]
+
+[[package]]
 name = "docopt"
 version = "0.6.2"
 description = "Pythonic argument parser, that will make you smile"
@@ -802,6 +822,22 @@ files = [
     {file = "latexcodec-3.0.0-py3-none-any.whl", hash = "sha256:6f3477ad5e61a0a99bd31a6a370c34e88733a6bad9c921a3ffcfacada12f41a7"},
     {file = "latexcodec-3.0.0.tar.gz", hash = "sha256:917dc5fe242762cc19d963e6548b42d63a118028cdd3361d62397e3b638b6bc5"},
 ]
+
+[[package]]
+name = "linkchecker"
+version = "10.4.0"
+description = "check links in web documents or full websites"
+optional = false
+python-versions = ">=3.9"
+files = [
+    {file = "LinkChecker-10.4.0-py3-none-any.whl", hash = "sha256:83931f071916ebc2da1b5ef9b25d65360881b148f27ad9308efe1afe569feb8d"},
+    {file = "LinkChecker-10.4.0.tar.gz", hash = "sha256:6250dd29261ddd6df4be9e979bd47a759a6cfafbcaf0f7926afbe2a230aa761a"},
+]
+
+[package.dependencies]
+beautifulsoup4 = ">=4.8.1"
+dnspython = ">=2.0"
+requests = ">=2.20"
 
 [[package]]
 name = "linkify-it-py"
@@ -2323,4 +2359,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "ed84ad7efd2e6a0e367abb5620393d76c966fa8a44facd70f68f091666cbcd25"
+content-hash = "697ff2883ae38081ec5f8828ec2ead026d0e81dac2d09980f31fc3dfd913900c"

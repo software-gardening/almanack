@@ -9,7 +9,7 @@ on:
     branches: [main]
 
 jobs:
-  run_pre_commit_tests:
+  pre_commit_checks:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
