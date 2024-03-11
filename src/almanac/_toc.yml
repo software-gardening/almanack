@@ -1,5 +1,7 @@
-# Software Gardening Almanac TOC
+# Software Gardening Almanac - Jupyter Book Table of Contents (TOC)
 format: jb-book
-root: introduction
-chapters:
-  - file: sandbox
+root: introduction.md
+parts:
+  - chapters:
+      - file: preface.md
+  - file: sandbox.md
