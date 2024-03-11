@@ -66,7 +66,7 @@ repos:
           )$
       - id: cffconvert
         name: cffconvert check for citation.cff formatting
-        entry: cffconvert --validate
+        entry: poetry run cffconvert --validate
         language: system
-        pass_filenames: true
+        pass_filenames: false
         files: CITATION.cff
