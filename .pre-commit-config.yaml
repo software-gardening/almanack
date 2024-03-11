@@ -1,0 +1,65 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+default_language_version:
+  python: python3.11
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-toml
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        exclude: |
+          (?x)^(
+              .*\.lock |
+              .*\.json
+          )$
+        additional_dependencies:
+          - tomli
+  - repo: https://github.com/executablebooks/mdformat
+    rev: 0.7.17
+    hooks:
+      - id: mdformat
+        additional_dependencies:
+          - mdformat-myst
+          - mdformat-gfm
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+  - repo: https://github.com/psf/black
+    rev: 24.2.0
+    hooks:
+      - id: black
+  - repo: https://github.com/asottile/blacken-docs
+    rev: 1.16.0
+    hooks:
+      - id: blacken-docs
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2
+    hooks:
+      - id: isort
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.8
+    hooks:
+      - id: bandit
+        args: ["-c", "pyproject.toml"]
+        additional_dependencies: ["bandit[toml]"]
+  - repo: local
+    hooks:
+      - id: alex.js
+        name: alex.js language check
+        entry: npx alex
+        language: system
+        pass_filenames: true
+        exclude: |
+          (?x)^(
+              .*\.lock |
+              .pre-commit-config.yaml
+          )$

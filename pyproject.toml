@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "software-gardening-almanac"
+version = "0.0.1"
+description = "An open-source handbook of applied guidance and tools for sustainable software development and maintenance."
+authors = ["Software Gardening Community"]
+license = "BSD-3-Clause"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+jupyter-book = "^1.0.0"
+
+[tool.poetry.group.dev.dependencies]
+poethepoet = "^0.25.0"
+
+[tool.isort]
+profile = "black"
+
+# defines a poe the poet task for building jupyter book
+[tool.poe.tasks.build-book]
+# sets a cwd relative for the shell script below
+cwd = "."
+# shell command below runs dvc pull to update data and runs python script
+shell = """
+  jupyter-book build src/almanac
+"""
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.setuptools_scm]
+root = "."
