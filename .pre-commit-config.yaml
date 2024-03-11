@@ -61,5 +61,6 @@ repos:
         exclude: |
           (?x)^(
               .*\.lock |
-              .pre-commit-config.yaml
+              .pre-commit-config.yaml |
+              src/almanac/_config.yml
           )$

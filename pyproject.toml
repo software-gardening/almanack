@@ -16,13 +16,16 @@ poethepoet = "^0.25.0"
 [tool.isort]
 profile = "black"
 
-# defines a poe the poet task for building jupyter book
-[tool.poe.tasks.build-book]
-# sets a cwd relative for the shell script below
-cwd = "."
-# shell command below runs dvc pull to update data and runs python script
-shell = """
+# defines poe the poet tasks
+[tool.poe.tasks]
+# builds the jupyter book related to this project
+build-book.shell = """
   jupyter-book build src/almanac
+"""
+# builds the jupyter book related to this project and opens a new browser window
+build-book-dev.shell = """
+  jupyter-book build src/almanac && \
+  python -m webbrowser -t "file://$PWD/src/almanac/_build/html/index.html"
 """
 
 [build-system]
