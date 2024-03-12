@@ -4,4 +4,3 @@ root: introduction.md
 parts:
   - chapters:
       - file: preface.md
-      - file: sandbox.md
