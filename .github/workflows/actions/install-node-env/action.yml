@@ -1,0 +1,14 @@
+# action for installing node and related dependencies
+name: Install node env
+description: |
+  Setup node, and npm for use with GitHub Actions workflows.
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: "21.7"
+    - name: Install npm dependencies
+      shell: bash
+      run: |
+        npm install

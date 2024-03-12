@@ -1,0 +1,19 @@
+# action for installing python and related dependencies
+name: Install python env
+description: |
+  Setup python, and poetry for use with GitHub Actions workflows.
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+    - name: Setup poetry
+      shell: bash
+      run: |
+        python -m pip install poetry
+    - name: Install poetry dependencies
+      shell: bash
+      run: |
+        poetry install
