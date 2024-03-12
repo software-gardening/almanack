@@ -87,15 +87,34 @@ When appropriate, reference issues (via `#` plus number) .
 ### Overview
 
 The Software Gardening Almanac is primarily written in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
-We use [GitHub actions](https://docs.github.com/en/actions) for automated tests.
+[Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies are also used to assist development activities.
+We use [GitHub actions](https://docs.github.com/en/actions) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD) procedures such as automated tests.
 
 ### Getting started
 
 To enable local development, perform the following steps.
 
-1. [Install Python](https://www.python.org/downloads/)
+1. [Install Python](https://www.python.org/downloads/) (suggested: use [`pyenv`](https://github.com/pyenv/pyenv) for managing Python versions)
 1. [Install Poetry](https://python-poetry.org/docs/#installation)
-1. [Install Poetry Environment](https://python-poetry.org/docs/basic-usage/#installing-dependencies): `poetry install`
+1. [Install Poetry environment](https://python-poetry.org/docs/basic-usage/#installing-dependencies): `poetry install`
+1. [Install Node](https://nodejs.org/en/download) (suggested: use [`nvm`](https://github.com/nvm-sh/nvm) for managing Node versions)
+1. [Install Node environment](https://docs.npmjs.com/cli/v9/commands/npm-install): `npm install`
+
+### Development Tasks
+
+Common development tasks are defined using [Poe the Poet](https://poethepoet.natn.io/), which helps simplify repeated use of commands.
+Poe the Poet is included as a Python Poetry dev group dependency and tasks may be used through the Poetry environment.
+Please see the [`pyproject.toml`](pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
+
+For example:
+
+```shell
+# example of how Poe the Poet commands may be used.
+poetry run poe <task_name>
+
+# example of a task which runs jupyter-book build for the project
+poetry run poe build-book
+```
 
 ### Linting
 
@@ -106,6 +125,14 @@ After [installing pre-commit](https://pre-commit.com/#installation) within your 
 ```sh
 % pre-commit run --all-files
 ```
+
+### Automated CI/CD with GitHub Actions
+
+We use [GitHub Actions](https://docs.github.com/en/actions) to help perform automated [CI/CD](https://en.wikipedia.org/wiki/CI/CD) as part of this project.
+GitHub Actions involves defining [workflows](https://docs.github.com/en/actions/using-workflows) through [YAML files](https://en.wikipedia.org/wiki/YAML).
+These workflows include one or more [jobs](https://docs.github.com/en/actions/using-jobs) which are collections of steps, individual processes which run as part of a job.
+GitHub Actions work is defined under the [`.github`](.github) directory.
+We suggest the use of [`act`](https://github.com/nektos/act) to help test GitHub Actions work during development.
 
 ## Attribution
 
