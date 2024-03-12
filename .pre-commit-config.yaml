@@ -11,6 +11,7 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: check-toml
+      - id: detect-private-key
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
