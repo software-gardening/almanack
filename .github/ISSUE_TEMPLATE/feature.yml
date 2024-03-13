@@ -1,0 +1,51 @@
+# GitHub Issue template for bug reports
+name: ✨ Propose a feature
+description: Collaborate with us to enhance this effort with a new feature that doesn't yet exist.
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking time to share a new feature or capability which doesn't yet exist!
+
+        If this feature entails a security-focused aspect, please submit a security report instead using GitHub's [report vulnerability form](https://github.com/software-gardening/almanac/security/advisories/new).
+
+  - type: checkboxes
+    attributes:
+      label: Existing issue check
+      description: |
+        Please make sure to search in the [issues](https://github.com/software-gardening/almanac/issues) first to see whether the same issue was reported already.
+        If you find an existing issue, please don't hesitate to comment on it or add a reaction to existing content!
+      options:
+        - label: |
+            I found no existing [issues](https://github.com/software-gardening/almanac/issues) covering this topic.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: |
+        Please provide a specific description of what you'd like to see including the context and what the result might look like. Consider providing this information in the form of a [user story](https://en.wikipedia.org/wiki/User_story) if possible.
+      placeholder: |
+        For example: "As a <role> I'd like to see <capability>, so that <benefit>."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Example
+      description: |
+        Are there any examples which could help illustrate or implement the feature?
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Would you like to work on a solution for this?
+      description: |
+        The Software Gardening Almanac is a community-driven project and we love new contributors (including through opening new issues)!
+        This is an optional check to help us understand your desire to be involved (especially if you already have a good understanding of how to implement it).
+        We are happy to guide you in the contribution process and please don't hesitate to reach out for help along the way.
+      options:
+        - label: Yes I am willing to submit a PR!
