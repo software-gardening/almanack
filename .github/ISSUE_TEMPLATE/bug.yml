@@ -1,33 +1,44 @@
 # GitHub Issue template for bug reports
-name: 🐞 Report a bug
-description: Help us improve by sharing an error or otherwise broken experience.
+name: 🐞 Bug
+description: >
+  Help us improve by sharing an error or otherwise broken experience.
 
 body:
   - type: markdown
     attributes:
-      value: |
+      value: >
         Thank you for taking time to raise a bug for our awareness!
 
-        If this bug entails a security-focused aspect, please submit a security report instead using GitHub's [report vulnerability form](https://github.com/software-gardening/almanac/security/advisories/new).
+        If this bug entails a security-focused aspect, please submit a
+        security report instead using GitHub's
+        [report vulnerability form]
+        (https://github.com/software-gardening/almanac/security/advisories/new)
+        .
 
   - type: checkboxes
     attributes:
       label: Existing issue check
-      description: |
-        Please make sure to search in the [issues](https://github.com/software-gardening/almanac/issues) first to see whether the same issue was reported already.
-        If you find an existing issue, please don't hesitate to comment on it or add a reaction to existing content!
+      description: >
+        Please make sure to search in the
+        [issues](https://github.com/software-gardening/almanac/issues) first
+        to see whether the same issue was reported already.
+        If you find an existing issue, please don't hesitate to comment
+        on it or add a reaction to existing content!
       options:
-        - label: |
-            I found no existing [issues](https://github.com/software-gardening/almanac/issues) covering this topic.
+        - label: >
+            I found no existing
+            [issues](https://github.com/software-gardening/almanac/issues)
+            covering this topic.
           required: true
 
   - type: textarea
     id: description
     attributes:
       label: Description
-      description: |
-        Please provide a specific description of what you experienced including links and other references where possible.
-      placeholder: |
+      description: >
+        Please provide a specific description of what you experienced
+        including links and other references where possible.
+      placeholder: >
         For example: "I tried `x` and noticed `y` which resulted in `z`."
     validations:
       required: true
@@ -35,8 +46,9 @@ body:
   - type: textarea
     attributes:
       label: Reproducible example
-      description: |
-        How could one reproduce this error or experience? Please provide the steps one must follow to recreate what you observed.
+      description: >
+        How could one reproduce this error or experience?
+        Please provide the steps one must follow to recreate what you observed.
     validations:
       required: true
 
@@ -44,8 +56,9 @@ body:
     id: versions
     attributes:
       label: Versions
-      description: |
-        Please provide the version of the Software Gardening Almanac, operating system (OS), etc.
+      description: >
+        Please provide the version of the Software Gardening Almanac,
+        operating system (OS), etc.
       placeholder: |
         - The version of the Software Gardening Almanac you're referencing.
         - Operating system (e.g. MacOS, Windows, etc.)
@@ -56,9 +69,13 @@ body:
   - type: checkboxes
     attributes:
       label: Would you like to work on a solution for this?
-      description: |
-        The Software Gardening Almanac is a community-driven project and we love new contributors (including through opening new issues)!
-        This is an optional check to help us understand your desire to be involved (especially if you already have a good understanding of how to implement it).
-        We are happy to guide you in the contribution process and please don't hesitate to reach out for help along the way.
+      description: >
+        The Software Gardening Almanac is a community-driven project and we
+        love new contributors (including through opening new issues)!
+        This is an optional check to help us understand your interest to be
+        involved (especially if you already have a good understanding
+        of how to implement it).
+        We are happy to guide you in the contribution process and please
+        don't hesitate to reach out for help along the way.
       options:
         - label: Yes I am willing to submit a PR!
