@@ -29,14 +29,14 @@ Please see our [Security policy](https://github.com/software-gardening/almanac?t
 We’re deeply committed to a smooth and intuitive user experience which helps people benefit from the content found within this project.
 This commitment requires a good relationship and open communication with our users.
 
-We encourage you to report bugs or propose enhancements to improve the Software Gardening Almanac as a [GitHub issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) associated with the repository.
+We encourage you to file a [GitHub issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) to report bugs or propose enhancements to improve the Software Gardening Almanac.
 
-First, figure out if your proposal is already implemented by reading existing issues or pull requests!
-Next, check the issues (<https://github.com/software-gardening/almanac/issues>) to see if someone else has already reported the bug or proposed the enhancement you have in mind.
-If you do find the suggestion, please comment on the existing issue noting that you are also interested in the functionality.
-If you do not find the suggestion, please open a new issue and document the specific enhancement and why it would be helpful for your particular use case.
+First, figure out if your idea is already implemented by reading existing issues or pull requests!
+Check the issues (<https://github.com/software-gardening/almanac/issues>) and pull requests (<https://github.com/software-gardening/almanac/pulls>)  to see if someone else has already documented or began implementation of your idea.
+If you do find your idea in an existing issue, please comment on the existing issue noting that you are also interested in the functionality.
+If you do not find your idea, please open a new issue and document why it would be helpful for your particular use case.
 
-Specifically, the following may help when it comes to addressing the issue:
+Please also provide the following specifics:
 
 - The version of the Software Gardening Almanac you're referencing.
 - Specific error messages or how the issue exhibits itself.
@@ -86,8 +86,8 @@ When appropriate, reference issues (via `#` plus number) .
 
 ### Overview
 
-The Software Gardening Almanac is primarily written in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
-[Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies are also used to assist development activities.
+We write and develop the Software Gardening Almanac in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
+We use [Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies to assist development activities.
 We use [GitHub actions](https://docs.github.com/en/actions) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD) procedures such as automated tests.
 
 ### Getting started
@@ -102,8 +102,8 @@ To enable local development, perform the following steps.
 
 ### Development Tasks
 
-Common development tasks are defined using [Poe the Poet](https://poethepoet.natn.io/), which helps simplify repeated use of commands.
-Poe the Poet is included as a Python Poetry dev group dependency and tasks may be used through the Poetry environment.
+We use [Poe the Poet](https://poethepoet.natn.io/) to define common development tasks, which simplifies repeated  commands.
+We include Poe the Poet as a Python Poetry dev group dependency, which users access through the Poetry environment.
 Please see the [`pyproject.toml`](pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
 
 For example:
@@ -118,9 +118,10 @@ poetry run poe build-book
 
 ### Linting
 
-Work added to this repo is automatically checked using [pre-commit](https://pre-commit.com/) via [GitHub Actions](https://docs.github.com/en/actions).
+[pre-commit](https://pre-commit.com/) automatically checks all work added to this repo.
+We implement these checks using [GitHub Actions](https://docs.github.com/en/actions).
 Pre-commit can work alongside your local [git with git-hooks](https://pre-commit.com/index.html#3-install-the-git-hook-scripts)
-After [installing pre-commit](https://pre-commit.com/#installation) within your development environment, the following command also can perform the same checks:
+After [installing pre-commit](https://pre-commit.com/#installation) within your development environment, the following command performs the same checks:
 
 ```sh
 % pre-commit run --all-files
@@ -130,8 +131,8 @@ After [installing pre-commit](https://pre-commit.com/#installation) within your 
 
 We use [GitHub Actions](https://docs.github.com/en/actions) to help perform automated [CI/CD](https://en.wikipedia.org/wiki/CI/CD) as part of this project.
 GitHub Actions involves defining [workflows](https://docs.github.com/en/actions/using-workflows) through [YAML files](https://en.wikipedia.org/wiki/YAML).
-These workflows include one or more [jobs](https://docs.github.com/en/actions/using-jobs) which are collections of steps, individual processes which run as part of a job.
-GitHub Actions work is defined under the [`.github`](.github) directory.
+These workflows include one or more [jobs](https://docs.github.com/en/actions/using-jobs) which are collections of individual processes (or steps) which run as part of a job.
+We define GitHub Actions work under the [`.github`](.github) directory.
 We suggest the use of [`act`](https://github.com/nektos/act) to help test GitHub Actions work during development.
 
 ## Attribution

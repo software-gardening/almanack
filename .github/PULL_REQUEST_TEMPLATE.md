@@ -23,7 +23,7 @@ Namely, consider addressing the following questions:
 
 # Checklist
 
-Please ensure that all boxes are checked before indicating that a pull request is ready for review.
+Please ensure that all boxes are checked before indicating that this pull request is ready for review.
 
 - [ ] I have read the [CONTRIBUTING.md](CONTRIBUTING.md) guidelines.
 - [ ] My code follows the style guidelines of this project.
