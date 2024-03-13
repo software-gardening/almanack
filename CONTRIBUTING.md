@@ -6,6 +6,7 @@ We're absolutely grateful for the kindness of your effort applied to grow this p
 This document contains guidelines on how to most effectively contribute to this project.
 
 If you are stuck or would like clarifications, please feel free to ask any questions or for help.
+We suggest asking for help in a location which is near where help is needed (for example, in a GitHub issue or a pull request) by ["at (@) mentioning"](https://github.blog/2011-03-23-mention-somebody-they-re-notified/) a Software Gardening Almanac maintainer (for example, `@username`).
 
 ## Code of conduct
 
