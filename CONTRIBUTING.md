@@ -88,7 +88,7 @@ When appropriate, reference issues (via `#` plus number) .
 ### Overview
 
 We write and develop the Software Gardening Almanac in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
-We use [Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies to assist development activities.
+We use [Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies to assist development activities (such as performing linting checks or other capabilities).
 We use [GitHub actions](https://docs.github.com/en/actions) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD) procedures such as automated tests.
 
 ### Getting started
