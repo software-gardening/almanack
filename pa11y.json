@@ -1,0 +1,7 @@
+{
+    "ignore": [
+        "WCAG2AA.Principle3.Guideline3_2.3_2_2.H32.2",
+        "WCAG2AA.Principle1.Guideline1_3.1_3_1.H42.2",
+        "WCAG2AA.Principle4.Guideline4_1.4_1_1.F77"
+    ]
+}

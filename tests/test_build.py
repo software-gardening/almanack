@@ -17,7 +17,7 @@ def test_links(build_jupyter_book: pathlib.Path) -> None:
     well documented and may have alignment with development tasks.
     """
 
-    # build jupyter book content
+    # run linkchecker against build
     result = subprocess.run(
         [
             "linkchecker",
@@ -36,3 +36,28 @@ def test_links(build_jupyter_book: pathlib.Path) -> None:
     )
 
     check_subproc_run_for_nonzero(completed_proc=result)
+
+
+def test_web_accessibility(build_jupyter_book: pathlib.Path) -> None:
+    """
+    Test web accessibility for the Jupyter Book build (html pages) using
+    pa11y npm package.
+
+    Note: we use the command line interface for pa11y to leverage
+    cross-language capability through python (pa11y is a node.js package)
+    """
+
+    # gather all html pages from the build
+    for html_page in pathlib.Path(f"{build_jupyter_book}/_build/html").glob("*.html"):
+        # check each subproc result
+        check_subproc_run_for_nonzero(
+            completed_proc=subprocess.run(
+                [
+                    "npx",
+                    "pa11y",
+                    html_page,
+                ],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+            )
+        )
