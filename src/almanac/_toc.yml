@@ -3,4 +3,12 @@ format: jb-book
 root: introduction.md
 parts:
   - chapters:
+      - title: Preface
       - file: preface.md
+      - title: Garden Circle
+        file: garden-circle.md
+        sections:
+          - title: Contributing
+            file: garden-circle/contributing.md
+          - title: Garden Map
+            file: garden-circle/garden-map.md
