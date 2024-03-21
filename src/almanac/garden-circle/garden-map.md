@@ -13,14 +13,18 @@ Please see the [contributing](contributing.md) guide for more information on how
 The following are active garden maps for the Software Gardening Almanac.
 Please see below for a further description of how these projects are organized and used.
 
+<!--alex disable fellowship -->
+
 - [__2024 BSSw Fellowship Milestones__](https://github.com/orgs/software-gardening/projects/1): this project is used to help communicate activities associated with the 2024 [BSSw Fellowship](https://bssw.io/pages/bssw-fellowship-program) associated with the Software Gardening Almanac.
+
+<!--alex enable fellowship -->
 
 ## Sections
 
 The garden map can be understood through the following sections.
 
 - __"Canopy-view" development visibility__: new, existing, and previous work is tracked at a high-level using organization-wide [GitHub Projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/learning-about-projects/about-projects).
-- __"Ground-level" development visibility__: work within GitHub Projects is tracked using repository-specific [GitHub issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) and a special field within GitHub Projects called "status" (indicated as "Todo", "In progress", "Paused", or "Done").
+- __"Ground-level" development visibility__: work within GitHub Projects is tracked using repository-specific [GitHub issues](https://docs.github.com/en/issues/tracking-your-work-with-issues/about-issues) and a field within GitHub Projects called "status" associated with each issue (indicated as "Todo", "In progress", "Paused", or "Done").
 - __Major milestones__: major milestones are tracked using common [GitHub issues labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels) across all repositories through their associated issues.
 
 ## Visualizations
