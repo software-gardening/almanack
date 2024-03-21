@@ -4,9 +4,9 @@ root: introduction.md
 parts:
   - chapters:
       - title: Preface
-      - file: preface.md
+        file: preface.md
       - title: Garden Circle
-        file: garden-circle.md
+        file: garden-circle/garden-circle.md
         sections:
           - title: Contributing
             file: garden-circle/contributing.md
