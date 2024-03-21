@@ -105,7 +105,7 @@ To enable local development, perform the following steps.
 
 We use [Poe the Poet](https://poethepoet.natn.io/) to define common development tasks, which simplifies repeated  commands.
 We include Poe the Poet as a Python Poetry dev group dependency, which users access through the Poetry environment.
-Please see the [`pyproject.toml`](pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
+Please see the [`pyproject.toml`](https://github.com/software-gardening/almanac/blob/main/pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
 
 For example:
 
@@ -133,7 +133,7 @@ After [installing pre-commit](https://pre-commit.com/#installation) within your 
 We use [GitHub Actions](https://docs.github.com/en/actions) to help perform automated [CI/CD](https://en.wikipedia.org/wiki/CI/CD) as part of this project.
 GitHub Actions involves defining [workflows](https://docs.github.com/en/actions/using-workflows) through [YAML files](https://en.wikipedia.org/wiki/YAML).
 These workflows include one or more [jobs](https://docs.github.com/en/actions/using-jobs) which are collections of individual processes (or steps) which run as part of a job.
-We define GitHub Actions work under the [`.github`](.github) directory.
+We define GitHub Actions work under the [`.github`](https://github.com/software-gardening/almanac/tree/main/.github) directory.
 We suggest the use of [`act`](https://github.com/nektos/act) to help test GitHub Actions work during development.
 
 ## Attribution
