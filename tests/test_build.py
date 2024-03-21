@@ -22,14 +22,14 @@ def test_links(build_jupyter_book: pathlib.Path) -> None:
         [
             "linkchecker",
             f"{build_jupyter_book}/",
-            # we ignore _static files which include special templating features
-            # which would otherwise cause errors during link checks
             "--ignore-url",
             f"html/_static",
             # used to check external-facing links
             "--check-extern",
             # used to avoid warnings triggering a non-zero return
             "--no-warnings",
+            # used to specify a config
+            "--config=./.linkcheckerrc.ini",
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
