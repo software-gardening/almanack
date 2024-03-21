@@ -31,6 +31,7 @@ The garden map can be understood through the following sections.
 
 It can be helpful to visualize the garden map using data plots or other images.
 We use [GitHub Projects insights](https://docs.github.com/en/issues/planning-and-tracking-with-projects/viewing-insights-from-your-project/about-insights-for-projects) to assist with automated creation and updates to garden map activity.
+Please see this [project insights page](https://github.com/orgs/software-gardening/projects/1/insights) for an example of these (using the insights button within any GitHub Projects for viewing others).
 
 ## Ethos
 
