@@ -3,6 +3,11 @@
 Our garden map is where you can learn about what features we're working on, what stage they're in, and when we expect to bring them to you.
 The content here roughly follows that of a [technical roadmap](https://en.wikipedia.org/wiki/Technology_roadmap) (providing strategic visibility on implementation details and timelines).
 
+## Ethos
+
+We intend for the garden map to provide useful tools for us to efficiently create and maintain the Software Gardening Almanac.
+We practice keeping the garden map as "petal-light" as possible through built-in tools, automation, and an avoidance of [analysis paralysis](https://en.wikipedia.org/wiki/Analysis_paralysis) where possible.
+
 ## We'd love your input
 
 We welcome your input on the garden map and elements found within it!
@@ -32,11 +37,6 @@ You can explore the garden map with different views:
 It can be helpful to visualize the garden map using data plots or other images.
 We use [GitHub Projects insights](https://docs.github.com/en/issues/planning-and-tracking-with-projects/viewing-insights-from-your-project/about-insights-for-projects) to assist with automated creation and updates to garden map activity.
 Please see this [project insights page](https://github.com/orgs/software-gardening/projects/1/insights) for an example of these (using the insights button within any GitHub Projects for viewing others).
-
-## Ethos
-
-We intend for the garden map to provide useful tools for us to efficiently create and maintain the Software Gardening Almanac.
-We practice keeping the garden map as "petal-light" as possible through built-in tools, automation, and an avoidance of [analysis paralysis](https://en.wikipedia.org/wiki/Analysis_paralysis) where possible.
 
 ## Acknowledgments
 
