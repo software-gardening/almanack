@@ -13,7 +13,7 @@ We practice keeping the garden map as "petal-light" as possible through built-in
 We welcome your input on the garden map and elements found within it!
 Please see the [contributing](contributing.md) guide for more information on how to participate in this process.
 
-## Active Garden Map(s)
+## Active garden map(s)
 
 The following are active garden maps for the Software Gardening Almanac.
 Please see below for a further description of how these projects are organized and used.
