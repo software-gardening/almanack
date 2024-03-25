@@ -15,6 +15,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install python env
         uses: ./.github/actions/install-python-env
-      - name: Install node env
-        uses: ./.github/actions/install-node-env
+      - name: Install vale dependencies
+        run: |
+          poetry run vale sync
       - uses: pre-commit/action@v3.0.1
