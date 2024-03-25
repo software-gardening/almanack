@@ -58,17 +58,11 @@ repos:
       - id: actionlint-docker
   - repo: local
     hooks:
-      - id: alex.js
-        name: alex.js language check
-        entry: npx alex
+      - id: vale.sh
+        name: vale.sh writing checks
+        entry: poetry run poe vale-checks
         language: system
-        pass_filenames: true
-        exclude: |
-          (?x)^(
-              .*\.lock |
-              .pre-commit-config.yaml |
-              src/almanac/_config.yml
-          )$
+        pass_filenames: false
       - id: cffconvert
         name: cffconvert check for citation.cff formatting
         entry: poetry run cffconvert --validate
