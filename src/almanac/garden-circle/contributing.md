@@ -1,17 +1,17 @@
 # Contributing
 
 First of all, thank you for contributing to the Software Gardening Almanac! 🎉 💯 🪴
-We're absolutely grateful for the kindness of your effort applied to grow this project into the best that it can be.
+We're so grateful for the kindness of your effort applied to grow this project into the best that it can be.
 
 This document contains guidelines on how to most effectively contribute to this project.
 
-If you are stuck or would like clarifications, please feel free to ask any questions or for help.
-We suggest asking for help in a location which is near where help is needed (for example, in a GitHub issue or a pull request) by ["at (@) mentioning"](https://github.blog/2011-03-23-mention-somebody-they-re-notified/) a Software Gardening Almanac maintainer (for example, `@username`).
+If you would like clarifications, please feel free to ask any questions or for help.
+We suggest asking for help from GitHub where you may need it (for example, in a GitHub issue or a pull request) by ["at (@) mentioning"](https://github.blog/2011-03-23-mention-somebody-they-re-notified/) a Software Gardening Almanac maintainer (for example, `@username`).
 
 ## Code of conduct
 
-This project is governed by our [Code of Conduct (CoC) policy](https://github.com/software-gardening/almanac?tab=coc-ov-file) (located [here](https://github.com/software-gardening/.github/blob/main/CODE_OF_CONDUCT.md)).
-By participating, you are expected to uphold this code.
+Our [Code of Conduct (CoC) policy](https://github.com/software-gardening/almanac?tab=coc-ov-file) (located [here](https://github.com/software-gardening/.github/blob/main/CODE_OF_CONDUCT.md)) governs this project.
+By participating in this project, we expect you to uphold this code.
 Please report unacceptable behavior by following the procedures listed under the [CoC Enforcement section](https://github.com/software-gardening/almanac?tab=coc-ov-file#enforcement).
 
 ## Security
@@ -50,8 +50,8 @@ Please also provide the following specifics:
 Contributing code for the first time can be a daunting task.
 However, in our community, we strive to be as welcoming as possible to newcomers, while ensuring sustainable software development practices.
 
-The first thing to figure out is exactly what you’re going to contribute!
-We describe all future work as individual [github issues](https://github.com/software-gardening/almanac/issues).
+The first thing to figure out is specifically what you’re going to contribute!
+We describe all future work as individual [GitHub issues](https://github.com/software-gardening/almanac/issues).
 For first time contributors we have specifically labeled as [good first issue](https://github.com/software-gardening/almanac/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22).
 
 If you want to contribute code that we haven’t already outlined, please start a discussion in a new issue before writing any code.
@@ -72,8 +72,8 @@ To ensure an efficient review process please perform the following steps:
 1. Triple check that your pull request is adding _one_ specific feature. Small, bite-sized pull requests move so much faster than large pull requests.
 1. After submitting your pull request, ensure that your contribution passes all status checks (e.g. passes all tests)
 
-Pull request review and approval is required by at least one project maintainer to merge.
-We will do our best to review the code additions in a timely fashion.
+We require pull request review and approval by at least one project maintainer in order to merge.
+We will do our best to review the code additions in as soon as we can.
 Ensuring that you follow all steps above will increase our speed and ability to review.
 We will check for accuracy, style, code coverage, and scope.
 
@@ -104,7 +104,7 @@ To enable local development, perform the following steps.
 ### Development Tasks
 
 We use [Poe the Poet](https://poethepoet.natn.io/) to define common development tasks, which simplifies repeated  commands.
-We include Poe the Poet as a Python Poetry dev group dependency, which users access through the Poetry environment.
+We include Poe the Poet as a Python Poetry `dev` group dependency, which users access through the Poetry environment.
 Please see the [`pyproject.toml`](https://github.com/software-gardening/almanac/blob/main/pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
 
 For example:
@@ -119,7 +119,7 @@ poetry run poe build-book
 
 ### Linting
 
-[pre-commit](https://pre-commit.com/) automatically checks all work added to this repo.
+[pre-commit](https://pre-commit.com/) automatically checks all work added to this repository.
 We implement these checks using [GitHub Actions](https://docs.github.com/en/actions).
 Pre-commit can work alongside your local [git with git-hooks](https://pre-commit.com/index.html#3-install-the-git-hook-scripts)
 After [installing pre-commit](https://pre-commit.com/#installation) within your development environment, the following command performs the same checks:
@@ -138,5 +138,5 @@ We suggest the use of [`act`](https://github.com/nektos/act) to help test GitHub
 
 ## Attribution
 
-Portions of this contribution guide were sourced from [pyctyominer](https://github.com/cytomining/pycytominer/blob/master/CONTRIBUTING.md).
-Many thanks go to the developers and contributors of that repository.
+We sourced portions of this contribution guide from [`pyctyominer`](https://github.com/cytomining/pycytominer/blob/master/CONTRIBUTING.md).
+Big thanks go to the developers and contributors of that repository.

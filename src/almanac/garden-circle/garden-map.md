@@ -1,7 +1,7 @@
 # Garden Map
 
 Our garden map is where you can learn about what features we're working on, what stage they're in, and when we expect to bring them to you.
-The content here roughly follows that of a [technical roadmap](https://en.wikipedia.org/wiki/Technology_roadmap) (providing strategic visibility on implementation details and timelines).
+The content here follows that of a [technical roadmap](https://en.wikipedia.org/wiki/Technology_roadmap) (providing strategic visibility on implementation details and timelines).
 
 ## Ethos
 
@@ -16,13 +16,13 @@ Please see the [contributing](contributing.md) guide for more information on how
 ## Active garden map(s)
 
 The following are active garden maps for the Software Gardening Almanac.
-Please see below for a further description of how these projects are organized and used.
+Please see below for a further description of these projects.
 
-<!--alex disable fellowship -->
+<!-- vale alex.Gendered = NO -->
 
 - [__2024 BSSw Fellowship Milestones__](https://github.com/orgs/software-gardening/projects/1): this project communicates activities associated with the 2024 [BSSw Fellowship](https://bssw.io/pages/bssw-fellowship-program) associated with the Software Gardening Almanac.
 
-<!--alex enable fellowship -->
+<!-- vale alex.Gendered = YES -->
 
 ## Sections
 
@@ -40,5 +40,5 @@ Please see this [project insights page](https://github.com/orgs/software-gardeni
 
 ## Acknowledgments
 
-The content here is inspired by the [GitHub public roadmap](https://github.com/github/roadmap).
-Many thanks to the original works found there.
+We drew inspiration for this content from the [GitHub public roadmap](https://github.com/github/roadmap).
+Big thanks to the original works found there.
