@@ -34,9 +34,9 @@ build-book-dev.shell = """
   jupyter-book build src/almanac && \
   python -m webbrowser -t "file://$PWD/src/almanac/_build/html/index.html"
 """
-# syncs and runs vale relative to this project 
-# through pre-commit to trigger warnings as 
-# non-zero return when there is more than one 
+# syncs and runs vale relative to this project
+# through pre-commit to trigger warnings as
+# non-zero return when there is more than one
 # line of output from vale.
 vale-checks.shell = """
 vale sync && \
