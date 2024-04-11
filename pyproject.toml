@@ -34,11 +34,13 @@ build-book-dev.shell = """
   jupyter-book build src/almanac && \
   python -m webbrowser -t "file://$PWD/src/almanac/_build/html/index.html"
 """
-# runs vale relative to this project through pre-commit
-# to trigger warnings as non-zero return when there is
-# more than one line of output from vale.
+# syncs and runs vale relative to this project 
+# through pre-commit to trigger warnings as 
+# non-zero return when there is more than one 
+# line of output from vale.
 vale-checks.shell = """
-output=$(poetry run vale ./src/almanac) && \
+vale sync && \
+output=$(vale ./src/almanac) && \
 if [ $(echo $output | wc -l) -gt 1 ]; then \
 echo $output && exit 1; \
 fi
