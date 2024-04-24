@@ -1,3 +1,72 @@
 # Welcome
 
 Welcome to the Software Gardening Almanac, an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
+
+## Inspiration
+
+```{figure} assets/software-lifecycle.png
+---
+alt: A software file shown in sequences with symbols indicating creation, growth,
+  and decay.
+---
+_Software is created, grows, and decays over time._
+```
+
+Software undergoes time-based cycles phases that are not well understood or cultivated.
+Why does software grow quickly only to decay just as fast?
+How do software bugs seem to appear in the most unlikely scenarios?
+
+These cycles follow patterns from life: software is created, grows, decays, and so on (sometimes in surprising or seemingly unpredictable ways).
+Software is also connected within a complex system of relationships (similar to ecology).
+The Software Gardening Almanac posits we can understand these software lifecycle patterns and complex relationships in order to build tools which sustain or maintain their development long-term.
+
+> _"The ‘planetary garden’ is a means of considering ecology as the integration of humanity – the gardeners – into its smallest spaces._
+> _Its guiding philosophy is based on the principle of the ‘garden in motion’: do the most __for__, the minimum __against__."_
+> \- Gilles Clément
+
+The content here is inspired by ecological systems (for example, as in [_planetary gardening_](https://www.architectural-review.com/essays/in-practice/in-practice-gilles-clement-on-the-planetary-garden)).
+We also are galvanized by the [_scientific method_](https://en.wikipedia.org/wiki/Scientific_method), and [_almanacs_](https://en.wikipedia.org/wiki/Almanac) (or earlier [_menologia rustica_](https://en.wikipedia.org/wiki/Menologia_rustica)) in documenting, expecting, and optimizing how we plan for time-based changes in agriculture (among other practices and traditions).
+
+```{figure} assets/almanac-influencing-software.png
+---
+height: 270px
+alt: A book shown as influencing software within the cycle of time.
+---
+_Almanacs help us understand and influence the impacts of time on the things we grow._
+```
+
+Almanacs within the context of computers can be interpreted as meta-software which use objective, shared experience to help encourage growth and avoid unwanted decay.
+The Software Gardening Almanac helps share similar knowledge on cultivation and augmentation in reaction or preparation for change in order to nurture software (and software practitioners) for long periods of time.
+We aspire to define, practice, and continually improve a craft of _software gardening_ to nourish existing or yet to be software projects and embrace and more resilient future.
+
+## Motivation
+
+```{figure} assets/xkcd_dependency.png
+---
+height: 330px
+alt: \'Dependency\' comic by Randall Munroe, XKCD.
+---
+_We depend on a delicate network of software which changes over time.<br>(Image source: ['Dependency' comic by Randall Munroe, XKCD](https://xkcd.com/2347/))_
+```
+
+Our world is surrounded by systems of software which enable and enhance life.
+These systems are both invisible and sometimes brittle, breaking in surprising ways (for example, beneath uneven pressures as in the above XKCD comic).
+At the same time, [loose coupling](https://en.wikipedia.org/wiki/Loose_coupling) of these software systems also forms the basis of innovation through multidimensional, [emergent](https://en.wikipedia.org/wiki/Emergence) growth patterns.
+We seek to embrace these software systems which are innately in motion, embracing diversity without destroying it to perpetuate discovery and enable future life.
+
+> _"Start where you are. Use what you have. Do what you can."_
+> \- Arthur Ashe
+
+We suggest reading or using this content however it best makes sense to a reader.
+Just as with gardening, sometimes the best thing to do is jump in!
+Each section is structured in a modular fashion, providing insights without uncited prerequisites.
+Links and other reference materials for further reading where beneficial (please let us know if we can improve!).
+
+## Who's this for?
+
+> _"We'll share stories from the heart. All are welcome here."_
+> \- Alexandra Penfold
+
+The Software Gardening Almanac is designed to be used by developers of any kind.
+When we say _developers_ here we mean anyone engaging in clarifying a vision towards a goal with software (including scientists, engineers, project leads, managers, etc).
+The content is intentionally structured to engage readers with pragmatic ideas, keeping the barrier to entry low.

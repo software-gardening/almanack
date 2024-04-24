@@ -3,6 +3,8 @@
 # Book settings
 title: The Software Gardening Almanac
 author: The Software Gardening Community
+logo: |
+  "https://raw.githubusercontent.com/software-gardening/brand/main/logo/logo.png"
 
 #######################################################################################
 # Execution settings
