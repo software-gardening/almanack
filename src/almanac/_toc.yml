@@ -3,8 +3,6 @@ format: jb-book
 root: introduction.md
 parts:
   - chapters:
-      - title: Preface
-        file: preface.md
       - title: Garden Circle
         file: garden-circle/garden-circle.md
         sections:
