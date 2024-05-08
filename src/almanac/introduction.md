@@ -25,7 +25,7 @@ The Software Gardening Almanac posits we can understand these software lifecycle
 > _Its guiding philosophy is based on the principle of the ‘garden in motion’: do the most __for__, the minimum __against__."_
 > \- Gilles Clément
 
-The content here is inspired by ecological systems (for example, as in [_planetary gardening_](https://www.architectural-review.com/essays/in-practice/in-practice-gilles-clement-on-the-planetary-garden)).
+The content within the Software Gardening Almanac is inspired by ecological systems (for example, as in [_planetary gardening_](https://www.architectural-review.com/essays/in-practice/in-practice-gilles-clement-on-the-planetary-garden)).
 We also are galvanized by the [_scientific method_](https://en.wikipedia.org/wiki/Scientific_method), and [_almanacs_](https://en.wikipedia.org/wiki/Almanac) (or earlier [_menologia rustica_](https://en.wikipedia.org/wiki/Menologia_rustica)) in documenting, expecting, and optimizing how we plan for time-based changes in agriculture (among other practices and traditions).
 
 ```{figure} assets/almanac-influencing-software.png
@@ -36,8 +36,7 @@ alt: A book shown as influencing software within the cycle of time.
 _Almanacs help us understand and influence the impacts of time on the things we grow._
 ```
 
-Almanacs within the context of computers can be interpreted as meta-software which use objective, shared experience to help encourage growth and avoid unwanted decay.
-The Software Gardening Almanac helps share knowledge on how to cultivate change in reaction or preparation in order to nurture software (and software practitioners) for long periods of time.
+The Software Gardening Almanac helps share knowledge on how to cultivate change in order to nurture software (and software practitioners) for long periods of time.
 We aspire to define, practice, and continually improve a craft of _software gardening_ to nourish existing or yet-to-be software projects and embrace a more resilient future.
 
 ## Motivation
@@ -62,7 +61,7 @@ We suggest reading or using this content however it best makes sense to a reader
 Just as with gardening, sometimes the best thing to do is jump in!
 We structure each section in a modular fashion, providing insights with cited prerequisites.
 We provide links and other reference materials for further reading where beneficial.
-Please let us know how we can improve!
+Please let us know how we can improve by [opening GitHub issues](https://github.com/software-gardening/almanac/issues) or [creating new discussion board posts](https://github.com/orgs/software-gardening/discussions) (see our [`CONTRIBUTING.md`](garden-circle/CONTRIBUTING.md) guide for more information)!
 
 ## Who's this for?
 
