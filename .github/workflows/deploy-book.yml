@@ -1,0 +1,27 @@
+---
+name: deploy book
+
+on:
+  push:
+    branches:
+      - main
+      - automated-deployments
+
+jobs:
+  deploy-book:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install python env
+        uses: ./.github/actions/install-python-env
+      - name: Build the jupyter book content
+        run: |
+          poetry run poe build-book
+      - name: Deploy book to GH Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: src/almanac/_build/html
