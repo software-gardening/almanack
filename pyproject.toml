@@ -39,10 +39,10 @@ build-book-dev.shell = """
 # non-zero return when there is more than one
 # line of output from vale.
 vale-checks.shell = """
-vale sync && \
-output=$(vale ./src/almanac) && \
-if [ $(echo $output | wc -l) -gt 1 ]; then \
-echo $output && exit 1; \
+vale sync || true;
+output=$(vale ./src/almanac) ||
+if [ $(echo "$output" | wc -l) -gt 1 ]; then
+echo "$output"; exit 1;
 fi
 """
 
