@@ -30,6 +30,9 @@ exclude_dirs = ["tests"]
 build-book.shell = """
   jupyter-book build src/almanac
 """
+build-book-pdf.shell = """
+  jupyter-book build src/almanac --builder pdfhtml
+"""
 # builds the jupyter book related to this project and opens a new browser window
 build-book-dev.shell = """
   jupyter-book build src/almanac && \

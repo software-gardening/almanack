@@ -24,7 +24,7 @@ jobs:
           poetry run poe build-book
       - name: Build a PDF from the HTML content
         run: |
-          poetry run jupyter-book build src/almanac --builder pdfhtml
+          poetry run poe build-book-pdf
       - name: Copy and rename the PDF to the HTML dir
         run: |
           cp src/almanac/_build/pdf/book.pdf \
