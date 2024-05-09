@@ -30,6 +30,7 @@ exclude_dirs = ["tests"]
 build-book.shell = """
   jupyter-book build src/almanac
 """
+# build a PDF from the HTML content
 build-book-pdf.shell = """
   jupyter-book build src/almanac --builder pdfhtml
 """
