@@ -1,0 +1,13 @@
+.navbar-brand img {
+    max-width:60%;
+}
+
+@media print
+{
+    /* Removes "skip to main content" from pdf output.
+    Reference: https://github.com/executablebooks/jupyter-book/issues/2045
+    and https://github.com/pydata/pydata-sphinx-theme/issues/1745 */
+    .skip-link {
+        display: none;
+    }
+}
