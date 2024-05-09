@@ -1,3 +1,5 @@
+# deploys the software gardening almanac content through
+# GH Pages using Jupyter Book publishing tools.
 ---
 name: deploy book
 
@@ -20,6 +22,13 @@ jobs:
       - name: Build the jupyter book content
         run: |
           poetry run poe build-book
+      - name: Build a PDF from the HTML content
+        run: |
+          poetry run jupyter-book build src/almanac --builder pdfhtml
+      - name: Copy and rename the PDF to the HTML dir
+        run: |
+          cp src/almanac/_build/pdf/book.pdf \
+          src/almanac/_build/html/software-gardening-almanac.pdf
       - name: Deploy book to GH Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
