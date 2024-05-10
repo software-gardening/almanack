@@ -27,6 +27,9 @@ jobs:
         run: |
           cp src/almanac/_build/pdf/book.pdf \
           src/almanac/_build/html/software-gardening-almanac.pdf
+      - name: Add nojekyll config for GH pages
+        run: |
+          touch src/almanac/_build/html/.nojekyll
       - name: Deploy book to GH Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
