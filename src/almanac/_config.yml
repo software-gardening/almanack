@@ -24,3 +24,12 @@ repository:
   url: https://github.com/software-gardening/almanac
   path_to_book: "src/almanac"
   branch: main
+
+#######################################################################################
+# Sphinx configuration
+sphinx:
+  config:
+    bibtex_reference_style: super
+
+bibtex_bibfiles:
+    - references.bib

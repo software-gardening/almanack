@@ -9,6 +9,8 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 jupyter-book = "^1.0.0"
+docutils = "0.17.1"
+sphinxcontrib-bibtex = "^2.6.2"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.25.0"
