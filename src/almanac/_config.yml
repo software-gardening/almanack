@@ -31,5 +31,7 @@ sphinx:
   config:
     bibtex_reference_style: super
 
+#######################################################################################
+# Bibliography configuration
 bibtex_bibfiles:
-    - references.bib
+  - references.bib

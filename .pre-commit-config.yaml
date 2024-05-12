@@ -23,7 +23,8 @@ repos:
         exclude: |
           (?x)^(
               .*\.lock |
-              .*\.json
+              .*\.json |
+              .*\.bib
           )$
         additional_dependencies:
           - tomli

@@ -26,6 +26,9 @@ profile = "black"
 [tool.bandit]
 exclude_dirs = ["tests"]
 
+[tool.codespell]
+ignore-words="styles/config/vocabularies/almanac/accept.txt"
+
 # defines poe the poet tasks
 [tool.poe.tasks]
 # builds the jupyter book related to this project
