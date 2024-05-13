@@ -3,6 +3,12 @@
 > "To plant a garden is to believe in tomorrow."
 > \- Audrey Hepburn
 
+We enter the book through a garden lattice, an echo and forward reverberation of people who cultivate software.
+The garden lattice is a celebration of our individual vibrancy and connection to the world around us.
+"Here you will give your gifts and meet your responsibilities." {cite:p}`kimmerer_braiding_2013`
+It also is a place to view our collective fates; as we grow an understanding emerges that we must commit ourselves toward a sustainable future through tending the garden.
+This sustainability is undeniably coupled to our natural relationships, persisted even in the software realm.
+
 Early roots from Ada Lovelace's work on an analytical engine algorithm in 1842 provide a glimpse of the natural world's influence on software development: "… the Analytical Engine weaves algebraical patterns just as the Jacquard-loom weaves flowers and leaves." {cite:p}`fuegi_lovelace_2003`
 Many years later, software development remains an effort of intertwining beauty and function to enhance well-being through a growing system, or lattice, of interconnected parts built upon layers of personal and technical advances.
 
@@ -13,8 +19,9 @@ This concept mirrors the organic growth seen in software gardens, where a system
 
 The lattice also guards against both direct and indirect challenges we face on our journey as software gardeners.
 These encumbrances can "overheat" our growth potential, leading us to early burnout or burn-down of gardens.
-The lattice helps us as a carbon sequester, mitigating the excess heat caused by an imbalance in emissions, similar to bamboo agroforests {cite:p}`nath_managing_2015`.
+The lattice helps us as a carbon sequester, mitigating the excess heat caused by an imbalance in emissions, similar to bamboo garden forests {cite:p}`nath_managing_2015`.
 Our individual experiences and personal network consume these difficulties to further grow the lattice through acts of harmonization.
+We care for these experiences together on the lattice because "all flourishing is mutual." {cite:p}`kimmerer_braiding_2013`.
 
 ```{bibliography}
 ---
