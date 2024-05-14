@@ -5,6 +5,8 @@ parts:
   - chapters:
       - title: Garden Lattice
         file: garden-lattice/garden-lattice.md
+      - title: Software Forest
+        file: software-forest/software-forest.md
       - title: Garden Circle
         file: garden-circle/garden-circle.md
         sections:
