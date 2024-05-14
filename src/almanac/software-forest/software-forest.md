@@ -24,5 +24,7 @@ These assist software gardeners as a shed of multi-dimensional concepts that mus
 ```{bibliography}
 ---
 style: unsrt
+filter: docname in docnames
+labelprefix: SF
 ---
 ```

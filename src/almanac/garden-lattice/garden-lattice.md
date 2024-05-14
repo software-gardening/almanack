@@ -26,5 +26,7 @@ We care for these experiences together on the lattice because "all flourishing i
 ```{bibliography}
 ---
 style: unsrt
+filter: docname in docnames
+labelprefix: GL
 ---
 ```
