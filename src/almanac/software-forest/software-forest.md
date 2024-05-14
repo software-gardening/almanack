@@ -1,6 +1,6 @@
 # Software Forest
 
-> "Called Three-Dimensional Forestry or Forest Farming, … the three 'dimensions' of [Toyohiko Kagawa's] 3-D system were the trees as conservers of the soil and suppliers of food and the livestock which benefited from them." {cite:p}`hart_forest_1996`, {cite:p}`kagawa_fujisaki_3d_farming`
+> "Called Three-Dimensional Forestry or Forest Farming, … the three 'dimensions' of \[Toyohiko Kagawa's\] 3-D system were the trees as conservers of the soil and suppliers of food and the livestock which benefited from them." {cite:p}`hart_forest_1996`, {cite:p}`kagawa_fujisaki_3d_farming`
 
 Forest gardening offers innovations from an ecological cultivation perspective by caring for trees, understory vegetation, soil, and other  environmental factors together.
 The software forest is a multi-layered forest garden enriched through connections and minimal, iterable change.

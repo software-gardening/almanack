@@ -13,3 +13,5 @@ iterable
 Wardian
 Hügelkultur
 mycorrhizal
+Toyohiko
+Kagawa
