@@ -20,3 +20,9 @@ This chaos of this soft-scaping (curating the software garden towards a goal) is
 We discover and are discovered within the software garden.
 As software forest gardens grow, they demonstrate emergent properties which are well suited for practices such as evolutionary architecture, object-orientated design, and coupling analysis.
 These assist software gardeners as a shed of multi-dimensional concepts that must be employed to truly achieve effective multi-layered software garden maintenance.
+
+```{bibliography}
+---
+style: unsrt
+---
+```
