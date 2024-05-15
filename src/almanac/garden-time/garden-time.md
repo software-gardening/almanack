@@ -8,6 +8,8 @@ Dendrochronology, tree rings as exhibiting patterns we didn't know existed other
 
 Software archeology
 
+Shearing layers from how buildings learn
+
 Kairos, seasons
 
 "Hoping for the best, prepared for the worst, and unsurprised by anything in between."
