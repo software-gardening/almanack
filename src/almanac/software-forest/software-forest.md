@@ -23,7 +23,7 @@ Some of these environments are portable, similar to [Wardian cases](https://en.w
 Others are exhibited through abstract relationships as [_nurse logs_](https://en.wikipedia.org/wiki/Nurse_log), [_Hügelkultur_](https://en.wikipedia.org/wiki/H%C3%BCgelkultur), or [mycorrhizal](https://en.wikipedia.org/wiki/Mycorrhiza)-like associations which redistribute energy among the entirety of a software region.
 
 As software gardeners we must consider how energy is transferred to various portions of the forest.
-Adventitious code, which "volunteers" by accident of growth, may create scenarios of energy waste (also ) in the form of cognitive or performance misalignment.
+Adventitious code, which "volunteers" by accident of growth, may create scenarios of energy waste in the form of cognitive or performance misalignment.
 All waste in the forest is food {cite:p}`mcdonough1998waste`, therefore we must imagine and craft new homes for wasted energy through appropriate means.
 This chaos of this soft-scaping (curating the software garden towards a goal) is in constant flux, tugging on our capacities as student and teacher of the garden to encourage growth and avoid harm.
 
