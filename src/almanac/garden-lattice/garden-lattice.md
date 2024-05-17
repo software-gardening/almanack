@@ -1,5 +1,12 @@
 # Garden Lattice
 
+```{figure} ../assets/640px-Rundes_Fenster_mit_Gitter.jpeg
+---
+alt: Round window with lattice.
+---
+_The garden lattice facilitates growth on our software gardening journeys.  (Image source: {cite:alp}`image_gimmel_lattice`)._
+```
+
 > "To plant a garden is to believe in tomorrow."
 > \- Audrey Hepburn
 
