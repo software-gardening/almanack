@@ -1,10 +1,21 @@
 # Software Forest
 
+```{figure} ../assets/640px-Forgard2-003.gif
+---
+alt: Forest garden diagram.
+---
+_The software forest is multi-layered like a forest garden. (Image source: {cite:alp}`image_burnett_forestgarden`)._
+```
+
+The software forest is a multidimensional garden, enriched by connections and minimal, iterative changes.
+Both the practice and artifacts of software development can seem daunting, like an unfamiliar forest full of mystery and surprises.
+However, through software gardening, we see these forests as opportunities for balanced cultivation.
+
 > "Called Three-Dimensional Forestry or Forest Farming, … the three 'dimensions' of \[Toyohiko Kagawa's\] 3-D system were the trees as conservers of the soil and suppliers of food and the livestock which benefited from them." {cite:p}`hart_forest_1996`, {cite:p}`kagawa_fujisaki_3d_farming`
 
 Forest gardening offers innovations from an ecological cultivation perspective by caring for trees, understory vegetation, soil, and other  environmental factors together.
-The software forest is a multi-layered forest garden enriched through connections and minimal, iterable change.
-Software forests are created gradually, "… starting with the existing, living, breathing system, and working outward, a step at a time, in such a way as to not undermine the system’s viability." {cite:p}`foote1997big`
+Forest gardens take time to create because their slow-growing nature requires patience and careful, long-term nurturing.
+Software forests are also created gradually, "… starting with the existing, living, breathing system, and working outward, a step at a time, in such a way as to not undermine the system’s viability." {cite:p}`foote1997big`
 Nourishing the system in this way helps us practice _primum non nocere_ ("first, do no harm") to the garden and components within, conserving energy for necessary adaptations.
 
 Dense networks of relationships surround software forest gardens in the form of software environments.
