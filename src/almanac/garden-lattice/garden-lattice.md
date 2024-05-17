@@ -21,7 +21,7 @@ This concept mirrors the organic growth seen in software gardens, where a system
 The lattice also guards against both direct and indirect challenges we face on our journey as software gardeners.
 These encumbrances can "overheat" our growth potential, leading us to early burnout or burn-down of gardens.
 The lattice helps us as a carbon sequester, mitigating the excess heat caused by an imbalance in emissions, similar to bamboo garden forests {cite:p}`nath_managing_2015`.
-Our individual experiences and personal network consume these difficulties to further grow the lattice through acts of harmonization.
+Our individual experiences and personal network consume these difficulties to further grow the lattice through acts of harmonization (such as collaboration or apprenticeship).
 We care for these experiences together on the lattice because "all flourishing is mutual." {cite:p}`kimmerer_braiding_2013`.
 
 ```{bibliography}
