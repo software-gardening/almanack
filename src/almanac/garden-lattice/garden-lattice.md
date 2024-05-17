@@ -3,7 +3,7 @@
 > "To plant a garden is to believe in tomorrow."
 > \- Audrey Hepburn
 
-We enter the book through a garden lattice, an echo and forward reverberation of people who cultivate software.
+We enter the book through a garden lattice, both an acknowledgement and forward recognition of people who cultivate software.
 The garden lattice is a celebration of our individual vibrancy and connection to the world around us.
 "Here you will give your gifts and meet your responsibilities." {cite:p}`kimmerer_braiding_2013`
 It also is a place to view our collective fates; as we grow an understanding emerges that we must commit ourselves toward a sustainable future through tending the garden.
