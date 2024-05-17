@@ -28,6 +28,9 @@ exclude_dirs = ["tests"]
 
 [tool.codespell]
 ignore-words="styles/config/vocabularies/almanac/accept.txt"
+# add capabilities for inline ignore for codespell linting
+# referenced from: https://github.com/codespell-project/codespell/issues/1212
+ignore-regex=".{1024}|.*codespell-ignore.*"
 
 # defines poe the poet tasks
 [tool.poe.tasks]
