@@ -14,7 +14,7 @@ Many years later, software development remains an effort of intertwining beauty 
 
 Lattices, reminiscent of living structures built with willow or bamboo, emerge as a weaved foundation, both flexible and systematically resilient, protecting and inspiring new growth.
 "The willow submits to the wind and prospers until one day it is many willows - a wall against the wind." {cite:p}`herbert_dune_2010`.
-These lattice also signify our collective friendship and interdependence.
+These lattices also signify our collective friendship and interdependence.
 They echo the sentiment of "Be like bamboo. The higher you grow, the deeper you bow," (a Chinese proverb) embodying strength through flexibility and unity.
 This concept mirrors the organic growth seen in software gardens, where a system of interweaved latticework supports the development of intricate and resilient structures.
 
