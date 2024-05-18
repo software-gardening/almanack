@@ -1,4 +1,15 @@
-# Garden Time
+# Verdant Sundial
+
+> "The present is the ever moving shadow that divides yesterday from tomorrow. In that lies hope."
+> -\ Frank Lloyd Wright
+
+The software garden is intertwined in a story of time which is exhibited like a shadow on a moss-covered sundial.
+Time is observed indirectly through a kind of software archeology in past-tense material artifacts (files) and present-tense operation (procedures).
+As with many things, the future is elusive for software; we grow software systems slowly and often in unrpedicable patterns, like the rings of a tree.
+
+These software tree rings are vessels of temporal data which offer a unique insight into growth patterns.
+We can study these patterns like dendronchronology: "Peel away the hard, rough bark and there is a living document, history recorded in rings of wood cells." {cite:p}`gramling2020tree`
+This helps us measure the temporary nature of software and how it evolves.
 
 Allegory of the cave
 
