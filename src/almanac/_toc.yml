@@ -7,8 +7,8 @@ parts:
         file: garden-lattice/garden-lattice.md
       - title: Software Forest
         file: software-forest/software-forest.md
-      - title: Garden Time
-        file: garden-time/garden-time.md
+      - title: Verdant Sundial
+        file: verdant-sundial/verdant-sundial.md
       - title: Garden Circle
         file: garden-circle/garden-circle.md
         sections:
