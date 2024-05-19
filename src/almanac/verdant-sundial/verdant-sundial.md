@@ -4,7 +4,7 @@
 ---
 alt: Sundial on a gravestone.
 ---
-_The verdant sundial casts shadows of past and future intention obeserved in the present. (Image source: {cite:alp}`image_halling_sundial`)._
+_The verdant sundial casts shadows of past and future intention observed in the present. (Image source: {cite:alp}`image_halling_sundial`)._
 ```
 
 > "The present is the ever moving shadow that divides yesterday from tomorrow. In that lies hope."
