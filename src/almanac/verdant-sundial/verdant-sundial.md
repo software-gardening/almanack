@@ -1,14 +1,14 @@
 # Verdant Sundial
 
-```{figure} ../assets/Sundial_on_a_gravestone_-_geograph.org.uk_-_4649329.jpg
+```{figure} ../assets/Sundial_2916_HDR.jpeg
 ---
 alt: Sundial on a gravestone.
 ---
-_The verdant sundial casts shadows of past and future intention observed in the present. (Image source: {cite:alp}`image_halling_sundial`)._
+_The verdant sundial casts shadows of past and future intention observed in the present. (Image source: {cite:alp}`image_elfward_sundial`)._
 ```
 
-> "The present is the ever moving shadow that divides yesterday from tomorrow. In that lies hope."
-> -\\ Frank Lloyd Wright
+> "The present is the ever moving shadow that divides yesterday from tomorrow. In that lies hope." <br>
+> \- Frank Lloyd Wright
 
 The software garden is intertwined in a story of time which is exhibited like a shadow on a moss-covered sundial.
 Time is observed indirectly through a kind of software archeology in past-tense material artifacts (files) and present-tense operation (procedures).
@@ -35,6 +35,6 @@ This forecasting turns into wisdom as we contemplate: how do we build software w
 ---
 style: unsrt
 filter: docname in docnames
-labelprefix: GT
+labelprefix: VS
 ---
 ```
