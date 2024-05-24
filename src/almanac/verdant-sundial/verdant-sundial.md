@@ -29,7 +29,8 @@ Seasons of software promote differing patterns among these; some systems prepare
 Seasonal chronology in software benefits also from an awareness of kairos, the opportune timing of our actions amidst time.
 Each software gardening moment includes a series of options of varying kairological fitness.
 As we gain experience in software gardens we begin to anticipate seasonal change which helps us project preparatory change.
-This forecasting turns into wisdom as we contemplate: how do we build software which lasts 100 years or more?
+This forecasting turns into wisdom as we contemplate time in software gardens; like annual flowers, how do we anticipate and accept the limited lifecycle of some software?
+Like mighty trees, how do we build software to last 100 years or more?
 
 ```{bibliography}
 ---
