@@ -24,12 +24,13 @@ It also shares patterns of temporal pulsing - not all times of the software gard
 These software pulses give visibility into distinct growing or receding patterns.
 Some code exhibits annual behavior, requiring continual replanting efforts each season.
 Others are perennials, undergoing seasonal change perpetuated by periods of vibrancy and dormancy.
-Seasons of software promote differing patterns among these; some systems prepare for winter through conservation only to fervently bloom during their spring.
+Seasons of software promote differing patterns among these.
+Some systems may prepare for winter (for instance, during resource scarcity, or periods of high performance stress) through adaptable conservation only to fervently bloom during their spring.
 
 Seasonal chronology in software benefits also from an awareness of kairos, the opportune timing of our actions amidst time.
-Each software gardening moment includes a series of options of varying kairological fitness.
 As we gain experience in software gardens we begin to anticipate seasonal change which helps us project preparatory change.
-This forecasting turns into wisdom as we contemplate time in software gardens; like annual flowers, how do we anticipate and accept the limited lifecycle of some software?
+Each software gardening moment amidst this cascade of season includes a series of options of varying kairological fitness.
+Assessing these moments of their fit within patterns helps us gain wisdom as we contemplate time in software gardens; like annual flowers, how do we anticipate and accept the limited lifecycle of some software?
 Like mighty trees, how do we build software to last 100 years or more?
 
 ```{bibliography}
