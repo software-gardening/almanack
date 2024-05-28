@@ -296,7 +296,7 @@ dist
 
 # almanac-specific ignores
 
-/src/almanac/_build
+/src/book/_build
 
 # for ignoring vale package installs
 /styles

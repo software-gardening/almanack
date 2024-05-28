@@ -5,6 +5,8 @@ description = "An open-source handbook of applied guidance and tools for sustain
 authors = ["Software Gardening Community"]
 license = "BSD-3-Clause"
 readme = "README.md"
+packages = [{ include = "almanac", from = "src" }]
+include = ["book/_config.yml", "book/_toc.yml", "book/**/*.md"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -36,16 +38,16 @@ ignore-regex=".{1024}|.*codespell-ignore.*"
 [tool.poe.tasks]
 # builds the jupyter book related to this project
 build-book.shell = """
-  jupyter-book build src/almanac
+  jupyter-book build src/book
 """
 # build a PDF from the HTML content
 build-book-pdf.shell = """
-  jupyter-book build src/almanac --builder pdfhtml
+  jupyter-book build src/book --builder pdfhtml
 """
 # builds the jupyter book related to this project and opens a new browser window
 build-book-dev.shell = """
-  jupyter-book build src/almanac && \
-  python -m webbrowser -t "file://$PWD/src/almanac/_build/html/index.html"
+  jupyter-book build src/book && \
+  python -m webbrowser -t "file://$PWD/src/book/_build/html/index.html"
 """
 # syncs and runs vale relative to this project
 # through pre-commit to trigger warnings as
@@ -53,7 +55,7 @@ build-book-dev.shell = """
 # line of output from vale.
 vale-checks.shell = """
 vale sync || true;
-output=$(vale ./src/almanac) ||
+output=$(vale ./src/book) ||
 if [ $(echo "$output" | wc -l) -gt 1 ]; then
 echo "$output"; exit 1;
 fi

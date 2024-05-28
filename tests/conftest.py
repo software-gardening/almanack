@@ -31,7 +31,7 @@ def jupyter_book_source() -> pathlib.Path:
     """
 
     # return the location of the almanac content
-    return pathlib.Path("src/almanac")
+    return pathlib.Path("src/book")
 
 
 @pytest.fixture()
