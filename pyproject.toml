@@ -6,7 +6,10 @@ authors = ["Software Gardening Community"]
 license = "BSD-3-Clause"
 readme = "README.md"
 packages = [{ include = "almanac", from = "src" }]
-include = ["book/_config.yml", "book/_toc.yml", "book/**/*.md"]
+include = ["src/book/_config.yml",
+  "src/book/_toc.yml", 
+  "src/book/**/*.md"
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
