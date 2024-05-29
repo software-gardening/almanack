@@ -4,4 +4,4 @@ from .book import read
 
 # note: version placeholder is updated during build
 # by poetry-dynamic-versioning.
-__version__ = "0.0.0.post20.dev0+1f73d02"
+__version__ = "0.0.1"
