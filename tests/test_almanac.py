@@ -2,16 +2,17 @@
 Testing Python package for almanac.
 """
 
-from almanac import read
 import pytest
+
+from almanac import read
 
 
 def test_read(capsys) -> None:
     """
     Test reading of content from the book through a package.
-    
+
     Note: we use capsys here from pytest to help capture stdout.
-    See here for more: 
+    See here for more:
     https://docs.pytest.org/en/7.1.x/how-to/capture-stdout-stderr.html
     """
 
