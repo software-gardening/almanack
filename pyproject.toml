@@ -6,13 +6,17 @@ authors = ["Software Gardening Community"]
 license = "BSD-3-Clause"
 readme = "README.md"
 packages = [{ include = "almanac", from = "src" }]
-include = ["src/book/_config.yml",
-  "src/book/_toc.yml",
-  "src/book/**/*.md"
+include = [ "src/book/*.yml",
+  "src/book/**/*.md",
+  "src/book/references.bib"
 ]
+exclude = ["src/book/_build"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+pyyaml = "^6.0.1"
+
+[tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
 docutils = "0.17.1"
 sphinxcontrib-bibtex = "^2.6.2"
@@ -71,11 +75,11 @@ vcs = "git"
 
 # specify where version replacement is performed
 [tool.poetry-dynamic-versioning.substitution]
-files = ["src/cosmicqc/__init__.py"]
+files = ["src/almanac/__init__.py"]
 
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
-[tool.poetry-dynamic-versioning.files."src/cosmicqc/__init__.py"]
+[tool.poetry-dynamic-versioning.files."src/almanac/__init__.py"]
 persistent-substitution = true
 
 [build-system]
