@@ -1,7 +1,7 @@
-# __init__.py for software gardening almanac python package
+# __init__.py for software gardening almanack python package
 
 from .book import read
 
 # note: version placeholder is updated during build
 # by poetry-dynamic-versioning.
-__version__ = "0.0.1"
+__version__ = "0.0.0.post17.dev0+31e30f6"

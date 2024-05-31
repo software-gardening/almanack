@@ -30,7 +30,7 @@ def jupyter_book_source() -> pathlib.Path:
     Fixture for Jupyter Book content.
     """
 
-    # return the location of the almanac content
+    # return the location of the almanack content
     return pathlib.Path("src/book")
 
 

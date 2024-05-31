@@ -1,12 +1,12 @@
 # Contributing
 
-First of all, thank you for contributing to the Software Gardening Almanac! 🎉 💯 🪴
+First of all, thank you for contributing to the Software Gardening Almanack! 🎉 💯 🪴
 We're so grateful for the kindness of your effort applied to grow this project into the best that it can be.
 
 This document contains guidelines on how to most effectively contribute to this project.
 
 If you would like clarifications, please feel free to ask any questions or for help.
-We suggest asking for help from GitHub where you may need it (for example, in a GitHub issue or a pull request) by ["at (@) mentioning"](https://github.blog/2011-03-23-mention-somebody-they-re-notified/) a Software Gardening Almanac maintainer (for example, `@username`).
+We suggest asking for help from GitHub where you may need it (for example, in a GitHub issue or a pull request) by ["at (@) mentioning"](https://github.blog/2011-03-23-mention-somebody-they-re-notified/) a Software Gardening Almanack maintainer (for example, `@username`).
 
 ## Code of conduct
 
@@ -30,7 +30,7 @@ Please see our [Security policy](https://github.com/software-gardening/almanac?t
 We’re deeply committed to a smooth and intuitive user experience which helps people benefit from the content found within this project.
 This commitment requires a good relationship and open communication with our users.
 
-We encourage you to file a [GitHub issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) to report bugs or propose enhancements to improve the Software Gardening Almanac.
+We encourage you to file a [GitHub issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) to report bugs or propose enhancements to improve the Software Gardening Almanack.
 
 First, figure out if your idea is already implemented by reading existing issues or pull requests!
 Check the issues (<https://github.com/software-gardening/almanac/issues>) and pull requests (<https://github.com/software-gardening/almanac/pulls>)  to see if someone else has already documented or began implementation of your idea.
@@ -39,7 +39,7 @@ If you do not find your idea, please open a new issue and document why it would 
 
 Please also provide the following specifics:
 
-- The version of the Software Gardening Almanac you're referencing.
+- The version of the Software Gardening Almanack you're referencing.
 - Specific error messages or how the issue exhibits itself.
 - Operating system (e.g. MacOS, Windows, etc.)
 - Device type (e.g. laptop, phone, etc.)
@@ -62,10 +62,10 @@ Plus, it’s possible your contribution belongs in a different code base, and we
 
 After you’ve decided to contribute code and have written it up, please file a pull request.
 We specifically follow a [forked pull request model](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
-Please create a fork of Software Gardening Almanac repository, clone the fork, and then create a new, feature-specific branch.
-Once you make the necessary changes on this branch, you should file a pull request to incorporate your changes into the main The Software Gardening Almanac repository.
+Please create a fork of Software Gardening Almanack repository, clone the fork, and then create a new, feature-specific branch.
+Once you make the necessary changes on this branch, you should file a pull request to incorporate your changes into the main The Software Gardening Almanack repository.
 
-The content and description of your pull request are directly related to the speed at which we are able to review, approve, and merge your contribution into The Software Gardening Almanac.
+The content and description of your pull request are directly related to the speed at which we are able to review, approve, and merge your contribution into The Software Gardening Almanack.
 To ensure an efficient review process please perform the following steps:
 
 1. Follow all instructions in the [pull request template](https://github.com/software-gardening/almanac/blob/main/.github/PULL_REQUEST_TEMPLATE.md)
@@ -87,7 +87,7 @@ When appropriate, reference issues (via `#` plus number) .
 
 ### Overview
 
-We write and develop the Software Gardening Almanac in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
+We write and develop the Software Gardening Almanack in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
 We use [Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies to assist development activities (such as performing linting checks or other capabilities).
 We use [GitHub actions](https://docs.github.com/en/actions) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD) procedures such as automated tests.
 

@@ -1,10 +1,10 @@
 """
-Testing Python package for almanac.
+Testing Python package for almanack.
 """
 
 import pytest
 
-from almanac import read
+from almanack import read
 
 
 def test_read(capsys) -> None:

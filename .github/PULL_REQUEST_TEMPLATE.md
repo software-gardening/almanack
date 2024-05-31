@@ -4,7 +4,7 @@ _referenced with modifications from [pycytominer](https://github.com/cytomining/
 # Description
 
 <!--
-Thank you for your contribution to the Software Gardening Almanac!
+Thank you for your contribution to the Software Gardening Almanack!
 
 Please _succinctly_ summarize your proposed change.
 Namely, consider addressing the following questions:

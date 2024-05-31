@@ -294,7 +294,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# almanac-specific ignores
+# almanack-specific ignores
 
 /src/book/_build
 

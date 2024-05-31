@@ -5,7 +5,7 @@ The content here follows that of a [technical roadmap](https://en.wikipedia.org/
 
 ## Ethos
 
-We intend for the garden map to provide useful tools for us to efficiently create and maintain the Software Gardening Almanac.
+We intend for the garden map to provide useful tools for us to efficiently create and maintain the Software Gardening Almanack.
 We practice keeping the garden map as "petal-light" as possible through built-in tools, automation, and an avoidance of [analysis paralysis](https://en.wikipedia.org/wiki/Analysis_paralysis) where possible.
 
 ## We'd love your input
@@ -15,12 +15,12 @@ Please see the [contributing](contributing.md) guide for more information on how
 
 ## Active garden map(s)
 
-The following are active garden maps for the Software Gardening Almanac.
+The following are active garden maps for the Software Gardening Almanack.
 Please see below for a further description of these projects.
 
 <!-- vale alex.Gendered = NO -->
 
-- [__2024 BSSw Fellowship Milestones__](https://github.com/orgs/software-gardening/projects/1): this project communicates activities associated with the 2024 [BSSw Fellowship](https://bssw.io/pages/bssw-fellowship-program) associated with the Software Gardening Almanac.
+- [__2024 BSSw Fellowship Milestones__](https://github.com/orgs/software-gardening/projects/1): this project communicates activities associated with the 2024 [BSSw Fellowship](https://bssw.io/pages/bssw-fellowship-program) associated with the Software Gardening Almanack.
 
 <!-- vale alex.Gendered = YES -->
 

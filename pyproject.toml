@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "software-gardening-almanac"
-version = "0.0.1"
+name = "almanack"
+version = "0.0.0"
 description = "An open-source handbook of applied guidance and tools for sustainable software development and maintenance."
 authors = ["Software Gardening Community"]
 license = "BSD-3-Clause"
 readme = "README.md"
-packages = [{ include = "almanac", from = "src" }]
+packages = [{ include = "almanack", from = "src" }]
 include = [ "src/book/*.yml",
   "src/book/**/*.md",
   "src/book/references.bib"
@@ -36,7 +36,7 @@ profile = "black"
 exclude_dirs = ["tests"]
 
 [tool.codespell]
-ignore-words="styles/config/vocabularies/almanac/accept.txt"
+ignore-words="styles/config/vocabularies/almanack/accept.txt"
 # add capabilities for inline ignore for codespell linting
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex=".{1024}|.*codespell-ignore.*"
@@ -75,11 +75,11 @@ vcs = "git"
 
 # specify where version replacement is performed
 [tool.poetry-dynamic-versioning.substitution]
-files = ["src/almanac/__init__.py"]
+files = ["src/almanack/__init__.py"]
 
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
-[tool.poetry-dynamic-versioning.files."src/almanac/__init__.py"]
+[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
 persistent-substitution = true
 
 [build-system]

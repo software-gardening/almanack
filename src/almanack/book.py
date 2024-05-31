@@ -1,6 +1,6 @@
 """
 Module for interacting with Software Gardening
-Almanac book content through a Python package.
+Almanack book content through a Python package.
 """
 
 import pathlib
@@ -12,7 +12,7 @@ import yaml
 # Example of displaying a specific chapter
 def read(chapter_name: Optional[str] = None):
     """
-    A function for reading almanac content through a package
+    A function for reading almanack content through a package
     interface.
 
     Args:

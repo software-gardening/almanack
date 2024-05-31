@@ -1,6 +1,6 @@
 # Welcome
 
-Welcome to the Software Gardening Almanac, an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
+Welcome to the Software Gardening Almanack, an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 
 ## Inspiration
 
@@ -19,24 +19,24 @@ How do software bugs seem to appear in unlikely scenarios?
 
 These cycles follow patterns from life: software is created, grows, decays, and so on (sometimes in surprising or seemingly unpredictable ways).
 Software is also connected within a complex system of relationships (similar to the complex ecology of a garden).
-The Software Gardening Almanac posits we can understand these software lifecycle patterns and complex relationships in order to build tools which sustain or maintain their development long-term.
+The Software Gardening Almanack posits we can understand these software lifecycle patterns and complex relationships in order to build tools which sustain or maintain their development long-term.
 
 > _"The ‘planetary garden’ is a means of considering ecology as the integration of humanity – the gardeners – into its smallest spaces._
 > _Its guiding philosophy is based on the principle of the ‘garden in motion’: do the most __for__, the minimum __against__."_
 > \- Gilles Clément
 
-The content within the Software Gardening Almanac is inspired by ecological systems (for example, as in [_planetary gardening_](https://www.architectural-review.com/essays/in-practice/in-practice-gilles-clement-on-the-planetary-garden)).
-We also are galvanized by the [_scientific method_](https://en.wikipedia.org/wiki/Scientific_method), and [_almanacs_](https://en.wikipedia.org/wiki/Almanac) (or earlier [_menologia rustica_](https://en.wikipedia.org/wiki/Menologia_rustica)) in documenting, expecting, and optimizing how we plan for time-based changes in agriculture (among other practices and traditions).
+The content within the Software Gardening Almanack is inspired by ecological systems (for example, as in [_planetary gardening_](https://www.architectural-review.com/essays/in-practice/in-practice-gilles-clement-on-the-planetary-garden)).
+We also are galvanized by the [_scientific method_](https://en.wikipedia.org/wiki/Scientific_method), and [_almanacks_](https://en.wikipedia.org/wiki/Almanack) (or earlier [_menologia rustica_](https://en.wikipedia.org/wiki/Menologia_rustica)) in documenting, expecting, and optimizing how we plan for time-based changes in agriculture (among other practices and traditions).
 
-```{figure} assets/almanac-influencing-software.png
+```{figure} assets/almanack-influencing-software.png
 ---
 height: 270px
 alt: A book shown as influencing software within the cycle of time.
 ---
-_Almanacs help us understand and influence the impacts of time on the things we grow._
+_Almanacks help us understand and influence the impacts of time on the things we grow._
 ```
 
-The Software Gardening Almanac helps share knowledge on how to cultivate change in order to nurture software (and software practitioners) for long periods of time.
+The Software Gardening Almanack helps share knowledge on how to cultivate change in order to nurture software (and software practitioners) for long periods of time.
 We aspire to define, practice, and continually improve a craft of _software gardening_ to nourish existing or yet-to-be software projects and embrace a more resilient future.
 
 ## Motivation
@@ -68,6 +68,6 @@ Please let us know how we can improve by [opening GitHub issues](https://github.
 > _"We'll share stories from the heart. All are welcome here."_
 > \- Alexandra Penfold
 
-The Software Gardening Almanac is designed for developers of any kind.
+The Software Gardening Almanack is designed for developers of any kind.
 When we say _developers_ here we mean anyone engaging in pursuing their vision towards a goal using software (including scientists, engineers, project leads, managers, etc).
 The content will engage readers with pragmatic ideas, keeping the barrier to entry low.

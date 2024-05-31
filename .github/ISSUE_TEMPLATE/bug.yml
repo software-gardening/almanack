@@ -57,10 +57,10 @@ body:
     attributes:
       label: Versions
       description: >
-        Please provide the version of the Software Gardening Almanac,
+        Please provide the version of the Software Gardening Almanack,
         operating system (OS), etc.
       placeholder: |
-        - The version of the Software Gardening Almanac you're referencing.
+        - The version of the Software Gardening Almanack you're referencing.
         - Operating system (e.g. MacOS, Windows, etc.)
         - Device type (e.g. laptop, phone, etc.)
     validations:
@@ -70,7 +70,7 @@ body:
     attributes:
       label: Would you like to work on a solution for this?
       description: >
-        The Software Gardening Almanac is a community-driven project and we
+        The Software Gardening Almanack is a community-driven project and we
         love new contributors (including through opening new issues)!
         This is an optional check to help us understand your interest to be
         involved (especially if you already have a good understanding
