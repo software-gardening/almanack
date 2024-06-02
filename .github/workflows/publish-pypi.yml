@@ -1,0 +1,27 @@
+---
+# used for publishing packages to pypi on release
+name: publish pypi release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish_pypi:
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install python env
+        uses: ./.github/actions/install-python-env
+      - name: poetry build distribution content
+        run: poetry build
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
