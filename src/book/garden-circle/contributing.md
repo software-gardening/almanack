@@ -154,9 +154,8 @@ Software Gardening Almanack release git tags are automatically applied through [
 
 1. Open a pull request and use a repository label for `release-<semver release type>` to label the pull request for visibility with [`release-drafter`](https://github.com/release-drafter/release-drafter) (for example, see [almanack#43](https://github.com/software-gardening/almanac/pull/43) as a reference of a semver patch update).
 1. On merging the pull request for the release, a [GitHub Actions workflow](https://docs.github.com/en/actions/using-workflows) defined in `draft-release.yml` leveraging [`release-drafter`](https://github.com/release-drafter/release-drafter) will draft a release for maintainers.
-The draft GitHub release will include a version tag based on the GitHub PR label applied and `release-drafter`.
-The draft release does not normally need additional modifications but may be changed as needed.
-1. Make modifications as necessary to the draft GitHub release, then publish the release.
+1. The draft GitHub release will include a version tag based on the GitHub PR label applied and `release-drafter`.
+1. Make modifications as necessary to the draft GitHub release, then publish the release (the draft release does not normally need additional modifications).
 1. On publishing the release, another GitHub Actions workflow defined in `publish-pypi.yml` will run to build and deploy the Python package to PyPI (utilizing the earlier modified `pyproject.toml` semantic version reference for labeling the release).
 
 ## Attribution
