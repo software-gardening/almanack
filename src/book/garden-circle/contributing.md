@@ -137,6 +137,28 @@ These workflows include one or more [jobs](https://docs.github.com/en/actions/us
 We define GitHub Actions work under the [`.github`](https://github.com/software-gardening/almanac/tree/main/.github) directory.
 We suggest the use of [`act`](https://github.com/nektos/act) to help test GitHub Actions work during development.
 
+### Releases
+
+We utilize [semantic versioning](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) ("semver") in order to distinguish between major, minor, and patch releases.
+We publish source code by using [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) available [here](https://github.com/software-gardening/almanac/releases).
+We publish a related Python package through the [Python Packaging Index (PyPI)](https://pypi.org/) available [here](https://pypi.org/project/almanack/).
+
+#### Release Publishing Process
+
+There are several manual and automated steps involved with publishing Software Gardening Almanack releases.
+See below for an overview of how this works.
+
+Notes about [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications:
+Software Gardening Almanack semvers are controlled through [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) which leverages [`dunamai`](https://github.com/mtkennerly/dunamai) to create version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and and commits.
+Software Gardening Almanack release git tags are automatically applied through [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) and related inferred changes from [`release-drafter`](https://github.com/release-drafter/release-drafter).
+
+1. Open a pull request and use a repository label for `release-<semver release type>` to label the pull request for visibility with [`release-drafter`](https://github.com/release-drafter/release-drafter) (for example, see [almanack#43](https://github.com/software-gardening/almanac/pull/43) as a reference of a semver patch update).
+1. On merging the pull request for the release, a [GitHub Actions workflow](https://docs.github.com/en/actions/using-workflows) defined in `draft-release.yml` leveraging [`release-drafter`](https://github.com/release-drafter/release-drafter) will draft a release for maintainers.
+   The draft GitHub release will include a version tag based on the GitHub PR label applied and `release-drafter`.
+   The draft release does not normally need additional modifications but may be changed as needed.
+1. Make modifications as necessary to the draft GitHub release, then publish the release.
+1. On publishing the release, another GitHub Actions workflow defined in `publish-pypi.yml` will run to build and deploy the Python package to PyPI (utilizing the earlier modified `pyproject.toml` semantic version reference for labeling the release).
+
 ## Attribution
 
 We sourced portions of this contribution guide from [`pyctyominer`](https://github.com/cytomining/pycytominer/blob/master/CONTRIBUTING.md).
