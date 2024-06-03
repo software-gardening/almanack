@@ -145,11 +145,11 @@ We publish a related Python package through the [Python Packaging Index (PyPI)](
 
 #### Release Publishing Process
 
-There are several manual and automated steps involved with publishing Software Gardening Almanack releases.
+Several manual and automated steps are involved with publishing Software Gardening Almanack releases.
 See below for an overview of how this works.
 
 Notes about [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications:
-Software Gardening Almanack semvers are controlled through [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) which leverages [`dunamai`](https://github.com/mtkennerly/dunamai) to create version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and and commits.
+Software Gardening Almanack version specifications are controlled through [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) which leverages [`dunamai`](https://github.com/mtkennerly/dunamai) to create version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
 Software Gardening Almanack release git tags are automatically applied through [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) and related inferred changes from [`release-drafter`](https://github.com/release-drafter/release-drafter).
 
 1. Open a pull request and use a repository label for `release-<semver release type>` to label the pull request for visibility with [`release-drafter`](https://github.com/release-drafter/release-drafter) (for example, see [almanack#43](https://github.com/software-gardening/almanac/pull/43) as a reference of a semver patch update).

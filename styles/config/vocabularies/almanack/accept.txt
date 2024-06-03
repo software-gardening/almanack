@@ -17,3 +17,4 @@ Kagawa
 dendronchronology
 kairos
 kairological
+semver
