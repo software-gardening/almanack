@@ -149,9 +149,9 @@ We distribute a Python package through the [Python Packaging Index (PyPI)](https
 Publishing Software Gardening Almanack releases involves several manual and automated steps.
 See below for an overview of how this works.
 
-Notes about [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications:
-
 ## Version specifications
+
+We follow [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications with this project through the following technologies.
 
 - [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) leveraging [`dunamai`](https://github.com/mtkennerly/dunamai) creates version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
 - [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) automatically create git tags
