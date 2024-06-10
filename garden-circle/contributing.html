@@ -9,7 +9,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Contributing &#8212; The Software Gardening Almanac</title>
+    <title>Contributing &#8212; The Software Gardening Almanack</title>
   
   
   
@@ -153,8 +153,8 @@
       
     
     
-    <img src="../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanac - Home"/>
-    <script>document.write(`<img src="../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanac - Home"/>`);</script>
+    <img src="../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
+    <script>document.write(`<img src="../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
   
   
 </a></div>
@@ -399,6 +399,14 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#development-tasks">Development Tasks</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linting">Linting</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-ci-cd-with-github-actions">Automated CI/CD with GitHub Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#releases">Releases</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#release-publishing-process">Release Publishing Process</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specifications">Version specifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specification-process">Version specification process</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
@@ -415,11 +423,11 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="contributing">
 <h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this heading">#</a></h1>
-<p>First of all, thank you for contributing to the Software Gardening Almanac! 🎉 💯 🪴
+<p>First of all, thank you for contributing to the Software Gardening Almanack! 🎉 💯 🪴
 We’re so grateful for the kindness of your effort applied to grow this project into the best that it can be.</p>
 <p>This document contains guidelines on how to most effectively contribute to this project.</p>
 <p>If you would like clarifications, please feel free to ask any questions or for help.
-We suggest asking for help from GitHub where you may need it (for example, in a GitHub issue or a pull request) by <a class="reference external" href="https://github.blog/2011-03-23-mention-somebody-they-re-notified/">“at (&#64;) mentioning”</a> a Software Gardening Almanac maintainer (for example, <code class="docutils literal notranslate"><span class="pre">&#64;username</span></code>).</p>
+We suggest asking for help from GitHub where you may need it (for example, in a GitHub issue or a pull request) by <a class="reference external" href="https://github.blog/2011-03-23-mention-somebody-they-re-notified/">“at (&#64;) mentioning”</a> a Software Gardening Almanack maintainer (for example, <code class="docutils literal notranslate"><span class="pre">&#64;username</span></code>).</p>
 <section id="code-of-conduct">
 <h2>Code of conduct<a class="headerlink" href="#code-of-conduct" title="Permalink to this heading">#</a></h2>
 <p>Our <a class="reference external" href="https://github.com/software-gardening/almanac?tab=coc-ov-file">Code of Conduct (CoC) policy</a> (located <a class="reference external" href="https://github.com/software-gardening/.github/blob/main/CODE_OF_CONDUCT.md">here</a>) governs this project.
@@ -443,14 +451,14 @@ Please report unacceptable behavior by following the procedures listed under the
 <h3>Reporting bugs or suggesting enhancements<a class="headerlink" href="#reporting-bugs-or-suggesting-enhancements" title="Permalink to this heading">#</a></h3>
 <p>We’re deeply committed to a smooth and intuitive user experience which helps people benefit from the content found within this project.
 This commitment requires a good relationship and open communication with our users.</p>
-<p>We encourage you to file a <a class="reference external" href="https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue">GitHub issue</a> to report bugs or propose enhancements to improve the Software Gardening Almanac.</p>
+<p>We encourage you to file a <a class="reference external" href="https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue">GitHub issue</a> to report bugs or propose enhancements to improve the Software Gardening Almanack.</p>
 <p>First, figure out if your idea is already implemented by reading existing issues or pull requests!
 Check the issues (<a class="github reference external" href="https://github.com/software-gardening/almanac/issues">software-gardening/almanac#issues</a>) and pull requests (<a class="github reference external" href="https://github.com/software-gardening/almanac/pulls">software-gardening/almanac</a>)  to see if someone else has already documented or began implementation of your idea.
 If you do find your idea in an existing issue, please comment on the existing issue noting that you are also interested in the functionality.
 If you do not find your idea, please open a new issue and document why it would be helpful for your particular use case.</p>
 <p>Please also provide the following specifics:</p>
 <ul class="simple">
-<li><p>The version of the Software Gardening Almanac you’re referencing.</p></li>
+<li><p>The version of the Software Gardening Almanack you’re referencing.</p></li>
 <li><p>Specific error messages or how the issue exhibits itself.</p></li>
 <li><p>Operating system (e.g. MacOS, Windows, etc.)</p></li>
 <li><p>Device type (e.g. laptop, phone, etc.)</p></li>
@@ -472,9 +480,9 @@ Plus, it’s possible your contribution belongs in a different code base, and we
 <h3>Pull requests<a class="headerlink" href="#pull-requests" title="Permalink to this heading">#</a></h3>
 <p>After you’ve decided to contribute code and have written it up, please file a pull request.
 We specifically follow a <a class="reference external" href="https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork">forked pull request model</a>.
-Please create a fork of Software Gardening Almanac repository, clone the fork, and then create a new, feature-specific branch.
-Once you make the necessary changes on this branch, you should file a pull request to incorporate your changes into the main The Software Gardening Almanac repository.</p>
-<p>The content and description of your pull request are directly related to the speed at which we are able to review, approve, and merge your contribution into The Software Gardening Almanac.
+Please create a fork of Software Gardening Almanack repository, clone the fork, and then create a new, feature-specific branch.
+Once you make the necessary changes on this branch, you should file a pull request to incorporate your changes into the main The Software Gardening Almanack repository.</p>
+<p>The content and description of your pull request are directly related to the speed at which we are able to review, approve, and merge your contribution into The Software Gardening Almanack.
 To ensure an efficient review process please perform the following steps:</p>
 <ol class="arabic simple">
 <li><p>Follow all instructions in the <a class="reference external" href="https://github.com/software-gardening/almanac/blob/main/.github/PULL_REQUEST_TEMPLATE.md">pull request template</a></p></li>
@@ -497,7 +505,7 @@ When appropriate, reference issues (via <code class="docutils literal notranslat
 <h2>Development<a class="headerlink" href="#development" title="Permalink to this heading">#</a></h2>
 <section id="overview">
 <h3>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h3>
-<p>We write and develop the Software Gardening Almanac in <a class="reference external" href="https://www.python.org/">Python</a> through <a class="reference external" href="https://jupyterbook.org/">Jupyter Book</a> with related environments managed by Python <a class="reference external" href="https://python-poetry.org/">Poetry</a>.
+<p>We write and develop the Software Gardening Almanack in <a class="reference external" href="https://www.python.org/">Python</a> through <a class="reference external" href="https://jupyterbook.org/">Jupyter Book</a> with related environments managed by Python <a class="reference external" href="https://python-poetry.org/">Poetry</a>.
 We use <a class="reference external" href="https://nodejs.org">Node</a> and <a class="reference external" href="https://www.npmjs.com/">NPM</a> dependencies to assist development activities (such as performing linting checks or other capabilities).
 We use <a class="reference external" href="https://docs.github.com/en/actions">GitHub actions</a> for <a class="reference external" href="https://en.wikipedia.org/wiki/CI/CD">CI/CD</a> procedures such as automated tests.</p>
 </section>
@@ -544,6 +552,37 @@ GitHub Actions involves defining <a class="reference external" href="https://doc
 These workflows include one or more <a class="reference external" href="https://docs.github.com/en/actions/using-jobs">jobs</a> which are collections of individual processes (or steps) which run as part of a job.
 We define GitHub Actions work under the <a class="reference external" href="https://github.com/software-gardening/almanac/tree/main/.github"><code class="docutils literal notranslate"><span class="pre">.github</span></code></a> directory.
 We suggest the use of <a class="reference external" href="https://github.com/nektos/act"><code class="docutils literal notranslate"><span class="pre">act</span></code></a> to help test GitHub Actions work during development.</p>
+</section>
+<section id="releases">
+<h3>Releases<a class="headerlink" href="#releases" title="Permalink to this heading">#</a></h3>
+<p>We utilize <a class="reference external" href="https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning">semantic versioning</a> (“semver”) to distinguish between major, minor, and patch releases.
+We publish source code by using <a class="reference external" href="https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases">GitHub Releases</a> available <a class="reference external" href="https://github.com/software-gardening/almanac/releases">here</a>.
+Contents of the book are distributed as both a <a class="reference external" href="https://software-gardening.github.io/almanac/">website</a> and <a class="reference external" href="https://software-gardening.github.io/almanac/software-gardening-almanac.pdf">PDF</a>.
+We distribute a Python package through the <a class="reference external" href="https://pypi.org/">Python Packaging Index (PyPI)</a> available <a class="reference external" href="https://pypi.org/project/almanack/">here</a> which both includes and provides tooling for applying the book’s content.</p>
+<section id="release-publishing-process">
+<h4>Release Publishing Process<a class="headerlink" href="#release-publishing-process" title="Permalink to this heading">#</a></h4>
+<p>Publishing Software Gardening Almanack releases involves several manual and automated steps.
+See below for an overview of how this works.</p>
+</section>
+</section>
+</section>
+<section id="version-specifications">
+<h2>Version specifications<a class="headerlink" href="#version-specifications" title="Permalink to this heading">#</a></h2>
+<p>We follow <a class="reference external" href="https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning">semantic version</a> (semver) specifications with this project through the following technologies.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://github.com/mtkennerly/poetry-dynamic-versioning"><code class="docutils literal notranslate"><span class="pre">poetry-dynamic-versioning</span></code></a> leveraging <a class="reference external" href="https://github.com/mtkennerly/dunamai"><code class="docutils literal notranslate"><span class="pre">dunamai</span></code></a> creates version data based on <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and commits.</p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases">GitHub Releases</a> automatically create git tags and source code collections available from the GitHub repository.</p></li>
+<li><p><a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> infers and describes changes since last release within automatically drafted GitHub Releases after pull requests are merged (draft releases are published as decided by maintainers).</p></li>
+</ul>
+<section id="version-specification-process">
+<h3>Version specification process<a class="headerlink" href="#version-specification-process" title="Permalink to this heading">#</a></h3>
+<ol class="arabic simple">
+<li><p>Open a pull request and use a repository label for <code class="docutils literal notranslate"><span class="pre">release-&lt;semver</span> <span class="pre">release</span> <span class="pre">type&gt;</span></code> to label the pull request for visibility with <a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> (for example, see <a class="reference external" href="https://github.com/software-gardening/almanac/pull/43">almanack#43</a> as a reference of a semver patch update).</p></li>
+<li><p>On merging the pull request for the release, a <a class="reference external" href="https://docs.github.com/en/actions/using-workflows">GitHub Actions workflow</a> defined in <code class="docutils literal notranslate"><span class="pre">draft-release.yml</span></code> leveraging <a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> will draft a release for maintainers.</p></li>
+<li><p>The draft GitHub release will include a version tag based on the GitHub PR label applied and <code class="docutils literal notranslate"><span class="pre">release-drafter</span></code>.</p></li>
+<li><p>Make modifications as necessary to the draft GitHub release, then publish the release (the draft release does not normally need additional modifications).</p></li>
+<li><p>On publishing the release, another GitHub Actions workflow defined in <code class="docutils literal notranslate"><span class="pre">publish-pypi.yml</span></code> will automatically build and deploy the Python package to PyPI (utilizing the earlier modified <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> semantic version reference for labeling the release).</p></li>
+</ol>
 </section>
 </section>
 <section id="attribution">
@@ -633,6 +672,14 @@ Big thanks go to the developers and contributors of that repository.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#development-tasks">Development Tasks</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linting">Linting</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-ci-cd-with-github-actions">Automated CI/CD with GitHub Actions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#releases">Releases</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#release-publishing-process">Release Publishing Process</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specifications">Version specifications</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specification-process">Version specification process</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
