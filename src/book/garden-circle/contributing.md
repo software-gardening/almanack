@@ -141,7 +141,8 @@ We suggest the use of [`act`](https://github.com/nektos/act) to help test GitHub
 
 We utilize [semantic versioning](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) ("semver") to distinguish between major, minor, and patch releases.
 We publish source code by using [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) available [here](https://github.com/software-gardening/almanac/releases).
-We publish a related Python package through the [Python Packaging Index (PyPI)](https://pypi.org/) available [here](https://pypi.org/project/almanack/).
+Contents of the book are distributed as both a website and PDF.
+We distribute a Python package through the [Python Packaging Index (PyPI)](https://pypi.org/) available [here](https://pypi.org/project/almanack/) which both includes and provides tooling for applying the book's content.
 
 #### Release Publishing Process
 
