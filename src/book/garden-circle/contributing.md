@@ -154,8 +154,8 @@ See below for an overview of how this works.
 We follow [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications with this project through the following technologies.
 
 - [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) leveraging [`dunamai`](https://github.com/mtkennerly/dunamai) creates version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
-- [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) automatically create git tags
-- [`release-drafter`](https://github.com/release-drafter/release-drafter) infers and describes changes since last release
+- [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) automatically create git tags and source code collections available from the GitHub repository.
+- [`release-drafter`](https://github.com/release-drafter/release-drafter) infers and describes changes since last release within automatically drafted GitHub Releases after pull requests are merged (draft releases are published as decided by maintainers).
 
 ### Version specification process
 
