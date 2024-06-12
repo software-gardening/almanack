@@ -61,7 +61,7 @@ We suggest reading or using this content however it best makes sense to a reader
 Just as with gardening, sometimes the best thing to do is jump in!
 We structure each section in a modular fashion, providing insights with cited prerequisites.
 We provide links and other reference materials for further reading where beneficial.
-Please let us know how we can improve by [opening GitHub issues](https://github.com/software-gardening/almanac/issues) or [creating new discussion board posts](https://github.com/orgs/software-gardening/discussions) (see our [`contributing.md`](garden-circle/contributing.md) guide for more information)!
+Please let us know how we can improve by [opening GitHub issues](https://github.com/software-gardening/almanack/issues) or [creating new discussion board posts](https://github.com/orgs/software-gardening/discussions) (see our [`contributing.md`](garden-circle/contributing.md) guide for more information)!
 
 ## Who's this for?
 
