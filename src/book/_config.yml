@@ -21,7 +21,7 @@ html:
 #######################################################################################
 # Repository specification settings
 repository:
-  url: https://github.com/software-gardening/almanac
+  url: https://github.com/software-gardening/almanack
   path_to_book: "src/book"
   branch: main
 
