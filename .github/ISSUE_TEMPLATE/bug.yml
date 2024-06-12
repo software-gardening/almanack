@@ -12,7 +12,7 @@ body:
         If this bug entails a security-focused aspect, please submit a
         security report instead using GitHub's
         [report vulnerability form]
-        (https://github.com/software-gardening/almanac/security/advisories/new)
+        (https://github.com/software-gardening/almanack/security/advisories/new)
         .
 
   - type: checkboxes
@@ -20,14 +20,14 @@ body:
       label: Existing issue check
       description: >
         Please make sure to search in the
-        [issues](https://github.com/software-gardening/almanac/issues) first
+        [issues](https://github.com/software-gardening/almanack/issues) first
         to see whether the same issue was reported already.
         If you find an existing issue, please don't hesitate to comment
         on it or add a reaction to existing content!
       options:
         - label: >
             I found no existing
-            [issues](https://github.com/software-gardening/almanac/issues)
+            [issues](https://github.com/software-gardening/almanack/issues)
             covering this topic.
           required: true
 
