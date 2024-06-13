@@ -8,12 +8,30 @@ on:
     branches: [main]
 
 jobs:
-  pytest_tests:
-    runs-on: ubuntu-latest
+  # tests python package components
+  almanack_tests:
+    strategy:
+      matrix:
+        # matrixed execution for parallel gh-action jobs
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        os: [ubuntu-22.04, macos-13]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install python env
+        uses: ./.github/actions/install-python-env
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run pytest
+        run: |
+          poetry run pytest --ignore tests/test_build.py
+  # tests the build of book content
+  build_tests:
+    runs-on: "ubuntu-22.04"
     steps:
       - uses: actions/checkout@v4
       - name: Install python env
         uses: ./.github/actions/install-python-env
       - name: Run pytest
         run: |
-          poetry run pytest
+          poetry run pytest tests/test_build.py

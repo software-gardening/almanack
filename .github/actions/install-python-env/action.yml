@@ -2,13 +2,18 @@
 name: Install python env
 description: |
   Setup python, and poetry for use with GitHub Actions workflows.
+inputs:
+  python-version:
+    description: The version of Python to use (passed to actions/setup-python)
+    required: true
+    default: "3.11"
 runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
-        python-version: "3.11"
+        python-version: ${{ inputs.python-version }}
     - name: Setup poetry
       shell: bash
       run: |
