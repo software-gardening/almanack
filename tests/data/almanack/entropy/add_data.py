@@ -62,7 +62,9 @@ def main():
         subprocess.run(["git", "init"], check=True, cwd=dir_name)
 
     # Add baseline content to Markdown files and commit
-    baseline_text = "Baseline content\n"
+    baseline_text = """
+    Baseline content
+    """
     md_files = ["high_entropy/high_entropy.md", "low_entropy/low_entropy.md"]
     for md_file in md_files:
         with open(md_file, "w") as f:
