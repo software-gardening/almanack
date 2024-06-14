@@ -1,11 +1,14 @@
+from pathlib import Path
+
 import git
+
 
 def get_commit_logs(repository_path):
     """
     Retrieves Git logs for a given repository.
 
     Args:
-        repository_path (str): The path to the Git repository.
+        repository_path (str or Path): The path to the Git repository.
 
     Returns:
         dict: A dictionary mapping repository names to dictionaries of commit IDs and their details.
@@ -28,7 +31,7 @@ def get_commit_contents(repository_path, commit_id):
     Retrieves contents of a specific commit in a Git repository.
 
     Args:
-        repository_path (str): The path to the Git repository.
+        repository_path (str or Path): The path to the Git repository.
         commit_id (str): The commit ID to retrieve contents from.
 
     Returns:
@@ -46,15 +49,22 @@ def get_commit_contents(repository_path, commit_id):
 
 
 def main():
+    # Define the base path relative to the location of this script
+    base_path = Path(__file__).resolve().parent.parent.parent.parent
+
     repositories = {
-        "high_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/high_entropy",
-        "low_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/low_entropy",
+        "high_entropy": base_path / "almanac/tests/data/almanack/entropy/high_entropy",
+        "low_entropy": base_path / "almanac/tests/data/almanack/entropy/low_entropy",
     }
 
     all_logs = {}
     for repo_name, repo_path in repositories.items():
+        # Retrieve commit logs for each repository and store them in the dictionary
         all_logs[repo_name] = get_commit_logs(repo_path)
+
     return all_logs
+
 
 if __name__ == "__main__":
     logs = main()
+    print(logs)
