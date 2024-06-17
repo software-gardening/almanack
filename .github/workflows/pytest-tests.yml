@@ -3,7 +3,7 @@ name: pytest tests
 
 on:
   push:
-    branches: [main]
+    branches: [main,Extracting-commit-contents]
   pull_request:
     branches: [main]
 
