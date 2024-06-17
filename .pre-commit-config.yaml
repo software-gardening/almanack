@@ -57,6 +57,10 @@ repos:
       - id: bandit
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.4.9"
+    hooks:
+      - id: ruff
   - repo: https://github.com/rhysd/actionlint
     rev: v1.6.27
     hooks:
