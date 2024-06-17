@@ -23,7 +23,7 @@ def test_links(build_jupyter_book: pathlib.Path) -> None:
             "linkchecker",
             f"{build_jupyter_book}/",
             "--ignore-url",
-            f"html/_static",
+            "html/_static",
             # used to check external-facing links
             "--check-extern",
             # used to avoid warnings triggering a non-zero return
@@ -33,6 +33,7 @@ def test_links(build_jupyter_book: pathlib.Path) -> None:
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        check=False,
     )
 
     check_subproc_run_for_nonzero(completed_proc=result)
@@ -59,5 +60,6 @@ def test_web_accessibility(build_jupyter_book: pathlib.Path) -> None:
                 ],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
+                check=False,
             )
         )

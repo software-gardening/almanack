@@ -100,7 +100,7 @@ files = ["src/almanack/__init__.py"]
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
 [tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
-persistent-substitution = true
+persistent-substitution = false
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
