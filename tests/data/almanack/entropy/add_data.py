@@ -13,10 +13,8 @@ Command-Line Instructions:
   poetry run python add_data.py
 
 """
-
 import pathlib
 import subprocess
-from pathlib import Path
 
 from add_entropy import add_entropy
 
@@ -47,7 +45,7 @@ def main():
     for md_file in md_files:
         with open(md_file, "w") as f:
             f.write(baseline_text)
-        directory = Path(md_file).parent
+        directory = pathlib.Path(md_file).parent
         commit_changes(directory, "Initial commit with baseline content")
 
     # Run the add_entropy.py script

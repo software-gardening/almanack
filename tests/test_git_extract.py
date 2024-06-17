@@ -1,19 +1,13 @@
-# import os
-# from pathlib import Path
-# import pytest
-# from src.almanack.git_extracting import get_commit_logs, get_commit_contents  # Replace with your actual module name
+import pathlib
 
-# def find_git_repo(starting_path):
-#     """Searches for a .git folder starting from the given path and going up the directory tree."""
-#     path = Path(starting_path).resolve()
-#     for parent in [path] + list(path.parents):
-#         if (parent / '.git').is_dir():
-#             return parent
-#     raise FileNotFoundError("No .git directory found")
+# Constants
+ENTROPY_PATH = "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy"
 
-# # Use the current directory as the starting point
-# try:
-#     REPO_PATH = find_git_repo(Path.cwd())
-# except FileNotFoundError as e:
-#     REPO_PATH = None
-#     print(e)
+
+def test_entropy_repos_deleted():
+    """
+    Test if the high_entropy and low_entropy repositories are deleted.
+    """
+    # Check if the directories are deleted
+    assert not (pathlib.Path(ENTROPY_PATH) / "high_entropy").exists()
+    assert not (pathlib.Path(ENTROPY_PATH) / "low_entropy").exists()
