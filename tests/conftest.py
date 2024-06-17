@@ -68,6 +68,7 @@ def build_jupyter_book(
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
+        check=False,
     )
 
     check_subproc_run_for_nonzero(completed_proc=result)

@@ -41,6 +41,26 @@ ignore-words="styles/config/vocabularies/almanack/accept.txt"
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex=".{1024}|.*codespell-ignore.*"
 
+[tool.ruff]
+target-version = "py311"
+fix = true
+
+[tool.ruff.lint]
+select = [
+    # pyflakes
+    "F",
+    # pylint
+    "PL",
+    # mccabe
+    "C90",
+    # ruff
+    "RUF",
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
+"__init__.py" = ["F401"]
+
 # defines poe the poet tasks
 [tool.poe.tasks]
 # builds the jupyter book related to this project
@@ -80,7 +100,7 @@ files = ["src/almanack/__init__.py"]
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
 [tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
-persistent-substitution = true
+persistent-substitution = false
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
