@@ -1,3 +1,7 @@
+"""
+Testing repository clean-up
+"""
+
 import pathlib
 
 # Constants

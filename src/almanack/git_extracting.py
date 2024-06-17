@@ -1,3 +1,17 @@
+"""
+This script retrieves Git logs and commit contents for specified repositories.
+
+Functions:
+- `get_commit_logs(repository_path)`: Retrieves Git logs for a given repository.
+- `get_commit_contents(repository_path, commit_id)`: Retrieves contents of a specific commit in a Git repository.
+
+Command-Line Instructions:
+- To run this script, execute the following command:
+    python3 git_extracting.py
+
+"""
+
+
 from pathlib import Path
 
 import git
