@@ -84,8 +84,6 @@ def repository_paths():
     repositories = {
          "high_entropy": base_path / "almanac/tests/data/almanack/entropy/high_entropy",
          "low_entropy": base_path / "almanac/tests/data/almanack/entropy/low_entropy",
-    # "high_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/high_entropy",
-    # "low_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/low_entropy"
     }
     return repositories
 
