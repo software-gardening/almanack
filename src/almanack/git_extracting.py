@@ -2,7 +2,6 @@
 This module retrieves Git logs and commit contents for specified repositories.
 """
 
-from pathlib import Path
 
 import git
 
@@ -44,6 +43,7 @@ def get_commit_contents(repository_path: str, commit_id: str):
     contents = {}
     repo = git.Repo(repository_path)
     commit = repo.commit(commit_id)
+    contents = {}
 
     for file_path in commit.tree.traverse():
         contents[file_path.path] = file_path.data_stream.read().decode("utf-8")
@@ -58,4 +58,3 @@ def main(repositories):
         all_logs[repo_name] = get_commit_logs(repo_path)
     print(f"All logs: {all_logs}")
     return all_logs
-

@@ -6,6 +6,7 @@ see: https://docs.pytest.org/en/7.1.x/reference/fixtures.html
 import pathlib
 import shutil
 import subprocess
+
 import pytest
 
 
@@ -74,23 +75,28 @@ def build_jupyter_book(
 
     return jupyter_book_test_target
 
+
 @pytest.fixture
 def repository_paths():
     """
     Fixture to provide the paths to the test repositories.
     """
-    base_path = pathlib.Path(__file__).resolve().parent.parent.parent.parent
+    # base_path = pathlib.Path(__file__).resolve().parent.parent.parent.parent
 
     repositories = {
-         "high_entropy": base_path / "almanac/tests/data/almanack/entropy/high_entropy",
-         "low_entropy": base_path / "almanac/tests/data/almanack/entropy/low_entropy",
+        #  "high_entropy": base_path / "almanac/tests/data/almanack/entropy/high_entropy",
+        #  "low_entropy": base_path / "almanac/tests/data/almanack/entropy/low_entropy",
+        "high_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/high_entropy",
+        "low_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/low_entropy",
     }
     return repositories
 
+
 from almanack.git_extracting import main
+
 
 def test_main(repository_paths):
     all_logs = main(repository_paths)
     assert "high_entropy" in all_logs
     assert "low_entropy" in all_logs
-
+    print(all_logs)
