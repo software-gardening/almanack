@@ -2,7 +2,6 @@
 This module retrieves Git logs and commit contents for specified repositories.
 """
 
-
 import git
 
 
