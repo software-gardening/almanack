@@ -42,7 +42,7 @@ high_entropy_code = """
     2. The quick brown fox jumps over 13 lazy dogs.
     3. Supercalifragilisticexpialidocious - a word with magic.
 
-    Astronomers discovered that these sentences were not just random, but held clues to the nature of dark matter. Each phrase, a key to unlocking the universe’s deepest mysteries.
+    Astronomers discovered that these sentences were not just random, but held clues to the nature of dark matter. Each phrase, a key to unlocking the universes deepest mysteries.
 
     - The 12th moon of Andromeda was home to a mysterious library.
     - Ancient tomes spoke of a star that never dims.
