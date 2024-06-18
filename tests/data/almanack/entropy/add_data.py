@@ -20,12 +20,12 @@ import subprocess
 from add_entropy import add_entropy
 
 
-def commit_changes(directory: dir, message: str):
+def commit_changes(directory: str, message: str):
     """
     Commits changes in the specified Git directory with a given commit message.
 
     Args:
-        directory (dir): The directory containing the Git repository.
+        directory (str): The directory containing the Git repository.
         message (str): The commit message.
     """
     subprocess.run(["git", "add", "."], check=True, cwd=directory)

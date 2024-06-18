@@ -1,14 +1,5 @@
 """
-This script retrieves Git logs and commit contents for specified repositories.
-
-Functions:
-- `get_commit_logs(repository_path)`: Retrieves Git logs for a given repository.
-- `get_commit_contents(repository_path, commit_id)`: Retrieves contents of a specific commit in a Git repository.
-
-Command-Line Instructions:
-- To run this script, execute the following command:
-    python3 git_extracting.py
-
+This module retrieves Git logs and commit contents for specified repositories.
 """
 
 from pathlib import Path
@@ -16,12 +7,12 @@ from pathlib import Path
 import git
 
 
-def get_commit_logs(repository_path):
+def get_commit_logs(repository_path: str):
     """
     Retrieves Git logs for a given repository.
 
     Args:
-        repository_path (str or Path): The path to the Git repository.
+        repository_path (str): The path to the Git repository.
 
     Returns:
         dict: A dictionary mapping repository names to dictionaries of commit IDs and their details.
@@ -30,21 +21,20 @@ def get_commit_logs(repository_path):
     logs = {}
     repo = git.Repo(repository_path)
     for commit in repo.iter_commits():
-        if commit.hexsha not in logs:
-            logs[commit.hexsha] = {
-                "message": commit.message,
-                "timestamp": commit.authored_date,
-                "files": get_commit_contents(repository_path, commit.hexsha),
-            }
+        logs[commit.hexsha] = {
+            "message": commit.message,
+            "timestamp": commit.authored_date,
+            "files": get_commit_contents(repository_path, commit.hexsha),
+        }
     return logs
 
 
-def get_commit_contents(repository_path, commit_id):
+def get_commit_contents(repository_path: str, commit_id: str):
     """
     Retrieves contents of a specific commit in a Git repository.
 
     Args:
-        repository_path (str or Path): The path to the Git repository.
+        repository_path (str): The path to the Git repository.
         commit_id (str): The commit ID to retrieve contents from.
 
     Returns:
@@ -61,23 +51,11 @@ def get_commit_contents(repository_path, commit_id):
     return contents
 
 
-def main():
-    # Define the base path relative to the location of this script
-    base_path = Path(__file__).resolve().parent.parent.parent.parent
-
-    repositories = {
-        "high_entropy": base_path / "almanac/tests/data/almanack/entropy/high_entropy",
-        "low_entropy": base_path / "almanac/tests/data/almanack/entropy/low_entropy",
-    }
-
+def main(repositories):
     all_logs = {}
     for repo_name, repo_path in repositories.items():
         # Retrieve commit logs for each repository and store them in the dictionary
         all_logs[repo_name] = get_commit_logs(repo_path)
-
+    print(f"All logs: {all_logs}")
     return all_logs
 
-
-if __name__ == "__main__":
-    logs = main()
-    print(logs)
