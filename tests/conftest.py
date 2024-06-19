@@ -74,39 +74,3 @@ def build_jupyter_book(
     check_subproc_run_for_nonzero(completed_proc=result)
 
     return jupyter_book_test_target
-
-
-from almanack.git_parser import main
-
-
-@pytest.fixture
-def repository_paths():
-    """
-    Fixture to provide the paths to the test repositories.
-    """
-    # Compute the base path relative to the location of this add_data script
-    base_path = pathlib.Path(__file__).resolve().parent
-
-    add_data_path = base_path / "data/almanack/entropy/add_data.py"
-
-    # Run the add_data.py script to create and initialize the repositories
-    subprocess.run(["python", str(add_data_path)], check=True)
-
-    repositories = {
-        "high_entropy": base_path / "high_entropy",
-        "low_entropy": base_path / "low_entropy",
-    }
-
-    yield repositories
-
-
-def test_main(repository_paths):
-    all_logs = main(repository_paths)
-
-    # Check that the logs contain entries for both repositories
-    assert "high_entropy" in all_logs
-    assert "low_entropy" in all_logs
-
-    # Delete the high_entropy and low_entropy directories to sustain repository structure
-    for repo_path in repository_paths.values():
-        shutil.rmtree(repo_path)

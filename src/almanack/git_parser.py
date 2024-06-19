@@ -50,7 +50,7 @@ def get_commit_contents(repository_path: str, commit_id: str):
     return contents
 
 
-def main(repositories):
+def collect_all_commit_logs(repositories: str):
     all_logs = {}
     for repo_name, repo_path in repositories.items():
         # Retrieve commit logs for each repository and store them in the dictionary

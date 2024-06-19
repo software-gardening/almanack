@@ -16,6 +16,7 @@ exclude = ["src/book/_build"]
 python = ">=3.9,<=3.12"
 pyyaml = "^6.0.1"
 gitpython = "^3.1.43"
+coverage = "^7.5.3"
 
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
