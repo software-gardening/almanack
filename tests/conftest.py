@@ -6,7 +6,6 @@ see: https://docs.pytest.org/en/7.1.x/reference/fixtures.html
 import pathlib
 import shutil
 import subprocess
-
 import pytest
 
 
@@ -75,28 +74,36 @@ def build_jupyter_book(
 
     return jupyter_book_test_target
 
+from almanack.git_parser import main
 
 @pytest.fixture
 def repository_paths():
     """
     Fixture to provide the paths to the test repositories.
     """
-    # base_path = pathlib.Path(__file__).resolve().parent.parent.parent.parent
+    # Compute the base path relative to the location of this add_data script
+    base_path = pathlib.Path(__file__).resolve().parent
+
+    add_data_path = base_path / "data/almanack/entropy/add_data.py"
+
+    # Run the add_data.py script to create and initialize the repositories
+    subprocess.run(["python", str(add_data_path)], check=True)
 
     repositories = {
-        #  "high_entropy": base_path / "almanac/tests/data/almanack/entropy/high_entropy",
-        #  "low_entropy": base_path / "almanac/tests/data/almanack/entropy/low_entropy",
-        "high_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/high_entropy",
-        "low_entropy": "/home/willdavidson/Desktop/Almanack/almanac/tests/data/almanack/entropy/low_entropy",
+        "high_entropy": base_path / "high_entropy",
+        "low_entropy": base_path / "low_entropy",
     }
-    return repositories
 
-
-from almanack.git_extracting import main
+    yield repositories
 
 
 def test_main(repository_paths):
     all_logs = main(repository_paths)
+
+    # Check that the logs contain entries for both repositories
     assert "high_entropy" in all_logs
     assert "low_entropy" in all_logs
-    print(all_logs)
+
+    # Delete the high_entropy and low_entropy directories to sustain repository structure
+    for repo_path in repository_paths.values():
+        shutil.rmtree(repo_path)

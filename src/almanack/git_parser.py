@@ -55,5 +55,4 @@ def main(repositories):
     for repo_name, repo_path in repositories.items():
         # Retrieve commit logs for each repository and store them in the dictionary
         all_logs[repo_name] = get_commit_logs(repo_path)
-    print(f"All logs: {all_logs}")
     return all_logs
