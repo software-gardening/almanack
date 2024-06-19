@@ -6,6 +6,7 @@ see: https://docs.pytest.org/en/7.1.x/reference/fixtures.html
 import pathlib
 import shutil
 import subprocess
+
 import pytest
 
 
@@ -74,7 +75,9 @@ def build_jupyter_book(
 
     return jupyter_book_test_target
 
+
 from almanack.git_parser import main
+
 
 @pytest.fixture
 def repository_paths():
