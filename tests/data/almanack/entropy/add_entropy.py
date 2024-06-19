@@ -5,7 +5,9 @@ Functions:
 - `add_entropy_to_file(file_path, lines_of_code)`: Writes the specified lines to the given file.
 - `add_entropy()`: Applies `add_entropy_to_file` to each entry in `entropy_levels`.
 """
+
 import pathlib
+
 
 def add_entropy_to_file(file_path: str, lines_of_code: str):
     """
@@ -79,9 +81,12 @@ low_entropy_code = """
         - Item 5
     """
 entropy_levels = {
-    pathlib.Path(__file__).resolve().parent / "high_entropy/high_entropy.md": high_entropy_code,
-    pathlib.Path(__file__).resolve().parent / "low_entropy/low_entropy.md": low_entropy_code,
+    pathlib.Path(__file__).resolve().parent
+    / "high_entropy/high_entropy.md": high_entropy_code,
+    pathlib.Path(__file__).resolve().parent
+    / "low_entropy/low_entropy.md": low_entropy_code,
 }
+
 
 def add_entropy_to_file(file_path: str, lines_of_code: str):
     """
@@ -93,6 +98,7 @@ def add_entropy_to_file(file_path: str, lines_of_code: str):
     """
     with open(file_path, "w") as f:
         f.write(lines_of_code.strip())  # Ensure no extra newlines are added
+
 
 def add_entropy():
     # Add entropy to each file

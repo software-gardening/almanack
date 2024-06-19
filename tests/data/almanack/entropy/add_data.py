@@ -1,6 +1,9 @@
 import pathlib
+
 import git
-from .add_entropy import add_entropy  
+
+from .add_entropy import add_entropy
+
 
 def commit_changes(directory: str, message: str):
     """
@@ -13,6 +16,7 @@ def commit_changes(directory: str, message: str):
     repo = git.Repo(directory)
     repo.git.add(".")
     repo.index.commit(message)
+
 
 def setup_repositories():
     """
@@ -49,5 +53,5 @@ def setup_repositories():
         repo_path = base_path / dir_name
         commit_changes(repo_path, "Commit with added entropy")
 
-setup_repositories
 
+setup_repositories
