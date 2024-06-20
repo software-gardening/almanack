@@ -11,36 +11,38 @@ from almanack.git_parser import (
 
 def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]):
     """
-    Test the get_commit_logs function to ensure it retrieves commit logs.
+    Test get_commit_logs function.
     """
-    for repo_name, repo_path in repository_paths.items():
+    for repo_path in repository_paths.values():
         commit_logs = get_commit_logs(str(repo_path))
-        assert isinstance(commit_logs, dict), f"{repo_name} logs should be a dictionary"
-        assert len(commit_logs) > 0, f"{repo_name} logs should not be empty"
+        # Ensure the result is a dictionary
+        assert isinstance(commit_logs, dict)
+        # Ensure the dictionary is not empty
+        assert commit_logs
 
 
 def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]):
     """
-    Test the get_commit_contents function to ensure it retrieves commit contents.
+    Test get_commit_contents function.
     """
-    for repo_name, repo_path in repository_paths.items():
+    for repo_path in repository_paths.values():
         repo = git.Repo(repo_path)
+        # Get the latest commit from the repository
         commit = next(repo.iter_commits(), None)
-        if commit:
-            commit_contents = get_commit_contents(str(repo_path), commit.hexsha)
-            assert isinstance(
-                commit_contents, dict
-            ), f"{repo_name} commit contents should be a dictionary"
+        # Ensure there is at least one commit in the repository
+        assert commit
+        commit_contents = get_commit_contents(str(repo_path), commit.hexsha)
+        # Ensure the result is a dictionary
+        assert isinstance(commit_contents, dict)
 
 
-def test_collect_all_commit_logs(repository_paths: str):
+def test_collect_all_commit_logs(repository_paths: dict[str, pathlib.Path]):
     """
-    Test the collect_all_commit_logs function to ensure it gathers commit logs
-    from both the high_entropy and low_entropy repositories.
+    Test collect_all_commit_logs function.
     """
     all_logs = collect_all_commit_logs(repository_paths)
-    for repo_name in repository_paths.keys():
-        assert (
-            repo_name in all_logs
-        )  # check that the repo names exist as a key in all_logs
-        assert len(all_logs[repo_name]) > 0  # Checking if logs are empty
+    for repo_name in repository_paths:
+        # Ensure that logs were collected for each repository
+        assert repo_name in all_logs
+        # Ensure that the logs for each repository are not empty
+        assert all_logs[repo_name]

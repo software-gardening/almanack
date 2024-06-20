@@ -50,6 +50,21 @@ def get_commit_contents(repository_path: str, commit_id: str):
 
 
 def collect_all_commit_logs(repositories: str):
+    """
+    Gather commit logs for each repository in the given collection.
+
+    Args:
+        repository_path (str): The path to the Git repository.
+
+    Returns:
+        dict: A dictionary mapping repository names to their commit logs.
+              Example: {
+                'repository_name': {
+                    'commit_id': {
+                        'message': 'Commit message',
+                        'timestamp': 1234567890,
+                        'files': {'filename': 'file_content'}}}}
+    """
     all_logs = {}
     for repo_name, repo_path in repositories.items():
         # Retrieve commit logs for each repository and store them in the dictionary
