@@ -18,8 +18,7 @@ def add_entropy_to_file(file_path: str, lines_of_code: str):
         lines_of_code (str): List of lines of code to add.
     """
     with open(file_path, "w") as f:
-        for i in lines_of_code:
-            f.write(i)
+        f.write(lines_of_code)
 
 
 # Define the lines of code for each file
@@ -88,19 +87,7 @@ entropy_levels = {
 }
 
 
-def add_entropy_to_file(file_path: str, lines_of_code: str):
-    """
-    Adds lines of code to the specified file.
-
-    Args:
-        file_path (str): Path to the .md file.
-        lines_of_code (str): List of lines of code to add.
-    """
-    with open(file_path, "w") as f:
-        f.write(lines_of_code.strip())  # Ensure no extra newlines are added
-
-
 def add_entropy():
     # Add entropy to each file
     for file_path, lines_of_code in entropy_levels.items():
-        add_entropy_to_file(str(file_path), lines_of_code)
+        add_entropy_to_file(file_path, lines_of_code)

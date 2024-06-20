@@ -46,7 +46,6 @@ def get_commit_contents(repository_path: str, commit_id: str):
 
     for file_path in commit.tree.traverse():
         contents[file_path.path] = file_path.data_stream.read().decode("utf-8")
-
     return contents
 
 

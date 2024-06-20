@@ -74,3 +74,30 @@ def build_jupyter_book(
     check_subproc_run_for_nonzero(completed_proc=result)
 
     return jupyter_book_test_target
+
+
+from data.almanack.entropy.add_data import add_data
+
+
+@pytest.fixture(scope="session")
+def repository_paths():
+    """
+    Fixture to call add_Data.py, create the repositores, then delete them
+    """
+    # Compute the base path relative to this location
+    base_path = (
+        pathlib.Path(__file__).resolve().parent / "../tests/data/almanack/entropy"
+    )
+
+    # Run add_data.py to set up the repositories
+    add_data()
+
+    repositories = {
+        "high_entropy": base_path / "high_entropy",
+        "low_entropy": base_path / "low_entropy",
+    }
+
+    yield repositories
+    # Delete the high_entropy and low_entropy directories to sustain repository structure
+    shutil.rmtree(base_path / "high_entropy", ignore_errors=True)
+    shutil.rmtree(base_path / "low_entropy", ignore_errors=True)
