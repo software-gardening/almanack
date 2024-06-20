@@ -1,3 +1,7 @@
+"""
+Testing git_parser functionality for retrieving and collecting Git commit logs and contents.
+"""
+
 import pathlib
 
 import git

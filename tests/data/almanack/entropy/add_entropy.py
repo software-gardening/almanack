@@ -1,9 +1,5 @@
 """
-This script introduces entropy to Markdown files by adding predefined lines of code.
-
-Functions:
-- `add_entropy_to_file(file_path, lines_of_code)`: Writes the specified lines to the given file.
-- `add_entropy()`: Applies `add_entropy_to_file` to each entry in `entropy_levels`.
+This script introduces entropy to the test Markdown files by adding predefined lines of code.
 """
 
 import pathlib

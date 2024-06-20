@@ -1,3 +1,7 @@
+"""
+Sets up Git repositories with baseline content, adds entropy, and commits changes.
+"""
+
 import pathlib
 
 import git
