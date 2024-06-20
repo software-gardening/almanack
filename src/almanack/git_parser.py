@@ -13,7 +13,7 @@ def get_commit_logs(repository_path: str):
         repository_path (str): The path to the Git repository.
 
     Returns:
-        dict: A dictionary mapping repository names to dictionaries of commit IDs and their details.
+        dict: A dictionary mapping repository names to dictionaries of commit IDs
               Example: {'repository_name': {'commit_id': {'message': 'Commit message', 'timestamp': 1234567890}}}
     """
     logs = {}
@@ -58,12 +58,7 @@ def collect_all_commit_logs(repositories: str):
 
     Returns:
         dict: A dictionary mapping repository names to their commit logs.
-              Example: {
-                'repository_name': {
-                    'commit_id': {
-                        'message': 'Commit message',
-                        'timestamp': 1234567890,
-                        'files': {'filename': 'file_content'}}}}
+            Example: {'repository_name': {'commit_id': {'message': 'Commit message', 'timestamp': 1234567890}}}
     """
     all_logs = {}
     for repo_name, repo_path in repositories.items():
