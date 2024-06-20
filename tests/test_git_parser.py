@@ -1,4 +1,5 @@
 import pathlib
+
 import git
 
 from almanack.git_parser import (
