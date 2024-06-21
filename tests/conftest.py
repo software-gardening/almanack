@@ -74,3 +74,26 @@ def build_jupyter_book(
     check_subproc_run_for_nonzero(completed_proc=result)
 
     return jupyter_book_test_target
+
+
+from data.almanack.entropy.add_data import create_repositories
+
+
+@pytest.fixture(scope="session")
+def repository_paths(tmp_path_factory):
+    """
+    Fixture to call create_repositories, create the repositories, then delete them
+    using the tmp_path_factory fixture to provide a temporary directory for tests.
+    """
+    # Create a base temporary directory
+    base_path = tmp_path_factory.mktemp("almanack_entropy")
+
+    # Run create_repositories with the base_path argument
+    create_repositories(base_path)
+
+    repositories = {
+        "high_entropy": base_path / "high_entropy",
+        "low_entropy": base_path / "low_entropy",
+    }
+
+    yield repositories
