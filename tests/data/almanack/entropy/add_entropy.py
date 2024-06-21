@@ -3,7 +3,6 @@ This script introduces entropy to the test Markdown files by adding predefined l
 """
 
 
-
 def add_entropy_to_file(file_path: str, lines_of_code: str):
     """
     Adds lines of code to the specified file.
