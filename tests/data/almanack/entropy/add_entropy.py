@@ -2,7 +2,6 @@
 This script introduces entropy to the test Markdown files by adding predefined lines of code.
 """
 
-import pathlib
 
 
 def add_entropy_to_file(file_path: str, lines_of_code: str):
@@ -75,15 +74,13 @@ low_entropy_code = """
         - Item 4
         - Item 5
     """
-entropy_levels = {
-    pathlib.Path(__file__).resolve().parent
-    / "high_entropy/high_entropy.md": high_entropy_code,
-    pathlib.Path(__file__).resolve().parent
-    / "low_entropy/low_entropy.md": low_entropy_code,
-}
 
 
-def add_entropy():
+def add_entropy(base_path):
+    entropy_levels = {
+        base_path / "high_entropy/high_entropy.md": high_entropy_code,
+        base_path / "low_entropy/low_entropy.md": low_entropy_code,
+    }
     # Add entropy to each file
     for file_path, lines_of_code in entropy_levels.items():
         add_entropy_to_file(file_path, lines_of_code)

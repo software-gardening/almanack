@@ -22,12 +22,10 @@ def commit_changes(directory: str, message: str):
     repo.index.commit(message)
 
 
-def add_data():
+def create_repositories(base_path: str):
     """
     Sets up Git repositories with baseline content and adds entropy.
     """
-    # Compute the base path
-    base_path = pathlib.Path(__file__).resolve().parent
 
     # Create directories for high_entropy and low_entropy
     for dir_name in ["high_entropy", "low_entropy"]:
@@ -46,13 +44,10 @@ def add_data():
         # Commit baseline content
         commit_changes(repo_path, "Initial commit with baseline content")
 
-    # Run the add_entropy.py script
-    add_entropy()
+    # Run the add_entropy.py scriptwhat
+    add_entropy(base_path)
 
     # Commit changes after adding entropy
     for dir_name in ["high_entropy", "low_entropy"]:
         repo_path = base_path / dir_name
         commit_changes(repo_path, "Commit with added entropy")
-
-
-add_data()

@@ -50,3 +50,4 @@ def test_collect_all_commit_logs(repository_paths: dict[str, pathlib.Path]):
         assert repo_name in all_logs
         # Ensure that the logs for each repository are not empty
         assert all_logs[repo_name]
+    print(all_logs)

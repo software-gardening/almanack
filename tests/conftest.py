@@ -76,21 +76,20 @@ def build_jupyter_book(
     return jupyter_book_test_target
 
 
-from data.almanack.entropy.add_data import add_data
+from data.almanack.entropy.add_data import create_repositories
 
 
 @pytest.fixture(scope="session")
-def repository_paths():
+def repository_paths(tmp_path_factory):
     """
-    Fixture to call add_Data.py, create the repositores, then delete them
+    Fixture to call create_repositories, create the repositories, then delete them
+    using the tmp_path_factory fixture to provide a temporary directory for tests.
     """
-    # Compute the base path relative to this location
-    base_path = (
-        pathlib.Path(__file__).resolve().parent / "../tests/data/almanack/entropy"
-    )
+    # Create a base temporary directory
+    base_path = tmp_path_factory.mktemp("almanack_entropy")
 
-    # Run add_data.py to set up the repositories
-    add_data()
+    # Run create_repositories with the base_path argument
+    create_repositories(base_path)
 
     repositories = {
         "high_entropy": base_path / "high_entropy",
@@ -98,6 +97,3 @@ def repository_paths():
     }
 
     yield repositories
-    # Delete the high_entropy and low_entropy directories to sustain repository structure
-    shutil.rmtree(base_path / "high_entropy", ignore_errors=True)
-    shutil.rmtree(base_path / "low_entropy", ignore_errors=True)
