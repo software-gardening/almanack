@@ -75,7 +75,7 @@ low_entropy_code = """
     """
 
 
-def add_entropy(base_path):
+def insert_entropy(base_path):
     entropy_levels = {
         base_path / "high_entropy/high_entropy.md": high_entropy_code,
         base_path / "low_entropy/low_entropy.md": low_entropy_code,
