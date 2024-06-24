@@ -13,6 +13,7 @@ def calculate_loc_changes(repo_path: str):
     total_lines_changed = 0
 
     for commit in repo.iter_commits():
+        # Retreive commit statistics 
         diff_stat = commit.stats.total
         lines_added = diff_stat["insertions"]
         lines_removed = diff_stat["deletions"]
