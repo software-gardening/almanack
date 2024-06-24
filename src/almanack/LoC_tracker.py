@@ -7,7 +7,14 @@ import git
 
 
 def calculate_loc_changes(repo_path: str):
+    """
+    Finds the total number of code lines changed
 
+    Args:
+        repo_path(str): The path to the git repository
+    Returns:
+        int: Total number of lines added or removed
+    """
     repo = git.Repo(repo_path)
 
     total_lines_changed = 0
@@ -15,7 +22,5 @@ def calculate_loc_changes(repo_path: str):
     for commit in repo.iter_commits():
         # Retrieve commit statistics
         diff_stat = commit.stats.total
-        lines_added = diff_stat["insertions"]
-        lines_removed = diff_stat["deletions"]
-        total_lines_changed += lines_added + lines_removed
+        total_lines_changed += diff_stat["insertions"] + diff_stat["deletions"]
     return total_lines_changed
