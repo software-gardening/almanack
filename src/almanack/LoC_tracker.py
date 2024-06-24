@@ -22,5 +22,5 @@ def calculate_loc_changes(repo_path: str):
     for commit in repo.iter_commits():
         # Retrieve commit statistics
         diff_stat = commit.stats.total
-        total_lines_changed += diff_stat["insertions"] + diff_stat["deletions"]
+        total_lines_changed += diff_stat["lines"]
     return total_lines_changed
