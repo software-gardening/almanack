@@ -4,7 +4,6 @@ Testing LoC_tracker functionality for calculating total lines changed in a given
 
 import pathlib
 
-
 from almanack.LoC_tracker import calculate_loc_changes
 
 
