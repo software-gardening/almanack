@@ -13,7 +13,7 @@ from almanack.git_parser import (
 )
 
 
-def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]):
+def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test get_commit_logs function.
     """
@@ -25,7 +25,7 @@ def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]):
         assert commit_logs
 
 
-def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]):
+def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test get_commit_contents function.
     """
@@ -40,7 +40,7 @@ def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]):
         assert isinstance(commit_contents, dict)
 
 
-def test_collect_all_commit_logs(repository_paths: dict[str, pathlib.Path]):
+def test_collect_all_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test collect_all_commit_logs function.
     """

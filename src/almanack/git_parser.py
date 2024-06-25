@@ -2,10 +2,12 @@
 This module retrieves Git logs and commit contents for specified repositories.
 """
 
+import pathlib
+
 import git
 
 
-def get_commit_logs(repository_path: str):
+def get_commit_logs(repository_path: pathlib.Path) -> dict[str, dict]:
     """
     Retrieves Git logs for a given repository.
 
@@ -21,13 +23,16 @@ def get_commit_logs(repository_path: str):
     for commit in repo.iter_commits():
         logs[commit.hexsha] = {
             "message": commit.message,
+            "stats": {"total": {"lines": commit.stats.total["lines"]}},
             "timestamp": commit.authored_date,
             "files": get_commit_contents(repository_path, commit.hexsha),
         }
     return logs
 
 
-def get_commit_contents(repository_path: str, commit_id: str):
+def get_commit_contents(
+    repository_path: pathlib.Path, commit_id: pathlib.Path
+) -> dict[str, str]:
     """
     Retrieves contents of a specific commit in a Git repository.
 
@@ -49,7 +54,7 @@ def get_commit_contents(repository_path: str, commit_id: str):
     return contents
 
 
-def collect_all_commit_logs(repositories: str):
+def collect_all_commit_logs(repositories: pathlib.Path) -> dict[str, dict]:
     """
     Gather commit logs for each repository in the given collection.
 

@@ -7,7 +7,7 @@ import pathlib
 from almanack.LoC_tracker import calculate_loc_changes
 
 
-def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]):
+def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> None:
     # repository_paths.items() returns a dictionary
     for _, repo_path in repository_paths.items():
         # Check that the changes are non-negative for each repository

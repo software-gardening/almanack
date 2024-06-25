@@ -3,10 +3,12 @@ This module calculates the absolute value of lines of code (LoC) changed (added 
 in the given Git repository.
 """
 
-import git
+import pathlib
+
+from .git_parser import get_commit_logs
 
 
-def calculate_loc_changes(repo_path: str):
+def calculate_loc_changes(repo_path: pathlib.Path) -> int:
     """
     Finds the total number of code lines changed
 
@@ -15,12 +17,12 @@ def calculate_loc_changes(repo_path: str):
     Returns:
         int: Total number of lines added or removed
     """
-    repo = git.Repo(repo_path)
+    # Extract commits logs using a function from the git_parser module
+    commit_logs = get_commit_logs(repo_path)
 
-    total_lines_changed = 0
+    # Calculate total lines changed, for each repo, using attributes from `get_commit_logs``
+    total_lines_changed = sum(
+        commit_info["stats"]["total"]["lines"] for commit_info in commit_logs.values()
+    )
 
-    for commit in repo.iter_commits():
-        # Retrieve commit statistics
-        diff_stat = commit.stats.total
-        total_lines_changed += diff_stat["lines"]
     return total_lines_changed
