@@ -4,7 +4,7 @@ Testing LoC_tracker functionality for calculating total lines changed in a given
 
 import pathlib
 
-from almanack.repository_changes import calculate_loc_changes
+from almanack.repo_change_tracker import calculate_loc_changes
 
 
 def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> None:
