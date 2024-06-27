@@ -34,16 +34,3 @@ def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]) -> None:
         commit_contents = get_commit_contents(str(repo_path), commit.hexsha)
         # Ensure the result is a dictionary
         assert isinstance(commit_contents, dict)
-
-
-# def test_collect_all_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
-#     """
-#     Test collect_all_commit_logs function.
-#     """
-#     all_logs = collect_all_commit_logs(repository_paths)
-#     for repo_name in repository_paths:
-#         # Ensure that logs were collected for each repository
-#         assert repo_name in all_logs
-#         # Ensure that the logs for each repository are not empty
-#         assert all_logs[repo_name]
-#     # print(all_logs)

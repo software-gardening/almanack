@@ -52,21 +52,3 @@ def get_commit_contents(
     for file_path in commit.tree.traverse():
         contents[file_path.path] = file_path.data_stream.read().decode("utf-8")
     return contents
-
-
-# def collect_all_commit_logs(repositories: pathlib.Path) -> dict[str, dict]:
-#     """
-#     Gather commit logs for each repository in the given collection.
-
-#     Args:
-#         repository_path (str): The path to the Git repository.
-
-#     Returns:
-#         dict: A dictionary mapping repository names to their commit logs.
-#             Example: {'repository_name': {'commit_id': {'message': 'Commit message', 'timestamp': 1234567890}}}
-#     """
-#     all_logs = {}
-#     for repo_name, repo_path in repositories.items():
-#         # Retrieve commit logs for each repository and store them in the dictionary
-#         all_logs[repo_name] = get_commit_logs(repo_path)
-#     return all_logs
