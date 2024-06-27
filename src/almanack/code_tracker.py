@@ -30,7 +30,8 @@ def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> 
     # Calculate total lines changed between the source and target commits
     total_lines_changed = (
         source_commit_info["stats"]["total"]["lines"]
-        + target_commit_info["stats"]["total"]["lines"]
+        - target_commit_info["stats"]["total"]["lines"]
     )
+    print(total_lines_changed)
 
     return total_lines_changed
