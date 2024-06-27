@@ -32,7 +32,7 @@ def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
 
 def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> None:
     """
-    Test the calculate_loc_chanegs fucntion  
+    Test the calculate_loc_changes function
     """
     for _, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
