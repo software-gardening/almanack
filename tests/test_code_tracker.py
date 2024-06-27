@@ -7,6 +7,7 @@ import pathlib
 from almanack.code_tracker import calculate_loc_changes
 from almanack.git_parser import get_commit_logs
 
+
 def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     """
     Determine the two most recent commit hashes in the test repositories.
@@ -20,13 +21,14 @@ def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     commit_logs = get_commit_logs(repo_path)
 
     # Sort commits by their timestamp to get the two most recent ones
-    sorted_commits = sorted(commit_logs.items(), key=lambda item: item[1]['timestamp'])
+    sorted_commits = sorted(commit_logs.items(), key=lambda item: item[1]["timestamp"])
 
     # Get the commit hashes of the two most recent commits
     source_commit = sorted_commits[-2][0]
     target_commit = sorted_commits[-1][0]
 
     return source_commit, target_commit
+
 
 def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> None:
     for _, repo_path in repository_paths.items():

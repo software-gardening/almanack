@@ -7,6 +7,7 @@ import pathlib
 
 from .git_parser import get_commit_logs
 
+
 def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> int:
     """
     Finds the total number of code lines changed between two commits.
