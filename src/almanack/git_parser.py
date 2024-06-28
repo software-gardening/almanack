@@ -1,5 +1,7 @@
 """
-This module retrieves Git logs and commit contents for specified repositories.
+This module retrieves Git logs and commit contents for specified repositories,
+and calculates the absolute value of lines of code (LoC) changes (added or removed)
+between the source and target commit hash.
 """
 
 import pathlib
@@ -52,3 +54,30 @@ def get_commit_contents(
     for file_path in commit.tree.traverse():
         contents[file_path.path] = file_path.data_stream.read().decode("utf-8")
     return contents
+
+"""
+This module calculates the absolute value of lines of code (LoC) changed (added or removed)
+between the source and target commit hash.
+"""
+
+def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> int:
+    """
+    Finds the total number of code lines changed between the source and target commits.
+
+    Args:
+        repo_path (pathlib.Path): The path to the git repository.
+        source (str): The source commit hash.
+        target (str): The target commit hash.
+    Returns:
+        int: The absolute value of lines of code changed (added or removed) between the two commits.
+    """
+    # commit_logs = get_commit_logs(repo_path)
+
+    # # Calculate total lines changed between the source and target commits
+    # return commit_logs[source]["stats"]["total"]["lines"]- commit_logs[target]["stats"]["total"]["lines"]
+    repo = git.Repo(repo_path)
+    diff = repo.git.diff(source, target, '--numstat')
+    # 0 = lines addedd, 1 = lines removed, 2 = filename
+    # diff splits into a list of lines, where each lines represents chanegs for a specific file
+    return {line.split()[2]: abs(int(line.split()[1]) + abs(int(line.split()[0]))) for line in diff.splitlines()}
+
