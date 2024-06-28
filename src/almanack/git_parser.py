@@ -66,6 +66,7 @@ def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> 
         target (str): The target commit hash.
     Returns:
         dict: A dictionaery where the key is the filename, and the value is the lines changed (added and removed)
+            Example: {'filename': 'change_value'}
     """
     repo = git.Repo(repo_path)
     # diff(--numstat) provides the number of addded and removed lines for each file
