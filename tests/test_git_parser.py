@@ -1,5 +1,5 @@
 """
-Testing git_parser functionality for retrieving and collecting Git commit logs and contents.
+Testing git_parser functionality
 """
 
 import pathlib
@@ -7,13 +7,13 @@ import pathlib
 import git
 
 from almanack.git_parser import (
-    collect_all_commit_logs,
+    calculate_loc_changes,
     get_commit_contents,
     get_commit_logs,
 )
 
 
-def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]):
+def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test get_commit_logs function.
     """
@@ -25,7 +25,7 @@ def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]):
         assert commit_logs
 
 
-def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]):
+def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test get_commit_contents function.
     """
@@ -40,14 +40,39 @@ def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]):
         assert isinstance(commit_contents, dict)
 
 
-def test_collect_all_commit_logs(repository_paths: dict[str, pathlib.Path]):
+def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     """
-    Test collect_all_commit_logs function.
+    Retrieves the two most recent commit hashes in the test repositories
+
+    Args:
+        repo_path (pathlib.Path): The path to the git repository.
+
+    Returns:
+        tuple[str, str]: Tuple containing the source and target commit hashes.
     """
-    all_logs = collect_all_commit_logs(repository_paths)
-    for repo_name in repository_paths:
-        # Ensure that logs were collected for each repository
-        assert repo_name in all_logs
-        # Ensure that the logs for each repository are not empty
-        assert all_logs[repo_name]
-    print(all_logs)
+    commit_logs = get_commit_logs(repo_path)
+
+    # Sort commits by their timestamp to get the two most recent ones
+    sorted_commits = sorted(commit_logs.items(), key=lambda item: item[1]["timestamp"])
+
+    # Get the commit hashes of the two most recent commits
+    source_commit = sorted_commits[-2][0]
+    target_commit = sorted_commits[-1][0]
+
+    return source_commit, target_commit
+
+
+def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> None:
+    """
+    Test the calculate_loc_changes function.
+    """
+    for _, repo_path in repository_paths.items():
+        source_commit, target_commit = get_most_recent_commits(repo_path)
+
+        loc_changes = calculate_loc_changes(repo_path, source_commit, target_commit)
+
+        # Ensure the dictionary is not empty
+        assert loc_changes
+
+        # Ensure the total lines changed is greater than zero
+        assert sum(loc_changes.values()) > 0

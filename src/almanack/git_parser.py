@@ -1,11 +1,13 @@
 """
-This module retrieves Git logs and commit contents for specified repositories.
+This module parses Git logs and utilizes commit data to analyze changes
 """
+
+import pathlib
 
 import git
 
 
-def get_commit_logs(repository_path: str):
+def get_commit_logs(repository_path: pathlib.Path) -> dict[str, dict]:
     """
     Retrieves Git logs for a given repository.
 
@@ -21,13 +23,16 @@ def get_commit_logs(repository_path: str):
     for commit in repo.iter_commits():
         logs[commit.hexsha] = {
             "message": commit.message,
+            "stats": {"total": {"lines": commit.stats.total["lines"]}},
             "timestamp": commit.authored_date,
             "files": get_commit_contents(repository_path, commit.hexsha),
         }
     return logs
 
 
-def get_commit_contents(repository_path: str, commit_id: str):
+def get_commit_contents(
+    repository_path: pathlib.Path, commit_id: pathlib.Path
+) -> dict[str, str]:
     """
     Retrieves contents of a specific commit in a Git repository.
 
@@ -49,19 +54,22 @@ def get_commit_contents(repository_path: str, commit_id: str):
     return contents
 
 
-def collect_all_commit_logs(repositories: str):
+def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> int:
     """
-    Gather commit logs for each repository in the given collection.
+    Finds the total number of code lines changed between the source or target commits.
 
     Args:
-        repository_path (str): The path to the Git repository.
-
+        repo_path (pathlib.Path): The path to the git repository.
+        source (str): The source commit hash.
+        target (str): The target commit hash.
     Returns:
-        dict: A dictionary mapping repository names to their commit logs.
-            Example: {'repository_name': {'commit_id': {'message': 'Commit message', 'timestamp': 1234567890}}}
+        dict: A dictionary where the key is the filename, and the value is the lines changed (added and removed)
+            Example: {'filename': 'change_value'}
     """
-    all_logs = {}
-    for repo_name, repo_path in repositories.items():
-        # Retrieve commit logs for each repository and store them in the dictionary
-        all_logs[repo_name] = get_commit_logs(repo_path)
-    return all_logs
+    repo = git.Repo(repo_path)
+    # diff(--numstat) provides the number of added and removed lines for each file
+    diff = repo.git.diff(source, target, "--numstat")
+    return {
+        filename: abs(int(removed) + int(added))  # Calculate change
+        for added, removed, filename in (line.split() for line in diff.splitlines())
+    }
