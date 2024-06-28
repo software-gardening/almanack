@@ -69,9 +69,9 @@ def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> 
             Example: {'filename': 'change_value'}
     """
     repo = git.Repo(repo_path)
-    # diff(--numstat) provides the number of addded and removed lines for each file
-    diff = repo.git.diff(source, target, "--numstat") 
+    # diff(--numstat) provides the number of added and removed lines for each file
+    diff = repo.git.diff(source, target, "--numstat")
     return {
-        filename: abs(int(removed) + int(added)) # Calculate change
+        filename: abs(int(removed) + int(added))  # Calculate change
         for added, removed, filename in (line.split() for line in diff.splitlines())
     }
