@@ -68,5 +68,12 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
     """
     for _, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
-        # Calculate lines of code changes between source and target commits
-        assert (calculate_loc_changes(repo_path, source_commit, target_commit)) > 0
+        
+        loc_changes = calculate_loc_changes(repo_path, source_commit, target_commit)
+        
+        # Ensure the dictionary is not empty
+        assert loc_changes
+        
+        # Ensure the total lines changed is greater than zero
+        assert sum(loc_changes.values()) > 0
+
