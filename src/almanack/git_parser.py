@@ -55,29 +55,21 @@ def get_commit_contents(
         contents[file_path.path] = file_path.data_stream.read().decode("utf-8")
     return contents
 
-"""
-This module calculates the absolute value of lines of code (LoC) changed (added or removed)
-between the source and target commit hash.
-"""
 
 def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> int:
     """
-    Finds the total number of code lines changed between the source and target commits.
+    Finds the total number of code lines changed between the source or target commits.
 
     Args:
         repo_path (pathlib.Path): The path to the git repository.
         source (str): The source commit hash.
         target (str): The target commit hash.
     Returns:
-        int: The absolute value of lines of code changed (added or removed) between the two commits.
+        Dict: A dictionaery where the key is the filename, and the value is the lines changed (added and removed)
     """
-    # commit_logs = get_commit_logs(repo_path)
-
-    # # Calculate total lines changed between the source and target commits
-    # return commit_logs[source]["stats"]["total"]["lines"]- commit_logs[target]["stats"]["total"]["lines"]
     repo = git.Repo(repo_path)
-    diff = repo.git.diff(source, target, '--numstat')
-    # 0 = lines addedd, 1 = lines removed, 2 = filename
-    # diff splits into a list of lines, where each lines represents chanegs for a specific file
-    return {line.split()[2]: abs(int(line.split()[1]) + abs(int(line.split()[0]))) for line in diff.splitlines()}
-
+    diff = repo.git.diff(source, target, "--numstat")
+    return {
+        filename: abs(int(removed) + int(added))
+        for added, removed, filename in (line.split() for line in diff.splitlines())
+    }

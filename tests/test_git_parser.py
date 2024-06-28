@@ -1,12 +1,16 @@
 """
-Testing git_parser functionality for retrieving and collecting Git commit logs and contents.
+Testing git_parser functionality
 """
 
 import pathlib
 
 import git
 
-from almanack.git_parser import get_commit_contents, get_commit_logs
+from almanack.git_parser import (
+    calculate_loc_changes,
+    get_commit_contents,
+    get_commit_logs,
+)
 
 
 def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
@@ -36,19 +40,9 @@ def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]) -> None:
         assert isinstance(commit_contents, dict)
 
 
-"""
-Testing LoC_tracker functionality for calculating total lines changed in a given repository.
-"""
-
-import pathlib
-
-
-from almanack.git_parser import get_commit_logs, calculate_loc_changes
-
-
 def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     """
-    Determine the two most recent commit hashes in the test repositories.
+    Retrieves the two most recent commit hashes in the test repositories
 
     Args:
         repo_path (pathlib.Path): The path to the git repository.
@@ -75,5 +69,4 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
     for _, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
         # Calculate lines of code changes between source and target commits
-        print(calculate_loc_changes(repo_path, source_commit, target_commit))
-
+        assert (calculate_loc_changes(repo_path, source_commit, target_commit)) > 0
