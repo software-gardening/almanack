@@ -1,7 +1,5 @@
 """
-This module retrieves Git logs and commit contents for specified repositories,
-and calculates the absolute value of lines of code (LoC) changes (added or removed)
-between the source and target commit hash.
+This module parses Git logs and utilizes commit data to analyze changes
 """
 
 import pathlib
