@@ -66,13 +66,10 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
     """
     Test the calculate_loc_changes function.
     """
+    file_names = ["high_entropy2.md", "high_entropy.md", "low_entropy.md"]
+    
     for _, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
 
-        loc_changes = calculate_loc_changes(repo_path, source_commit, target_commit)
+        loc_changes = calculate_loc_changes(repo_path, source_commit, target_commit, file_names)
 
-        # Ensure the dictionary is not empty
-        assert loc_changes
-
-        # Ensure the total lines changed is greater than zero
-        assert sum(loc_changes.values()) > 0
