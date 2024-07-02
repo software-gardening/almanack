@@ -40,8 +40,8 @@ def create_repositories(base_path: pathlib.Path) -> None:
     # Create and initialize directories for high_entropy and low_entropy
     for dir_name in ["high_entropy", "low_entropy"]:
         repo_path = base_path / dir_name
-        repo_path.mkdir(parents=True, exist_ok=True)  
-        git.Repo.init(repo_path)  
+        repo_path.mkdir(parents=True, exist_ok=True)
+        git.Repo.init(repo_path)
 
         # Create a markdown file with baseline content
         with open(repo_path / f"{dir_name}.md", "w") as f:
@@ -50,11 +50,11 @@ def create_repositories(base_path: pathlib.Path) -> None:
             # Add a second file in the high_entropy repository and commit baseline content
         with open(base_path / "high_entropy/high_entropy2.md", "w") as f:
             f.write("Baseline content")
-            
+
         # Commit the initial baseline content
         commit_changes(repo_path, "Initial commit with baseline content")
 
-    # Run the add_entropy.py module 
+    # Run the add_entropy.py module
     insert_entropy(base_path)
 
     # Commit changes after adding entropy

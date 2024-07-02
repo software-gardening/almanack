@@ -54,27 +54,9 @@ def get_commit_contents(
     return contents
 
 
-# def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str) -> int:
-#     """
-#     Finds the total number of code lines changed between the source or target commits.
-
-#     Args:
-#         repo_path (pathlib.Path): The path to the git repository.
-#         source (str): The source commit hash.
-#         target (str): The target commit hash.
-#     Returns:
-#         dict: A dictionary where the key is the filename, and the value is the lines changed (added and removed)
-#             Example: {'filename': 'change_value'}
-#     """
-#     repo = git.Repo(repo_path)
-#     # diff(--numstat) provides the number of added and removed lines for each file
-#     diff = repo.git.diff(source, target, "--numstat")
-#     return {
-#         filename: abs(int(removed) + int(added))  # Calculate change
-#         for added, removed, filename in (line.split() for line in diff.splitlines())
-#     }
-
-def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str, file_names: list[str]) -> dict[str, int]:
+def calculate_loc_changes(
+    repo_path: pathlib.Path, source: str, target: str, file_names: list[str]
+) -> dict[str, int]:
     """
     Finds the total number of code lines changed for each specified file between two commits.
 
@@ -92,7 +74,9 @@ def calculate_loc_changes(repo_path: pathlib.Path, source: str, target: str, fil
 
     for file_name in file_names:
         diff_output = repo.git.diff(source, target, "--numstat", "--", file_name)
-        lines_changed = sum(abs(int(removed) + int(added)) for added, removed, _ in (line.split() for line in diff_output.splitlines()))
+        lines_changed = sum(
+            abs(int(removed) + int(added))
+            for added, removed, _ in (line.split() for line in diff_output.splitlines())
+        )
         changes[file_name] = lines_changed
-    print(changes)
     return changes
