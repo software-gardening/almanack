@@ -6,7 +6,11 @@ import pathlib
 
 import git
 
-from almanack.git_parser import *
+from almanack.git_parser import (
+    calculate_loc_changes,
+    get_commit_contents,
+    get_commit_logs,
+)
 
 
 def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
