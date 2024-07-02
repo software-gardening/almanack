@@ -1,3 +1,7 @@
+"""
+Testing entropy.py functionality
+"""
+
 import pathlib
 
 from test_git_parser import get_most_recent_commits
@@ -5,7 +9,10 @@ from test_git_parser import get_most_recent_commits
 from almanack.entropy import calculate_shannon_entropy
 
 
-def test_calculate_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
+def test_calculate_shannon_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
+    """
+    Test calculate_shannon_entropy function.
+    """
     file_sets = {
         "high_entropy": ["high_entropy2.md", "high_entropy.md"],
         "low_entropy": ["low_entropy.md"],
