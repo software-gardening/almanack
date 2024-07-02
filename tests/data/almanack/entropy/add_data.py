@@ -60,5 +60,5 @@ def create_repositories(base_path: pathlib.Path) -> None:
     # Commit changes after adding entropy
     for dir_name in ["high_entropy", "low_entropy"]:
         with open(base_path / "high_entropy/high_entropy2.md", "w") as f:
-            f.write("List of Number: 1,2,3,4,5,6,7,8,9\n\n\n\n\n")
+            f.write("List of Number: 1\n,2\n,3\n,4\n,5\n,6\n,7\n8\n,9\n")
         commit_changes(base_path / dir_name, "Commit with added entropy")

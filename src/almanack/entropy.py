@@ -1,26 +1,39 @@
+"""
+This module finds the amount of entropy on a file based level
+"""
+
 import math
 
-from git_parser import calculate_loc_changes
+from .git_parser import calculate_loc_changes
 
 
-def calculate_entropy(repo_path, source_commit, target_commit, file_names):
-    # Step 1: Get lines of code changed using calculate_loc_changes
+def calculate_shannon_entropy(
+    repo_path: str, source_commit: str, target_commit: str, file_names: list[str]
+) -> dict[str, float]:
+    """
+    Calculates the Shannon entropy for changes in specified files between two commits.
+
+    Args:
+        repo_path (str): The path to the git repository.
+        source_commit (str): The hash of the source commit.
+        target_commit (str): The hash of the target commit.
+        file_names (list[str]): List of file names to calculate entropy for.
+
+    Returns:
+        dict[str, float]: A dictionary mapping file names to their calculated entropy.
+
+    """
     changes = calculate_loc_changes(repo_path, source_commit, target_commit, file_names)
-
-    # Step 2: Calculate total lines changed
     total_changes = sum(changes.values())
-    if total_changes == 0:
-        return 0.0
 
-    # Step 3: Calculate probabilities
-    probabilities = {
-        file_name: changes[file_name] / total_changes for file_name in changes
-    }
-
-    # Step 4: Calculate entropy
-    entropy = -sum(
-        probabilities[file_name] * math.log(probabilities[file_name], 2)
-        for file_name in changes
-    )
-    print(entropy)
+    entropy = {}
+    for file_name in changes:
+        lines_changed = changes[file_name]
+        if lines_changed == 0 or total_changes == 0:
+            entropy[file_name] = 0.0
+        else:
+            # Calculate the probability of changes for the current file
+            probability = lines_changed / total_changes
+            # Calculate the entropy for the current file using the Shannon entropy formula
+            entropy[file_name] = -probability * math.log(probability, 2)
     return entropy
