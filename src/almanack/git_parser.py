@@ -73,10 +73,13 @@ def calculate_loc_changes(
     changes = {}
 
     for file_name in file_names:
+        # Get the diff output for the file between the two commits
         diff_output = repo.git.diff(source, target, "--numstat", "--", file_name)
+        # Parse the diff output, then sum the the value of lines added and removed
         lines_changed = sum(
-            abs(int(removed) + int(added))
+            abs(int(removed)) + int(added)
             for added, removed, _ in (line.split() for line in diff_output.splitlines())
         )
         changes[file_name] = lines_changed
+    print("loc changes: ", changes)
     return changes

@@ -25,7 +25,7 @@ def commit_changes(directory: str, message: str) -> None:
 def create_repositories(base_path: pathlib.Path) -> None:
     """
     Sets up Git repositories with baseline content and adds entropy.
-    Repository Structure:
+    Repositories Structure:
         High_Entropy
             - high_entropy.md
                 - Baseline Content

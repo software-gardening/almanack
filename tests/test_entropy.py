@@ -22,5 +22,6 @@ def test_calculate_shannon_entropy(repository_paths: dict[str, pathlib.Path]) ->
         entropies = calculate_shannon_entropy(
             repo_path, source_commit, target_commit, file_sets[label]
         )
+
         for _, entropy in entropies.items():
             assert entropy >= 0  # Check if entropy is negative
