@@ -35,19 +35,15 @@ def calculate_shannon_entropy(
         potentially unstable.
 
     """
-    changes = calculate_loc_changes(repo_path, source_commit, target_commit, file_names)
-    total_changes = sum(changes.values())
+    loc_changes = calculate_loc_changes(repo_path, source_commit, target_commit, file_names)
+    # Calculate total lines of code changes across all specified files
+    total_changes = sum(loc_changes.values())
 
-    shannon_entropy = {}
-    for file_name in changes:
-        lines_changed = changes[file_name]
-        # Checking for 0 values to avoid improper calculation
-        if lines_changed == 0 or total_changes == 0:
-            shannon_entropy[file_name] = 0.0
-        else:
-            # Calculate the probability of changes for the current file
-            probability = lines_changed / total_changes
-            # Calculate the entropy for the current file using the Shannon entropy formula
-            shannon_entropy[file_name] = -probability * math.log(probability, 2)
+    # Calculate the entropy for each file based on its changes relative to total changes
+    shannon_entropy = {
+        file_name: -((loc_changes[file_name] / total_changes) * math.log2(loc_changes[file_name] / total_changes))
+        if loc_changes[file_name] != 0 and total_changes != 0 else 0.0 #Avoid division by zero and ensure valid entropy calculation
+        for file_name in loc_changes # Iterate over each file in loc_changes dictionary 
+    }
     print(shannon_entropy)
     return shannon_entropy
