@@ -14,8 +14,8 @@ def test_calculate_shannon_entropy(repository_paths: dict[str, pathlib.Path]) ->
     Test calculate_shannon_entropy function.
     """
     file_sets = {
-        "high_entropy": ["high_entropy2.md", "high_entropy.md"],
-        "low_entropy": ["low_entropy.md"],
+        "test_repo_1": ["file_1.md", "file_2.md","file_3.md"],
+        "test_repo_2": ["file_1.md"],
     }
     for label, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)

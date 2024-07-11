@@ -92,8 +92,8 @@ def repository_paths(tmp_path_factory):
     create_repositories(base_path)
 
     repositories = {
-        "high_entropy": base_path / "high_entropy",
-        "low_entropy": base_path / "low_entropy",
+        "test_repo_1": base_path / "test_repo_1",
+        "test_repo_2": base_path / "test_repo_2",
     }
 
     yield repositories

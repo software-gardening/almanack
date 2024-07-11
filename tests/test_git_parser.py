@@ -24,7 +24,6 @@ def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
         # Ensure the dictionary is not empty
         assert commit_logs
 
-
 def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test get_commit_contents function.
@@ -67,8 +66,8 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
     Test the calculate_loc_changes function.
     """
     file_sets = {
-        "high_entropy": ["high_entropy2.md", "high_entropy.md"],
-        "low_entropy": ["low_entropy.md"],
+        "test_repo_1": ["file_1.md", "file_2.md","file_3.md"],
+        "test_repo_2": ["file_1.md"],
     }
 
     results = {}
@@ -79,7 +78,7 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
             repo_path, source_commit, target_commit, file_sets[label]
         )
         results[label] = loc_changes
-
+        print(loc_changes)
     assert all(
         file_name in loc_changes for file_name in file_sets[label]
     )  # Check that file_sets[label] are present keys

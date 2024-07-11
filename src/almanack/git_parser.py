@@ -81,4 +81,5 @@ def calculate_loc_changes(
             for added, removed, _ in (line.split() for line in diff_output.splitlines())
         )
         changes[file_name] = lines_changed
+        print(changes)
     return changes

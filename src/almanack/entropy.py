@@ -57,4 +57,5 @@ def calculate_shannon_entropy(
         )
         for file_name in loc_changes  # Iterate over each file in loc_changes dictionary
     }
+    print(shannon_entropy)
     return shannon_entropy
