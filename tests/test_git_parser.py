@@ -24,6 +24,7 @@ def test_get_commit_logs(repository_paths: dict[str, pathlib.Path]) -> None:
         # Ensure the dictionary is not empty
         assert commit_logs
 
+
 def test_get_commit_contents(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test get_commit_contents function.
@@ -66,7 +67,7 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
     Test the calculate_loc_changes function.
     """
     file_sets = {
-        "test_repo_1": ["file_1.md", "file_2.md","file_3.md"],
+        "test_repo_1": ["file_1.md", "file_2.md", "file_3.md"],
         "test_repo_2": ["file_1.md"],
     }
 

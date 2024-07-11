@@ -41,7 +41,7 @@ def create_repositories(base_path: pathlib.Path) -> None:
                 with open(md_file, "w") as f:
                     f.write(baseline_text)
         elif dir_name == "test_repo_2":
-            md_file = repo_path / f"file_1.md"
+            md_file = repo_path / "file_1.md"
             # Add baseline content to the Markdown file
             baseline_text = "Baseline content"
             with open(md_file, "w") as f:

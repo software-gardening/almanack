@@ -14,7 +14,7 @@ def test_calculate_shannon_entropy(repository_paths: dict[str, pathlib.Path]) ->
     Test calculate_shannon_entropy function.
     """
     file_sets = {
-        "test_repo_1": ["file_1.md", "file_2.md","file_3.md"],
+        "test_repo_1": ["file_1.md", "file_2.md", "file_3.md"],
         "test_repo_2": ["file_1.md"],
     }
     for label, repo_path in repository_paths.items():
