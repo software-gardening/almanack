@@ -28,11 +28,10 @@ def calculate_shannon_entropy(
         dict[str, float]: A dictionary mapping file names to their calculated entropy.
 
     Application of Entropy Calculation:
-        Entropy measures the uncertainty in changes to the codebase. By calculating
-        the entropy of lines of code (LoC) changed, we can find the variability and complexity
-        of modifications in each file relative to the entire repository. Higher entropy values indicate
-        more unpredictable and substantial changes, which can help identify areas of the code that are
-        potentially unstable.
+        Entropy measures the uncertainty in in a given system. Calculating the entropy 
+        of lines of code (LoC) changed reveals the variability and complexity of 
+        modifications in each file. Higher entropy values indicate more unpredictable 
+        changes, helping identify potentially unstable code areas.
 
     """
     loc_changes = calculate_loc_changes(
@@ -41,7 +40,7 @@ def calculate_shannon_entropy(
     # Calculate total lines of code changes across all specified files
     total_changes = sum(loc_changes.values())
 
-    # Calculate the entropy for each file based on its changes relative to total changes
+    # Calculate the entropy for each file, relative to total changes
     shannon_entropy = {
         file_name: (
             -(
