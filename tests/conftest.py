@@ -99,7 +99,7 @@ def repository_paths(tmp_path_factory):
     yield repositories
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def file_sets():
     return {
         "test_repo_1": ["file_1.md", "file_2.md", "file_3.md"],
