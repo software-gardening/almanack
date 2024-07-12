@@ -29,8 +29,8 @@ def calculate_shannon_entropy(
 
     Application of Entropy Calculation:
         Entropy measures the uncertainty in in a given system. Calculating the entropy
-        of lines of code (LoC) changed reveals the variability and complexity of 
-        modifications in each file. Higher entropy values indicate more unpredictable 
+        of lines of code (LoC) changed reveals the variability and complexity of
+        modifications in each file. Higher entropy values indicate more unpredictable
         changes, helping identify potentially unstable code areas.
 
     """
