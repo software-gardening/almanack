@@ -42,7 +42,7 @@ def normalized_entropy(
     total_changes = sum(loc_changes.values())
 
     # Calculate the entropy for each file, relative to total changes
-    shannon_entropy = {
+    entropy_calculation = {
         file_name: (
             -(
                 (loc_changes[file_name] / total_changes)
@@ -57,4 +57,4 @@ def normalized_entropy(
         )
         for file_name in loc_changes  # Iterate over each file in loc_changes dictionary
     }
-    return shannon_entropy
+    return entropy_calculation

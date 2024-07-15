@@ -58,3 +58,5 @@ references:
     title: Predicting Faults Using the Complexity of Code Changes
     type: article
     url: https://doi.org/10.1109/ICSE.2009.5070510
+    notes: |
+      This article is a related resource that serves as inspiration in deriving our entropy calculation.
