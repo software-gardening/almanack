@@ -8,7 +8,7 @@ import pathlib
 from .git_parser import calculate_loc_changes
 
 
-def calculate_shannon_entropy(
+def normalized_entropy(
     repo_path: pathlib.Path,
     source_commit: str,
     target_commit: str,
@@ -16,7 +16,8 @@ def calculate_shannon_entropy(
 ) -> dict[str, float]:
     """
     Calculates the entropy of changes in specified files between two commits,
-    inspired by Shannon's entropy formula.
+    inspired by Shannon's entropy formula. Normalized relative to the total lines
+    of code changes across specified files.
 
     Args:
         repo_path (str): The file path to the git repository.
@@ -28,7 +29,7 @@ def calculate_shannon_entropy(
         dict[str, float]: A dictionary mapping file names to their calculated entropy.
 
     Application of Entropy Calculation:
-        Entropy measures the uncertainty in in a given system. Calculating the entropy
+        Entropy measures the uncertainty in a given system. Calculating the entropy
         of lines of code (LoC) changed reveals the variability and complexity of
         modifications in each file. Higher entropy values indicate more unpredictable
         changes, helping identify potentially unstable code areas.

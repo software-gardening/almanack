@@ -6,10 +6,10 @@ import pathlib
 
 from test_git_parser import get_most_recent_commits
 
-from almanack.entropy import calculate_shannon_entropy
+from almanack.entropy import normalized_entropy
 
 
-def test_calculate_shannon_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
+def test_normalized_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Test calculate_shannon_entropy function.
     """
@@ -19,7 +19,7 @@ def test_calculate_shannon_entropy(repository_paths: dict[str, pathlib.Path]) ->
     }
     for label, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
-        entropies = calculate_shannon_entropy(
+        entropies = normalized_entropy(
             repo_path, source_commit, target_commit, file_sets[label]
         )
 

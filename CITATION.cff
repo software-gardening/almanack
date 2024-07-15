@@ -20,6 +20,9 @@ authors:
   - given-names: Gregory
     family-names: Way
     orcid: "https://orcid.org/0000-0002-0503-9348"
+  - given-names: Will
+    family-names: Davidson
+    orcid: "https://orcid.org/0009-0006-1415-6964"
 repository-code: "https://github.com/software-gardening/almanack"
 abstract: |
   An open-source handbook of applied guidance and tools for sustainable software development and maintenance.
@@ -43,3 +46,15 @@ references:
     notes: |
       This blog article is a related resource published through the Better Scientific Software (BSSw)
       organization and serves as inspiration towards related materials.
+  - authors:
+      - family-names: Hassan
+        given-names: Ahmed E.
+    date-published: "2009-05-16"
+    doi: 10.1109/ICSE.2009.5070510
+    location:
+      name: Vancouver, BC, Canada
+    publisher:
+      name: IEEE
+    title: Predicting Faults Using the Complexity of Code Changes
+    type: article
+    url: https://doi.org/10.1109/ICSE.2009.5070510
