@@ -1,5 +1,5 @@
 """
-This module calculates the amount of Software entropy 
+This module calculates the amount of Software entropy
 """
 
 import math
