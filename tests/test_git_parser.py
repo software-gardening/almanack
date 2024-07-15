@@ -76,7 +76,7 @@ def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> Non
     for label, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
         loc_changes = calculate_loc_changes(
-            repo_path, source_commit, target_commit, file_sets[label]
+            repo_path, source_commit, target_commit, file_sets[label]  
         )
         results[label] = loc_changes
 

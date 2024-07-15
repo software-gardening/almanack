@@ -1,5 +1,5 @@
 """
-This module finds the amount of entropy on a file based level
+This module calculates the amount of Software entropy 
 """
 
 import math
@@ -8,7 +8,7 @@ import pathlib
 from .git_parser import calculate_loc_changes
 
 
-def normalized_entropy(
+def calculate_normalized_entropy(
     repo_path: pathlib.Path,
     source_commit: str,
     target_commit: str,

@@ -6,7 +6,7 @@ import pathlib
 
 from test_git_parser import get_most_recent_commits
 
-from almanack.entropy import normalized_entropy
+from almanack.entropy import calculate_normalized_entropy
 
 
 def test_normalized_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
@@ -19,7 +19,7 @@ def test_normalized_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
     }
     for label, repo_path in repository_paths.items():
         source_commit, target_commit = get_most_recent_commits(repo_path)
-        entropies = normalized_entropy(
+        entropies = calculate_normalized_entropy(
             repo_path, source_commit, target_commit, file_sets[label]
         )
 
