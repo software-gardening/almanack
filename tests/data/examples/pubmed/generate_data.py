@@ -8,10 +8,11 @@ Suggested way to run this module:
 """
 
 import os
-from Bio import Entrez
-from typing import List, Dict, Any
 import re
+from typing import Any, Dict, List
+
 import pandas as pd
+from Bio import Entrez
 
 # pubmed requires we set an email which can be used through biopython
 # which is used for ratelimit warnings. We set this email from an
