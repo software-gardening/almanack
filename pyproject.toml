@@ -16,21 +16,23 @@ exclude = ["src/book/_build"]
 python = ">=3.9,<=3.12"
 pyyaml = "^6.0.1"
 
-
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
 docutils = "0.17.1"
 sphinxcontrib-bibtex = "^2.6.2"
+pandas = "^2.2.2"
+pyarrow = "^17.0.0"
+jupyterlab = "^4.2.3"
 
 [tool.poetry.group.dev.dependencies]
 poethepoet = "^0.25.0"
 pytest = "^8.1.1"
-cffconvert = "^2.0.0"
 linkchecker = "^10.4.0"
 vale = "^3.3.1.0"
 pyppeteer = "^2.0.0"
 gitpython = "^3.1.43"
 coverage = "^7.5.3"
+biopython = "^1.84"
 
 [tool.isort]
 profile = "black"

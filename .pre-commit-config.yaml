@@ -65,6 +65,10 @@ repos:
     rev: v1.6.27
     hooks:
       - id: actionlint-docker
+  - repo: https://github.com/citation-file-format/cffconvert
+    rev: b6045d78aac9e02b039703b030588d54d53262ac
+    hooks:
+      - id: validate-cff
   - repo: local
     hooks:
       - id: vale.sh
@@ -72,9 +76,3 @@ repos:
         entry: poetry run poe vale-checks
         language: system
         pass_filenames: false
-      - id: cffconvert
-        name: cffconvert check for citation.cff formatting
-        entry: poetry run cffconvert --validate
-        language: system
-        pass_filenames: false
-        files: CITATION.cff
