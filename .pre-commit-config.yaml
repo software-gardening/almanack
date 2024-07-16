@@ -24,7 +24,8 @@ repos:
           (?x)^(
               .*\.lock |
               .*\.json |
-              .*\.bib
+              .*\.bib |
+              .*\.ipynb
           )$
         additional_dependencies:
           - tomli
@@ -74,6 +75,7 @@ repos:
     hooks:
       - id: nbqa-black
       - id: nbqa-isort
+        args: ["--float-to-top"]
   - repo: local
     hooks:
       - id: vale.sh
