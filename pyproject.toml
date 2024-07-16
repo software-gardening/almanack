@@ -33,6 +33,9 @@ pyppeteer = "^2.0.0"
 gitpython = "^3.1.43"
 coverage = "^7.5.3"
 biopython = "^1.84"
+black = "^24.4.2"
+isort = "^5.13.2"
+jupyterlab-code-formatter = "^2.2.1"
 
 [tool.isort]
 profile = "black"
