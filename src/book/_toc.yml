@@ -9,6 +9,9 @@ parts:
         file: software-forest/software-forest.md
       - title: Verdant Sundial
         file: verdant-sundial/verdant-sundial.md
+        sections:
+          - title: Software Information Entropy
+            file: verdant-sundial/software-information-entropy.ipynb
       - title: Garden Circle
         file: garden-circle/garden-circle.md
         sections:
