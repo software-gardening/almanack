@@ -9,10 +9,10 @@ Suggested way to run this module:
 
 import os
 import re
-import requests
 from typing import Any, Dict, List
 
 import pandas as pd
+import requests
 from Bio import Entrez
 
 # pubmed requires we set an email which can be used through biopython
@@ -141,7 +141,7 @@ def is_github_link_valid(link: str) -> bool:
     try:
         response = requests.head(link, allow_redirects=True, timeout=2)
         # Consider a link valid if the status code is 200 (OK)
-        return response.status_code == 200
+        return response.status_code == 200  # noqa: PLR2004
     except requests.RequestException as e:
         print(f"Error checking link {link}: {e}")
         return False
