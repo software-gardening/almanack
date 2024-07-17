@@ -36,6 +36,7 @@ biopython = "^1.84"
 black = "^24.4.2"
 isort = "^5.13.2"
 jupyterlab-code-formatter = "^2.2.1"
+requests = "^2.32.3"
 
 [tool.isort]
 profile = "black"

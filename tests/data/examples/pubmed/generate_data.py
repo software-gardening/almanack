@@ -9,6 +9,7 @@ Suggested way to run this module:
 
 import os
 import re
+import requests
 from typing import Any, Dict, List
 
 import pandas as pd
@@ -108,14 +109,45 @@ def extract_github_links(text: str) -> List[str]:
 
     Returns:
         List[str]:
-            A list of GitHub links found in the text.
+            A list of GitHub links found in the text in the format
+            "https://github.com/<some text>/<some text>",
+            without anything after the second slash.
 
     """
 
-    return re.findall(r"https?://github\.com/[^\s\),.]+", text)
+    # Regex to find GitHub links in the specified format
+    github_links = re.findall(r"https?://github\.com/[^/]+/[^/\s\),.]+", text)
+
+    # Removing anything after the second slash
+    cleaned_links = []
+    for link in github_links:
+        match = re.match(r"(https?://github\.com/[^/]+/[^/]+)", link)
+        if match:
+            cleaned_links.append(match.group(1))
+
+    return cleaned_links
 
 
-pd.DataFrame(
+def is_github_link_valid(link: str) -> bool:
+    """
+    Check if a GitHub link is valid.
+
+    Args:
+        link (str): The GitHub URL to check.
+
+    Returns:
+        bool: True if the link is valid, False otherwise.
+    """
+    try:
+        response = requests.head(link, allow_redirects=True, timeout=2)
+        # Consider a link valid if the status code is 200 (OK)
+        return response.status_code == 200
+    except requests.RequestException as e:
+        print(f"Error checking link {link}: {e}")
+        return False
+
+
+df = pd.DataFrame(
     # create records for a dataframe
     [
         {
@@ -137,7 +169,17 @@ pd.DataFrame(
         # extract the individual github links from pubmed abstract article
         for github_link in extract_github_links(get_abstract(article))
     ]
-    # export data to parquet
-).to_parquet(
+)
+
+print("gathered data!")
+
+# Apply the link checker function to the DataFrame and filter invalid links
+df["IsValid"] = df["github_link"].apply(is_github_link_valid)
+valid_links_df = df[df["IsValid"]].drop(columns="IsValid")
+
+print("invalid links removed!")
+
+# export data to parquet
+df.to_parquet(
     "tests/data/examples/pubmed/pubmed_github_links.parquet", compression="zstd"
 )
