@@ -139,7 +139,7 @@ def is_github_link_valid(link: str) -> bool:
         bool: True if the link is valid, False otherwise.
     """
     try:
-        response = requests.head(link, allow_redirects=True, timeout=2)
+        response = requests.head(link, allow_redirects=True, timeout=3)
         # Consider a link valid if the status code is 200 (OK)
         return response.status_code == 200  # noqa: PLR2004
     except requests.RequestException as e:
@@ -173,9 +173,14 @@ df = pd.DataFrame(
 
 print("gathered data!")
 
+# drop duplicate links
+df = df.drop_duplicates()
+
+print("duplicates dropped!")
+
 # Apply the link checker function to the DataFrame and filter invalid links
 df["IsValid"] = df["github_link"].apply(is_github_link_valid)
-valid_links_df = df[df["IsValid"]].drop(columns="IsValid")
+df = df[df["IsValid"]].drop(columns="IsValid")
 
 print("invalid links removed!")
 
