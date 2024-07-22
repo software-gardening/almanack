@@ -16,7 +16,6 @@ exclude = ["src/book/_build"]
 python = ">=3.9,<=3.12"
 pyyaml = "^6.0.1"
 gitpython = "^3.1.43"
-kaleido = "0.2.1"
 
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
@@ -39,6 +38,8 @@ black = "^24.4.2"
 isort = "^5.13.2"
 jupyterlab-code-formatter = "^2.2.1"
 requests = "^2.32.3"
+kaleido = "0.2.1"
+pygithub = "^2.3.0"
 
 [tool.isort]
 profile = "black"
