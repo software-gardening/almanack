@@ -9,8 +9,8 @@ parts:
         file: software-forest/software-forest.md
       - title: Verdant Sundial
         file: verdant-sundial/verdant-sundial.md
-      - title: Seed Library
-        file: seed-library/seed-library.md
+      - title: Seed Bank
+        file: seed-bank/seed-bank.md
         sections:
           - title: Software Information Entropy
             file: verdant-sundial/software-information-entropy.ipynb
