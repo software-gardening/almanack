@@ -1,17 +1,29 @@
 """
-This module proccesses Git repositories
+This module processes Git repositories
 """
 
 import pathlib
-import pygit2
-
 import shutil
 import tempfile
 from datetime import datetime, timezone
+
+import pygit2
+
 from .entropy import aggregate_entropy_calculation
 
 
 def process_repository(repo_url: str) -> (float, str, str, int):  # type: ignore
+    """
+    Processes a GitHub repository URL to calculate entropy and other metadata.
+
+    Args:
+        repo_url (str): The URL of the GitHub repository.
+
+    Returns:
+        tuple: A tuple containing the normalized total entropy, the date of the first commit,
+               the date of the most recent commit, and the total time of existence in days.
+
+    """
     temp_dir = tempfile.mkdtemp()
     try:
         # Clone the repository into the temporary directory
@@ -83,5 +95,5 @@ def process_repository(repo_url: str) -> (float, str, str, int):  # type: ignore
         return None, None, None, None
 
     finally:
-        # Clean up temp directory 
+        # Clean up temp directory
         shutil.rmtree(temp_dir)
