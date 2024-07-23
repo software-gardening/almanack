@@ -147,8 +147,6 @@ def is_github_link_valid(link: str) -> bool:
         return False
 
 
-
-
 df = pd.DataFrame(
     # create records for a dataframe
     [

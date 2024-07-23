@@ -3,8 +3,10 @@ This module parses Git logs and utilizes commit data to analyze changes
 """
 
 import pathlib
+from typing import Dict, List
 
 import git
+import pygit2
 
 
 def get_commit_logs(repository_path: pathlib.Path) -> dict[str, dict]:
@@ -55,8 +57,8 @@ def get_commit_contents(
 
 
 def calculate_loc_changes(
-    repo_path: pathlib.Path, source: str, target: str, file_names: list[str]
-) -> dict[str, int]:
+    repo_path: pathlib.Path, source: str, target: str, file_names: List[str]
+) -> Dict[str, int]:
     """
     Finds the total number of code lines changed for each specified file between two commits.
 
@@ -64,21 +66,36 @@ def calculate_loc_changes(
         repo_path (pathlib.Path): The path to the git repository.
         source (str): The source commit hash.
         target (str): The target commit hash.
-        file_names (list[str]): List of file names to calculate changes for.
+        file_names (List[str]): List of file names to calculate changes for.
 
     Returns:
-        dict[str, int]: A dictionary where the key is the filename, and the value is the lines changed (added and removed).
+        Dict[str, int]: A dictionary where the key is the filename, and the value is the lines changed (added and removed).
     """
-    repo = git.Repo(repo_path)
-    changes = {}
+    repo = pygit2.Repository(str(repo_path))
 
-    for file_name in file_names:
-        # Get the diff output for the file between the two commits
-        diff_output = repo.git.diff(source, target, "--numstat", "--", file_name)
-        # Parse the diff output, then sum the the value of lines added and removed
-        lines_changed = sum(
-            abs(int(removed)) + int(added)
-            for added, removed, _ in (line.split() for line in diff_output.splitlines())
-        )
-        changes[file_name] = lines_changed
+    # Resolve the source and target commits by their hashes
+    source_commit = repo.revparse_single(source)
+    target_commit = repo.revparse_single(target)
+
+    changes = {}
+    # Compute the diff between the source and target commits
+    diff = repo.diff(source_commit, target_commit)
+
+    # Iterate over each patch in the diff
+    for patch in diff:
+        if patch.delta.new_file.path in file_names:
+            additions = 0
+            deletions = 0
+            # Iterate over each hunk in the patch
+            for hunk in patch.hunks:
+                # Iterate over each line in the hunk
+                for line in hunk.lines:
+                    if line.origin == "+":
+                        additions += 1
+                    elif line.origin == "-":
+                        deletions += 1
+            lines_changed = additions + deletions
+            # Store the number of lines changed for the file
+            changes[patch.delta.new_file.path] = lines_changed
+
     return changes

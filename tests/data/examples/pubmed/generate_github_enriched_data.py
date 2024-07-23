@@ -1,9 +1,7 @@
 import os
 
-
 import pandas as pd
 import pytz
-
 from github import Auth, Github
 
 github_client = Github(

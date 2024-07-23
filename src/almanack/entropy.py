@@ -4,6 +4,7 @@ This module calculates the amount of Software entropy
 
 import math
 import pathlib
+from typing import List
 
 from .git_parser import calculate_loc_changes
 
@@ -58,3 +59,37 @@ def calculate_normalized_entropy(
         for file_name in loc_changes  # Iterate over each file in loc_changes dictionary
     }
     return entropy_calculation
+
+
+def aggregate_entropy_calculation(
+    repo_path: pathlib.Path,
+    source_commit: str,
+    target_commit: str,
+    file_names: List[str],
+) -> float:
+    """
+    Computes the aggregated normalized entropy score from the output of
+    calculate_normalized_entropy for specified a Git repository
+
+    Args:
+        repo_path (str): The file path to the git repository.
+        source_commit (str): The git hash of the source commit.
+        target_commit (str): The git hash of the target commit.
+        file_names (list[str]): List of file names to calculate entropy for.
+
+    Returns:
+        float: Normalized entropy calculation.
+    """
+    # Get the entropy for each file
+    entropy_calculation = calculate_normalized_entropy(
+        repo_path, source_commit, target_commit, file_names
+    )
+
+    # Calculate total entropy of the repository
+    total_entropy = sum(entropy_calculation.values())
+
+    # Normalize total entropy to range [0, 1]
+    max_entropy = len(entropy_calculation) if len(entropy_calculation) > 0 else 1
+    normalized_total_entropy = total_entropy / max_entropy
+
+    return normalized_total_entropy
