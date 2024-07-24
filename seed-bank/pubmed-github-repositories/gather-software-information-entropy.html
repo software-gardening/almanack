@@ -1,0 +1,811 @@
+
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>PubMed article GitHub repository software information entropy &#8212; The Software Gardening Almanack</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'seed-bank/pubmed-github-repositories/gather-software-information-entropy';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
+    <script>document.write(`<img src="../../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../introduction.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../garden-lattice/garden-lattice.html">Garden Lattice</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../software-forest/software-forest.html">Software Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../verdant-sundial/verdant-sundial.html">Verdant Sundial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-circle/contributing.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-circle/garden-map.html">Garden Map</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack/issues/new?title=Issue%20on%20page%20%2Fseed-bank/pubmed-github-repositories/gather-software-information-entropy.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>PubMed article GitHub repository software information entropy</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pubmed-github-repositories-analysis">PubMed GitHub Repositories Analysis</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="pubmed-article-github-repository-software-information-entropy">
+<h1>PubMed article GitHub repository software information entropy<a class="headerlink" href="#pubmed-article-github-repository-software-information-entropy" title="Permalink to this heading">#</a></h1>
+<p>This notebook focuses on gathering PubMed article repository software information entropy data.</p>
+<p>PubMed article GitHub repositories are extracted using the PubMed API to query for GitHub links within article abstracts.</p>
+<section id="pubmed-github-repositories-analysis">
+<h2>PubMed GitHub Repositories Analysis<a class="headerlink" href="#pubmed-github-repositories-analysis" title="Permalink to this heading">#</a></h2>
+<p>The following code is used to analyze PubMed article GitHub repository software information entropy using existing methods from the Software Gardening Almanack package.
+Each repository is processed in parallel through batches written to Parquet files which in aggregate compose a full dataset.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span><span class="p">,</span> <span class="n">as_completed</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="kn">from</span> <span class="nn">almanack</span> <span class="kn">import</span> <span class="n">process_repository</span>
+
+
+<span class="k">def</span> <span class="nf">repository_analysis</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyzes PudMed GitHub repositories to compute normalized information entropy</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame containing the results for the last batch of repositories processed.</span>
+<span class="sd">                      Each row includes:</span>
+<span class="sd">                      - &#39;Repository URL&#39;: The URL of the repository.</span>
+<span class="sd">                      - &#39;Normalized Total Entropy&#39;: The normalized entropy value for the repository.</span>
+<span class="sd">                      - &#39;Date of First Commit&#39;: The date of the first commit in the repository.</span>
+<span class="sd">                      - &#39;Date of Last Commit&#39;: The date of the most recent commit in the repository.</span>
+<span class="sd">                      - &#39;Time of Existence (days)&#39;: The number of days between the first and last commit.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">        - Reads repository URLs from a Parquet file located at &quot;../../../tests/data/examples/pubmed/pubmed_github_links.parquet&quot;.</span>
+<span class="sd">        - Processes repositories in batches of 500 to manage the large datasets efficiently.</span>
+<span class="sd">        - Results are saved in Parquet files named `repository_analysis_results_batch_X.parquet`, where X is the batch number.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="s2">&quot;gather-pubmed-repos/pubmed_github_links.parquet&quot;</span><span class="p">)</span>
+
+    <span class="n">repo_urls</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;github_link&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">500</span>
+    <span class="n">total_repos</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">repo_urls</span><span class="p">)</span>
+    <span class="n">repo_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">batch_number</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Process repositories in batches</span>
+    <span class="k">for</span> <span class="n">start</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">total_repos</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">):</span>
+        <span class="c1"># Determine the end index for the current batch</span>
+        <span class="n">end</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">start</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">,</span> <span class="n">total_repos</span><span class="p">)</span>
+        <span class="c1"># Extract the URLs for the current batch</span>
+        <span class="n">batch_urls</span> <span class="o">=</span> <span class="n">repo_urls</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+
+        <span class="c1"># Create a ProcessPoolExecutor to process repositories in parallel</span>
+        <span class="k">with</span> <span class="n">ProcessPoolExecutor</span><span class="p">(</span><span class="n">max_workers</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> <span class="k">as</span> <span class="n">executor</span><span class="p">:</span>
+            <span class="c1"># Submit tasks to process each repository URL and store future results</span>
+            <span class="n">futures</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="n">executor</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">process_repository</span><span class="p">,</span> <span class="n">repo_url</span><span class="p">):</span> <span class="n">repo_url</span>
+                <span class="k">for</span> <span class="n">repo_url</span> <span class="ow">in</span> <span class="n">batch_urls</span>
+            <span class="p">}</span>
+            <span class="n">batch_results</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="c1"># Iterate over completed futures as they finish</span>
+            <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+                <span class="n">repo_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="c1"># Get the repository URL corresponding to the completed future</span>
+                <span class="n">repo_url</span> <span class="o">=</span> <span class="n">futures</span><span class="p">[</span><span class="n">future</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="p">(</span>
+                        <span class="n">normalized_total_entropy</span><span class="p">,</span>
+                        <span class="n">first_commit_date</span><span class="p">,</span>
+                        <span class="n">most_recent_commit_date</span><span class="p">,</span>
+                        <span class="n">time_of_existence</span><span class="p">,</span>
+                    <span class="p">)</span> <span class="o">=</span> <span class="n">future</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
+                    <span class="nb">print</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Repository </span><span class="si">{</span><span class="n">repo_count</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">normalized_total_entropy</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">batch_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="p">[</span>
+                            <span class="n">repo_url</span><span class="p">,</span>
+                            <span class="n">normalized_total_entropy</span><span class="p">,</span>
+                            <span class="n">first_commit_date</span><span class="p">,</span>
+                            <span class="n">most_recent_commit_date</span><span class="p">,</span>
+                            <span class="n">time_of_existence</span><span class="p">,</span>
+                        <span class="p">]</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="c1"># Handle any exceptions by appending a row with None values</span>
+                    <span class="n">batch_results</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">repo_url</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">])</span>
+
+        <span class="c1"># Create DataFrame for the current batch</span>
+        <span class="n">df_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">batch_results</span><span class="p">,</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span>
+                <span class="s2">&quot;Repository URL&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Normalized Total Entropy&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Date of First Commit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Date of Last Commit&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Time of Existence (days)&quot;</span><span class="p">,</span>
+            <span class="p">],</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Save batch results to Parquet file</span>
+        <span class="n">batch_filename</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;repository_analysis_results_batch_</span><span class="si">{</span><span class="n">batch_number</span><span class="si">}</span><span class="s2">.parquet&quot;</span>
+        <span class="n">df_results</span><span class="o">.</span><span class="n">to_parquet</span><span class="p">(</span><span class="n">batch_filename</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Batch </span><span class="si">{</span><span class="n">batch_number</span><span class="si">}</span><span class="s2"> results saved to </span><span class="si">{</span><span class="n">batch_filename</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Increment batch number</span>
+        <span class="n">batch_number</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">df_results</span>
+
+
+<span class="n">df_results</span> <span class="o">=</span> <span class="n">repository_analysis</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 1: https://github.com/BUStools/BUSZ-format, 0.0
+Repository 2: https://github.com/pmelsted/BUSZ_paper, 0.17889727561820343
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 3: https://github.com/WormBase/scdefg, 0.1539658042756231
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 4: https://github.com/phnmnl/KubeNow-plugin, 0.11693443175513085
+Repository 5: https://github.com/ekg/guix-genomics, 0.17646908489582624
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 6: https://github.com/ekg/seqwish, 0.027121585307361994
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 7: https://github.com/WormBase/wormcells-viz, 0.025154809294560484
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 8: https://github.com/abacus-gene/paml-tutorial, 0.02186680973397708
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 9: https://github.com/jltsiren/gbwt, 0.10695205601216291
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 10: https://github.com/GGchen1997/STEPS_Bioinformatics, 0.41045358665513676
+Repository 11: https://github.com/crazylyf/neuronet, 0.1600887578736745
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 12: https://github.com/sg-wbi/belb, 0.27746363552425996
+Repository 13: https://github.com/jltsiren/gcsa2, 0.11332453249268146
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 14: https://github.com/yuantailing/two-layer-qrcode, 0.1594674045689216
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 15: https://github.com/Benjamin-Crysup/proderal, 0.062053243173375884
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 16: https://github.com/pharmbio/LC-MS-Pachyderm, 0.0029709816830870185
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 17: https://github.com/jltsiren/gbwt-rs, 0.11892634295721972
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 18: https://github.com/jltsiren/gbwtgraph, 0.07459638467012455
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 19: https://github.com/BUStools/bustools, 0.005081632749593248
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 20: https://github.com/theislab/anndata, 0.03601019773072376
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 21: https://github.com/abacus-gene/paml, 0.02085289195806779
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 22: https://github.com/shiquan/PISA, 0.027308180766415314
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 23: https://github.com/macintyrelab/CNpare_analyses, 0.09360113213707145
+Repository 24: https://github.com/kodicollins/pasta, 0.020507954884947974
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 25: https://github.com/macintyrelab/CNpare, 0.06922084633052224
+Repository 26: https://github.com/smirarab/pasta, 0.0200484415873601
+Repository 27: https://github.com/TracyRage/muddy_db, 0.07336816813804375
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Repository 28: https://github.com/tlawrence3/tSFM, 0.026067831381344123
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored from cffi callback &lt;function _transfer_progress_cb at 0x7f55ba765620&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored from cffi callback &lt;function _transfer_progress_cb at 0x7f55ba765620&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored from cffi callback &lt;function _transfer_progress_cb at 0x7f55ba765620&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored from cffi callback &lt;function _transfer_progress_cb at 0x7f55ba765620&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  File &quot;/home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages/pygit2/callbacks.py&quot;, line 419, in wrapper
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored from cffi callback &lt;function _transfer_progress_cb at 0x7f55ba765620&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Exception ignored from cffi callback &lt;function _transfer_progress_cb at 0x7f55ba765620&gt;
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  File &quot;/home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages/pygit2/callbacks.py&quot;, line 419, in wrapper
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  File &quot;/home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages/pygit2/callbacks.py&quot;, line 419, in wrapper
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  File &quot;/home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages/pygit2/callbacks.py&quot;, line 419, in wrapper
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>:
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>@wraps(f)
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Traceback (most recent call last):
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">101</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span>         <span class="n">batch_number</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span>     <span class="k">return</span> <span class="n">df_results</span>
+<span class="ne">--&gt; </span><span class="mi">101</span> <span class="n">df_results</span> <span class="o">=</span> <span class="n">repository_analysis</span><span class="p">()</span>
+
+<span class="nn">Cell In[1], line 51,</span> in <span class="ni">repository_analysis</span><span class="nt">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">49</span> <span class="n">batch_results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span> <span class="c1"># Iterate over completed futures as they finish</span>
+<span class="ne">---&gt; </span><span class="mi">51</span> <span class="k">for</span> <span class="n">future</span> <span class="ow">in</span> <span class="n">as_completed</span><span class="p">(</span><span class="n">futures</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">52</span>     <span class="n">repo_count</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="g g-Whitespace">     </span><span class="mi">53</span>     <span class="c1"># Get the repository URL corresponding to the completed future</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/concurrent/futures/_base.py:243,</span> in <span class="ni">as_completed</span><span class="nt">(fs, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">238</span>     <span class="k">if</span> <span class="n">wait_timeout</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">239</span>         <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">240</span>                 <span class="s1">&#39;</span><span class="si">%d</span><span class="s1"> (of </span><span class="si">%d</span><span class="s1">) futures unfinished&#39;</span> <span class="o">%</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">241</span>                 <span class="nb">len</span><span class="p">(</span><span class="n">pending</span><span class="p">),</span> <span class="n">total_futures</span><span class="p">))</span>
+<span class="ne">--&gt; </span><span class="mi">243</span> <span class="n">waiter</span><span class="o">.</span><span class="n">event</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">wait_timeout</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">245</span> <span class="k">with</span> <span class="n">waiter</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">246</span>     <span class="n">finished</span> <span class="o">=</span> <span class="n">waiter</span><span class="o">.</span><span class="n">finished_futures</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/threading.py:629,</span> in <span class="ni">Event.wait</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">627</span> <span class="n">signaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_flag</span>
+<span class="g g-Whitespace">    </span><span class="mi">628</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">signaled</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">629</span>     <span class="n">signaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cond</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="n">timeout</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">630</span> <span class="k">return</span> <span class="n">signaled</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.11.9/x64/lib/python3.11/threading.py:327,</span> in <span class="ni">Condition.wait</span><span class="nt">(self, timeout)</span>
+<span class="g g-Whitespace">    </span><span class="mi">325</span> <span class="k">try</span><span class="p">:</span>    <span class="c1"># restore state no matter what (e.g., KeyboardInterrupt)</span>
+<span class="g g-Whitespace">    </span><span class="mi">326</span>     <span class="k">if</span> <span class="n">timeout</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="ne">--&gt; </span><span class="mi">327</span>         <span class="n">waiter</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">328</span>         <span class="n">gotit</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="g g-Whitespace">    </span><span class="mi">329</span>     <span class="k">else</span><span class="p">:</span>
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./seed-bank/pubmed-github-repositories"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pubmed-github-repositories-analysis">PubMed GitHub Repositories Analysis</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Software Gardening Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
