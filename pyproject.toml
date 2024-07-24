@@ -41,6 +41,7 @@ jupyterlab-code-formatter = "^2.2.1"
 requests = "^2.32.3"
 kaleido = "0.2.1"
 pygithub = "^2.3.0"
+jupyterlab-spellchecker = "^0.8.4"
 
 [tool.isort]
 profile = "black"
@@ -78,7 +79,7 @@ select = [
 [tool.poe.tasks]
 # builds the jupyter book related to this project
 build-book.shell = """
-  jupyter-book build src/book
+  jupyter-book build src/book --all
 """
 # build a PDF from the HTML content
 build-book-pdf.shell = """
