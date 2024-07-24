@@ -12,8 +12,9 @@ parts:
       - title: Seed Bank
         file: seed-bank/seed-bank.md
         sections:
-          - title: Software Information Entropy
-            file: verdant-sundial/software-information-entropy.ipynb
+          - title: PubMed GitHub Repository Software Information Entropy
+            file: "seed-bank/pubmed-github-repositories/\
+              visualize-pubmed-repo-sofware-entropy.ipynb"
       - title: Garden Circle
         file: garden-circle/garden-circle.md
         sections:
