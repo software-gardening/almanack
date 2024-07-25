@@ -63,7 +63,7 @@ def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
 
 
 def test_calculate_loc_changes(
-    repository_paths: dict[str, pathlib.Path], file_sets: dict[str, list[str]]
+    repository_paths: dict[str, pathlib.Path], test_file_sets: dict[str, list[str]]
 ) -> None:
     """
     Test the calculate_loc_changes function.
@@ -76,11 +76,11 @@ def test_calculate_loc_changes(
         source_commit, target_commit = get_most_recent_commits(repo_path)
         # Call loc_changes function on test repositories
         loc_changes = calculate_loc_changes(
-            repo_path, source_commit, target_commit, file_sets[label]
+            repo_path, source_commit, target_commit, test_file_sets[label]
         )
         results[label] = loc_changes
     assert all(
-        file_name in loc_changes for file_name in file_sets[label]
+        file_name in loc_changes for file_name in test_file_sets[label]
     )  # Check that file_sets[label] are present keys
     assert all(
         change >= 0 for change in loc_changes.values()

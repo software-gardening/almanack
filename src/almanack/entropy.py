@@ -58,6 +58,7 @@ def calculate_normalized_entropy(
         )
         for file_name in loc_changes  # Iterate over each file in loc_changes dictionary
     }
+
     return entropy_calculation
 
 

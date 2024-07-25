@@ -98,8 +98,16 @@ def repository_paths(tmp_path_factory):
 
     yield repositories
 
+
 @pytest.fixture
-def file_sets():
+def test_file_sets():
+    """
+    Provides a mapping of test repository names to lists of file names.
+
+    Returns:
+        dict[str, list[str]]: A dictionary where the keys are repository names
+        and the values are lists of file names in those repositories.
+    """
     return {
         "test_repo_1": ["file_1.md", "file_2.md", "file_3.md"],
         "test_repo_2": ["file_1.md"],

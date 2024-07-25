@@ -39,6 +39,12 @@ low_code_change = (
 
 
 def insert_entropy(base_path: pathlib.Path) -> None:
+    """
+    Inserts entropy into the specified files in the test repositories.
+
+    Args:
+        base_path (pathlib.Path): The base path where the test repositories are located.
+    """
     entropy_levels = {
         base_path / "test_repo_1/file_1.md": high_code_change,
         base_path / "test_repo_1/file_2.md": medium_code_change,

@@ -97,5 +97,5 @@ def calculate_loc_changes(
             lines_changed = additions + deletions
             # Store the number of lines changed for the file
             changes[patch.delta.new_file.path] = lines_changed
-
+    print(changes)
     return changes
