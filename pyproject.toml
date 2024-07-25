@@ -82,6 +82,8 @@ build-book.shell = """
   jupyter-book build src/book --all
 """
 # build a PDF from the HTML content
+# note: depends on build-book content and creates copy to avoid
+# single-page changes performed on the HTML build.
 build-book-pdf.shell = """
   cp -r src/book src/_pdfbuild &&
   jupyter-book build src/_pdfbuild --builder pdfhtml
