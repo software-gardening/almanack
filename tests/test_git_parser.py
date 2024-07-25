@@ -62,24 +62,23 @@ def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     return source_commit, target_commit
 
 
-def test_calculate_loc_changes(repository_paths: dict[str, pathlib.Path]) -> None:
+def test_calculate_loc_changes(
+    repository_paths: dict[str, pathlib.Path], file_sets: dict[str, list[str]]
+) -> None:
     """
     Test the calculate_loc_changes function.
     """
-    file_sets = {
-        "high_entropy": ["high_entropy2.md", "high_entropy.md"],
-        "low_entropy": ["low_entropy.md"],
-    }
 
     results = {}
 
     for label, repo_path in repository_paths.items():
+        # Extract two most recent commits: source and target
         source_commit, target_commit = get_most_recent_commits(repo_path)
+        # Call loc_changes function on test repositories
         loc_changes = calculate_loc_changes(
             repo_path, source_commit, target_commit, file_sets[label]
         )
         results[label] = loc_changes
-
     assert all(
         file_name in loc_changes for file_name in file_sets[label]
     )  # Check that file_sets[label] are present keys
