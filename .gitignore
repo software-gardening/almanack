@@ -300,3 +300,6 @@ dist
 
 # for ignoring vale package installs
 /styles
+
+# ignore pdf builds
+/src/_pdfbuild

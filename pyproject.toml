@@ -83,7 +83,8 @@ build-book.shell = """
 """
 # build a PDF from the HTML content
 build-book-pdf.shell = """
-  jupyter-book build src/book --builder pdfhtml
+  cp -r src/book src/_pdfbuild &&
+  jupyter-book build src/_pdfbuild --builder pdfhtml
 """
 # builds the jupyter book related to this project and opens a new browser window
 build-book-dev.shell = """

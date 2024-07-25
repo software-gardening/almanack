@@ -25,8 +25,8 @@ jobs:
           poetry run poe build-book-pdf
       - name: Copy and rename the PDF to the HTML dir
         run: |
-          cp src/book/_build/pdf/book.pdf \
-          src/book/_build/html/software-gardening-almanack.pdf
+          cp src/_pdfbuild/_build/pdf/book.pdf \
+          src/_build/html/software-gardening-almanack.pdf
       - name: Add nojekyll config for GH pages
         run: |
           touch src/book/_build/html/.nojekyll
