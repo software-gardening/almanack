@@ -73,5 +73,3 @@ def create_repositories(base_path: pathlib.Path) -> None:
     for repo_name in ["test_repo_1", "test_repo_2"]:
         repo_path = base_path / repo_name
         commit_changes(repo_path, "Commit with added entropy")
-
-    print(f"Repositories created at {base_path}")
