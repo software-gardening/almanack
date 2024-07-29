@@ -1,11 +1,11 @@
 """
-This module introduces entropy to the test Markdown files by adding predefined lines of code.
+This module introduces lines code to the test Markdown files by adding predefined lines of code.
 """
 
 import pathlib
 
 
-def add_entropy_to_file(file_path: pathlib.Path, lines_of_code: str) -> None:
+def add_lines_to_file(file_path: pathlib.Path, lines_of_code: str) -> None:
     """
     Adds lines of code to the specified file.
 
@@ -38,9 +38,9 @@ low_code_change = (
 )
 
 
-def insert_entropy(base_path: pathlib.Path) -> None:
+def insert_LOC(base_path: pathlib.Path) -> None:
     """
-    Inserts lines into the specified files in the test repositories.
+    Inserts lines of code (LOC) into specified files in the test repositories.
 
     Args:
         base_path (pathlib.Path): The base path where the test repositories are located.
@@ -53,4 +53,4 @@ def insert_entropy(base_path: pathlib.Path) -> None:
     }
     # Add entropy to each file
     for file_path, lines_of_code in entropy_levels.items():
-        add_entropy_to_file(file_path, lines_of_code)
+        add_lines_to_file(file_path, lines_of_code)

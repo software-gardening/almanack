@@ -76,7 +76,7 @@ def build_jupyter_book(
     return jupyter_book_test_target
 
 
-from data.almanack.entropy.add_data import create_repositories
+from data.almanack.repo_setup.create_repo import create_repositories
 
 
 @pytest.fixture(scope="session")

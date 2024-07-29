@@ -6,7 +6,7 @@ import pathlib
 
 import git
 
-from .add_entropy import insert_entropy
+from .code_inserter import insert_LOC
 
 
 def commit_changes(repo_path: pathlib.Path, message: str) -> None:
@@ -67,7 +67,7 @@ def create_repositories(base_path: pathlib.Path) -> None:
             repo.index.commit("Committed baseline content to test_repo_2")
 
     # Run the add_entropy.py module to insert additional lines
-    insert_entropy(base_path)
+    insert_LOC(base_path)
 
     # Commit changes after adding entropy
     for repo_name in ["3_file_repo", "1_file_repo"]:
