@@ -23,7 +23,6 @@ def test_calculate_normalized_entropy(
         entropies = calculate_normalized_entropy(
             repo_path, source_commit, target_commit, repo_file_sets[label]
         )
-        print(entropies)
 
         assert entropies  # Check if the entropies dictionary is not empty
 
