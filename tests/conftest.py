@@ -92,15 +92,15 @@ def repository_paths(tmp_path_factory):
     create_repositories(base_path)
 
     repositories = {
-        "test_repo_1": base_path / "test_repo_1",
-        "test_repo_2": base_path / "test_repo_2",
+        "3_file_repo": base_path / "3_file_repo",
+        "1_file_repo": base_path / "1_file_repo",
     }
 
     yield repositories
 
 
 @pytest.fixture
-def test_file_sets():
+def repo_file_sets():
     """
     Provides a mapping of test repository names to lists of file names.
 
@@ -109,6 +109,6 @@ def test_file_sets():
         and the values are lists of file names in those repositories.
     """
     return {
-        "test_repo_1": ["file_1.md", "file_2.md", "file_3.md"],
-        "test_repo_2": ["file_1.md"],
+        "3_file_repo": ["file_1.md", "file_2.md", "file_3.md"],
+        "1_file_repo": ["file_1.md"],
     }

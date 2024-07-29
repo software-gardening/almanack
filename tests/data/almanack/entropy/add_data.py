@@ -39,17 +39,17 @@ def create_repositories(base_path: pathlib.Path) -> None:
             Test_repo_2:
                 - File_1.md (Lines Changed: 16)
 
-        The baseline content is committed first, followed by the addition of entropy.
+        The baseline content is committed first, followed by additonal lines of changes.
         Each repository will have exactly two commits: one for the baseline content and
         one for the added lines of code.
     """
     # Create directories for test_repo_1 and test_repo_2
-    for repo_name in ["test_repo_1", "test_repo_2"]:
+    for repo_name in ["3_file_repo", "1_file_repo"]:
         repo_path = base_path / repo_name
         repo_path.mkdir(parents=True, exist_ok=True)
         repo = git.Repo.init(repo_path)
 
-        if repo_name == "test_repo_1":
+        if repo_name == "3_file_repo":
             for i in range(1, 4):  # Create three files for test_repo_1
                 md_file = repo_path / f"file_{i}.md"
                 # Add baseline content to Markdown files
@@ -58,7 +58,7 @@ def create_repositories(base_path: pathlib.Path) -> None:
                 repo.index.add([str(md_file)])
             repo.index.commit("Committed baseline content to test_repo_1")
 
-        elif repo_name == "test_repo_2":
+        elif repo_name == "1_file_repo":
             md_file = repo_path / "file_1.md"
             # Add baseline content to the Markdown file
             with open(md_file, "w") as f:
@@ -66,10 +66,10 @@ def create_repositories(base_path: pathlib.Path) -> None:
             repo.index.add([str(md_file)])
             repo.index.commit("Committed baseline content to test_repo_2")
 
-    # Run the add_entropy.py module to insert entropy
+    # Run the add_entropy.py module to insert additional lines
     insert_entropy(base_path)
 
     # Commit changes after adding entropy
-    for repo_name in ["test_repo_1", "test_repo_2"]:
+    for repo_name in ["3_file_repo", "1_file_repo"]:
         repo_path = base_path / repo_name
-        commit_changes(repo_path, "Commit with added entropy")
+        commit_changes(repo_path, "Commit with added lines of code")
