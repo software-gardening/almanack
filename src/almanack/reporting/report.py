@@ -4,7 +4,8 @@ This module creates entropy reports
 
 import json
 import pathlib
-from typing import Dict
+from typing import Dict, Any 
+import tabulate
 
 from almanack.processing.processing_repositories import process_entire_repo
 
@@ -28,7 +29,7 @@ def process_repo_entropy(repo_path: str) -> None:
     entropy_data = process_entire_repo(str(repo_path))
 
     # Generate and print the report from the dictionary
-    report_content = repo_entropy_report(entropy_data)
+    report_content = whole_repo_report(entropy_data)
 
     # Convert the dictionary to a JSON string
     json_string = json.dumps(entropy_data, indent=4)
@@ -39,29 +40,61 @@ def process_repo_entropy(repo_path: str) -> None:
     return json_string
 
 
-def repo_entropy_report(data: Dict[str, any]) -> str:
+def whole_repo_report(data: Dict[str, Any]) -> str:
     """
     Returns the formatted entropy report as a string.
 
     Args:
-        data (Dict[str, any]): Dictionary with the entropy data.
+        data (Dict[str, Any]): Dictionary with the entropy data.
 
     Returns:
         str: Formatted entropy report.
     """
+    title = "Entropy Analysis Report"
 
-    border = "=" * 50
-    separator = "-" * 50
-    title = "Entropy Report"
+    # Extract details from data
+    repo_path = data["repo_path"]
+    total_normalized_entropy = data["total_normalized_entropy"]
+    number_of_commits = data["number_of_commits"]
+    number_of_files = data["number_of_files"]
+    time_range_of_commits = data["time_range_of_commits"]
+    entropy_data = data[
+        "file_level_entropy"
+    ]  # Assume this contains entropy for each file
+
+    # Sort files by normalized entropy in descending order and get the top 5
+    sorted_entropy = sorted(
+        entropy_data.items(), key=operator.itemgetter(1), reverse=True
+    )
+    top_files = sorted_entropy[:5]
 
     # Format the report
+    repo_info = [
+        ["Repository Path", repo_path],
+        ["Total Normalized Entropy", f"{total_normalized_entropy:.4f}"],
+        ["Number of Commits Analyzed", number_of_commits],
+        ["Files Analyzed", number_of_files],
+        [
+            "Time Range of Commits",
+            f"{time_range_of_commits[0]} to {time_range_of_commits[1]}",
+        ],
+    ]
+
+    top_files_info = [
+        [file_name, f"{normalized_entropy:.4f}"]
+        for file_name, normalized_entropy in top_files
+    ]
+
     report_content = f"""
-    {border}
-    {title:^50}
-    {border}
-    Repository Path: {data['repo_path']}
-    Total Repository Normalized Entropy: {data['total_normalized_entropy']:.4f}
-    {separator}
-    {border}
-    """
+{'=' * 80}
+{title:^80}
+{'=' * 80}
+
+Repository Information:
+{tabulate(repo_info, tablefmt="simple_grid")}
+
+Top 5 Files with the Most Entropy:
+{tabulate(top_files_info, headers=["File Name", "Normalized Entropy"], tablefmt="simple_grid")}
+
+"""
     return report_content
