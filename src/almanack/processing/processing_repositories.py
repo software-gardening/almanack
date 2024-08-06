@@ -1,12 +1,12 @@
 """
-This module procesess GitHub data 
+This module procesess GitHub data
 """
 
 import json
 import pathlib
 
-from almanack.reporting.report import whole_repo_report
 from almanack.processing.generate_data import generate_whole_repo_data
+from almanack.reporting.report import whole_repo_report
 
 
 def process_repo_entropy(repo_path: str) -> None:
@@ -18,11 +18,10 @@ def process_repo_entropy(repo_path: str) -> None:
 
     Returns:
         str: A JSON string containing the repository data and entropy metrics.
-    
+
     Raises:
         FileNotFoundError: If the specified directory does not contain a valid Git repository.
     """
-
 
     repo_path = pathlib.Path(repo_path)
 

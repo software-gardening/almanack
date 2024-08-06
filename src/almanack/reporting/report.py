@@ -2,7 +2,8 @@
 This module creates entropy reports
 """
 
-from typing import Dict, Any 
+from typing import Any, Dict
+
 from tabulate import tabulate
 
 
@@ -24,13 +25,11 @@ def whole_repo_report(data: Dict[str, Any]) -> str:
     number_of_commits = data["number_of_commits"]
     number_of_files = data["number_of_files"]
     time_range_of_commits = data["time_range_of_commits"]
-    entropy_data = data[
-        "file_level_entropy"
-    ] 
+    entropy_data = data["file_level_entropy"]
 
     # Sort files by normalized entropy in descending order and get the top 5
     sorted_entropy = sorted(
-        entropy_data.items(), key=lambda item:item[1], reverse=True
+        entropy_data.items(), key=lambda item: item[1], reverse=True
     )
     top_files = sorted_entropy[:5]
 

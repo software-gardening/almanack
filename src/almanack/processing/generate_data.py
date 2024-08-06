@@ -13,7 +13,8 @@ import pygit2
 from .calculate_entropy import calculate_aggregate_entropy, calculate_normalized_entropy
 from .git_operations import clone_repository, get_commits, get_edited_files
 
-def generate_whole_repo_data(repo_path: str) -> None: 
+
+def generate_whole_repo_data(repo_path: str) -> None:
     """
     Generates comprehensive data for a GitHub repository.
 
@@ -83,7 +84,7 @@ def generate_whole_repo_data(repo_path: str) -> None:
     except Exception as e:
         # If processing fails, return an error dictionary
         return {"repo_path": str(repo_path), "error": str(e)}
-    
+
 
 def process_repo_for_analysis(
     repo_url: str,
