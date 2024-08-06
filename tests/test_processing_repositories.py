@@ -5,7 +5,7 @@ Testing report.py functionality
 import json
 import pathlib
 
-from almanack.reporting.report import process_repo_entropy
+from almanack.processing.generate_data import generate_whole_repo_data
 
 
 def test_process_repo_entropy(repository_paths: dict[str, pathlib.Path]) -> None:
@@ -14,7 +14,7 @@ def test_process_repo_entropy(repository_paths: dict[str, pathlib.Path]) -> None
     """
     for label, repo_path in repository_paths.items():
         # Call the CLI function directly
-        json_string = process_repo_entropy(str(repo_path))
+        json_string = generate_whole_repo_data(str(repo_path))
 
         # Check that the JSON string is not empty
         assert json_string.strip() != ""

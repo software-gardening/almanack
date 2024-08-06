@@ -1,5 +1,5 @@
 """
-Testing repository_processing functionality
+Testing generate_data functionality
 """
 
 import pathlib
@@ -9,9 +9,9 @@ import tempfile
 from almanack.processing.generate_data import generate_whole_repo_data
 
 
-def test_process_entire_repo(repository_paths: dict[str, pathlib.Path]) -> None:
+def test_generate_whole_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
     """
-    Test process_entire_repo function.
+    Testgenerate_whole_repo_data function.
     """
     for _, repo_path in repository_paths.items():
         # Create a temporary directory for testing
