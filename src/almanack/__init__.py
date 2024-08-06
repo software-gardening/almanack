@@ -5,7 +5,7 @@ from .processing.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
 )
-from .processing.processing_repositories import process_repo_for_analysis
+from .processing.generate_data import process_repo_for_analysis
 
 # note: version placeholder is updated during build
 # by poetry-dynamic-versioning.

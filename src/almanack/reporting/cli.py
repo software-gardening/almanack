@@ -4,14 +4,14 @@ Setup Entropy Report CLI through python-fire
 
 import fire
 
-from almanack.reporting import report
+import almanack.processing.processing_repositories as proc
 
 
 def trigger() -> None:
     """
     Run the CLI command to process `report.py` using python-fire.
     """
-    fire.Fire(report)
+    fire.Fire(proc)
 
 
 if __name__ == "__main__":
