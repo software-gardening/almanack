@@ -11,12 +11,18 @@ from almanack.processing.generate_data import generate_whole_repo_data
 
 def process_repo_entropy(repo_path: str) -> None:
     """
-    CLI entry point to process a repository for calculating entropy changes between commits and
-    generate a report.
+    Processes GitHub repository data to calculate a report.
 
     Args:
         repo_path (str): The local path to the Git repository.
+
+    Returns:
+        str: A JSON string containing the repository data and entropy metrics.
+    
+    Raises:
+        FileNotFoundError: If the specified directory does not contain a valid Git repository.
     """
+
 
     repo_path = pathlib.Path(repo_path)
 
@@ -31,7 +37,7 @@ def process_repo_entropy(repo_path: str) -> None:
     report_content = whole_repo_report(entropy_data)
 
     # Convert the dictionary to a JSON string
-    json_string = json.dumps(entropy_data, indent=4)
+    json_string = json.dumps(entropy_data)
 
     print(report_content)
 
