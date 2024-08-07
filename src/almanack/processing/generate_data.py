@@ -51,14 +51,15 @@ def generate_whole_repo_data(repo_path: str) -> None:
             file_names,
         )
 
-        # Calculate entropy for each file
+        # Calculate the normalized entropy for the changes between the first and most recent commits
         file_entropy = calculate_normalized_entropy(
             repo_path,
             str(first_commit.id),
             str(most_recent_commit.id),
             file_names,
         )
-
+        # Calculate the time span between commits in days. Using UTC for date conversion ensures uniformity
+        # and avoids issues related to different time zones and daylight saving changes.
         first_commit_date = (
             datetime.fromtimestamp(first_commit.commit_time, tz=timezone.utc)
             .date()
