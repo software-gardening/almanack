@@ -28,7 +28,7 @@ jobs:
         run: poetry install
 
       - name: Process repository entropy
-        run: poetry run almanack process_repo_entropy .
+        run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
       - name: Capture Entropy Report
         id: capture_report
