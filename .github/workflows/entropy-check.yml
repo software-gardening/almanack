@@ -50,5 +50,6 @@ jobs:
             \`\`\`
             ${{ env.REPORT_CONTENT }}
             \`\`\`
+          comment_tag: execution
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
