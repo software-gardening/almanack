@@ -30,19 +30,13 @@ jobs:
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
-      - name: Capture Entropy Report
-        id: capture_report
-        run: |
-          REPORT=$(cat entropy_report.txt | sed ':a;N;$!ba;s//\/g')
-          echo "REPORT=$REPORT" >> $GITHUB_ENV
-
       - name: Post Entropy Report
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             Entropy Report:
-            ```
-            ${{ env.REPORT }}
+            ```            
+            $(cat entropy_report.txt)
             ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
