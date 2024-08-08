@@ -37,9 +37,11 @@ jobs:
 
       - name: Post Entropy Report
         uses: thollander/actions-comment-pull-request@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          COMMENT: |
+        with:
+          message: |
             Entropy Report:
             ```
             $(echo ${{ env.BASE64_REPORT }} | base64 --decode)
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
