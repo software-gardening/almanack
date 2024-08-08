@@ -30,13 +30,16 @@ jobs:
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
-      - name: Output entropy report to variable
-        id: get_entropy_report
-        run: echo "REPORT=$(cat entropy_report.txt)" >> $GITHUB_ENV
+      - name: Encode and Save Report
+        run: |
+          base64_entropy_report=$(base64 -w 0 entropy_report.txt)
+          echo "BASE64_REPORT=$base64_entropy_report" >> $GITHUB_ENV
 
-      - name: Comment on pull request
-        uses: thollander/actions-comment-pull-request@v1
-        with:
-          message: |
-            **Entropy Report**
-            ${{ env.REPORT }}
+      - name: Post Entropy Report
+        uses: thollander/actions-comment-pull-request@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT: |
+            Entropy Report:
+            ```
+            $(echo ${{ env.BASE64_REPORT }} | base64 --decode)
