@@ -33,8 +33,7 @@ jobs:
       - name: Format Entropy Report
         id: format_report
         run: |
-          CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g' | awk '{print}' ORS='\n')
-          echo "$CONTENT"
+          CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g')
           echo "REPORT_CONTENT<<EOF" >> $GITHUB_ENV
           echo "$CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
