@@ -33,7 +33,7 @@ jobs:
       - name: Capture Entropy Report
         id: capture_report
         run: |
-          REPORT=$(cat entropy_report.txt | sed ':a;N;$!ba;s/\n/\\n/g')
+          REPORT=$(cat entropy_report.txt | sed ':a;N;$!ba;s//\/g')
           echo "REPORT=$REPORT" >> $GITHUB_ENV
 
       - name: Post Entropy Report
