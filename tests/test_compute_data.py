@@ -4,7 +4,7 @@ Testing generate_data functionality
 
 import pathlib
 
-from almanack.processing.generate_data import generate_whole_repo_data
+from almanack.processing.compute_data import generate_whole_repo_data
 
 
 def test_generate_whole_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:

@@ -5,7 +5,7 @@ This module procesess GitHub data
 import json
 import pathlib
 
-from almanack.processing.generate_data import generate_whole_repo_data
+from almanack.processing.compute_data import generate_whole_repo_data
 from almanack.reporting.report import whole_repo_report
 
 
