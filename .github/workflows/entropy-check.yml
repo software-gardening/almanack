@@ -33,20 +33,22 @@ jobs:
       - name: Format Entropy Report
         id: format_report
         run: |
-          # Ensure file content is correctly formatted and escaped
           CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g' | awk '{print}' ORS='\n')
           echo "Entropy Report:"
           echo "\`\`\`"
           echo "$CONTENT"
           echo "\`\`\`"
-          # Set the formatted content as output
-          echo "::set-output name=report::$(echo "$CONTENT")"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "REPORT_CONTENT<<EOF" >> $GITHUB_ENV
+          echo "$CONTENT" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: ${{ steps.format_report.outputs.report }}
+          message: |
+            Entropy Report:
+            \`\`\`
+            ${{ env.REPORT_CONTENT }}
+            \`\`\`
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
