@@ -28,12 +28,7 @@ jobs:
         run: poetry install
 
       - name: Process repository entropy
-        run: poetry run almanack process_repo_entropy . > entropy_report.txt
-
-      - name: Encode and Save Report
-        run: |
-          base64_entropy_report=$(base64 -w 0 entropy_report.txt)
-          echo "BASE64_REPORT=$base64_entropy_report" >> $GITHUB_ENV
+        run: poetry run almanack process_repo_entropy .
 
       - name: Post Entropy Report
         uses: thollander/actions-comment-pull-request@v2
@@ -41,7 +36,8 @@ jobs:
           message: |
             Entropy Report:
             ```
-            $(echo ${{ env.BASE64_REPORT }} | base64 --decode)
+            $(cat entropy_report.txt)
             ```
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
