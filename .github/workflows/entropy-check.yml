@@ -30,23 +30,23 @@ jobs:
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
-      - name: Format and Post Entropy Report
-        id: post_report
+      - name: Format Entropy Report
+        id: format_report
         run: |
-          # Format the content of entropy_report.txt
-          CONTENT=$(cat entropy_report.txt | awk '{print}' ORS='\n')
+          # Ensure file content is correctly formatted and escaped
+          CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g' | awk '{print}' ORS='\n')
           echo "Entropy Report:"
           echo "\`\`\`"
           echo "$CONTENT"
           echo "\`\`\`"
-          # Post the formatted report to the PR
-          echo "::set-output name=report::$(echo "$CONTENT" | sed 's/"/\\"/g')"
+          # Set the formatted content as output
+          echo "::set-output name=report::$(echo "$CONTENT")"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
-          message: ${{ steps.post_report.outputs.report }}
+          message: ${{ steps.format_report.outputs.report }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
