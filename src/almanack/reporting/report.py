@@ -55,10 +55,10 @@ def whole_repo_report(data: Dict[str, Any]) -> str:
 {title:^80}
 {'=' * 80}
 
-Repository Information:
+Repository information:
 {tabulate(repo_info, tablefmt="simple_grid")}
 
-Top 5 Files with the Most Entropy:
+Top 5 files with the most entropy:
 {tabulate(top_files_info, headers=["File Name", "Normalized Entropy"], tablefmt="simple_grid")}
 
 """

@@ -60,19 +60,13 @@ def generate_whole_repo_data(repo_path: str) -> None:
         )
         # Calculate the time span between commits in days. Using UTC for date conversion ensures uniformity
         # and avoids issues related to different time zones and daylight saving changes.
-        first_commit_date = (
-            datetime.fromtimestamp(first_commit.commit_time, tz=timezone.utc)
-            .date()
-            .isoformat()
-        )
-        most_recent_commit_date = (
-            datetime.fromtimestamp(most_recent_commit.commit_time, tz=timezone.utc)
-            .date()
-            .isoformat()
+        first_commit_date, most_recent_commit_date = (
+            datetime.fromtimestamp(commit.commit_time, tz=timezone.utc).date().isoformat()
+            for commit in (first_commit, most_recent_commit)
         )
 
-        # Prepare the data structure
-        data = {
+        # Return the data structure
+        return {
             "repo_path": str(repo_path),
             "total_normalized_entropy": normalized_total_entropy,
             "number_of_commits": len(commits),
@@ -80,7 +74,6 @@ def generate_whole_repo_data(repo_path: str) -> None:
             "time_range_of_commits": (first_commit_date, most_recent_commit_date),
             "file_level_entropy": file_entropy,
         }
-        return data
 
     except Exception as e:
         # If processing fails, return an error dictionary
@@ -144,8 +137,8 @@ def process_repo_for_analysis(
             time_of_existence,
         )
 
-    except Exception:
-        return None, None, None, None
+    except Exception as e:
+        return None, None, None, None, f"An error occurred while processing the repository: {str(e)}"
 
     finally:
-        shutil.rmtree(temp_dir)
+        shutil.rmtree(temp_dir) 
