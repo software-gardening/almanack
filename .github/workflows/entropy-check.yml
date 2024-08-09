@@ -28,8 +28,7 @@ jobs:
       - name: Format Entropy Report
         id: format_report
         run: |
-          CONTENT=$(< entropy_report.txt sed 's/"/\\"/g'
-          | awk '{print}' ORS='\n')
+          CONTENT=$(< entropy_report.txt sed 's/"/\\"/g' | awk '{print}' ORS='\n')
           {
             echo "$CONTENT"
             echo "REPORT_CONTENT<<EOF"
