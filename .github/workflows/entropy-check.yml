@@ -36,10 +36,11 @@ jobs:
             echo "EOF";
           } >> "$GITHUB_ENV"
 
-      - name: PR comment
+      - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
+            Entropy Report:
             ${{ env.REPORT_CONTENT }}
           comment_tag: execution
           mode: recreate
