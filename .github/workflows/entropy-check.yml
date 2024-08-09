@@ -25,14 +25,14 @@ jobs:
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
-      - name: Format Entropy Report
-        id: format_report
-        run: |
-          CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g' | awk '{print}' ORS='\n')
-          echo "$CONTENT"
-          echo "REPORT_CONTENT<<EOF" >> $GITHUB_ENV
-          echo "$CONTENT" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+      # - name: Format Entropy Report
+      #   id: format_report
+      #   run: |
+      #     CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g' | awk '{print}' ORS='\n')
+      #     echo "$CONTENT"
+      #     echo "REPORT_CONTENT<<EOF" >> $GITHUB_ENV
+      #     echo "$CONTENT" >> $GITHUB_ENV
+      #     echo "EOF" >> $GITHUB_ENV
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
