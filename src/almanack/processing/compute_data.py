@@ -58,10 +58,11 @@ def compute_repo_data(repo_path: str) -> None:
             str(most_recent_commit.id),
             file_names,
         )
-        # Calculate the time span between commits in days. Using UTC for date conversion ensures uniformity
-        # and avoids issues related to different time zones and daylight saving changes.
+        # Convert commit times to UTC datetime objects, then format as date strings.
         first_commit_date, most_recent_commit_date = (
-            datetime.fromtimestamp(commit.commit_time, tz=timezone.utc).date().isoformat()
+            datetime.fromtimestamp(commit.commit_time, tz=timezone.utc)
+            .date()
+            .isoformat()
             for commit in (first_commit, most_recent_commit)
         )
 
@@ -138,7 +139,13 @@ def process_repo_for_analysis(
         )
 
     except Exception as e:
-        return None, None, None, None, f"An error occurred while processing the repository: {str(e)}"
+        return (
+            None,
+            None,
+            None,
+            None,
+            f"An error occurred while processing the repository: {e!s}",
+        )
 
     finally:
-        shutil.rmtree(temp_dir) 
+        shutil.rmtree(temp_dir)
