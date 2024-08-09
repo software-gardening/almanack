@@ -15,7 +15,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    steps:
+    steps:    
+      - name: Install python env
+        uses: ./.github/actions/install-python-env
+        
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -26,9 +29,6 @@ jobs:
 
       # - name: Install dependencies
       #   run: poetry install
-      
-      - name: Install python env
-        uses: ./.github/actions/install-python-env
 
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
