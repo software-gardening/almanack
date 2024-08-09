@@ -26,17 +26,17 @@ jobs:
 
       - name: Install dependencies
         run: poetry install
-
+      
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
       - name: Format Entropy Report
         id: format_report
         run: |
-          CONTENT=$(cat entropy_report.txt | sed 's/"/\\"/g' | awk '{print}' ORS='\n')
-          echo "$CONTENT"
+          # Extract only the formatted report without JSON
+          REPORT_CONTENT=$(awk '/^=+/{f=1;next} f' entropy_report.txt)
           echo "REPORT_CONTENT<<EOF" >> $GITHUB_ENV
-          echo "$CONTENT" >> $GITHUB_ENV
+          echo "$REPORT_CONTENT" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
 
       - name: Comment on Pull Request
@@ -44,9 +44,7 @@ jobs:
         with:
           message: |
             Entropy Report:
-            \`\`\`
             ${{ env.REPORT_CONTENT }}
-            \`\`\`
           comment_tag: execution
           mode: recreate
         env:
