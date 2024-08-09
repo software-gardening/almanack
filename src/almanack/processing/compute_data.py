@@ -1,5 +1,5 @@
 """
-This module generates data for GitHub Repositories
+This module computes data for GitHub Repositories
 """
 
 import pathlib
@@ -14,9 +14,9 @@ from .calculate_entropy import calculate_aggregate_entropy, calculate_normalized
 from .git_operations import clone_repository, get_commits, get_edited_files
 
 
-def generate_whole_repo_data(repo_path: str) -> None:
+def compute_repo_data(repo_path: str) -> None:
     """
-    Generates comprehensive data for a GitHub repository.
+    Computes comprehensive data for a GitHub repository.
 
     Args:
         repo_path (str): The local path to the Git repository.

@@ -7,7 +7,7 @@ from typing import Any, Dict
 from tabulate import tabulate
 
 
-def whole_repo_report(data: Dict[str, Any]) -> str:
+def repo_report(data: Dict[str, Any]) -> str:
     """
     Returns the formatted entropy report as a string.
 
@@ -17,7 +17,7 @@ def whole_repo_report(data: Dict[str, Any]) -> str:
     Returns:
         str: Formatted entropy report.
     """
-    title = "Entropy Analysis Report"
+    title = "Software Information Entropy Report"
 
     # Extract details from data
     repo_path = data["repo_path"]

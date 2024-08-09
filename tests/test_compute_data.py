@@ -4,7 +4,7 @@ Testing generate_data functionality
 
 import pathlib
 
-from almanack.processing.compute_data import generate_whole_repo_data
+from almanack.processing.compute_data import compute_repo_data
 
 
 def test_generate_whole_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
@@ -13,7 +13,7 @@ def test_generate_whole_repo_data(repository_paths: dict[str, pathlib.Path]) -> 
     """
     for label, repo_path in repository_paths.items():
         # Call the function
-        data = generate_whole_repo_data(str(repo_path))
+        data = compute_repo_data(str(repo_path))
 
         # Check that data is not None and it's a dictionary
         assert data is not None

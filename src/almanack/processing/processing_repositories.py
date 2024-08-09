@@ -5,8 +5,8 @@ This module procesess GitHub data
 import json
 import pathlib
 
-from almanack.processing.compute_data import generate_whole_repo_data
-from almanack.reporting.report import whole_repo_report
+from almanack.processing.compute_data import compute_repo_data
+from almanack.reporting.report import repo_report
 
 
 def process_repo_entropy(repo_path: str) -> None:
@@ -30,10 +30,10 @@ def process_repo_entropy(repo_path: str) -> None:
         raise FileNotFoundError(f"The directory {repo_path} is not a repository")
 
     # Process the repository and get the dictionary
-    entropy_data = generate_whole_repo_data(str(repo_path))
+    entropy_data = compute_repo_data(str(repo_path))
 
     # Generate and print the report from the dictionary
-    report_content = whole_repo_report(entropy_data)
+    report_content = repo_report(entropy_data)
 
     # Convert the dictionary to a JSON string
     json_string = json.dumps(entropy_data)
