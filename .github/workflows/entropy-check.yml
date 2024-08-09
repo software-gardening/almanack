@@ -16,13 +16,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:    
-      - name: Install python env
-        uses: ./.github/actions/install-python-env
-        
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Install python env
+        uses: ./.github/actions/install-python-env
 
       # - name: Install Poetry
       #   run: curl -sSL https://install.python-poetry.org | python3 -
