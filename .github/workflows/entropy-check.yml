@@ -25,23 +25,19 @@ jobs:
 
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
-
+      
       - name: Format Entropy Report
         id: format_report
         run: |
           CONTENT=$(sed 's/"/\\"/g' entropy_report.txt | awk '{print}' ORS='\n')
-          {
-            echo "REPORT_CONTENT<<EOF";
-            echo "$CONTENT";
-            echo "EOF";
-          } >> "$GITHUB_ENV"
+          echo "$CONTENT" > report_content.txt
 
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             Entropy Report:
-            ${{ env.REPORT_CONTENT }}
+            $(cat report_content.txt)
           comment_tag: execution
           mode: recreate
         env:
