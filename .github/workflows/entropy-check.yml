@@ -1,4 +1,5 @@
 ---
+
 name: entropy-check
 
 on:
@@ -30,10 +31,11 @@ jobs:
         run: |
           CONTENT=$(sed 's/"/\\"/g' entropy_report.txt | awk '{print}' ORS='\n')
           {
-            echo "REPORT_CONTENT<<EOF" >> $GITHUB_ENV
-            echo "$CONTENT" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
-          }
+            echo "REPORT_CONTENT<<EOF";
+            echo "$CONTENT";
+            echo "EOF";
+          } >> "$GITHUB_ENV"
+
       - name: Comment on Pull Request
         uses: thollander/actions-comment-pull-request@v2
         with:
