@@ -18,16 +18,9 @@ jobs:
     steps:    
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+
       - name: Install python env
         uses: ./.github/actions/install-python-env
-
-      # - name: Install Poetry
-      #   run: curl -sSL https://install.python-poetry.org | python3 -
-
-      # - name: Install dependencies
-      #   run: poetry install
 
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
