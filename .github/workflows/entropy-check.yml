@@ -44,7 +44,9 @@ jobs:
         with:
           message: |
             Entropy Report:
+            \`\`\`
             ${{ env.REPORT_CONTENT }}
+            \`\`\`
           comment_tag: execution
           mode: recreate
         env:
