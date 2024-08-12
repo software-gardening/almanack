@@ -15,7 +15,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions: write-all
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
