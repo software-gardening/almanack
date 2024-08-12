@@ -43,6 +43,6 @@ jobs:
           comment_tag: execution
           mode: recreate
         env:
-          GITHUB_TOKEN: ${{ secrets.ENTROPY_PR_COMMENT }}
+          GITHUB_TOKEN: ${{ secrets.ENTROPY_PR_COMMENT}}
 
         
