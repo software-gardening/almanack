@@ -39,7 +39,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2.3.1
         with:
           message: |
-            ${{ env.ENTROPY_PR_COMMENT }}
+            ${{ env.REPORT_CONTENT }}
           comment_tag: execution
           mode: recreate
         env:
