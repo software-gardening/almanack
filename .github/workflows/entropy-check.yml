@@ -5,18 +5,14 @@ on:
   push:
     branches:
       - main
-      - GitHub-Action
   pull_request:
     branches:
       - main
-      - GitHub-Action
 
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      issues: write
       pull-requests: write
 
     steps:
