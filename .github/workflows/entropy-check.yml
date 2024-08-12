@@ -36,7 +36,7 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: PR comment
-        uses: thollander/actions-comment-pull-request@v2.3.2
+        uses: thollander/actions-comment-pull-request@v2.3.1
         with:
           message: |
             ${{ env.REPORT_CONTENT }}
