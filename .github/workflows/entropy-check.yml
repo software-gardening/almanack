@@ -2,10 +2,7 @@
 name: entropy-check
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
+  pull_request_target:
     branches:
       - main
 
@@ -27,20 +24,19 @@ jobs:
       - name: Format Entropy Report
         id: format_report
         run: |
-          CONTENT=$(sed 's/"/\\"/g' entropy_report.txt | awk '{print}' ORS='\n')
           {
             echo "REPORT_CONTENT<<EOF";
-            echo "$CONTENT";
+            echo "\`\`\`";
+            cat entropy_report.txt;
+            echo "\`\`\`";
             echo "EOF";
           } >> "$GITHUB_ENV"
 
       - name: PR comment
-        uses: thollander/actions-comment-pull-request@v2.3.1
+        uses: thollander/actions-comment-pull-request@v2.5
         with:
           message: |
             ${{ env.REPORT_CONTENT }}
           comment_tag: execution
           mode: recreate
-        env:
-          GITHUB_TOKEN: ${{ secrets.ENTROPY_PR_COMMENT }}
 
