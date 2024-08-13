@@ -17,6 +17,8 @@ jobs:
 
       - name: Install python env
         uses: ./.github/actions/install-python-env
+        with:
+          fetch-depth: 0
 
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
@@ -39,4 +41,3 @@ jobs:
             ${{ env.REPORT_CONTENT }}
           comment_tag: execution
           mode: recreate
-
