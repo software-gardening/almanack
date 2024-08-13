@@ -10,7 +10,7 @@ inputs:
   fetch-depth:
     description: The depth of the commit history to fetch during checkout
     required: false
-    default: 0
+    default: 1
 runs:
   using: "composite"
   steps:
