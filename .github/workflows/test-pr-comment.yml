@@ -1,0 +1,20 @@
+# used for running pytest tests
+name: test-pr-comment
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # tests the build of book content
+  test-pr-comment:
+    runs-on: "ubuntu-22.04"
+    steps:
+      - name: PR comment with reactions
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Hello world ! :wave:
+          reactions: eyes, rocket
