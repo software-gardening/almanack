@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  entropy-check:
     runs-on: ubuntu-latest
     permissions: write-all
 
@@ -33,7 +33,7 @@ jobs:
           } >> "$GITHUB_ENV"
 
       - name: PR comment
-        uses: thollander/actions-comment-pull-request@v2.5
+        uses: thollander/actions-comment-pull-request@v2.5.0
         with:
           message: |
             ${{ env.REPORT_CONTENT }}
