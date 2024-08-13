@@ -4,8 +4,10 @@ name: test-pr-comment
 on:
   push:
     branches: [main]
-  pull_request_target:
+  pull_request:
     branches: [main]
+  pull_request_target:
+    types: [opened, edited]
 
 jobs:
   # tests the build of book content
