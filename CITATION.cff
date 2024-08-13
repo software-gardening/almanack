@@ -60,3 +60,12 @@ references:
     url: https://doi.org/10.1109/ICSE.2009.5070510
     notes: |
       This article is a related resource that serves as inspiration in deriving our entropy calculation.
+  - title: Better Scientific Software Fellowship Program
+    type: grant
+    notes: |
+      This work was supported by the Better Scientific Software Fellowship Program,
+      a collaborative effort of the U.S. Department of Energy (DOE), Office of 
+      Advanced Scientific Research via ANL under Contract DE-AC02-06CH11357 and the
+      National Nuclear Security Administration Advanced Simulation and Computing
+      Program via LLNL under Contract DE-AC52-07NA27344; and by the National Science
+      Foundation (NSF) via SHI under Grant No. 2327079.
