@@ -3,7 +3,7 @@ name: test-pr-comment
 
 on:
   pull_request_target:
-    types: [assigned, opened, synchronize, reopened, edited]
+    branches: [main]
 
 permissions: 
     pull-requests: write
