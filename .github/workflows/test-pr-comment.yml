@@ -11,6 +11,8 @@ jobs:
   # tests the build of book content
   test-pr-comment:
     runs-on: "ubuntu-22.04"
+    permissions: 
+      pull-requests: write
     steps:
       - name: PR comment with reactions
         uses: thollander/actions-comment-pull-request@v2
@@ -18,3 +20,4 @@ jobs:
           message: |
             Hello world ! :wave:
           reactions: eyes, rocket
+          GITHUB_TOKEN: ${{ secrets.ENTROPY_PR_COMMENT }}
