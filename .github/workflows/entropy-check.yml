@@ -1,3 +1,4 @@
+# Used for displaying an entropy report for every PR opened to main
 ---
 name: entropy-check
 
@@ -17,17 +18,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Fetch the entire history of commits
 
       - name: Install python env
         uses: ./.github/actions/install-python-env
         with:
-          python-version: 3.11
-          fetch-depth: 0
+          fetch-depth: 0 # Ensure the action respects the desired fetch depth
 
+      # Runs the entropy calculation script and saves the output to a file
       - name: Process repository entropy
         run: poetry run almanack process_repo_entropy . > entropy_report.txt
 
+      # Formats the entropy report and saves it to GitHub Actions env
       - name: Format Entropy Report
         id: format_report
         run: |
@@ -45,4 +47,4 @@ jobs:
           message: |
             ${{ env.REPORT_CONTENT }}
           comment_tag: execution
-          mode: recreate
+          mode: recreate # Recreates the comment if it already exists
