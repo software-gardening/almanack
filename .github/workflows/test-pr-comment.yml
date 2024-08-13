@@ -2,19 +2,15 @@
 name: test-pr-comment
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   pull_request_target:
-    types: [opened, edited]
+
+permissions: 
+    pull-requests: write
 
 jobs:
   # tests the build of book content
   test-pr-comment:
     runs-on: "ubuntu-22.04"
-    permissions: 
-      pull-requests: write
     steps:
       - name: PR comment with reactions
         uses: thollander/actions-comment-pull-request@v2
