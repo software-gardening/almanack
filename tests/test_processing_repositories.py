@@ -25,7 +25,7 @@ def test_process_repo_entropy(repository_paths: dict[str, pathlib.Path]) -> None
         # Check for expected keys in the JSON output
         expected_keys = [
             "repo_path",
-            "total_normalized_entropy",
+            "normalized_total_entropy",
             "number_of_commits",
             "number_of_files",
             "time_range_of_commits",
