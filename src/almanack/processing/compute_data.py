@@ -6,7 +6,7 @@ import pathlib
 import shutil
 import tempfile
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional, Tuple
+from typing import Optional, Tuple
 
 import pygit2
 
@@ -14,18 +14,12 @@ from .calculate_entropy import calculate_aggregate_entropy, calculate_normalized
 from .git_operations import clone_repository, get_commits, get_edited_files
 
 
-def compute_repo_data(
-    repo_path: str,
-    most_recent_commit: Optional[pygit2.Commit],
-    oldest_commit: Optional[pygit2.Commit],
-) -> Dict[str, Any]:
+def compute_repo_data(repo_path: str) -> None:
     """
     Computes comprehensive data for a GitHub repository.
 
     Args:
         repo_path (str): The local path to the Git repository.
-        most_recent_commit (pygit2.Commit, optional): The most recent commit to analyze. Defaults to the latest commit.
-        oldest_commit (pygit2.Commit, optional): The oldest commit to analyze. Defaults to the first commit.
 
     Returns:
         dict: A dictionary containing the following key-value pairs:
@@ -42,15 +36,17 @@ def compute_repo_data(
         repo = pygit2.Repository(str(repo_path))
 
         # Retrieve the list of commits from the repository
-        commits = list(repo.walk(most_recent_commit.id, pygit2.GIT_SORT_TIME))
+        commits = get_commits(repo)
+        most_recent_commit = commits[0]
+        first_commit = commits[-1]
 
         # Get a list of files that have been edited between the first and most recent commit
-        file_names = get_edited_files(repo, oldest_commit, most_recent_commit)
+        file_names = get_edited_files(repo, first_commit, most_recent_commit)
 
         # Calculate the normalized total entropy for the repository
         normalized_total_entropy = calculate_aggregate_entropy(
             repo_path,
-            str(oldest_commit.id),
+            str(first_commit.id),
             str(most_recent_commit.id),
             file_names,
         )
@@ -58,7 +54,7 @@ def compute_repo_data(
         # Calculate the normalized entropy for the changes between the first and most recent commits
         file_entropy = calculate_normalized_entropy(
             repo_path,
-            str(oldest_commit.id),
+            str(first_commit.id),
             str(most_recent_commit.id),
             file_names,
         )
@@ -67,7 +63,7 @@ def compute_repo_data(
             datetime.fromtimestamp(commit.commit_time, tz=timezone.utc)
             .date()
             .isoformat()
-            for commit in (oldest_commit, most_recent_commit)
+            for commit in (first_commit, most_recent_commit)
         )
 
         # Return the data structure
@@ -83,6 +79,9 @@ def compute_repo_data(
     except Exception as e:
         # If processing fails, return an error dictionary
         return {"repo_path": str(repo_path), "error": str(e)}
+
+
+from typing import Any, Dict
 
 
 def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[str, Any]:
@@ -116,17 +115,45 @@ def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[st
         pr_commit = repo.get(pr_ref.target)
         main_commit = repo.get(main_ref.target)
 
-        # Reference compute_repo_data to calculate entropy data between the PR and main branch commits
-        result = compute_repo_data(repo_path, pr_commit, main_commit)
+        # Get the list of files that have been edited between the two commits
+        changed_files = get_edited_files(repo, main_commit, pr_commit)
+
+        # Calculate the total entropy introduced by the PR
+        total_entropy_introduced = calculate_aggregate_entropy(
+            repo_path,
+            str(main_commit.id),
+            str(pr_commit.id),
+            changed_files,
+        )
+
+        # Calculate the entropy for each file changed in the PR
+        file_entropy = calculate_normalized_entropy(
+            repo_path,
+            str(main_commit.id),
+            str(pr_commit.id),
+            changed_files,
+        )
+
+        # Convert commit times to UTC datetime objects, then format as date strings
+        pr_commit_date = (
+            datetime.fromtimestamp(pr_commit.commit_time, tz=timezone.utc)
+            .date()
+            .isoformat()
+        )
+        main_commit_date = (
+            datetime.fromtimestamp(main_commit.commit_time, tz=timezone.utc)
+            .date()
+            .isoformat()
+        )
 
         # Return the data structure
         return {
             "pr_branch": pr_branch,
             "main_branch": main_branch,
-            "total_entropy_introduced": result["total_normalized_entropy"],
-            "number_of_files_changed": result["number_of_files"],
-            "entropy_per_file": result["file_level_entropy"],
-            "commits": result["time_range_of_commits"],
+            "total_entropy_introduced": total_entropy_introduced,
+            "number_of_files_changed": len(changed_files),
+            "entropy_per_file": file_entropy,
+            "commits": (main_commit_date, pr_commit_date),
         }
 
     except Exception as e:
