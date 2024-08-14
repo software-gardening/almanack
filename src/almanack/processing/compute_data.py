@@ -41,18 +41,6 @@ def compute_repo_data(
         repo_path = pathlib.Path(repo_path).resolve()
         repo = pygit2.Repository(str(repo_path))
 
-        # Get oldest and msot recent commits if they are not provided
-        most_recent_commit = (
-            repo[repo.head.target]
-            if not most_recent_commit
-            else repo[most_recent_commit]
-        )
-        oldest_commit = (
-            next(repo.walk(repo.head.target, pygit2.GIT_SORT_REVERSE))
-            if not oldest_commit
-            else repo[oldest_commit]
-        )
-
         # Retrieve the list of commits from the repository
         commits = list(repo.walk(most_recent_commit.id, pygit2.GIT_SORT_TIME))
 
@@ -131,6 +119,7 @@ def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[st
         # Reference compute_repo_data to calculate entropy data between the PR and main branch commits
         result = compute_repo_data(repo_path, pr_commit, main_commit)
 
+        # Return the data structure
         return {
             "pr_branch": pr_branch,
             "main_branch": main_branch,
@@ -139,6 +128,7 @@ def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[st
             "entropy_per_file": result["file_level_entropy"],
             "commits": result["time_range_of_commits"],
         }
+
     except Exception as e:
         # If processing fails, return an informative error
         return {"pr_branch": pr_branch, "main_branch": main_branch, "error": str(e)}

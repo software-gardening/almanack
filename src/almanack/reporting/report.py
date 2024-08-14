@@ -75,7 +75,7 @@ def pr_report(data: Dict[str, Any]) -> str:
     Returns:
         str: Formatted GitHub markdown.
     """
-    title = "Pull Request Entropy Report"
+    title = "Pull Request Information Entropy Report"
 
     # Extract details from data
     pr_branch = data["pr_branch"]
@@ -114,7 +114,7 @@ Pull request comparison:
 {tabulate(pr_info, tablefmt="github")}
 
 Files with above average entropy:
-{tabulate(top_files_info, headers=["File Name", "Entropy Introduced"], tablefmt="github")}
+{tabulate(top_files_info, headers=["File Name", "File Entropy"], tablefmt="github")}
 
 """
     return report_content

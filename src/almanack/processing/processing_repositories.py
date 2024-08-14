@@ -2,9 +2,10 @@
 This module procesess GitHub data
 """
 
-import json
 import pathlib
 from typing import Optional
+
+import pygit2
 
 from almanack.processing.compute_data import compute_pr_data, compute_repo_data
 from almanack.reporting.report import pr_report, repo_report
@@ -34,19 +35,23 @@ def process_repo_entropy(
     if not repo_path.exists() or not (repo_path / ".git").exists():
         raise FileNotFoundError(f"The directory {repo_path} is not a repository")
 
+    repo = pygit2.Repository(str(repo_path))
+
+    most_recent_commit = (
+        repo[repo.head.target] if not most_recent_commit else repo[most_recent_commit]
+    )
+    oldest_commit = (
+        next(repo.walk(repo.head.target, pygit2.GIT_SORT_REVERSE))
+        if not oldest_commit
+        else repo[oldest_commit]
+    )
     # Process the repository and get the dictionary
     entropy_data = compute_repo_data(str(repo_path), most_recent_commit, oldest_commit)
 
     # Generate and print the report from the dictionary
     report_content = repo_report(entropy_data)
 
-    # Convert the dictionary to a JSON string
-    json_string = json.dumps(entropy_data)
-
     print(report_content)
-
-    # Return the JSON string and report content
-    return json_string
 
 
 def process_pr_entropy(repo_path: str, pr_branch: str, main_branch: str) -> str:
