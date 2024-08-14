@@ -49,7 +49,7 @@ def process_repo_entropy(
     return json_string
 
 
-def process_pr_entropy(repo_path: str, pr_branch: str, main_branch: str):
+def process_pr_entropy(repo_path: str, pr_branch: str, main_branch: str) -> str:
     """
     Processes GitHub PR data to calculate a report comparing the PR branch to the main branch.
 
