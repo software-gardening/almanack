@@ -22,7 +22,7 @@ def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
         # Check for expected keys
         expected_keys = [
             "repo_path",
-            "total_normalized_entropy",
+            "normalized_total_entropy",
             "number_of_commits",
             "number_of_files",
             "time_range_of_commits",
@@ -32,3 +32,4 @@ def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
 
         # Check that repo_path in the output is the same as the input
         assert data["repo_path"] == str(repo_path)
+
