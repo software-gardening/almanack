@@ -69,7 +69,7 @@ def compute_repo_data(repo_path: str) -> None:
         # Return the data structure
         return {
             "repo_path": str(repo_path),
-            "total_normalized_entropy": normalized_total_entropy,
+            "normalized_total_entropy": normalized_total_entropy,
             "number_of_commits": len(commits),
             "number_of_files": len(file_names),
             "time_range_of_commits": (first_commit_date, most_recent_commit_date),
@@ -152,7 +152,7 @@ def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[st
             "main_branch": main_branch,
             "total_entropy_introduced": total_entropy_introduced,
             "number_of_files_changed": len(changed_files),
-            "entropy_per_file": file_entropy,
+            "file_level_entropy": file_entropy,
             "commits": (main_commit_date, pr_commit_date),
         }
 

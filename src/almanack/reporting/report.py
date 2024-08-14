@@ -21,7 +21,7 @@ def repo_report(data: Dict[str, Any]) -> str:
 
     # Extract details from data
     repo_path = data["repo_path"]
-    total_normalized_entropy = data["total_normalized_entropy"]
+    total_normalized_entropy = data["normalized_total_entropy"]
     number_of_commits = data["number_of_commits"]
     number_of_files = data["number_of_files"]
     time_range_of_commits = data["time_range_of_commits"]
@@ -82,7 +82,7 @@ def pr_report(data: Dict[str, Any]) -> str:
     main_branch = data["main_branch"]
     total_entropy_introduced = data["total_entropy_introduced"]
     number_of_files_changed = data["number_of_files_changed"]
-    entropy_data = data["entropy_per_file"]
+    entropy_data = data["file_level_entropy"]
     commits = data["commits"]
 
     # Filter files with entropy above average
