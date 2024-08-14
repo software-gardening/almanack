@@ -2,7 +2,6 @@
 This module procesess GitHub data
 """
 
-import json
 import pathlib
 
 from almanack.processing.compute_data import compute_pr_data, compute_repo_data
