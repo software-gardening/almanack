@@ -1,12 +1,25 @@
 """
-Sets up Git repositories with baseline content, adds entropy, and commits changes.
+Functions for creating test repositories in order to
+test almanack capabilities.
 """
 
 import pathlib
 
-import git
+import pygit2
 
 from .insert_code import add_LOC
+
+
+def set_repo_user_config(repo):
+    """
+    Sets user.name and user.email in the repository config.
+
+    Args:
+        repo (pygit2.Repository): The repository object.
+    """
+    config = repo.config
+    config["user.name"] = "A Name"  # Replace with your name
+    config["user.email"] = "an_email@example.com"  # Replace with your email
 
 
 def commit_changes(repo_path: pathlib.Path, message: str) -> None:
@@ -17,9 +30,29 @@ def commit_changes(repo_path: pathlib.Path, message: str) -> None:
         repo_path (pathlib.Path): The path to the Git repository.
         message (str): The commit message.
     """
-    repo = git.Repo(repo_path)
-    repo.git.add(A=True)
-    repo.index.commit(message)
+
+    # Open the repository
+    repo = pygit2.Repository(str(repo_path))
+
+    # Stage all changes (equivalent to `git add .`)
+    index = repo.index
+    index.add_all()
+    index.write()
+
+    # Get author and committer information
+    signature = repo.default_signature
+
+    # Commit the changes
+    tree = index.write_tree()
+    parent_commit = repo.head.target
+    repo.create_commit(
+        "refs/heads/master",  # reference where to commit
+        signature,  # author
+        signature,  # committer
+        message,  # commit message
+        tree,  # tree object for the commit
+        [parent_commit],  # parent commit (list for merge commits)
+    )
 
 
 def create_repositories(base_path: pathlib.Path) -> None:
@@ -43,28 +76,66 @@ def create_repositories(base_path: pathlib.Path) -> None:
         Each repository will have exactly two commits: one for the baseline content and
         one for the added lines of code.
     """
+
     # Create directories for test_repo_1 and test_repo_2
     for repo_name in ["3_file_repo", "1_file_repo"]:
         repo_path = base_path / repo_name
         repo_path.mkdir(parents=True, exist_ok=True)
-        repo = git.Repo.init(repo_path)
+        repo = pygit2.init_repository(path=str(repo_path), bare=False)
+
+        # Set user.name and user.email in the config
+        set_repo_user_config(repo)
 
         if repo_name == "3_file_repo":
             for i in range(1, 4):  # Create three files for test_repo_1
                 md_file = repo_path / f"file_{i}.md"
+                # Resolve the file path to avoid path issues
+                md_file = md_file.resolve()
+
                 # Add baseline content to Markdown files
                 with open(md_file, "w") as f:
                     f.write("Baseline content")
-                repo.index.add([str(md_file)])
-            repo.index.commit("Committed baseline content to test_repo_1")
+
+                # Add the file to the index
+                repo.index.add(
+                    str(md_file.relative_to(repo_path))
+                )  # Relative path is crucial
+            repo.index.write()
+            tree = repo.index.write_tree()
+            author = repo.default_signature
+            repo.create_commit(
+                "refs/heads/master",  # reference
+                author,  # author
+                author,  # committer
+                "Committed baseline content to test_repo_1",  # message
+                tree,  # tree object
+                [],  # no parents for initial commit
+            )
 
         elif repo_name == "1_file_repo":
             md_file = repo_path / "file_1.md"
+            # Resolve the file path to avoid path issues
+            md_file = md_file.resolve()
+
             # Add baseline content to the Markdown file
             with open(md_file, "w") as f:
                 f.write("Baseline content")
-            repo.index.add([str(md_file)])
-            repo.index.commit("Committed baseline content to test_repo_2")
+
+            # Add the file to the index
+            repo.index.add(
+                str(md_file.relative_to(repo_path))
+            )  # Relative path is crucial
+            repo.index.write()
+            tree = repo.index.write_tree()
+            author = repo.default_signature
+            repo.create_commit(
+                "refs/heads/master",  # reference
+                author,  # author
+                author,  # committer
+                "Committed baseline content to test_repo_2",  # message
+                tree,  # tree object
+                [],  # no parents for initial commit
+            )
 
     # Run the add_entropy.py module to insert additional lines
     add_LOC(base_path)
