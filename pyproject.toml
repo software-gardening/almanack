@@ -109,6 +109,10 @@ if [ $(echo "$output" | wc -l) -gt 1 ]; then
 echo "$output"; exit 1;
 fi
 """
+# add a convenience task for package-focused testing
+pkg-tests.shell = """
+pytest --ignore tests/test_build.py
+"""
 
 [tool.poetry-dynamic-versioning]
 enable = true
