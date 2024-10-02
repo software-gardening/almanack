@@ -6,13 +6,15 @@ import math
 import pathlib
 from typing import List
 
+import pygit2
+
 from ...git import get_loc_changed
 
 
 def calculate_normalized_entropy(
     repo_path: pathlib.Path,
-    source_commit: str,
-    target_commit: str,
+    source_commit: pygit2.Commit,
+    target_commit: pygit2.Commit,
     file_names: list[str],
 ) -> dict[str, float]:
     """
@@ -22,8 +24,8 @@ def calculate_normalized_entropy(
 
     Args:
         repo_path (str): The file path to the git repository.
-        source_commit (str): The git hash of the source commit.
-        target_commit (str): The git hash of the target commit.
+        source_commit (pygit2.Commit): The git hash of the source commit.
+        target_commit (pygit2.Commit): The git hash of the target commit.
         file_names (list[str]): List of file names to calculate entropy for.
 
     Returns:
@@ -61,8 +63,8 @@ def calculate_normalized_entropy(
 
 def calculate_aggregate_entropy(
     repo_path: pathlib.Path,
-    source_commit: str,
-    target_commit: str,
+    source_commit: pygit2.Commit,
+    target_commit: pygit2.Commit,
     file_names: List[str],
 ) -> float:
     """
@@ -71,8 +73,8 @@ def calculate_aggregate_entropy(
 
     Args:
         repo_path (str): The file path to the git repository.
-        source_commit (str): The git hash of the source commit.
-        target_commit (str): The git hash of the target commit.
+        source_commit (pygit2.Commit): The git hash of the source commit.
+        target_commit (pygit2.Commit): The git hash of the target commit.
         file_names (list[str]): List of file names to calculate entropy for.
 
     Returns:

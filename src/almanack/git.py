@@ -50,7 +50,9 @@ def get_commits(repo: pygit2.Repository) -> List[pygit2.Commit]:
 
 
 def get_edited_files(
-    repo: pygit2.Repository, source_commit: pygit2.Commit, target_commit: pygit2.Commit
+    repo: pygit2.Repository,
+    source_commit: pygit2.Commit,
+    target_commit: pygit2.Commit,
 ) -> List[str]:
     """
     Finds all files that have been edited, added, or deleted between two specific commits.
@@ -63,6 +65,7 @@ def get_edited_files(
     Returns:
         List[str]: List of file names that have been edited, added, or deleted between the two commits.
     """
+
     # Create a set to store unique file names that have been edited
     file_names = set()
     # Get the differences (diff) between the source and target commits

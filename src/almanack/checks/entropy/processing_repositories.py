@@ -4,7 +4,7 @@ This module procesess GitHub data
 
 import pathlib
 
-from almanack.checks.entropy.compute_data import compute_pr_data, compute_repo_data
+from almanack.checks.data import compute_pr_data, compute_repo_data
 from almanack.reporting.report import pr_report, repo_report
 
 

@@ -1,0 +1,46 @@
+---
+checks:
+  - name: "repo-path"
+    id: "SGA-META-0001"
+    result-type: "str"
+    result-data-key: "repo_path"
+    description: >-
+      Repository path (local directory).
+  - name: "repo-commits"
+    id: "SGA-META-0002"
+    result-type: "int"
+    result-data-key: "number_of_commits"
+    description: >-
+      Total number of commits for the repository.
+  - name: "repo-file-count"
+    id: "SGA-META-0003"
+    result-type: "int"
+    result-data-key: "number_of_files"
+    description: >-
+      Total number of files tracked within the repository.
+  - name: "repo-commit-time-range"
+    id: "SGA-META-0004"
+    result-type: "str"
+    result-data-key: "time_range_of_commits"
+    description: >-
+      Starting commit and most recent commit for the repository.
+  - name: "agg-info-entropy"
+    id: "SGA-VS-0001"
+    result-type: "float"
+    result-data-key: "normalized_total_entropy"
+    description: >-
+      Aggregated information entropy for all files within a repository 
+      given a range between two commits (by default, the first and latest commits).
+      Represents value from 0 to 1 where 0 equals no information entropy
+      and 1 represents maximum information entropy.
+  - name: "file-info-entropy"
+    id: "SGA-VS-0002"
+    result-type: "float"
+    result-data-key: "file_level_entropy"
+    description: >-
+      File-level information entropy for all files within a repository 
+      given a range between two commits (by default, the first and latest commits).
+      Represents value from 0 to 1 where 0 equals no information entropy
+      and 1 represents maximum information entropy.
+    
+

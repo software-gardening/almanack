@@ -6,12 +6,57 @@ import pathlib
 import shutil
 import tempfile
 from datetime import datetime, timezone
-from typing import Optional, Tuple
+from typing import Any, Dict, Optional, Tuple
 
 import pygit2
+import yaml
 
-from .calculate_entropy import calculate_aggregate_entropy, calculate_normalized_entropy
-from ...git import clone_repository, get_commits, get_edited_files
+from ..git import clone_repository, get_commits, get_edited_files
+from .entropy.calculate_entropy import (
+    calculate_aggregate_entropy,
+    calculate_normalized_entropy,
+)
+
+CHECKS_TABLE = f"{pathlib.Path(__file__).parent!s}/checks.yml"
+
+
+def get_table(repo_path: str) -> Dict[str, Any]:
+    """
+    Perform checks on a repository and return the results in a structured format.
+
+    This function reads a checks table from a predefined YAML file, computes relevant
+    data from the specified repository, and associates the computed results with
+    the checks defined in the checks table. If an error occurs during data
+    computation, an exception is raised.
+
+    Args:
+        repo_path (str): The file path to the repository for which checks are
+        to be performed.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the checks and
+        their associated results. Each dictionary includes the original check data
+        along with the computed result under the key "result".
+
+    Raises:
+        ReferenceError: If there is an error encountered while processing the
+        data, providing context in the error message.
+    """
+
+    # read the checks table
+    with open(CHECKS_TABLE, "r") as f:
+        checks_table = yaml.safe_load(f)["checks"]
+
+    # gather data for use in the checks table
+    data = compute_repo_data(repo_path=repo_path)
+
+    if "error" in data.keys():
+        raise ReferenceError("Encountered an error with processing the data.", data)
+
+    # return checks table with output
+    return [
+        {**check, "result": data[check["result-data-key"]]} for check in checks_table
+    ]
 
 
 def compute_repo_data(repo_path: str) -> None:

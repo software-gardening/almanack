@@ -8,6 +8,7 @@ import shutil
 import subprocess
 
 import pytest
+
 from tests.data.almanack.repo_setup.create_repo import create_repositories
 
 

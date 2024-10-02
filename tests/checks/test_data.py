@@ -4,14 +4,15 @@ Testing generate_data functionality
 
 import pathlib
 
-from almanack.checks.entropy.compute_data import compute_repo_data
+from almanack.checks.data import compute_repo_data, get_table
+import pandas as pd
 
 
 def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Testing generate_whole_repo_data produces the expected output for given repositories.
     """
-    for label, repo_path in repository_paths.items():
+    for _, repo_path in repository_paths.items():
         # Call the function
         data = compute_repo_data(str(repo_path))
 
@@ -32,3 +33,20 @@ def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
 
         # Check that repo_path in the output is the same as the input
         assert data["repo_path"] == str(repo_path)
+
+def test_get_table(repository_paths: dict[str, pathlib.Path]) -> None:
+    """
+    Tests the almanack.checks.data.get_table function
+    """
+
+    for name, repo_path in repository_paths.items():
+
+        # create a table from the repo
+        table = get_table(str(repo_path))
+
+        # check table type
+        assert isinstance(table, list)
+
+        # check that the columns appear as expected when forming a dataframe of the output
+        assert pd.DataFrame(table).columns.tolist() == ['name', 'id', 'result-type', 'result-data-key', 'description', 'result']
+
