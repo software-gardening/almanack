@@ -55,7 +55,11 @@ def get_table(repo_path: str) -> Dict[str, Any]:
 
     # return checks table with output
     return [
-        {**check, "result": data[check["result-data-key"]]} for check in checks_table
+        # remove the result-data-key as this won't be useful to external output
+        {key: val for key, val in check.items() if key != "result-data-key"}
+        # add the data results for the check to the table
+        | {"result": data[check["result-data-key"]]}
+        for check in checks_table
     ]
 
 

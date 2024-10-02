@@ -20,7 +20,7 @@ checks:
       Total number of files tracked within the repository.
   - name: "repo-commit-time-range"
     id: "SGA-META-0004"
-    result-type: "str"
+    result-type: "tuple"
     result-data-key: "time_range_of_commits"
     description: >-
       Starting commit and most recent commit for the repository.
@@ -36,7 +36,7 @@ checks:
       entropy.
   - name: "file-info-entropy"
     id: "SGA-VS-0002"
-    result-type: "float"
+    result-type: "dict"
     result-data-key: "file_level_entropy"
     description: >-
       File-level information entropy for all files within a repository

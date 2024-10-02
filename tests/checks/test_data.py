@@ -54,7 +54,6 @@ def test_get_table(repository_paths: dict[str, pathlib.Path]) -> None:
             "name",
             "id",
             "result-type",
-            "result-data-key",
             "description",
             "result",
         ]
