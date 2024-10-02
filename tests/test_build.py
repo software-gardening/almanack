@@ -5,7 +5,7 @@ Testing content builds and related aspects.
 import pathlib
 import subprocess
 
-from conftest import check_subproc_run_for_nonzero
+from .utils import check_subproc_run_for_nonzero
 
 
 def test_links(build_jupyter_book: pathlib.Path) -> None:
