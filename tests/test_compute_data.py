@@ -4,7 +4,7 @@ Testing generate_data functionality
 
 import pathlib
 
-from almanack.processing.compute_data import compute_repo_data
+from almanack.checks.entropy.compute_data import compute_repo_data
 
 
 def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:

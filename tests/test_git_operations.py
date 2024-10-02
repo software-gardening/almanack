@@ -7,7 +7,7 @@ from typing import Any
 
 import pygit2
 
-from almanack.processing.git_operations import (
+from almanack.git import (
     clone_repository,
     get_commits,
     get_edited_files,

@@ -4,7 +4,7 @@ Setup Entropy Report CLI through python-fire
 
 import fire
 
-import almanack.processing.processing_repositories as report
+import almanack.checks.entropy.processing_repositories as report
 
 
 def trigger() -> None:

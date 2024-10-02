@@ -6,7 +6,7 @@ import pathlib
 
 from test_git_operations import get_most_recent_commits
 
-from almanack.processing.calculate_entropy import (
+from almanack.checks.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
 )

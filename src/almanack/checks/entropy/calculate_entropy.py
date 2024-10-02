@@ -6,7 +6,7 @@ import math
 import pathlib
 from typing import List
 
-from .git_operations import get_loc_changed
+from ...git import get_loc_changed
 
 
 def calculate_normalized_entropy(

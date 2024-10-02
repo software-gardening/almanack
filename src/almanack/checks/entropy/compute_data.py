@@ -11,7 +11,7 @@ from typing import Optional, Tuple
 import pygit2
 
 from .calculate_entropy import calculate_aggregate_entropy, calculate_normalized_entropy
-from .git_operations import clone_repository, get_commits, get_edited_files
+from ...git import clone_repository, get_commits, get_edited_files
 
 
 def compute_repo_data(repo_path: str) -> None:
