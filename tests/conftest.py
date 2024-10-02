@@ -9,8 +9,9 @@ import subprocess
 
 import pytest
 
-from .utils import check_subproc_run_for_nonzero
 from tests.data.almanack.repo_setup.create_repo import create_repositories
+
+from .utils import check_subproc_run_for_nonzero
 
 
 @pytest.fixture()

@@ -29,18 +29,18 @@ checks:
     result-type: "float"
     result-data-key: "normalized_total_entropy"
     description: >-
-      Aggregated information entropy for all files within a repository 
-      given a range between two commits (by default, the first and latest commits).
-      Represents value from 0 to 1 where 0 equals no information entropy
-      and 1 represents maximum information entropy.
+      Aggregated information entropy for all files within a repository
+      given a range between two commits (by default, the first and
+      latest commits). Represents value from 0 to 1 where 0 equals
+      no information entropy and 1 represents maximum information
+      entropy.
   - name: "file-info-entropy"
     id: "SGA-VS-0002"
     result-type: "float"
     result-data-key: "file_level_entropy"
     description: >-
-      File-level information entropy for all files within a repository 
-      given a range between two commits (by default, the first and latest commits).
-      Represents value from 0 to 1 where 0 equals no information entropy
-      and 1 represents maximum information entropy.
-    
-
+      File-level information entropy for all files within a repository
+      given a range between two commits (by default, the first and
+      latest commits). Shows all files and their corresponding
+      information entropy measurements relative to the other files
+      found within the range of commits.

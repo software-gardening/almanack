@@ -4,8 +4,9 @@ Testing generate_data functionality
 
 import pathlib
 
-from almanack.checks.data import compute_repo_data, get_table
 import pandas as pd
+
+from almanack.checks.data import compute_repo_data, get_table
 
 
 def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
@@ -34,6 +35,7 @@ def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
         # Check that repo_path in the output is the same as the input
         assert data["repo_path"] == str(repo_path)
 
+
 def test_get_table(repository_paths: dict[str, pathlib.Path]) -> None:
     """
     Tests the almanack.checks.data.get_table function
@@ -48,5 +50,11 @@ def test_get_table(repository_paths: dict[str, pathlib.Path]) -> None:
         assert isinstance(table, list)
 
         # check that the columns appear as expected when forming a dataframe of the output
-        assert pd.DataFrame(table).columns.tolist() == ['name', 'id', 'result-type', 'result-data-key', 'description', 'result']
-
+        assert pd.DataFrame(table).columns.tolist() == [
+            "name",
+            "id",
+            "result-type",
+            "result-data-key",
+            "description",
+            "result",
+        ]
