@@ -8,6 +8,7 @@ import shutil
 import subprocess
 
 import pytest
+from tests.data.almanack.repo_setup.create_repo import create_repositories
 
 
 def check_subproc_run_for_nonzero(completed_proc: subprocess.CompletedProcess) -> None:
@@ -74,9 +75,6 @@ def build_jupyter_book(
     check_subproc_run_for_nonzero(completed_proc=result)
 
     return jupyter_book_test_target
-
-
-from data.almanack.repo_setup.create_repo import create_repositories
 
 
 @pytest.fixture(scope="session")
