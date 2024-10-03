@@ -8,8 +8,7 @@ logo: assets/software-gardening-logo.png
 #######################################################################################
 # Execution settings
 execute:
-  # avoid executing notebooks to conserve resources
-  execute_notebooks: off
+  execute_notebooks: force
 
 #######################################################################################
 # HTML-specific settings
