@@ -38,7 +38,7 @@ def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:
 
 def test_get_table(repository_paths: dict[str, pathlib.Path]) -> None:
     """
-    Tests the almanack.checks.data.get_table function
+    Tests the almanack.metrics.data.get_table function
     """
 
     for name, repo_path in repository_paths.items():
