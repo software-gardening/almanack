@@ -53,12 +53,16 @@ def get_table(repo_path: str) -> Dict[str, Any]:
     if "error" in data.keys():
         raise ReferenceError("Encountered an error with processing the data.", data)
 
-    # return metrics table with output
+    # return metrics table (list of dictionaries as records of metrics)
     return [
-        # remove the result-data-key as this won't be useful to external output
-        {key: val for key, val in metric.items() if key != "result-data-key"}
-        # add the data results for the metrics to the table
-        | {"result": data[metric["result-data-key"]]}
+        {
+            # remove the result-data-key as this won't be useful to external output
+            **{key: val for key, val in metric.items() if key != "result-data-key"},
+            # add the data results for the metrics to the table
+            "result": data[metric["result-data-key"]],
+        }
+        # for each metric, gather the related process data and add to a dictionary 
+        # related to that metric along with others in a list.
         for metric in metrics_table
     ]
 
