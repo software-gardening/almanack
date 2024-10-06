@@ -61,7 +61,7 @@ def get_table(repo_path: str) -> Dict[str, Any]:
             # add the data results for the metrics to the table
             "result": data[metric["result-data-key"]],
         }
-        # for each metric, gather the related process data and add to a dictionary 
+        # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
         for metric in metrics_table
     ]
