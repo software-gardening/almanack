@@ -17,25 +17,25 @@ from .entropy.calculate_entropy import (
     calculate_normalized_entropy,
 )
 
-CHECKS_TABLE = f"{pathlib.Path(__file__).parent!s}/checks.yml"
+METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 
 
 def get_table(repo_path: str) -> Dict[str, Any]:
     """
-    Perform checks on a repository and return the results in a structured format.
+    Gather metrics on a repository and return the results in a structured format.
 
-    This function reads a checks table from a predefined YAML file, computes relevant
+    This function reads a metrics table from a predefined YAML file, computes relevant
     data from the specified repository, and associates the computed results with
-    the checks defined in the checks table. If an error occurs during data
+    the metrics defined in the metrics table. If an error occurs during data
     computation, an exception is raised.
 
     Args:
-        repo_path (str): The file path to the repository for which checks are
+        repo_path (str): The file path to the repository for which metrics are
         to be performed.
 
     Returns:
-        List[Dict[str, Any]]: A list of dictionaries containing the checks and
-        their associated results. Each dictionary includes the original check data
+        List[Dict[str, Any]]: A list of dictionaries containing the metrics and
+        their associated results. Each dictionary includes the original metrics data
         along with the computed result under the key "result".
 
     Raises:
@@ -43,23 +43,23 @@ def get_table(repo_path: str) -> Dict[str, Any]:
         data, providing context in the error message.
     """
 
-    # read the checks table
-    with open(CHECKS_TABLE, "r") as f:
-        checks_table = yaml.safe_load(f)["checks"]
+    # read the metrics table
+    with open(METRICS_TABLE, "r") as f:
+        metrics_table = yaml.safe_load(f)["metrics"]
 
-    # gather data for use in the checks table
+    # gather data for use in the metrics table
     data = compute_repo_data(repo_path=repo_path)
 
     if "error" in data.keys():
         raise ReferenceError("Encountered an error with processing the data.", data)
 
-    # return checks table with output
+    # return metrics table with output
     return [
         # remove the result-data-key as this won't be useful to external output
-        {key: val for key, val in check.items() if key != "result-data-key"}
-        # add the data results for the check to the table
-        | {"result": data[check["result-data-key"]]}
-        for check in checks_table
+        {key: val for key, val in metric.items() if key != "result-data-key"}
+        # add the data results for the metrics to the table
+        | {"result": data[metric["result-data-key"]]}
+        for metric in metrics_table
     ]
 
 

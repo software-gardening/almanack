@@ -6,7 +6,7 @@ import pathlib
 
 import pandas as pd
 
-from almanack.checks.data import compute_repo_data, get_table
+from almanack.metrics.data import compute_repo_data, get_table
 
 
 def test_generate_repo_data(repository_paths: dict[str, pathlib.Path]) -> None:

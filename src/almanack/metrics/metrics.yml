@@ -1,5 +1,5 @@
 ---
-checks:
+metrics:
   - name: "repo-path"
     id: "SGA-META-0001"
     result-type: "str"
