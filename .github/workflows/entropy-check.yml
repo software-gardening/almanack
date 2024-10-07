@@ -10,13 +10,13 @@ on:
 
 jobs:
   entropy-check:
+    # only run if the PR head branch is named 'fix-gh-actions-pr-report'
+    if: github.ref == 'refs/heads/fix-gh-actions-pr-report'
     runs-on: ubuntu-latest
     permissions: write-all
 
     steps:
       - name: Checkout code
-        # only run if the PR head branch is named 'fix-gh-actions-pr-report'
-        if: github.event.pull_request.head.ref == 'fix-gh-actions-pr-report'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch the entire history of commits
