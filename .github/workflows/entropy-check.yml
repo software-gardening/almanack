@@ -3,6 +3,8 @@
 name: entropy-check
 
 on:
+  # note: changed from pull_request_target to help enable if conditional
+  # for workflow.
   pull_request:
     branches: [main]
   workflow_dispatch:
