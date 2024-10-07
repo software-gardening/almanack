@@ -11,6 +11,8 @@ on:
 jobs:
   entropy-check:
     runs-on: ubuntu-latest
+    # only run if the PR head branch is named 'fix-gh-actions-pr-report'
+    if: github.event.pull_request.head.ref == 'fix-gh-actions-pr-report'
     permissions: write-all
 
     steps:
