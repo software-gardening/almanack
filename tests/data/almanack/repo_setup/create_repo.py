@@ -171,6 +171,7 @@ def create_community_health_repository(base_path: pathlib.Path) -> str:
     repo.index.add_all()
     # write the files to the index
     repo.index.write()
+
     # create a tree for the index
     tree = repo.index.write_tree()
     # gather a default signature author
@@ -183,5 +184,8 @@ def create_community_health_repository(base_path: pathlib.Path) -> str:
         tree,
         [],
     )
+
+    # set the head to the main branch
+    repo.set_head("refs/heads/main")
 
     return str(repo_path)
