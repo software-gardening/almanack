@@ -4,11 +4,11 @@ Testing generate_data functionality
 
 import pathlib
 
-import pandas as pd
-
-from almanack.metrics.data import compute_repo_data, get_table, METRICS_TABLE
-import yaml
 import jsonschema
+import pandas as pd
+import yaml
+
+from almanack.metrics.data import METRICS_TABLE, compute_repo_data, get_table
 
 
 def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -> None:

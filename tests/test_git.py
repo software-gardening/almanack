@@ -58,7 +58,8 @@ def test_get_edited_files(entropy_repository_paths: dict[str, Any]):
 
 
 def test_get_loc_changed(
-    entropy_repository_paths: dict[str, pathlib.Path], repo_file_sets: dict[str, list[str]]
+    entropy_repository_paths: dict[str, pathlib.Path],
+    repo_file_sets: dict[str, list[str]],
 ) -> None:
     """
     Test the calculate_loc_changes function.

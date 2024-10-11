@@ -12,7 +12,8 @@ from tests.test_git import get_most_recent_commits
 
 
 def test_calculate_normalized_entropy(
-    entropy_repository_paths: dict[str, pathlib.Path], repo_file_sets: dict[str, list[str]]
+    entropy_repository_paths: dict[str, pathlib.Path],
+    repo_file_sets: dict[str, list[str]],
 ) -> None:
     """
     Test the calculate_normalized_entropy function.
@@ -35,7 +36,8 @@ def test_calculate_normalized_entropy(
 
 
 def test_calculate_aggregate_entropy(
-    entropy_repository_paths: dict[str, pathlib.Path], repo_file_sets: dict[str, list[str]]
+    entropy_repository_paths: dict[str, pathlib.Path],
+    repo_file_sets: dict[str, list[str]],
 ) -> None:
     """
     Test that calculate_aggregate_entropy function

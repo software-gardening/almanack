@@ -9,7 +9,10 @@ import subprocess
 
 import pytest
 
-from tests.data.almanack.repo_setup.create_repo import create_entropy_repositories, create_community_health_repository
+from tests.data.almanack.repo_setup.create_repo import (
+    create_community_health_repository,
+    create_entropy_repositories,
+)
 
 from .utils import check_subproc_run_for_nonzero
 
@@ -99,6 +102,7 @@ def repo_file_sets():
         "3_file_repo": ["file_1.md", "file_2.md", "file_3.md"],
         "1_file_repo": ["file_1.md"],
     }
+
 
 @pytest.fixture(scope="session")
 def community_health_repository_path(tmp_path_factory):

@@ -29,25 +29,29 @@ metrics:
     result-type: "bool"
     result-data-key: "readme-included"
     description: >-
-      Boolean value indicating the presence of a README file in the repository.
+      Boolean value indicating the presence of a README file
+      in the repository.
   - name: "includes-contributing"
     id: "SGA-GL-0002"
     result-type: "bool"
     result-data-key: "contributing-included"
     description: >-
-      Boolean value indicating the presence of a CONTRIBUTING file in the repository.
+      Boolean value indicating the presence of a CONTRIBUTING file
+      in the repository.
   - name: "includes-code-of-conduct"
     id: "SGA-GL-0003"
     result-type: "bool"
     result-data-key: "code-of-conduct-included"
     description: >-
-      Boolean value indicating the presence of a CODE_OF_CONDUCT file in the repository.
+      Boolean value indicating the presence of a CODE_OF_CONDUCT file
+      in the repository.
   - name: "includes-license"
     id: "SGA-GL-0004"
     result-type: "bool"
     result-data-key: "license-included"
     description: >-
-      Boolean value indicating the presence of a LICENSE file in the repository.
+      Boolean value indicating the presence of a LICENSE file
+      in the repository.
   - name: "agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
