@@ -27,22 +27,22 @@ jobs:
         with:
           fetch-depth: 0 # Ensure the action respects the desired fetch depth
 
-        # Determine the PR branches and set environment variables
-      - name: Set PR Branch Environment Variables
-        env:
-          PR_BRANCH: ${{ github.head_ref }}
-          MAIN_BRANCH: ${{ github.base_ref }}
-        run: |
-          "echo 'PR_BRANCH=${PR_BRANCH}' >> $GITHUB_ENV"
-          "echo 'MAIN_BRANCH=${MAIN_BRANCH}' >> $GITHUB_ENV"
-
-      # Runs the entropy calculation script and saves the output to a file
+      # Runs the entropy calculation cli and saves the output to a file
       - name: Process repository entropy
         run: |
-          "poetry run almanack process_pr_entropy \
-          --repo_path '.' \
-          --pr_branch '${{ env.PR_BRANCH }}' \
-          --main_branch '${{ env.MAIN_BRANCH }}' > entropy_report.txt"
+          poetry run almanack process_pr_entropy \
+          --repo_path "." \
+          --pr_branch "${{ github.head_ref }}" \
+          --main_branch "${{ github.base_ref }}" > entropy_report.txt
+          
+
+      # Set PR Branch Environment Variable (PR branch)
+      - name: Set PR Branch Environment Variable
+        run: echo "PR_BRANCH=${{ github.head_ref }}" >> "$GITHUB_ENV"
+
+      # Set Main Branch Environment Variable (main branch)
+      - name: Set Main Branch Environment Variable
+        run: echo "MAIN_BRANCH=${{ github.base_ref }}" >> "$GITHUB_ENV"
 
       # Formats the entropy report and saves it to GitHub Actions env
       - name: Format Entropy Report
@@ -54,6 +54,8 @@ jobs:
             echo "\`\`\`";
             echo "EOF";
           } >> "$GITHUB_ENV"
+
+          
       - name: PR comment
         uses: thollander/actions-comment-pull-request@v3
         with:
