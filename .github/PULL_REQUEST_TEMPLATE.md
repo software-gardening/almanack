@@ -1,5 +1,5 @@
 <!-- _modified from [EmbeddedArtistry](https://embeddedartistry.com/blog/2017/08/04/a-github-pull-request-template-for-your-projects/)_
-_referenced with modifications from [pycytominer](https://github.com/cytomining/pycytominer/blob/master/.github/PULL_REQUEST_TEMPLATE.md)_ -->
+_referenced with modifications from [pycytominer](https://github.com/cytomining/pycytominer/blob/main/.github/PULL_REQUEST_TEMPLATE.md)_ -->
 
 # Description
 
