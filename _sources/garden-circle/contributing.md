@@ -167,5 +167,5 @@ We follow [semantic version](https://en.wikipedia.org/wiki/Software_versioning#S
 
 ## Attribution
 
-We sourced portions of this contribution guide from [`pyctyominer`](https://github.com/cytomining/pycytominer/blob/master/CONTRIBUTING.md).
+We sourced portions of this contribution guide from [`pyctyominer`](https://github.com/cytomining/pycytominer/blob/main/CONTRIBUTING.md).
 Big thanks go to the developers and contributors of that repository.
