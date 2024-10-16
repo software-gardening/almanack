@@ -46,13 +46,16 @@ def commit_changes(repo_path: pathlib.Path, message: str) -> None:
     tree = index.write_tree()
     parent_commit = repo.head.target
     repo.create_commit(
-        "refs/heads/master",  # reference where to commit
+        "refs/heads/main",  # reference where to commit
         signature,  # author
         signature,  # committer
         message,  # commit message
         tree,  # tree object for the commit
         [parent_commit],  # parent commit (list for merge commits)
     )
+
+    # set the head to the main branch
+    repo.set_head("refs/heads/main")
 
 
 def create_repositories(base_path: pathlib.Path) -> None:
@@ -104,13 +107,16 @@ def create_repositories(base_path: pathlib.Path) -> None:
             tree = repo.index.write_tree()
             author = repo.default_signature
             repo.create_commit(
-                "refs/heads/master",  # reference
+                "refs/heads/main",  # reference
                 author,  # author
                 author,  # committer
                 "Committed baseline content to test_repo_1",  # message
                 tree,  # tree object
                 [],  # no parents for initial commit
             )
+
+            # set the head to the main branch
+            repo.set_head("refs/heads/main")
 
         elif repo_name == "1_file_repo":
             md_file = repo_path / "file_1.md"
@@ -129,13 +135,16 @@ def create_repositories(base_path: pathlib.Path) -> None:
             tree = repo.index.write_tree()
             author = repo.default_signature
             repo.create_commit(
-                "refs/heads/master",  # reference
+                "refs/heads/main",  # reference
                 author,  # author
                 author,  # committer
                 "Committed baseline content to test_repo_2",  # message
                 tree,  # tree object
                 [],  # no parents for initial commit
             )
+
+            # set the head to the main branch
+            repo.set_head("refs/heads/main")
 
     # Run the add_entropy.py module to insert additional lines
     add_LOC(base_path)
