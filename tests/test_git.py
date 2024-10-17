@@ -16,8 +16,8 @@ from almanack.git import (
 )
 
 
-def test_clone_repository(repository_paths: dict[str, Any]):
-    repo_path = repository_paths["3_file_repo"]
+def test_clone_repository(entropy_repository_paths: dict[str, Any]):
+    repo_path = entropy_repository_paths["3_file_repo"]
 
     # Call the function
     cloned_path = clone_repository(str(repo_path))
@@ -26,9 +26,9 @@ def test_clone_repository(repository_paths: dict[str, Any]):
     assert cloned_path.exists()
 
 
-def test_get_commits(repository_paths: dict[str, Any]):
+def test_get_commits(entropy_repository_paths: dict[str, Any]):
     # Open the repo
-    repo_path = repository_paths["3_file_repo"]
+    repo_path = entropy_repository_paths["3_file_repo"]
     repo = pygit2.Repository(str(repo_path))
 
     # Call the function
@@ -40,9 +40,9 @@ def test_get_commits(repository_paths: dict[str, Any]):
     assert len(commits) > 0
 
 
-def test_get_edited_files(repository_paths: dict[str, Any]):
+def test_get_edited_files(entropy_repository_paths: dict[str, Any]):
     # Open the repo
-    repo_path = repository_paths["3_file_repo"]
+    repo_path = entropy_repository_paths["3_file_repo"]
     repo = pygit2.Repository(str(repo_path))
 
     # Get commits to use for comparison
@@ -58,7 +58,8 @@ def test_get_edited_files(repository_paths: dict[str, Any]):
 
 
 def test_get_loc_changed(
-    repository_paths: dict[str, pathlib.Path], repo_file_sets: dict[str, list[str]]
+    entropy_repository_paths: dict[str, pathlib.Path],
+    repo_file_sets: dict[str, list[str]],
 ) -> None:
     """
     Test the calculate_loc_changes function.
@@ -66,7 +67,7 @@ def test_get_loc_changed(
 
     results = {}
 
-    for label, repo_path in repository_paths.items():
+    for label, repo_path in entropy_repository_paths.items():
         # Extract two most recent commits: source and target
         source_commit, target_commit = get_most_recent_commits(repo_path)
         # Call loc_changes function on test repositories
@@ -82,8 +83,8 @@ def test_get_loc_changed(
     )  # Check that all values are non-negative
 
 
-def test_get_most_recent_commits(repository_paths: dict[str, Any]):
-    repo_path = repository_paths["3_file_repo"]
+def test_get_most_recent_commits(entropy_repository_paths: dict[str, Any]):
+    repo_path = entropy_repository_paths["3_file_repo"]
 
     # Call the function to get the two most recent commits
     source_commit_hash, target_commit_hash = get_most_recent_commits(repo_path)

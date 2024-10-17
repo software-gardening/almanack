@@ -67,6 +67,54 @@ def get_table(repo_path: str) -> Dict[str, Any]:
     ]
 
 
+def file_exists_in_repo(
+    repo: pygit2.Repository,
+    expected_file_name: str,
+    check_extension: bool = False,
+    extensions: list[str] = [".md", ""],
+) -> bool:
+    """
+    Check if a file (case-insensitive and with optional extensions)
+    exists in the latest commit of the repository.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object to search in.
+        expected_file_name (str):
+            The base file name to check (e.g., "readme").
+        check_extension (bool):
+            Whether to check the extension of the file or not.
+        extensions (list[str]):
+            List of possible file extensions to check (e.g., [".md", ""]).
+
+    Returns:
+        bool:
+            True if the file exists, False otherwise.
+    """
+
+    # Gather a tree from the HEAD of the repo
+    tree = repo.revparse_single("HEAD").tree
+
+    # Normalize expected file name to lowercase for case-insensitive comparison
+    expected_file_name = expected_file_name.lower()
+
+    for entry in tree:
+        # Normalize entry name to lowercase
+        entry_name = entry.name.lower()
+
+        # Check if the base file name matches with any allowed extension
+        if check_extension and any(
+            entry_name == f"{expected_file_name}{ext.lower()}" for ext in extensions
+        ):
+            return True
+
+        # Check whether the filename without an extension matches the expected file name
+        if not check_extension and entry_name.split(".", 1)[0] == expected_file_name:
+            return True
+
+    return False
+
+
 def compute_repo_data(repo_path: str) -> None:
     """
     Computes comprehensive data for a GitHub repository.
@@ -75,13 +123,7 @@ def compute_repo_data(repo_path: str) -> None:
         repo_path (str): The local path to the Git repository.
 
     Returns:
-        dict: A dictionary containing the following key-value pairs:
-            - "repo_path": The path of the repository.
-            - "total_normalized_entropy": The total normalized entropy calculated for the repository.
-            - "number_of_commits": The total number of commits in the repository.
-            - "number_of_files": The number of files that have been edited between the first and most recent commit.
-            - "time_range_of_commits": A tuple containing the dates of the first and most recent commits.
-            - "file_level_entropy": A dictionary of entropy values for each file.
+        dict: A dictionary containing data key-pairs.
     """
     try:
         # Convert repo_path to an absolute path and initialize the repository
@@ -122,19 +164,32 @@ def compute_repo_data(repo_path: str) -> None:
         # Return the data structure
         return {
             "repo_path": str(repo_path),
-            "normalized_total_entropy": normalized_total_entropy,
             "number_of_commits": len(commits),
             "number_of_files": len(file_names),
             "time_range_of_commits": (first_commit_date, most_recent_commit_date),
+            "readme-included": file_exists_in_repo(
+                repo=repo,
+                expected_file_name="readme",
+            ),
+            "contributing-included": file_exists_in_repo(
+                repo=repo,
+                expected_file_name="contributing",
+            ),
+            "code-of-conduct-included": file_exists_in_repo(
+                repo=repo,
+                expected_file_name="code_of_conduct",
+            ),
+            "license-included": file_exists_in_repo(
+                repo=repo,
+                expected_file_name="license",
+            ),
+            "normalized_total_entropy": normalized_total_entropy,
             "file_level_entropy": file_entropy,
         }
 
     except Exception as e:
         # If processing fails, return an error dictionary
         return {"repo_path": str(repo_path), "error": str(e)}
-
-
-from typing import Any, Dict
 
 
 def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[str, Any]:

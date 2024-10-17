@@ -12,12 +12,13 @@ from tests.test_git import get_most_recent_commits
 
 
 def test_calculate_normalized_entropy(
-    repository_paths: dict[str, pathlib.Path], repo_file_sets: dict[str, list[str]]
+    entropy_repository_paths: dict[str, pathlib.Path],
+    repo_file_sets: dict[str, list[str]],
 ) -> None:
     """
     Test the calculate_normalized_entropy function.
     """
-    for label, repo_path in repository_paths.items():
+    for label, repo_path in entropy_repository_paths.items():
         # Extract two most recent commits: source and target
         source_commit, target_commit = get_most_recent_commits(repo_path)
 
@@ -35,14 +36,15 @@ def test_calculate_normalized_entropy(
 
 
 def test_calculate_aggregate_entropy(
-    repository_paths: dict[str, pathlib.Path], repo_file_sets: dict[str, list[str]]
+    entropy_repository_paths: dict[str, pathlib.Path],
+    repo_file_sets: dict[str, list[str]],
 ) -> None:
     """
     Test that calculate_aggregate_entropy function
     """
     repo_entropies = {}
 
-    for label, repo_path in repository_paths.items():
+    for label, repo_path in entropy_repository_paths.items():
         # Extract two most recent commits: source and target
         source_commit, target_commit = get_most_recent_commits(repo_path)
         # Call calculate_normalized_entropy function

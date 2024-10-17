@@ -58,7 +58,7 @@ def commit_changes(repo_path: pathlib.Path, message: str) -> None:
     repo.set_head("refs/heads/main")
 
 
-def create_repositories(base_path: pathlib.Path) -> None:
+def create_entropy_repositories(base_path: pathlib.Path) -> None:
     """
     Sets up Git repositories with baseline content and adds entropy.
 
@@ -153,3 +153,48 @@ def create_repositories(base_path: pathlib.Path) -> None:
     for repo_name in ["3_file_repo", "1_file_repo"]:
         repo_path = base_path / repo_name
         commit_changes(repo_path, "Commit with added lines of code")
+
+
+def create_community_health_repository(base_path: pathlib.Path) -> str:
+
+    filenames_and_contents = {
+        "README.md": "# This is an example readme\n\nWelcome to our repo!",
+        "CONTRIBUTING.md": "# This is a stub for a CONTRIBUTING.md",
+        "CODE_OF_CONDUCT.md": "# This is a stub for a CODE_OF_CONDUCT.md",
+        "LICENSE.txt": "This is an example LICENSE file.",
+    }
+
+    repo_path = base_path / "community_health"
+    repo_path.mkdir(parents=True, exist_ok=True)
+    repo = pygit2.init_repository(path=str(repo_path), bare=False)
+
+    # Set user.name and user.email in the config
+    set_repo_user_config(repo)
+
+    for filename, content in filenames_and_contents.items():
+        # add content to each file based on the filenames and contents dict
+        with open((repo_path / filename).resolve(), "w") as f:
+            f.write(content)
+
+    # add all files to the index
+    repo.index.add_all()
+    # write the files to the index
+    repo.index.write()
+
+    # create a tree for the index
+    tree = repo.index.write_tree()
+    # gather a default signature author
+    author = repo.default_signature
+    repo.create_commit(
+        "refs/heads/main",
+        author,
+        author,
+        "Committing community health files",
+        tree,
+        [],
+    )
+
+    # set the head to the main branch
+    repo.set_head("refs/heads/main")
+
+    return str(repo_path)

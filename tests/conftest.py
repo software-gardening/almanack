@@ -9,7 +9,10 @@ import subprocess
 
 import pytest
 
-from tests.data.almanack.repo_setup.create_repo import create_repositories
+from tests.data.almanack.repo_setup.create_repo import (
+    create_community_health_repository,
+    create_entropy_repositories,
+)
 
 from .utils import check_subproc_run_for_nonzero
 
@@ -67,16 +70,16 @@ def build_jupyter_book(
 
 
 @pytest.fixture(scope="session")
-def repository_paths(tmp_path_factory):
+def entropy_repository_paths(tmp_path_factory):
     """
-    Fixture to call create_repositories, create the repositories, then delete them
+    Fixture to call create_entropy_repositories, create the repositories, then delete them
     using the tmp_path_factory fixture to provide a temporary directory for tests.
     """
     # Create a base temporary directory
     base_path = tmp_path_factory.mktemp("almanack_entropy")
 
     # Run create_repositories with the base_path argument
-    create_repositories(base_path)
+    create_entropy_repositories(base_path)
 
     repositories = {
         "3_file_repo": base_path / "3_file_repo",
@@ -99,3 +102,15 @@ def repo_file_sets():
         "3_file_repo": ["file_1.md", "file_2.md", "file_3.md"],
         "1_file_repo": ["file_1.md"],
     }
+
+
+@pytest.fixture(scope="session")
+def community_health_repository_path(tmp_path_factory):
+    """
+    Fixture to call create_community_health_repository, create the repositories, then delete them
+    using the tmp_path_factory fixture to provide a temporary directory for tests.
+    """
+    # Create a base temporary directory
+    base_path = tmp_path_factory.mktemp("almanack_community_health")
+
+    yield create_community_health_repository(base_path)
