@@ -143,7 +143,21 @@ def test_file_exists_in_repo(
     Combined test for file_exists_in_repo function using different scenarios.
     """
 
+    # test a synthetic repo
     repo_path = pathlib.Path(community_health_repository_path).resolve()
+    repo = pygit2.Repository(str(repo_path))
+
+    result = file_exists_in_repo(
+        repo=repo,
+        expected_file_name=expected_file_name,
+        check_extension=check_extension,
+        extensions=extensions,
+    )
+
+    assert result == expected_result
+
+    # test the almanack itself
+    repo_path = pathlib.Path(".").resolve()
     repo = pygit2.Repository(str(repo_path))
 
     result = file_exists_in_repo(
