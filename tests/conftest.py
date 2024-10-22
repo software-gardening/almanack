@@ -7,11 +7,13 @@ import pathlib
 import shutil
 import subprocess
 
+import pygit2
 import pytest
 
 from tests.data.almanack.repo_setup.create_repo import (
-    create_community_health_repository,
     create_entropy_repositories,
+    repo_setup,
+    set_repo_user_config,
 )
 
 from .utils import check_subproc_run_for_nonzero
@@ -110,7 +112,50 @@ def community_health_repository_path(tmp_path_factory):
     Fixture to call create_community_health_repository, create the repositories, then delete them
     using the tmp_path_factory fixture to provide a temporary directory for tests.
     """
-    # Create a base temporary directory
-    base_path = tmp_path_factory.mktemp("almanack_community_health")
 
-    yield create_community_health_repository(base_path)
+    # Create a temporary directory for the session
+    temp_dir = tmp_path_factory.mktemp("community_health_repo")
+
+    yield repo_setup(
+        repo_path=pathlib.Path(temp_dir),
+        files={
+            "README.md": "# This is an example readme\n\nWelcome to our repo!",
+            "CONTRIBUTING.md": "# This is a stub for a CONTRIBUTING.md",
+            "CODE_OF_CONDUCT.md": "# This is a stub for a CODE_OF_CONDUCT.md",
+            "LICENSE.txt": "This is an example LICENSE file.",
+        },
+    )
+
+
+@pytest.fixture
+def repo_with_citation_in_readme(tmp_path):
+    """Create a temporary repository with a specific structure for testing."""
+    # Create a new repository in the temporary path
+    repo = pygit2.init_repository(tmp_path, bare=False)
+
+    # Set user.name and user.email in the config
+    set_repo_user_config(repo)
+
+    (tmp_path / "README.md").write_text("## Citation")
+
+    index = repo.index
+
+    index.add_all()
+    index.write()
+
+    author = repo.default_signature
+
+    tree = repo.index.write_tree()
+
+    repo.create_commit(
+        "refs/heads/main",
+        author,
+        author,
+        "Committing nested files",
+        tree,
+        [],
+    )
+    # set the head to the main branch
+    repo.set_head("refs/heads/main")
+
+    yield repo  # Provide the repository to the tests

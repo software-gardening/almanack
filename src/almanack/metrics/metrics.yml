@@ -52,6 +52,13 @@ metrics:
     description: >-
       Boolean value indicating the presence of a LICENSE file
       in the repository.
+  - name: "is-citable"
+    id: "SGA-GL-0005"
+    result-type: "bool"
+    result-data-key: "is-citable"
+    description: >-
+      Boolean value indicating the presence of a CITATION file
+      or some other means of citation within the repository.
   - name: "agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"

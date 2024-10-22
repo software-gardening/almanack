@@ -155,46 +155,45 @@ def create_entropy_repositories(base_path: pathlib.Path) -> None:
         commit_changes(repo_path, "Commit with added lines of code")
 
 
-def create_community_health_repository(base_path: pathlib.Path) -> str:
+def repo_setup(repo_path: pathlib.Path, files: dict) -> pygit2.Repository:
+    """
+    Set up a temporary repository with specified files.
 
-    filenames_and_contents = {
-        "README.md": "# This is an example readme\n\nWelcome to our repo!",
-        "CONTRIBUTING.md": "# This is a stub for a CONTRIBUTING.md",
-        "CODE_OF_CONDUCT.md": "# This is a stub for a CODE_OF_CONDUCT.md",
-        "LICENSE.txt": "This is an example LICENSE file.",
-    }
+    Args:
+        tmp_path (Path): The temporary directory where the repo will be created.
+        files (dict): A dictionary where keys are filenames and values are their content.
 
-    repo_path = base_path / "community_health"
-    repo_path.mkdir(parents=True, exist_ok=True)
-    repo = pygit2.init_repository(path=str(repo_path), bare=False)
+    Returns:
+        pygit2.Repository: The initialized repository with files.
+    """
+    # Create a new repository in the temporary path
+    repo = pygit2.init_repository(repo_path, bare=False)
 
     # Set user.name and user.email in the config
     set_repo_user_config(repo)
 
-    for filename, content in filenames_and_contents.items():
-        # add content to each file based on the filenames and contents dict
-        with open((repo_path / filename).resolve(), "w") as f:
-            f.write(content)
+    # Create files in the repository
+    for filename, content in files.items():
+        (repo_path / filename).write_text(content)
 
-    # add all files to the index
-    repo.index.add_all()
-    # write the files to the index
-    repo.index.write()
+    # Stage and commit the files
+    index = repo.index
+    index.add_all()
+    index.write()
 
-    # create a tree for the index
-    tree = repo.index.write_tree()
-    # gather a default signature author
     author = repo.default_signature
+    tree = repo.index.write_tree()
+
     repo.create_commit(
         "refs/heads/main",
         author,
         author,
-        "Committing community health files",
+        "Initial commit with setup files",
         tree,
         [],
     )
 
-    # set the head to the main branch
+    # Set the head to the main branch
     repo.set_head("refs/heads/main")
 
-    return str(repo_path)
+    return repo

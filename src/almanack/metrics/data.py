@@ -12,6 +12,7 @@ import pygit2
 import yaml
 
 from ..git import clone_repository, get_commits, get_edited_files
+from .blobs import find_and_read_file
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
@@ -115,6 +116,44 @@ def file_exists_in_repo(
     return False
 
 
+def is_citable(repo: pygit2.Repository) -> bool:
+    """
+    Check if the given repository is citable.
+
+    A repository is considered citable if it contains a CITATION.cff or CITATION.bib
+    file, or if the README.md file contains a citation section indicated by "## Citation"
+    or "## Citing".
+
+    Args:
+        repo (pygit2.Repository): The repository to check for citation files.
+
+    Returns:
+        bool: True if the repository is citable, False otherwise.
+    """
+
+    # Check for a CITATION.cff or CITATION.bib file
+    if file_exists_in_repo(
+        repo=repo,
+        expected_file_name="citation",
+        check_extension=True,
+        extensions=[".cff", ".bib"],
+    ):
+        return True
+
+    # Look for a README.md file and read its content
+    if (
+        file_content := find_and_read_file(repo=repo, filename="readme.md")
+    ) is not None:
+        # Check for an H2 heading indicating a citation section
+        if any(
+            check_string in file_content
+            for check_string in ["## Citation", "## Citing"]
+        ):
+            return True
+
+    return False
+
+
 def compute_repo_data(repo_path: str) -> None:
     """
     Computes comprehensive data for a GitHub repository.
@@ -183,6 +222,7 @@ def compute_repo_data(repo_path: str) -> None:
                 repo=repo,
                 expected_file_name="license",
             ),
+            "is-citable": is_citable(repo=repo),
             "normalized_total_entropy": normalized_total_entropy,
             "file_level_entropy": file_entropy,
         }
