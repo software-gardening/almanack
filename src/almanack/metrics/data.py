@@ -11,8 +11,7 @@ from typing import Any, Dict, Optional, Tuple
 import pygit2
 import yaml
 
-from ..git import clone_repository, get_commits, get_edited_files
-from .blobs import find_and_read_file
+from ..git import clone_repository, find_and_read_file, get_commits, get_edited_files
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
