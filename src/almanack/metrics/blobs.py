@@ -2,10 +2,9 @@
 Module for handling various tasks with git repo blobs.
 """
 
-import pygit2
-from charset_normalizer import from_bytes
-from typing import List, Optional
+from typing import Optional
 
+import pygit2
 from charset_normalizer import from_bytes
 
 
