@@ -186,6 +186,8 @@ def test_file_exists_in_repo(
             False,
         ),  # Test with README without citation
         ({"random.txt": "Some random text."}, False),  # Test with no citation files
+        # test the almanack itseft as a special case
+        (None, True),
     ],
 )
 def test_is_citable(tmp_path, files, expected):
@@ -193,5 +195,11 @@ def test_is_citable(tmp_path, files, expected):
     Test if the repository is citable based on various file configurations.
     """
 
-    repo = repo_setup(repo_path=tmp_path, files=files)
+    if files is not None:
+        repo = repo_setup(repo_path=tmp_path, files=files)
+    else:
+        # test the almanack itself
+        repo_path = pathlib.Path(".").resolve()
+        repo = pygit2.Repository(str(repo_path))
+
     assert is_citable(repo) == expected
