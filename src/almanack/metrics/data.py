@@ -146,7 +146,20 @@ def is_citable(repo: pygit2.Repository) -> bool:
         # Check for an H2 heading indicating a citation section
         if any(
             check_string in file_content
-            for check_string in ["## Citation", "## Citing"]
+            for check_string in [
+                # markdown sub-headers
+                "## Citation",
+                "## Citing",
+                "## Cite",
+                "## How to cite",
+                # RST sub-headers
+                "Citation\n--------",
+                "Citing\n------",
+                "Cite\n----",
+                "How to cite\n-----------",
+                # DOI shield
+                "[![DOI](https://img.shields.io/badge/DOI",
+            ]
         ):
             return True
 

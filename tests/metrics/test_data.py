@@ -171,21 +171,43 @@ def test_file_exists_in_repo(
 @pytest.mark.parametrize(
     "files, expected",
     [
-        ({"CITATION.cff": "CITATION content."}, True),  # Test with CITATION.cff
-        ({"CITATION.bib": "CITATION content."}, True),  # Test with CITATION.bib
+        # Test with CITATION.cff
+        ({"CITATION.cff": "CITATION content."}, True),
+        # Test with CITATION.bib
+        ({"CITATION.bib": "CITATION content."}, True),
+        # Test citation sections in markdown format
         (
             {"readme.md": "## Citation\nThis is a citation."},
             True,
-        ),  # Test with README having citation
+        ),
         (
             {"readme.md": "## Citing us\n\nHere's our awesome citation."},
             True,
-        ),  # Test with README having citation
+        ),
+        # RST scenarios
+        ({"README.md": "Citation\n--------"}, True),
+        ({"README.md": "Citing\n------"}, True),
+        ({"README.md": "Cite\n----"}, True),
+        ({"README.md": "How to cite\n-----------"}, True),
+        # DOI badge
+        (
+            {
+                "README.md": (
+                    "# Awesome project\n\n"
+                    "[![DOI](https://img.shields.io/badge/DOI-10.48550/arXiv.2311.13417-blue)]"
+                    "(https://doi.org/10.48550/arXiv.2311.13417)"
+                ),
+            },
+            True,
+        ),
+        ({"README.md": "## How to cite"}, True),
+        # Test with README without citation
         (
             {"readme.md": "This is a readme."},
             False,
-        ),  # Test with README without citation
-        ({"random.txt": "Some random text."}, False),  # Test with no citation files
+        ),
+        # Test with no citation files
+        ({"random.txt": "Some random text."}, False),
         # test the almanack itseft as a special case
         (None, True),
     ],
