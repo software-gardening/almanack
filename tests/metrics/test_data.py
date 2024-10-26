@@ -35,21 +35,22 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
 
         # Check for expected keys
         expected_keys = [
-            "repo_path",
-            "number_of_commits",
-            "number_of_files",
-            "time_range_of_commits",
-            "readme-included",
-            "contributing-included",
-            "code-of-conduct-included",
-            "license-included",
-            "normalized_total_entropy",
-            "file_level_entropy",
+            "repo-path",
+            "repo-commits",
+            "repo-file-count",
+            "repo-commit-time-range",
+            "includes-readme",
+            "includes-contributing",
+            "includes-code-of-conduct",
+            "includes-license",
+            "is-citable",
+            "agg-info-entropy",
+            "file-info-entropy",
         ]
         assert all(key in data for key in expected_keys)
 
         # Check that repo_path in the output is the same as the input
-        assert data["repo_path"] == str(repo_path)
+        assert data["repo-path"] == str(repo_path)
 
 
 def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
@@ -92,14 +93,12 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
-                        "result-data-key": {"type": "string"},
                         "description": {"type": "string"},
                     },
                     "required": [
                         "name",
                         "id",
                         "result-type",
-                        "result-data-key",
                         "description",
                     ],
                 },

@@ -3,66 +3,56 @@ metrics:
   - name: "repo-path"
     id: "SGA-META-0001"
     result-type: "str"
-    result-data-key: "repo_path"
     description: >-
       Repository path (local directory).
   - name: "repo-commits"
     id: "SGA-META-0002"
     result-type: "int"
-    result-data-key: "number_of_commits"
     description: >-
       Total number of commits for the repository.
   - name: "repo-file-count"
     id: "SGA-META-0003"
     result-type: "int"
-    result-data-key: "number_of_files"
     description: >-
       Total number of files tracked within the repository.
   - name: "repo-commit-time-range"
     id: "SGA-META-0004"
     result-type: "tuple"
-    result-data-key: "time_range_of_commits"
     description: >-
       Starting commit and most recent commit for the repository.
   - name: "includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
-    result-data-key: "readme-included"
     description: >-
       Boolean value indicating the presence of a README file
       in the repository.
   - name: "includes-contributing"
     id: "SGA-GL-0002"
     result-type: "bool"
-    result-data-key: "contributing-included"
     description: >-
       Boolean value indicating the presence of a CONTRIBUTING file
       in the repository.
   - name: "includes-code-of-conduct"
     id: "SGA-GL-0003"
     result-type: "bool"
-    result-data-key: "code-of-conduct-included"
     description: >-
       Boolean value indicating the presence of a CODE_OF_CONDUCT file
       in the repository.
   - name: "includes-license"
     id: "SGA-GL-0004"
     result-type: "bool"
-    result-data-key: "license-included"
     description: >-
       Boolean value indicating the presence of a LICENSE file
       in the repository.
   - name: "is-citable"
     id: "SGA-GL-0005"
     result-type: "bool"
-    result-data-key: "is-citable"
     description: >-
       Boolean value indicating the presence of a CITATION file
       or some other means of indicating how to cite the work.
   - name: "agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
-    result-data-key: "normalized_total_entropy"
     description: >-
       Aggregated information entropy for all files within a repository
       given a range between two commits (by default, the first and
@@ -72,7 +62,6 @@ metrics:
   - name: "file-info-entropy"
     id: "SGA-VS-0002"
     result-type: "dict"
-    result-data-key: "file_level_entropy"
     description: >-
       File-level information entropy for all files within a repository
       given a range between two commits (by default, the first and
