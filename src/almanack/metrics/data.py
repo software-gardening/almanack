@@ -182,8 +182,6 @@ def default_branch_is_not_master(repo: pygit2.Repository) -> bool:
     # Get the symbolic reference to HEAD, which should point to the default branch
     head_ref = repo.head.shorthand
 
-    print(head_ref)
-
     # Check if the default branch is not "master"
     return head_ref != "master"
 
