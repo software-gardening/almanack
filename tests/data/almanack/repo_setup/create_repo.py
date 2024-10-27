@@ -155,13 +155,20 @@ def create_entropy_repositories(base_path: pathlib.Path) -> None:
         commit_changes(repo_path, "Commit with added lines of code")
 
 
-def repo_setup(repo_path: pathlib.Path, files: dict) -> pygit2.Repository:
+def repo_setup(
+    repo_path: pathlib.Path, files: dict, branch_name: str = "main"
+) -> pygit2.Repository:
     """
     Set up a temporary repository with specified files.
 
     Args:
-        tmp_path (Path): The temporary directory where the repo will be created.
-        files (dict): A dictionary where keys are filenames and values are their content.
+        tmp_path (Path):
+            The temporary directory where the repo will be created.
+        files (dict):
+            A dictionary where keys are filenames and values are their content.
+        branch_name (str):
+            A string with the name of the branch which will be used for
+            committing changes. Defaults to "main".
 
     Returns:
         pygit2.Repository: The initialized repository with files.
@@ -185,7 +192,7 @@ def repo_setup(repo_path: pathlib.Path, files: dict) -> pygit2.Repository:
     tree = repo.index.write_tree()
 
     repo.create_commit(
-        "refs/heads/main",
+        f"refs/heads/{branch_name}",
         author,
         author,
         "Initial commit with setup files",
@@ -194,6 +201,6 @@ def repo_setup(repo_path: pathlib.Path, files: dict) -> pygit2.Repository:
     )
 
     # Set the head to the main branch
-    repo.set_head("refs/heads/main")
+    repo.set_head(f"refs/heads/{branch_name}")
 
     return repo

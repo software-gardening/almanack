@@ -14,6 +14,7 @@ import yaml
 from almanack.metrics.data import (
     METRICS_TABLE,
     compute_repo_data,
+    default_branch_is_not_master,
     file_exists_in_repo,
     get_table,
     is_citable,
@@ -225,3 +226,28 @@ def test_is_citable(tmp_path, files, expected):
         repo = pygit2.Repository(str(repo_path))
 
     assert is_citable(repo) == expected
+
+
+def test_default_branch_is_not_master(tmp_path):
+    """
+    Tests default_branch_is_not_master
+    """
+
+    # create paths for example repos
+    # (so they aren't in the same dir and overlapping)
+    pathlib.Path((example1 := tmp_path / "example1")).mkdir()
+    pathlib.Path((example2 := tmp_path / "example2")).mkdir()
+
+    # test with a master branch
+    repo = repo_setup(
+        repo_path=example1, files={"example.txt": "example"}, branch_name="master"
+    )
+
+    assert not default_branch_is_not_master(repo)
+
+    # test with a main branch
+    repo = repo_setup(
+        repo_path=example2, files={"example.txt": "example"}, branch_name="main"
+    )
+
+    assert default_branch_is_not_master(repo)

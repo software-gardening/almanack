@@ -59,6 +59,13 @@ metrics:
     description: >-
       Boolean value indicating the presence of a CITATION file
       or some other means of indicating how to cite the work.
+  - name: "default-branch-not-master"
+    id: "SGA-GL-0006"
+    result-type: "bool"
+    result-data-key: "default-branch-not-master"
+    description: >-
+      Boolean value indicating that the repo uses a
+      default branch name besides 'master'.
   - name: "agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
