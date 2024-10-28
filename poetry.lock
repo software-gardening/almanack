@@ -1481,13 +1481,13 @@ upgrade-extension = ["copier (>=9,<10)", "jinja2-time (<0.3)", "pydantic (<3.0)"
 
 [[package]]
 name = "jupyterlab-code-formatter"
-version = "2.2.1"
+version = "3.0.2"
 description = "A JupyterLab plugin to facilitate invocation of code formatters."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "jupyterlab_code_formatter-2.2.1-py3-none-any.whl", hash = "sha256:5f196ef80d1ae53028b04425a3f1cfb008fb211b46f942701af5fdd7557b5fe1"},
-    {file = "jupyterlab_code_formatter-2.2.1.tar.gz", hash = "sha256:85322819da61f025ebc7c4a842979994fa812ad44c334fdb6ebb9ebad58dae08"},
+    {file = "jupyterlab_code_formatter-3.0.2-py3-none-any.whl", hash = "sha256:9f4c5be0a5296029207d965da7b65621aa8a06d39fc3a5d8e59d1f3db88997fd"},
+    {file = "jupyterlab_code_formatter-3.0.2.tar.gz", hash = "sha256:55adb8fa8b9bd58f0b39e7d3ead6c1e862e9ebc1444a66cdb4233d8dc6351d4b"},
 ]
 
 [package.dependencies]
@@ -1496,7 +1496,7 @@ packaging = "*"
 
 [package.extras]
 dev = ["autopep8", "black (==22.1.0)", "blue (==0.9.1)", "click (==8.0.2)", "isort", "jupyterlab (>=3.0.0)", "rpy2", "ruff", "yapf"]
-test = ["black (==22.1.0)", "blue (==0.9.1)", "coverage", "importlib-metadata", "isort", "pytest", "pytest-asyncio", "pytest-cov", "pytest-jupyter[server] (>=0.6.0)", "yapf"]
+test = ["black (==22.1.0)", "blue (==0.9.1)", "coverage", "importlib-metadata", "isort", "pytest", "pytest-asyncio", "pytest-cov", "pytest-jupyter[server] (>=0.6.0)", "rpy2", "ruff", "yapf"]
 
 [[package]]
 name = "jupyterlab-pygments"
@@ -3983,4 +3983,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<=3.12"
-content-hash = "6790c7774563a59adcbca6222e6c9b0bd571ca41d5fd8753fddefb8acc3feade"
+content-hash = "c8e01f5e44ad3dda9e1d487fd869d722f6e2762e33f3c4995dc9cb4a6580eb84"
