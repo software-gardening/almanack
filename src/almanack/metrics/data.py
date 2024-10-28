@@ -59,7 +59,7 @@ def get_table(repo_path: str) -> Dict[str, Any]:
             # remove the result-data-key as this won't be useful to external output
             **{key: val for key, val in metric.items() if key != "result-data-key"},
             # add the data results for the metrics to the table
-            "result": data[metric["result-data-key"]],
+            "result": data[metric["name"]],
         }
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
@@ -234,30 +234,30 @@ def compute_repo_data(repo_path: str) -> None:
 
         # Return the data structure
         return {
-            "repo_path": str(repo_path),
-            "number_of_commits": len(commits),
-            "number_of_files": len(file_names),
-            "time_range_of_commits": (first_commit_date, most_recent_commit_date),
-            "readme-included": file_exists_in_repo(
+            "repo-path": str(repo_path),
+            "repo-commits": len(commits),
+            "repo-file-count": len(file_names),
+            "repo-commit-time-range": (first_commit_date, most_recent_commit_date),
+            "repo-includes-readme": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="readme",
             ),
-            "contributing-included": file_exists_in_repo(
+            "repo-includes-contributing": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="contributing",
             ),
-            "code-of-conduct-included": file_exists_in_repo(
+            "repo-includes-code-of-conduct": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="code_of_conduct",
             ),
-            "license-included": file_exists_in_repo(
+            "repo-includes-license": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="license",
             ),
-            "is-citable": is_citable(repo=repo),
-            "default-branch-not-master": default_branch_is_not_master(repo=repo),
-            "normalized_total_entropy": normalized_total_entropy,
-            "file_level_entropy": file_entropy,
+            "repo-is-citable": is_citable(repo=repo),
+            "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
+            "repo-agg-info-entropy": normalized_total_entropy,
+            "repo-file-info-entropy": file_entropy,
         }
 
     except Exception as e:

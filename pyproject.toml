@@ -1,16 +1,22 @@
+[build-system]
+build-backend = "poetry_dynamic_versioning.backend"
+
+requires = [ "poetry-core>=1", "poetry-dynamic-versioning>=1,<2" ]
+
 [tool.poetry]
 name = "almanack"
 version = "0.0.0"
 description = "An open-source handbook of applied guidance and tools for sustainable software development and maintenance."
-authors = ["Software Gardening Community"]
+authors = [ "Software Gardening Community" ]
 license = "BSD-3-Clause"
 readme = "README.md"
-packages = [{ include = "almanack", from = "src" }]
-include = [ "src/book/*.yml",
+packages = [ { include = "almanack", from = "src" } ]
+include = [
+  "src/book/*.yml",
   "src/book/**/*.md",
-  "src/book/references.bib"
+  "src/book/references.bib",
 ]
-exclude = ["src/book/_build"]
+exclude = [ "src/book/_build" ]
 
 [tool.poetry.dependencies]
 python = ">=3.9,<=3.12"
@@ -49,39 +55,53 @@ jsonschema = "^4.23.0"
 [tool.poetry.scripts]
 almanack = "almanack.reporting.cli:trigger"
 
-[tool.isort]
-profile = "black"
+[tool.poetry-dynamic-versioning]
+enable = true
+style = "pep440"
+vcs = "git"
 
-[tool.bandit]
-exclude_dirs = ["tests"]
+# specify where version replacement is performed
+[tool.poetry-dynamic-versioning.substitution]
+files = [ "src/almanack/__init__.py" ]
 
-[tool.codespell]
-ignore-words="styles/config/vocabularies/almanack/accept.txt"
-# add capabilities for inline ignore for codespell linting
-# referenced from: https://github.com/codespell-project/codespell/issues/1212
-ignore-regex=".{1024}|.*codespell-ignore.*"
+# set persistent versions within the __init__.py file in cases
+# where we may not have or want access to full git history
+[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
+persistent-substitution = false
+
+[tool.setuptools_scm]
+root = "."
 
 [tool.ruff]
 target-version = "py311"
 fix = true
 
-[tool.ruff.lint]
-select = [
-    # pyflakes
-    "F",
-    # pylint
-    "PL",
-    # mccabe
-    "C90",
-    # ruff
-    "RUF",
+lint.select = [
+  # mccabe
+  "C90",
+  # pyflakes
+  "F",
+  # pylint
+  "PL",
+  # ruff
+  "RUF",
 ]
-
-[tool.ruff.lint.per-file-ignores]
-# Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
-"__init__.py" = ["F401"]
-
 # defines poe the poet tasks
+# Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
+lint.per-file-ignores."__init__.py" = [ "F401" ]
+
+[tool.isort]
+profile = "black"
+
+[tool.codespell]
+ignore-words = "styles/config/vocabularies/almanack/accept.txt"
+# add capabilities for inline ignore for codespell linting
+# referenced from: https://github.com/codespell-project/codespell/issues/1212
+ignore-regex = ".{1024}|.*codespell-ignore.*"
+
+[tool.bandit]
+exclude_dirs = [ "tests" ]
+
 [tool.poe.tasks]
 # builds the jupyter book related to this project
 build-book.shell = """
@@ -114,24 +134,3 @@ fi
 pkg-tests.shell = """
 pytest --ignore tests/test_build.py
 """
-
-[tool.poetry-dynamic-versioning]
-enable = true
-style = "pep440"
-vcs = "git"
-
-# specify where version replacement is performed
-[tool.poetry-dynamic-versioning.substitution]
-files = ["src/almanack/__init__.py"]
-
-# set persistent versions within the __init__.py file in cases
-# where we may not have or want access to full git history
-[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
-persistent-substitution = false
-
-[build-system]
-requires = ["poetry-core>=1.0.0", "poetry-dynamic-versioning>=1.0.0,<2.0.0"]
-build-backend = "poetry_dynamic_versioning.backend"
-
-[tool.setuptools_scm]
-root = "."
