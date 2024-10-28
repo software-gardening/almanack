@@ -20,37 +20,37 @@ metrics:
     result-type: "tuple"
     description: >-
       Starting commit and most recent commit for the repository.
-  - name: "includes-readme"
+  - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
     description: >-
       Boolean value indicating the presence of a README file
       in the repository.
-  - name: "includes-contributing"
+  - name: "repo-includes-contributing"
     id: "SGA-GL-0002"
     result-type: "bool"
     description: >-
       Boolean value indicating the presence of a CONTRIBUTING file
       in the repository.
-  - name: "includes-code-of-conduct"
+  - name: "repo-includes-code-of-conduct"
     id: "SGA-GL-0003"
     result-type: "bool"
     description: >-
       Boolean value indicating the presence of a CODE_OF_CONDUCT file
       in the repository.
-  - name: "includes-license"
+  - name: "repo-includes-license"
     id: "SGA-GL-0004"
     result-type: "bool"
     description: >-
       Boolean value indicating the presence of a LICENSE file
       in the repository.
-  - name: "is-citable"
+  - name: "repo-is-citable"
     id: "SGA-GL-0005"
     result-type: "bool"
     description: >-
       Boolean value indicating the presence of a CITATION file
       or some other means of indicating how to cite the work.
-  - name: "agg-info-entropy"
+  - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
     description: >-
@@ -59,7 +59,7 @@ metrics:
       latest commits). Represents value from 0 to 1 where 0 equals
       no information entropy and 1 represents maximum information
       entropy.
-  - name: "file-info-entropy"
+  - name: "repo-file-info-entropy"
     id: "SGA-VS-0002"
     result-type: "dict"
     description: >-

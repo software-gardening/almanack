@@ -218,25 +218,25 @@ def compute_repo_data(repo_path: str) -> None:
             "repo-commits": len(commits),
             "repo-file-count": len(file_names),
             "repo-commit-time-range": (first_commit_date, most_recent_commit_date),
-            "includes-readme": file_exists_in_repo(
+            "repo-includes-readme": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="readme",
             ),
-            "includes-contributing": file_exists_in_repo(
+            "repo-includes-contributing": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="contributing",
             ),
-            "includes-code-of-conduct": file_exists_in_repo(
+            "repo-includes-code-of-conduct": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="code_of_conduct",
             ),
-            "includes-license": file_exists_in_repo(
+            "repo-includes-license": file_exists_in_repo(
                 repo=repo,
                 expected_file_name="license",
             ),
-            "is-citable": is_citable(repo=repo),
-            "agg-info-entropy": normalized_total_entropy,
-            "file-info-entropy": file_entropy,
+            "repo-is-citable": is_citable(repo=repo),
+            "repo-agg-info-entropy": normalized_total_entropy,
+            "repo-file-info-entropy": file_entropy,
         }
 
     except Exception as e:

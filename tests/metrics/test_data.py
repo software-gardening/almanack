@@ -39,13 +39,13 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
             "repo-commits",
             "repo-file-count",
             "repo-commit-time-range",
-            "includes-readme",
-            "includes-contributing",
-            "includes-code-of-conduct",
-            "includes-license",
-            "is-citable",
-            "agg-info-entropy",
-            "file-info-entropy",
+            "repo-includes-readme",
+            "repo-includes-contributing",
+            "repo-includes-code-of-conduct",
+            "repo-includes-license",
+            "repo-is-citable",
+            "repo-agg-info-entropy",
+            "repo-file-info-entropy",
         ]
         assert all(key in data for key in expected_keys)
 
