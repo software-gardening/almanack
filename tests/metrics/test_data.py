@@ -236,6 +236,9 @@ def test_default_branch_is_not_master(tmp_path):
     # (so they aren't in the same dir and overlapping)
     pathlib.Path((example1 := tmp_path / "example1")).mkdir()
     pathlib.Path((example2 := tmp_path / "example2")).mkdir()
+    pathlib.Path((example3 := tmp_path / "example3")).mkdir()
+    pathlib.Path((example4 := tmp_path / "example4")).mkdir()
+    pathlib.Path((example5 := tmp_path / "example5")).mkdir()
 
     # test with a master branch
     repo = repo_setup(
@@ -250,3 +253,56 @@ def test_default_branch_is_not_master(tmp_path):
     )
 
     assert default_branch_is_not_master(repo)
+
+    # test with a simulated remote head pointed at remote master
+    repo = repo_setup(
+        repo_path=example3, files={"example.txt": "example"}, branch_name="main"
+    )
+
+    # simulate having a remote head pointed at a branch named master
+    repo.create_reference(
+        "refs/remotes/origin/master", repo[repo.head.target].id, force=True
+    )
+    repo.create_reference(
+        "refs/remotes/origin/HEAD", "refs/remotes/origin/master", force=True
+    )
+
+    # create a local branch which is named something besides master
+    repo.create_branch("something_else", repo[repo.head.target])
+    repo.set_head("refs/heads/something_else")
+
+    assert not default_branch_is_not_master(repo)
+
+    # test with a simulated remote head pointed at remote main
+    repo = repo_setup(
+        repo_path=example4, files={"example.txt": "example"}, branch_name="main"
+    )
+
+    # simulate having a remote head pointed at a branch named master
+    repo.create_reference(
+        "refs/remotes/origin/main", repo[repo.head.target].id, force=True
+    )
+    repo.create_reference(
+        "refs/remotes/origin/HEAD", "refs/remotes/origin/main", force=True
+    )
+
+    # create a local branch which is named something besides master
+    repo.create_branch("something_else", repo[repo.head.target])
+    repo.set_head("refs/heads/something_else")
+
+    assert default_branch_is_not_master(repo)
+
+    # test with a simulated remote head pointed at remote main but with local branch master
+    repo = repo_setup(
+        repo_path=example5, files={"example.txt": "example"}, branch_name="master"
+    )
+
+    # simulate having a remote head pointed at a branch named master
+    repo.create_reference(
+        "refs/remotes/origin/main", repo[repo.head.target].id, force=True
+    )
+    repo.create_reference(
+        "refs/remotes/origin/HEAD", "refs/remotes/origin/main", force=True
+    )
+
+    assert not default_branch_is_not_master(repo)

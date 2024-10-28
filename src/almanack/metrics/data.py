@@ -179,11 +179,18 @@ def default_branch_is_not_master(repo: pygit2.Repository) -> bool:
         bool:
             True if the default branch is "master", False otherwise.
     """
-    # Get the symbolic reference to HEAD, which should point to the default branch
-    head_ref = repo.head.shorthand
+    # Access the "refs/remotes/origin/HEAD" reference to find the default branch
+    try:
+        # check whether remote head and remote master are the same
+        return (
+            repo.references.get("refs/remotes/origin/HEAD").target
+            == repo.references.get("refs/remotes/origin/master").target
+        )
 
-    # Check if the default branch is not "master"
-    return head_ref != "master"
+    except AttributeError:
+        # If "refs/remotes/origin/HEAD" or "refs/remotes/origin/master" doesn't exist,
+        # fall back to the local HEAD check
+        return repo.head.shorthand != "master"
 
 
 def compute_repo_data(repo_path: str) -> None:
