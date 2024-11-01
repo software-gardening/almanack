@@ -4,15 +4,13 @@ Setup Entropy Report CLI through python-fire
 
 import fire
 
-import almanack.metrics.entropy.processing_repositories as report
+from .metrics.data import get_table
 
-
-def trigger() -> None:
+def cli_get_table() -> None:
     """
     Run the CLI command to process `report.py` using python-fire.
     """
-    fire.Fire(report)
-
+    fire.Fire(get_table)
 
 if __name__ == "__main__":
     """
@@ -21,4 +19,4 @@ if __name__ == "__main__":
     This allows the function `check` to be ran through the
     command line interface.
     """
-    trigger()
+    cli_get_table()
