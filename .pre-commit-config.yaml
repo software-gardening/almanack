@@ -74,6 +74,10 @@ repos:
     rev: b6045d78aac9e02b039703b030588d54d53262ac
     hooks:
       - id: validate-cff
+  - repo: https://github.com/jendrikseipp/vulture
+    rev: 'v2.13'
+    hooks:
+      - id: vulture
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.8.5
     hooks:

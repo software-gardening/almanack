@@ -99,6 +99,10 @@ ignore-words = "styles/config/vocabularies/almanack/accept.txt"
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex = ".{1024}|.*codespell-ignore.*"
 
+[tool.vulture]
+min_confidence = 90
+paths = [ "src/almanack", "tests" ]
+
 [tool.bandit]
 exclude_dirs = [ "tests" ]
 
