@@ -3,7 +3,6 @@ Testing utilities
 """
 
 import subprocess
-
 from typing import Tuple
 
 
@@ -19,6 +18,7 @@ def check_subproc_run_for_nonzero(completed_proc: subprocess.CompletedProcess) -
     except Exception as exc:
         # raise the exception with decoded output from linkchecker for readability
         raise Exception(completed_proc.stdout.decode()) from exc
+
 
 def run_cli_command(command: str) -> Tuple[str, str, int]:
     """

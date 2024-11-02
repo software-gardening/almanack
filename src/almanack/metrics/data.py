@@ -6,7 +6,7 @@ import pathlib
 import shutil
 import tempfile
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 import pygit2
 import yaml
@@ -20,7 +20,7 @@ from .entropy.calculate_entropy import (
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 
 
-def get_table(repo_path: str) -> Dict[str, Any]:
+def get_table(repo_path: str) -> List[Dict[str, Any]]:
     """
     Gather metrics on a repository and return the results in a structured format.
 
