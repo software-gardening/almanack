@@ -87,3 +87,32 @@ repos:
         entry: poetry run poe vale-checks
         language: system
         pass_filenames: false
+  - repo: local
+    hooks:
+      - id: syft-sbom-check
+        name: Syft SBOM Check
+        entry: bash
+        language: system
+        args:
+          - -c
+          - |
+            # Generate SBOM using Anchore Syft
+            docker run --rm -v $(pwd):/workspace anchore/syft:latest scan dir:/workspace --output spdx-json > sbom-new.json
+
+            # If an existing SBOM file doesn't exist, save the new one as the baseline
+            if [ ! -f sbom.json ]; then
+              echo "No existing SBOM found. Creating baseline SBOM."
+              mv sbom-new.json sbom.json
+              exit 0
+            fi
+
+            # Compare the new SBOM with the baseline
+            if ! cmp -s sbom.json sbom-new.json; then
+              echo "SBOM has changed! Please review and commit the updated SBOM."
+              exit 1
+            else
+              echo "SBOM is up-to-date."
+              rm sbom-new.json
+              exit 0
+            fi
+        pass_filenames: false
