@@ -841,16 +841,15 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 
 [[package]]
 name = "fire"
-version = "0.6.0"
+version = "0.7.0"
 description = "A library for automatically generating command line interfaces."
 optional = false
 python-versions = "*"
 files = [
-    {file = "fire-0.6.0.tar.gz", hash = "sha256:54ec5b996ecdd3c0309c800324a0703d6da512241bc73b553db959d98de0aa66"},
+    {file = "fire-0.7.0.tar.gz", hash = "sha256:961550f07936eaf65ad1dc8360f2b2bf8408fad46abbfa4d2a3794f8d2a95cdf"},
 ]
 
 [package.dependencies]
-six = "*"
 termcolor = "*"
 
 [[package]]
@@ -1575,21 +1574,6 @@ files = [
     {file = "latexcodec-3.0.0-py3-none-any.whl", hash = "sha256:6f3477ad5e61a0a99bd31a6a370c34e88733a6bad9c921a3ffcfacada12f41a7"},
     {file = "latexcodec-3.0.0.tar.gz", hash = "sha256:917dc5fe242762cc19d963e6548b42d63a118028cdd3361d62397e3b638b6bc5"},
 ]
-
-[[package]]
-name = "lib4sbom"
-version = "0.7.5"
-description = "Software Bill of Material (SBOM) generator and consumer library"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "lib4sbom-0.7.5-py2.py3-none-any.whl", hash = "sha256:232a199632acfabcf28e451e0bdd18c26c1d7a2d2158194b340233863f651578"},
-]
-
-[package.dependencies]
-defusedxml = "*"
-pyyaml = ">=5.4"
-semantic-version = "*"
 
 [[package]]
 name = "linkchecker"
@@ -3019,36 +3003,6 @@ files = [
 ]
 
 [[package]]
-name = "sbomdiff"
-version = "0.5.6"
-description = "Software Bill of Material (SBOM) difference tool"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "sbomdiff-0.5.6-py2.py3-none-any.whl", hash = "sha256:d08fb0ccde574709a40686b55d94731943239f9dfe744d98f37fc14fde861544"},
-]
-
-[package.dependencies]
-defusedxml = "*"
-lib4sbom = ">=0.7.2"
-pyyaml = ">=5.4"
-
-[[package]]
-name = "semantic-version"
-version = "2.10.0"
-description = "A library implementing the 'SemVer' scheme."
-optional = false
-python-versions = ">=2.7"
-files = [
-    {file = "semantic_version-2.10.0-py2.py3-none-any.whl", hash = "sha256:de78a3b8e0feda74cabc54aab2da702113e33ac9d9eb9d2389bcf1f58b7d9177"},
-    {file = "semantic_version-2.10.0.tar.gz", hash = "sha256:bdabb6d336998cbb378d4b9db3a4b56a1e3235701dc05ea2690d9a997ed5041c"},
-]
-
-[package.extras]
-dev = ["Django (>=1.11)", "check-manifest", "colorama (<=0.4.1)", "coverage", "flake8", "nose2", "readme-renderer (<25.0)", "tox", "wheel", "zest.releaser[recommended]"]
-doc = ["Sphinx", "sphinx-rtd-theme"]
-
-[[package]]
 name = "send2trash"
 version = "1.8.3"
 description = "Send file to trash natively under Mac OS X, Windows and Linux"
@@ -4035,4 +3989,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<=3.12"
-content-hash = "94c265b0205d7fbd2049e1a6a0c532fdcca6bb39628aca6be9c31af6139f1184"
+content-hash = "5cf3fb6b824ed1cb7368c1492f5921f1e8cae3468eadc27a9eaf39ebcdf91e04"
