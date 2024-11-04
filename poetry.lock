@@ -841,16 +841,15 @@ devel = ["colorama", "json-spec", "jsonschema", "pylint", "pytest", "pytest-benc
 
 [[package]]
 name = "fire"
-version = "0.6.0"
+version = "0.7.0"
 description = "A library for automatically generating command line interfaces."
 optional = false
 python-versions = "*"
 files = [
-    {file = "fire-0.6.0.tar.gz", hash = "sha256:54ec5b996ecdd3c0309c800324a0703d6da512241bc73b553db959d98de0aa66"},
+    {file = "fire-0.7.0.tar.gz", hash = "sha256:961550f07936eaf65ad1dc8360f2b2bf8408fad46abbfa4d2a3794f8d2a95cdf"},
 ]
 
 [package.dependencies]
-six = "*"
 termcolor = "*"
 
 [[package]]
@@ -3990,4 +3989,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<=3.12"
-content-hash = "778b1fce3d9d498e13b1f89da98c4b344cbbd160d11f989b4dce1e726d3b34e8"
+content-hash = "5cf3fb6b824ed1cb7368c1492f5921f1e8cae3468eadc27a9eaf39ebcdf91e04"
