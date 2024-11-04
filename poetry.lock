@@ -1566,6 +1566,21 @@ files = [
 ]
 
 [[package]]
+name = "lib4sbom"
+version = "0.7.5"
+description = "Software Bill of Material (SBOM) generator and consumer library"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "lib4sbom-0.7.5-py2.py3-none-any.whl", hash = "sha256:232a199632acfabcf28e451e0bdd18c26c1d7a2d2158194b340233863f651578"},
+]
+
+[package.dependencies]
+defusedxml = "*"
+pyyaml = ">=5.4"
+semantic-version = "*"
+
+[[package]]
 name = "linkchecker"
 version = "10.5.0"
 description = "check links in web documents or full websites"
@@ -2993,6 +3008,36 @@ files = [
 ]
 
 [[package]]
+name = "sbomdiff"
+version = "0.5.6"
+description = "Software Bill of Material (SBOM) difference tool"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "sbomdiff-0.5.6-py2.py3-none-any.whl", hash = "sha256:d08fb0ccde574709a40686b55d94731943239f9dfe744d98f37fc14fde861544"},
+]
+
+[package.dependencies]
+defusedxml = "*"
+lib4sbom = ">=0.7.2"
+pyyaml = ">=5.4"
+
+[[package]]
+name = "semantic-version"
+version = "2.10.0"
+description = "A library implementing the 'SemVer' scheme."
+optional = false
+python-versions = ">=2.7"
+files = [
+    {file = "semantic_version-2.10.0-py2.py3-none-any.whl", hash = "sha256:de78a3b8e0feda74cabc54aab2da702113e33ac9d9eb9d2389bcf1f58b7d9177"},
+    {file = "semantic_version-2.10.0.tar.gz", hash = "sha256:bdabb6d336998cbb378d4b9db3a4b56a1e3235701dc05ea2690d9a997ed5041c"},
+]
+
+[package.extras]
+dev = ["Django (>=1.11)", "check-manifest", "colorama (<=0.4.1)", "coverage", "flake8", "nose2", "readme-renderer (<25.0)", "tox", "wheel", "zest.releaser[recommended]"]
+doc = ["Sphinx", "sphinx-rtd-theme"]
+
+[[package]]
 name = "send2trash"
 version = "1.8.3"
 description = "Send file to trash natively under Mac OS X, Windows and Linux"
@@ -3983,4 +4028,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.9,<=3.12"
-content-hash = "0970a72b887c4447bd25e10e02110e9e7a85a33745d3e9bcccdc572f8d5d859d"
+content-hash = "1cc1110c8604a7d31f2695d9b4962b20a2985a9d3c01f7542e2def6464799662"
