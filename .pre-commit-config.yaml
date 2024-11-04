@@ -89,34 +89,6 @@ repos:
         pass_filenames: false
       - id: syft-sbom-check
         name: Syft SBOM Check
-        entry: bash
+        entry: poetry run poe sbom-checks
         language: system
-        args:
-          - -c
-          - |
-            # Generate SBOM using Anchore Syft
-            docker run --rm -v $(pwd):/workspace anchore/syft:latest scan dir:/workspace --output spdx-json > sbom-new.json
-
-            # If an existing SBOM file doesn't exist, save the new one as the baseline
-            if [ ! -f sbom.json ]; then
-              echo "No existing SBOM found. Creating baseline SBOM."
-              mv sbom-new.json sbom.json
-              exit 0
-            fi
-
-            # Extract "packages" section until the end of the file
-            sed -n '/"packages":\[/,$p' sbom.json > sbom-old-packages.json
-            sed -n '/"packages":\[/,$p' sbom-new.json > sbom-new-packages.json
-
-            # Compare the packages sections only
-            if ! cmp -s sbom-old-packages.json sbom-new-packages.json; then
-              echo "SBOM 'packages' section has changed! Please review and commit the updated SBOM."
-              mv sbom-new.json sbom.json
-              rm sbom-old-packages.json sbom-new-packages.json
-              exit 1
-            else
-              echo "SBOM 'packages' section is up-to-date."
-              rm sbom-new.json sbom-old-packages.json sbom-new-packages.json
-              exit 0
-            fi
         pass_filenames: false
