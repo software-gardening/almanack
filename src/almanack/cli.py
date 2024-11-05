@@ -1,5 +1,5 @@
 """
-Setup Entropy Report CLI through python-fire
+Setup almanack CLI through python-fire
 """
 
 import json
