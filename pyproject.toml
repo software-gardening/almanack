@@ -131,7 +131,11 @@ if [ $(echo "$output" | wc -l) -gt 1 ]; then
 echo "$output"; exit 1;
 fi
 """
-# run check on the sbom to see if it needs to be updated
+# Run check on the sbom to see if it needs to be updated.
+# We create a new sbom from the existing source for the almanack, 
+# then compare it to the current sbom.json for differences.
+# If the sbom is missing or differs, we throw a non-zero exit.
+# Intended to be run through pre-commmit as a check on this repo.
 sbom-checks.shell = """
 # Generate SBOM using Anchore Syft
 docker run --rm -v $(pwd):/workspace anchore/syft:latest scan dir:/workspace --output spdx-json > sbom-new.json
@@ -140,7 +144,7 @@ docker run --rm -v $(pwd):/workspace anchore/syft:latest scan dir:/workspace --o
 if [ ! -f sbom.json ]; then
   echo "No existing SBOM found. Creating baseline SBOM."
   mv sbom-new.json sbom.json
-  exit 0
+  exit 1
 fi
 
 # Use sbomdiff to check for changes

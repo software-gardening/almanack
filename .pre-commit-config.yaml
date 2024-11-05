@@ -82,11 +82,13 @@ repos:
         args: ["--float-to-top"]
   - repo: local
     hooks:
+      # checks language use throughout the project.
       - id: vale.sh
         name: vale.sh writing checks
         entry: poetry run poe vale-checks
         language: system
         pass_filenames: false
+      # checks the almanack sbom file.
       - id: syft-sbom-check
         name: Syft SBOM Check
         entry: poetry run poe sbom-checks
