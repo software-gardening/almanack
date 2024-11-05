@@ -132,7 +132,7 @@ echo "$output"; exit 1;
 fi
 """
 # Run check on the sbom to see if it needs to be updated.
-# We create a new sbom from the existing source for the almanack, 
+# We create a new sbom from the existing source for the almanack,
 # then compare it to the current sbom.json for differences.
 # If the sbom is missing or differs, we throw a non-zero exit.
 # Intended to be run through pre-commmit as a check on this repo.
