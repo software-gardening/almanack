@@ -6,23 +6,49 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
+      # Ensures no trailing whitespace in files, which can cause
+      # merge conflicts and makes diffs harder to read.
       - id: trailing-whitespace
+
+      # Ensures each file ends with a newline, which is a POSIX standard
+      # for text files and can prevent errors with certain parsers.
       - id: end-of-file-fixer
+
+      # Validates YAML file syntax, which is helpful since YAML is
+      # whitespace-sensitive and prone to syntax errors.
       - id: check-yaml
+
+      # Warns if files above a specified size are added, as large files
+      # can bloat the repository and slow down cloning and other operations.
       - id: check-added-large-files
+
+      # Checks the syntax of TOML files, ensuring the correctness of
+      # `pyproject.toml` or other configuration files in TOML format.
       - id: check-toml
+
+      # Detects private keys accidentally committed to the repository,
+      # which helps prevent sensitive information from being exposed.
       - id: detect-private-key
+
   - repo: https://github.com/python-poetry/poetry
     rev: "1.8.0"
     hooks:
+      # Verifies that the `pyproject.toml` file is valid and follows Poetry's
+      # expected syntax, which ensures consistent dependency management.
       - id: poetry-check
+
   - repo: https://github.com/tox-dev/pyproject-fmt
     rev: "2.2.4"
     hooks:
+      # Formats the `pyproject.toml` file to follow a consistent structure
+      # and style, making it easier to read and maintain.
       - id: pyproject-fmt
+
   - repo: https://github.com/codespell-project/codespell
     rev: v2.3.0
     hooks:
+      # Detects and corrects common typos in the codebase, improving
+      # readability and reducing minor mistakes.
       - id: codespell
         exclude: |
           (?x)^(
@@ -33,55 +59,99 @@ repos:
           )$
         additional_dependencies:
           - tomli
+
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.17
     hooks:
+      # Formats Markdown files to ensure a consistent style,
+      # making the documentation easier to read and maintain.
       - id: mdformat
         additional_dependencies:
           - mdformat-myst
           - mdformat-gfm
+
   - repo: https://github.com/adrienverge/yamllint
     rev: v1.35.1
     hooks:
+      # Lints YAML files to enforce consistent formatting, which
+      # makes YAML easier to read and reduces syntax errors.
       - id: yamllint
+
   - repo: https://github.com/psf/black
     rev: 24.4.2
     hooks:
+      # Formats Python code to follow the Black code style,
+      # promoting consistency and readability across the codebase.
       - id: black
+
   - repo: https://github.com/asottile/blacken-docs
     rev: 1.18.0
     hooks:
+      # Formats code blocks in Markdown and reStructuredText
+      # documentation files with Black's style, ensuring
+      # consistency in inline code snippets.
       - id: blacken-docs
+
   - repo: https://github.com/PyCQA/isort
     rev: 5.13.2
     hooks:
+      # Sorts imports in Python files, making the code easier to
+      # navigate and reducing merge conflicts in import statements.
       - id: isort
+
   - repo: https://github.com/PyCQA/bandit
     rev: 1.7.9
     hooks:
+      # Scans Python code for common security issues, helping to identify
+      # and fix potential vulnerabilities in the codebase.
       - id: bandit
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: "v0.5.2"
     hooks:
+      # A fast linter that checks for stylistic errors in Python code,
+      # helping maintain code quality and adherence to style guidelines.
       - id: ruff
+
   - repo: https://github.com/rhysd/actionlint
     rev: v1.7.1
     hooks:
+      # Lints GitHub Actions workflows, ensuring syntax correctness and
+      # reducing errors in continuous integration and automation configurations.
       - id: actionlint-docker
+
   - repo: https://github.com/citation-file-format/cffconvert
     rev: b6045d78aac9e02b039703b030588d54d53262ac
     hooks:
+      # Validates `CITATION.cff` files, ensuring proper citation metadata
+      # for the repository, which promotes good citation practices.
       - id: validate-cff
+
+  - repo: https://github.com/jendrikseipp/vulture
+    rev: 'v2.13'
+    hooks:
+      # Detects unused code, helping identify dead code that can be removed
+      # to keep the codebase lean and maintainable.
+      - id: vulture
+
   - repo: https://github.com/nbQA-dev/nbQA
     rev: 1.8.5
     hooks:
+      # Runs Black formatting on Jupyter notebooks, ensuring code cells
+      # adhere to the Black code style.
       - id: nbqa-black
+
+      # Runs isort on Jupyter notebooks, sorting imports in code
+      # cells for consistency.
       - id: nbqa-isort
         args: ["--float-to-top"]
+
   - repo: local
     hooks:
+      # Runs the Vale linting tool to check for spelling, grammar,
+      # and style errors in text files, improving the quality of documentation.
       - id: vale.sh
         name: vale.sh writing checks
         entry: poetry run poe vale-checks

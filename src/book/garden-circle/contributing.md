@@ -129,6 +129,9 @@ After [installing pre-commit](https://pre-commit.com/#installation) within your 
 % pre-commit run --all-files
 ```
 
+We strive to provide comments about each pre-commit check within the [`.pre-commit-config.yaml`](https://github.com/software-gardening/almanack/blob/main/.pre-commit-config.yaml) file.
+Comments are provided within the file to make sure we single-source documentation where possible, avoiding possible drift between the documentation and the code which runs the checks.
+
 ### Automated CI/CD with GitHub Actions
 
 We use [GitHub Actions](https://docs.github.com/en/actions) to help perform automated [CI/CD](https://en.wikipedia.org/wiki/CI/CD) as part of this project.

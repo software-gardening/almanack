@@ -17,6 +17,7 @@ html:
   use_issues_button: true
   use_multitoc_numbering: true
   home_page_in_navbar: true
+  favicon: "favicon.png"
 
 #######################################################################################
 # Repository specification settings
