@@ -9,25 +9,6 @@ import fire
 from .metrics.data import get_table
 
 
-def get_table_json_wrapper(repo_path: str) -> str:
-    """
-    Converts the output of get_table to a proper JSON str.
-    Note: python-fire seems to convert lists of dictionaries
-    into individual dictionaries without distinction within list.
-
-    Args:
-        repo_path (str):
-            Path to the repository from which to retrieve and
-            convert the table data.
-
-    Returns:
-        str:
-            JSON string representation of the table data.
-    """
-
-    return json.dumps(get_table(repo_path=repo_path))
-
-
 def cli_get_table() -> None:
     """
     Creates Fire CLI for get_table_json_wrapper.
@@ -35,7 +16,7 @@ def cli_get_table() -> None:
     This enables the use of CLI such as:
     `almanck <repo path>`
     """
-    fire.Fire(get_table_json_wrapper)
+    fire.Fire(component=get_table, serialize=json.dumps)
 
 
 if __name__ == "__main__":
