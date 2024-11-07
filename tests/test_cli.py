@@ -17,8 +17,7 @@ def test_cli_util():
     Test the run_cli_command for successful output
     """
 
-    command = """echo 'hello world'"""
-    _, _, returncode = run_cli_command(command)
+    _, _, returncode = run_cli_command(["echo", "'hello world'"])
 
     assert returncode == 0
 
@@ -32,7 +31,7 @@ def test_cli_almanack(tmp_path):
     repo = repo_setup(repo_path=tmp_path, files={"example.txt": "example"})
 
     # gather output and return code from running a CLI command
-    stdout, _, returncode = run_cli_command(f"almanack {repo.path}")
+    stdout, _, returncode = run_cli_command(command=["almanack", repo.path])
 
     # make sure we return 0 on success
     assert returncode == 0

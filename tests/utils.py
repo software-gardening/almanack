@@ -31,7 +31,5 @@ def run_cli_command(command: str) -> Tuple[str, str, int]:
         tuple: (str: stdout, str: stderr, int: returncode)
     """
 
-    result = subprocess.run(
-        command.split(" "), capture_output=True, text=True, check=False
-    )
+    result = subprocess.run(args=command, capture_output=True, text=True, check=False)
     return result.stdout, result.stderr, result.returncode
