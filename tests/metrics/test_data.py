@@ -343,6 +343,27 @@ def test_default_branch_is_not_master(tmp_path):
             },
             False,
         ),
+        # Scenario 5: `docs` directory with sphinx-like structure
+        (
+            {
+                "docs/source/index.rst": "An rst index",
+            },
+            True,
+        ),
+        # Scenario 6: `docs` directory with sphinx-like structure
+        (
+            {
+                "docs/source/index.md": "An md index",
+            },
+            True,
+        ),
+        # Scenario 6: `docs` directory with a readme under source dir
+        (
+            {
+                "docs/source/readme.md": "A readme for nested docs",
+            },
+            True,
+        ),
         # test the almanack itseft as a special case
         (None, True),
     ],

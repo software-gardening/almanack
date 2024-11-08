@@ -214,6 +214,12 @@ def includes_common_docs(repo: pygit2.Repository) -> bool:
         "docs/index.rst",
         "docs/index.html",
         "docs/readme.md",
+        "docs/source/readme.md",
+        "docs/source/index.rst",
+        "docs/source/index.md",
+        "docs/src/readme.md",
+        "docs/src/index.rst",
+        "docs/src/index.md",
     ]
 
     # Check each documentation path using the find_and_read_file function
