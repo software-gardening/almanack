@@ -344,7 +344,7 @@ def test_default_branch_is_not_master(tmp_path):
             False,
         ),
         # test the almanack itseft as a special case
-        (None, None),
+        (None, True),
     ],
 )
 def test_includes_common_docs(tmp_path, files, expected_result):
