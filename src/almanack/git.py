@@ -178,38 +178,64 @@ def detect_encoding(blob_data: bytes) -> str:
     raise ValueError("Encoding could not be detected.")
 
 
-def find_and_read_file(repo: pygit2.Repository, filename: str) -> Optional[str]:
+def find_and_read_file(
+    repo: pygit2.Repository, filepath: str, case_insensitive: bool = False
+) -> Optional[str]:
     """
-    Find and read the content of a file in the repository that matches the filename pattern.
+    Find and read the content of a file in the repository by its path.
 
     Args:
-        repo (str): The path to the repository.
-        filename (str): The pattern to match against filenames.
+        repo (pygit2.Repository):
+            The repository object.
+        filepath (str):
+            The path to the file within the repository.
+        case_insensitive (bool):
+            If True, perform case-insensitive comparison.
 
     Returns:
-        Optional[str]: The content of the found file, or None if no matching files are found.
+        Optional[str]:
+            The content of the found file,
+            or None if no matching file is found.
     """
 
     # Get the tree associated with the latest commit
     tree = repo.head.peel().tree
 
-    # find the first occurrence of a matching file
-    found_file: Optional[pygit2.Blob] = next(
-        (
-            entry
-            for entry in tree
-            if entry.type == pygit2.GIT_OBJECT_BLOB
-            and filename.lower() == entry.name.lower()
-        ),
-        None,
-    )
+    # Split the file path into parts (e.g., "docs/readme.txt" -> ["docs", "readme.txt"])
+    path_parts = filepath.split("/")
 
-    # if we have none, return it early to avoid trying to read nothing
-    if found_file is None:
-        return found_file
+    for i, part in enumerate(path_parts):
+        # Handle case-insensitivity by converting parts to lowercase if needed
+        if case_insensitive:
+            # note: we noqa below to avoid warning about overwritten loop variable
+            part = part.lower()  # noqa: PLW2901
 
-    # Read the content of the first found blob
-    blob_data: bytes = found_file.data
+        try:
+            # If case-insensitive, also convert the entry name to lowercase
+            entry = (
+                tree[part]
+                if not case_insensitive
+                else next(e for e in tree if e.name.lower() == part)
+            )
+        except (KeyError, StopIteration):
+            # If the part is not found, return None early
+            return None
 
-    # Decode and return content as a string
-    return blob_data.decode(detect_encoding(blob_data))
+        if entry.type == pygit2.GIT_OBJECT_TREE:
+            # If the entry is a tree (directory), navigate into it
+            tree = repo[entry.id]
+        elif entry.type == pygit2.GIT_OBJECT_BLOB:
+            # If it's a blob and either the last part of the path or in the root, read the blob's data
+            if i == len(path_parts) - 1:
+                blob = repo.get(entry.id)  # Retrieve the blob object
+                blob_data: bytes = blob.data
+                decoded_data = blob_data.decode(detect_encoding(blob_data))
+                return decoded_data
+            else:
+                return None
+        else:
+            # If we encounter a non-matching structure, return None
+            return None
+
+    # If the loop completes without finding a blob, the file wasn't found
+    return None

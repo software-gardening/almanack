@@ -159,29 +159,21 @@ def repo_setup(
     repo_path: pathlib.Path, files: dict, branch_name: str = "main"
 ) -> pygit2.Repository:
     """
-    Set up a temporary repository with specified files.
-
-    Args:
-        tmp_path (Path):
-            The temporary directory where the repo will be created.
-        files (dict):
-            A dictionary where keys are filenames and values are their content.
-        branch_name (str):
-            A string with the name of the branch which will be used for
-            committing changes. Defaults to "main".
-
-    Returns:
-        pygit2.Repository: The initialized repository with files.
+    Set up a temporary repository with specified files, supporting nested file paths.
     """
-    # Create a new repository in the temporary path
+    # Create a new repository in the specified path
     repo = pygit2.init_repository(repo_path, bare=False)
 
     # Set user.name and user.email in the config
     set_repo_user_config(repo)
 
-    # Create files in the repository
-    for filename, content in files.items():
-        (repo_path / filename).write_text(content)
+    # Create nested files in the repository
+    for file_path, content in files.items():
+        full_path = repo_path / file_path  # Construct full path
+        full_path.parent.mkdir(
+            parents=True, exist_ok=True
+        )  # Create any parent directories
+        full_path.write_text(content)  # Write the file content
 
     # Stage and commit the files
     index = repo.index
@@ -191,6 +183,7 @@ def repo_setup(
     author = repo.default_signature
     tree = repo.index.write_tree()
 
+    # Commit the files
     repo.create_commit(
         f"refs/heads/{branch_name}",
         author,
@@ -200,7 +193,7 @@ def repo_setup(
         [],
     )
 
-    # Set the head to the main branch
+    # Set the HEAD to point to the new branch
     repo.set_head(f"refs/heads/{branch_name}")
 
     return repo

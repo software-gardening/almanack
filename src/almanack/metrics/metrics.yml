@@ -56,6 +56,13 @@ metrics:
     description: >-
       Boolean value indicating that the repo uses a
       default branch name besides 'master'.
+  - name: "repo-includes-common-docs"
+    id: "SGA-GL-0007"
+    result-type: "bool"
+    description: >-
+      Boolean value indicating whether the repo includes
+      common documentation directory and files associated
+      with building docsites.
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"

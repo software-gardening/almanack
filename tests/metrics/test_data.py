@@ -17,6 +17,7 @@ from almanack.metrics.data import (
     default_branch_is_not_master,
     file_exists_in_repo,
     get_table,
+    includes_common_docs,
     is_citable,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
@@ -34,21 +35,19 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
         assert data is not None
         assert isinstance(data, dict)
 
-        # Check for expected keys
-        expected_keys = [
-            "repo-path",
-            "repo-commits",
-            "repo-file-count",
-            "repo-commit-time-range",
-            "repo-includes-readme",
-            "repo-includes-contributing",
-            "repo-includes-code-of-conduct",
-            "repo-includes-license",
-            "repo-is-citable",
-            "repo-agg-info-entropy",
-            "repo-file-info-entropy",
-        ]
-        assert all(key in data for key in expected_keys)
+        # open the metrics table
+        with open(METRICS_TABLE, "r") as f:
+            metrics_table = yaml.safe_load(f)
+
+        # check that all keys exist in the output from metrics
+        # table to received dict
+        assert all(
+            x == y
+            for x, y in zip(
+                sorted(data.keys()),
+                sorted([metric["name"] for metric in metrics_table["metrics"]]),
+            )
+        )
 
         # Check that repo_path in the output is the same as the input
         assert data["repo-path"] == str(repo_path)
@@ -306,3 +305,57 @@ def test_default_branch_is_not_master(tmp_path):
     )
 
     assert not default_branch_is_not_master(repo)
+
+
+@pytest.mark.parametrize(
+    "files, expected_result",
+    [
+        # Scenario 1: `docs` directory with common documentation files
+        (
+            {
+                "docs/mkdocs.yml": "site_name: Test Docs",
+                "docs/index.md": "# Welcome to the documentation",
+                "README.md": "# Project Overview",
+            },
+            True,
+        ),
+        # Scenario 2: `docs` directory without common documentation files
+        (
+            {
+                "docs/random_file.txt": "This is just a random file",
+                "README.md": "# Project Overview",
+            },
+            False,
+        ),
+        # Scenario 3: No `docs` directory
+        (
+            {
+                "README.md": "# Project Overview",
+                "src/main.py": "# Main script",
+            },
+            False,
+        ),
+        # Scenario 4: `docs` directory with misleading names
+        (
+            {
+                "docs/mkdoc.yml": "Not a valid mkdocs file",
+                "docs/INDEX.md": "# Not a documentation index",
+            },
+            False,
+        ),
+        # test the almanack itseft as a special case
+        (None, None),
+    ],
+)
+def test_includes_common_docs(tmp_path, files, expected_result):
+    # Temporary directory for the test repository
+
+    if files is not None:
+        repo = repo_setup(repo_path=tmp_path, files=files)
+    else:
+        # test the almanack itself
+        repo_path = pathlib.Path(".").resolve()
+        repo = pygit2.Repository(str(repo_path))
+
+    # Assert that the function returns the expected result
+    assert includes_common_docs(repo) == expected_result
