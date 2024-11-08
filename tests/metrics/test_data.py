@@ -369,8 +369,9 @@ def test_default_branch_is_not_master(tmp_path):
     ],
 )
 def test_includes_common_docs(tmp_path, files, expected_result):
-    # Temporary directory for the test repository
-
+    """
+    Tests includes_common_docs
+    """
     if files is not None:
         repo = repo_setup(repo_path=tmp_path, files=files)
     else:

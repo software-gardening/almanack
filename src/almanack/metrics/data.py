@@ -201,10 +201,13 @@ def includes_common_docs(repo: pygit2.Repository) -> bool:
     associated with building docsites.
 
     Args:
-        repo (pygit2.Repository): The repository object.
+        repo (pygit2.Repository):
+            The repository object.
 
     Returns:
-        bool: True if any common documentation files are found, False otherwise.
+        bool:
+            True if any common documentation files
+            are found, False otherwise.
     """
     # List of common documentation file paths to check for
     common_docs_paths = [
