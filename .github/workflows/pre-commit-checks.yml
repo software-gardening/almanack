@@ -12,7 +12,7 @@ jobs:
   pre_commit_checks:
     # avoid running for pull requests from dependabot and instead rely on
     # dependabot-pre-commit.yml workflow.
-    if: ${{ github.event_name != 'pull_request' &&
+    if: ${{ github.event_name != 'pull_request' ||
       github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
     steps:
