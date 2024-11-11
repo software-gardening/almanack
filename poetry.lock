@@ -3777,13 +3777,13 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "vale"
-version = "3.3.1.0"
+version = "3.9.0.0"
 description = "Install and use Vale (grammar & style check tool) in python environments."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "vale-3.3.1.0-py3-none-any.whl", hash = "sha256:1c46558c8bbda2a13419d240fdfa5bcd185d263a56f66f37ce82df23381e47a8"},
-    {file = "vale-3.3.1.0.tar.gz", hash = "sha256:5d7e0dc13ee3a746cc63c662b7fd2eb22949d5c21dfbca2db06c2704ecbe60cd"},
+    {file = "vale-3.9.0.0-py3-none-any.whl", hash = "sha256:d6bceb2060e32f37b490218991e48a05ac5e5c891ee4d1f7b315461f09b45232"},
+    {file = "vale-3.9.0.0.tar.gz", hash = "sha256:0e9ca14bddcb44330571d9d7aae953043a66853d3904425cbfb41c4742c0a047"},
 ]
 
 [[package]]
