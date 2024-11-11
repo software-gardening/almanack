@@ -1233,13 +1233,13 @@ referencing = ">=0.31.0"
 
 [[package]]
 name = "jupyter-book"
-version = "1.0.0"
+version = "1.0.3"
 description = "Build a book with Jupyter Notebooks and Sphinx."
 optional = false
 python-versions = ">=3.9"
 files = [
-    {file = "jupyter_book-1.0.0-py3-none-any.whl", hash = "sha256:18238f1e7e1d425731e60ab509a7da878dd6db88b7d77bcfab4690361b72e1be"},
-    {file = "jupyter_book-1.0.0.tar.gz", hash = "sha256:539c5d0493546200d9de27bd4b5f77eaea03115f8937f825d4ff82b3801a987e"},
+    {file = "jupyter_book-1.0.3-py3-none-any.whl", hash = "sha256:d99b0c92c62b469abc2b61047c1290923bce460367c6a7e296589cadc726119f"},
+    {file = "jupyter_book-1.0.3.tar.gz", hash = "sha256:f05788a76f4d284de9887fa816f4a99a4f16cc5f7c0fd5a56074a3d03bfc3e50"},
 ]
 
 [package.dependencies]
@@ -1258,15 +1258,15 @@ sphinx-design = ">=0.5,<1"
 sphinx-external-toc = ">=1.0.1,<2"
 sphinx-jupyterbook-latex = ">=1,<2"
 sphinx-multitoc-numbering = ">=0.1.3,<1"
-sphinx-thebe = ">=0.3,<1"
+sphinx-thebe = ">=0.3.1,<1"
 sphinx_togglebutton = "*"
 sphinxcontrib-bibtex = ">=2.5.0,<3"
 
 [package.extras]
 code-style = ["pre-commit (>=3.1,<4.0)"]
 pdfhtml = ["pyppeteer"]
-sphinx = ["altair", "bokeh", "folium", "ipywidgets", "jupytext", "matplotlib", "nbclient", "numpy", "pandas", "plotly", "sphinx-click", "sphinx-examples", "sphinx-proof", "sphinx_inline_tabs", "sphinxext-rediraffe (>=0.2.3,<0.3.0)", "sympy"]
-testing = ["altair", "beautifulsoup4", "beautifulsoup4", "cookiecutter", "coverage", "jupytext", "matplotlib", "pyppeteer", "pytest (>=6.2.4)", "pytest-cov", "pytest-regressions", "pytest-timeout", "pytest-xdist", "sphinx_click", "sphinx_inline_tabs", "texsoup"]
+sphinx = ["altair", "bokeh", "folium", "ipywidgets", "jupytext", "matplotlib", "nbclient", "numpy (>=2)", "pandas", "plotly", "sphinx-click", "sphinx-examples", "sphinx-proof", "sphinx_inline_tabs", "sphinxext-rediraffe (>=0.2.3,<0.3.0)", "sympy"]
+testing = ["altair", "beautifulsoup4", "beautifulsoup4", "cookiecutter", "coverage", "jupytext", "matplotlib", "numpy (>=2)", "pandas", "pydata-sphinx-theme (>=0.15.3)", "pyppeteer", "pytest (>=6.2.4)", "pytest-cov", "pytest-regressions", "pytest-timeout", "pytest-xdist", "sphinx_click", "sphinx_inline_tabs", "texsoup"]
 
 [[package]]
 name = "jupyter-cache"
