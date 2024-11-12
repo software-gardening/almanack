@@ -20,6 +20,18 @@ metrics:
     result-type: "tuple"
     description: >-
       Starting commit and most recent commit for the repository.
+  - name: "repo-days-of-development"
+    id: "SGA-META-0005"
+    result-type: "int"
+    description: >-
+      Integer representing the number of days of development
+      between most recent commit and first commit.
+  - name: "repo-commits-per-day"
+    id: "SGA-META-0006"
+    result-type: "float"
+    description: >-
+      Floating point number which represents the number of commits
+      per day (using days of development).
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"

@@ -4,6 +4,8 @@ test almanack capabilities.
 """
 
 import pathlib
+from datetime import datetime
+from typing import Optional
 
 import pygit2
 
@@ -156,51 +158,91 @@ def create_entropy_repositories(base_path: pathlib.Path) -> None:
 
 
 def repo_setup(
-    repo_path: pathlib.Path, files: dict, branch_name: str = "main"
+    repo_path: pathlib.Path,
+    files: list[dict],
+    branch_name: str = "main",
+    dates: Optional[list[datetime]] = None,
 ) -> pygit2.Repository:
     """
-    Set up a temporary repository with specified files.
+    Set up a temporary repository with specified files and commit dates.
 
     Args:
-        tmp_path (Path):
-            The temporary directory where the repo will be created.
-        files (dict):
-            A dictionary where keys are filenames and values are their content.
-        branch_name (str):
-            A string with the name of the branch which will be used for
-            committing changes. Defaults to "main".
+        repo_path (Path): The temporary directory where the repo will be created.
+        files (list[dict]): A list of dictionaries where each dictionary represents a commit
+                            and contains filenames as keys and file content as values.
+        branch_name (str): The name of the branch to use for commits. Defaults to "main".
+        dates (list[datetime], optional): A list of commit dates corresponding to each commit.
+                                          If None, all commits will use the current date.
 
     Returns:
-        pygit2.Repository: The initialized repository with files.
+        pygit2.Repository: The initialized repository with the specified commits.
     """
-    # Create a new repository in the temporary path
+    # Initialize the repository
     repo = pygit2.init_repository(repo_path, bare=False)
 
     # Set user.name and user.email in the config
     set_repo_user_config(repo)
 
-    # Create files in the repository
-    for filename, content in files.items():
-        (repo_path / filename).write_text(content)
+    # Use current date if no specific dates are provided
+    if dates is None:
+        dates = [datetime.now()] * len(files)
 
-    # Stage and commit the files
-    index = repo.index
-    index.add_all()
-    index.write()
+    # Ensure dates match the number of commits
+    assert len(dates) == len(
+        files
+    ), "Length of dates must match the number of commit dictionaries in files"
 
-    author = repo.default_signature
-    tree = repo.index.write_tree()
+    branch_ref = f"refs/heads/{branch_name}"
+    parent_commit = None
 
-    repo.create_commit(
-        f"refs/heads/{branch_name}",
-        author,
-        author,
-        "Initial commit with setup files",
-        tree,
-        [],
-    )
+    # Loop through each set of files and commit them
+    for i, (commit_files, commit_date) in enumerate(zip(files, dates)):
 
-    # Set the head to the main branch
-    repo.set_head(f"refs/heads/{branch_name}")
+        # Create or update each file in the current commit
+        for filename, content in commit_files.items():
+            file_path = repo_path / filename
+            file_path.write_text(content)
+
+        # Stage all changes in the index
+        index = repo.index
+        index.add_all()
+        index.write()
+
+        # Set the author and committer signatures with the specific commit date
+        author = pygit2.Signature(
+            repo.default_signature.name,
+            repo.default_signature.email,
+            int(commit_date.timestamp()),
+        )
+        committer = author  # Assuming the committer is the same as the author
+
+        # Write the index to a tree
+        tree = index.write_tree()
+
+        # Create the commit
+        commit_message = f"Commit #{i + 1} with files: {', '.join(commit_files.keys())}"
+        commit_id = repo.create_commit(
+            (
+                branch_ref if i == 0 else None
+            ),  # Set branch reference only for the first commit
+            author,
+            committer,
+            commit_message,
+            tree,
+            (
+                [parent_commit.id] if parent_commit else []
+            ),  # Use the .id attribute to get the commit ID
+        )
+
+        # Update the parent_commit to the latest commit for chaining
+        parent_commit = repo.get(
+            commit_id
+        )  # Explicitly get the Commit object by its ID
+
+    # Set the HEAD to the main branch after all commits
+    repo.set_head(branch_ref)
+
+    # Ensure the HEAD is pointing to the last commit
+    repo.head.set_target(parent_commit.id)
 
     return repo

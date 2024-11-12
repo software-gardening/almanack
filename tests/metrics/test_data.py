@@ -3,7 +3,8 @@ Testing metrics/data functionality
 """
 
 import pathlib
-from typing import List
+from datetime import datetime, timedelta
+from typing import Dict, List, Optional
 
 import jsonschema
 import pandas as pd
@@ -218,7 +219,7 @@ def test_is_citable(tmp_path, files, expected):
     """
 
     if files is not None:
-        repo = repo_setup(repo_path=tmp_path, files=files)
+        repo = repo_setup(repo_path=tmp_path, files=[files])
     else:
         # test the almanack itself
         repo_path = pathlib.Path(".").resolve()
@@ -242,21 +243,21 @@ def test_default_branch_is_not_master(tmp_path):
 
     # test with a master branch
     repo = repo_setup(
-        repo_path=example1, files={"example.txt": "example"}, branch_name="master"
+        repo_path=example1, files=[{"example.txt": "example"}], branch_name="master"
     )
 
     assert not default_branch_is_not_master(repo)
 
     # test with a main branch
     repo = repo_setup(
-        repo_path=example2, files={"example.txt": "example"}, branch_name="main"
+        repo_path=example2, files=[{"example.txt": "example"}], branch_name="main"
     )
 
     assert default_branch_is_not_master(repo)
 
     # test with a simulated remote head pointed at remote master
     repo = repo_setup(
-        repo_path=example3, files={"example.txt": "example"}, branch_name="main"
+        repo_path=example3, files=[{"example.txt": "example"}], branch_name="main"
     )
 
     # simulate having a remote head pointed at a branch named master
@@ -275,7 +276,7 @@ def test_default_branch_is_not_master(tmp_path):
 
     # test with a simulated remote head pointed at remote main
     repo = repo_setup(
-        repo_path=example4, files={"example.txt": "example"}, branch_name="main"
+        repo_path=example4, files=[{"example.txt": "example"}], branch_name="main"
     )
 
     # simulate having a remote head pointed at a branch named master
@@ -294,7 +295,7 @@ def test_default_branch_is_not_master(tmp_path):
 
     # test with a simulated remote head pointed at remote main but with local branch master
     repo = repo_setup(
-        repo_path=example5, files={"example.txt": "example"}, branch_name="master"
+        repo_path=example5, files=[{"example.txt": "example"}], branch_name="master"
     )
 
     # simulate having a remote head pointed at a branch named master
@@ -306,3 +307,95 @@ def test_default_branch_is_not_master(tmp_path):
     )
 
     assert not default_branch_is_not_master(repo)
+
+
+@pytest.mark.parametrize(
+    "files, dates, expected_commits, expected_file_count, expected_days, expected_commits_per_day",
+    [
+        # Single commit on a single day with one file
+        ([{"file1.txt": "content"}], None, 1, 1, 1, 1.0),
+        # Two commits on the same day with two files
+        ([{"file1.txt": "content"}, {"file2.txt": "content"}], None, 2, 2, 1, 2.0),
+        # Multiple commits over multiple days
+        (
+            [
+                {"file1.txt": "content"},
+                {"file2.txt": "content"},
+                {"file3.txt": "content"},
+            ],
+            [
+                datetime.now() - timedelta(days=2),
+                datetime.now() - timedelta(days=1),
+                datetime.now(),
+            ],
+            3,
+            3,
+            3,
+            1.0,
+        ),
+        # Multiple commits on the same day with multiple files
+        (
+            [
+                {"file1.txt": "content"},
+                {"file2.txt": "new content"},
+                {"file3.txt": "another content"},
+            ],
+            [datetime.now()] * 3,
+            3,
+            3,
+            1,
+            3.0,
+        ),
+    ],
+)
+# add noqa rule below to avoid warnings about too many parameters
+def test_commit_frequency_data(  # noqa: PLR0913
+    tmp_path: pathlib.Path,
+    files: List[Dict[str, str]],
+    dates: Optional[List[datetime]],
+    expected_commits: int,
+    expected_file_count: int,
+    expected_days: int,
+    expected_commits_per_day: float,
+):
+    """
+    Tests to ensure metric keys surrounding commits and commit frequency are
+    working as expected.
+    """
+    # Setup the repository with the provided file structure and dates
+    repo_setup(tmp_path, files, dates=dates)
+
+    # Run the function to compute repo data
+    repo_data = compute_repo_data(str(tmp_path))
+
+    # Assertions for repo-commits
+    assert (
+        repo_data["repo-commits"] == expected_commits
+    ), f"Expected {expected_commits} commits, got {repo_data['repo-commits']}"
+
+    # Assertions for repo-file-count
+    assert (
+        repo_data["repo-file-count"] == expected_file_count
+    ), f"Expected {expected_file_count} files, got {repo_data['repo-file-count']}"
+
+    # Assertions for repo-commit-time-range
+    if dates:
+        first_date = dates[0].date().isoformat()
+        last_date = dates[-1].date().isoformat()
+    else:
+        today = datetime.now().date().isoformat()
+        first_date = last_date = today
+    assert repo_data["repo-commit-time-range"] == (
+        first_date,
+        last_date,
+    ), f"Expected commit time range ({first_date}, {last_date}), got {repo_data['repo-commit-time-range']}"
+
+    # Assertions for repo-days-of-development
+    assert (
+        repo_data["repo-days-of-development"] == expected_days
+    ), f"Expected {expected_days} days of development, got {repo_data['repo-days-of-development']}"
+
+    # Assertions for repo-commits-per-day
+    assert (
+        repo_data["repo-commits-per-day"] == expected_commits_per_day
+    ), f"Expected {expected_commits_per_day} commits per day, got {repo_data['repo-commits-per-day']}"

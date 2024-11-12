@@ -42,9 +42,8 @@ def get_commits(repo: pygit2.Repository) -> List[pygit2.Commit]:
     # Get the latest commit (HEAD) from the repository
     head = repo.revparse_single("HEAD")
     # Create a walker to iterate over commits starting from the HEAD
-    walker = repo.walk(
-        head.id, pygit2.enums.SortMode.NONE
-    )  #  SortMode.NONE traverses commits in natural order; no sorting applied.
+    # sorting by time.
+    walker = repo.walk(head.id, pygit2.GIT_SORT_TIME)
     # Collect all commits from the walker into a list
     commits = list(walker)
     return commits

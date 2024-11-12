@@ -76,7 +76,6 @@ root = "."
 [tool.ruff]
 target-version = "py311"
 fix = true
-
 lint.select = [
   # mccabe
   "C90",
