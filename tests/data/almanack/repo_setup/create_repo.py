@@ -167,15 +167,20 @@ def repo_setup(
     Set up a temporary repository with specified files and commit dates.
 
     Args:
-        repo_path (Path): The temporary directory where the repo will be created.
-        files (list[dict]): A list of dictionaries where each dictionary represents a commit
-                            and contains filenames as keys and file content as values.
-        branch_name (str): The name of the branch to use for commits. Defaults to "main".
-        dates (list[datetime], optional): A list of commit dates corresponding to each commit.
-                                          If None, all commits will use the current date.
+        repo_path (Path):
+            The temporary directory where the repo will be created.
+        files (list[dict]):
+            A list of dictionaries where each dictionary represents a commit
+            and contains filenames as keys and file content as values.
+        branch_name (str):
+            The name of the branch to use for commits. Defaults to "main".
+        dates (list[datetime], optional):
+            A list of commit dates corresponding to each commit.
+            If None, all commits will use the current date.
 
     Returns:
-        pygit2.Repository: The initialized repository with the specified commits.
+        pygit2.Repository:
+            The initialized repository with the specified commits.
     """
     # Initialize the repository
     repo = pygit2.init_repository(repo_path, bare=False)
