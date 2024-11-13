@@ -201,41 +201,45 @@ def find_and_read_file(
     # Get the tree associated with the latest commit
     tree = repo.head.peel().tree
 
-    # Split the file path into parts (e.g., "docs/readme.txt" -> ["docs", "readme.txt"])
-    path_parts = filepath.split("/")
-
-    for i, part in enumerate(path_parts):
-        # Handle case-insensitivity by converting parts to lowercase if needed
-        if case_insensitive:
-            # note: we noqa below to avoid warning about overwritten loop variable
-            part = part.lower()  # noqa: PLW2901
-
+    found_entry = None
+    if not case_insensitive:
+        # pygit2 is internally case-sensitive,
+        # so we can use the tree's lookup method directly
         try:
-            # If case-insensitive, also convert the entry name to lowercase
-            entry = (
-                tree[part]
-                if not case_insensitive
-                else next(e for e in tree if e.name.lower() == part)
-            )
-        except (KeyError, StopIteration):
-            # If the part is not found, return None early
+            found_entry = tree[filepath]
+        except KeyError:
             return None
 
-        if entry.type == pygit2.GIT_OBJECT_TREE:
-            # If the entry is a tree (directory), navigate into it
-            tree = repo[entry.id]
-        elif entry.type == pygit2.GIT_OBJECT_BLOB:
-            # If it's a blob and either the last part of the path or in the root, read the blob's data
-            if i == len(path_parts) - 1:
-                blob = repo.get(entry.id)  # Retrieve the blob object
-                blob_data: bytes = blob.data
-                decoded_data = blob_data.decode(detect_encoding(blob_data))
-                return decoded_data
-            else:
+    else:
+        # Split the file path into parts (e.g., "docs/readme.txt" -> ["docs", "readme.txt"])
+        path_parts = filepath.lower().split("/")
+        for i, part in enumerate(path_parts):
+            try:
+                entry = next(e for e in tree if e.name.lower() == part)
+            except StopIteration:
+                # If the part is not found, return None early
                 return None
-        else:
-            # If we encounter a non-matching structure, return None
-            return None
+            if entry.type == pygit2.GIT_OBJECT_TREE:
+                # If the entry is a tree (directory), navigate into it
+                tree = repo[entry.id]
+            elif entry.type == pygit2.GIT_OBJECT_BLOB:
+                # If it's a blob and either the last part of the path or in the root, we're done
+                # the loop returns 'found_entry', which we'll use to get the blob's data
+                if i == len(path_parts) - 1:
+                    found_entry = entry
+                    break
+                else:
+                    # we found a blob without consuming the entire path, which
+                    # means it's not a match
+                    return None
+            else:
+                # If we encounter a non-matching structure, return None
+                return None
 
-    # If the loop completes without finding a blob, the file wasn't found
+    if found_entry is not None:
+        blob = repo.get(found_entry.id)  # Retrieve the blob object
+        blob_data: bytes = blob.data
+        decoded_data = blob_data.decode(detect_encoding(blob_data))
+
+        return decoded_data
     return None
