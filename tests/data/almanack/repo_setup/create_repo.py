@@ -202,10 +202,12 @@ def repo_setup(
 
     # Loop through each set of files and commit them
     for i, (commit_files, commit_date) in enumerate(zip(files, dates)):
-
         # Create or update each file in the current commit
         for filename, content in commit_files.items():
             file_path = repo_path / filename
+            file_path.parent.mkdir(
+                parents=True, exist_ok=True
+            )  # Ensure parent directories exist
             file_path.write_text(content)
 
         # Stage all changes in the index

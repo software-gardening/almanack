@@ -4,7 +4,7 @@ This module performs git operations
 
 import pathlib
 import tempfile
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import pygit2
 from charset_normalizer import from_bytes
@@ -146,14 +146,6 @@ def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     return str(source_commit.id), str(target_commit.id)
 
 
-"""
-Module for handling various tasks with git repo blobs.
-"""
-
-
-import pygit2
-
-
 def detect_encoding(blob_data: bytes) -> str:
     """
     Detect the encoding of the given blob data using charset-normalizer.
@@ -212,3 +204,32 @@ def find_and_read_file(repo: pygit2.Repository, filename: str) -> Optional[str]:
 
     # Decode and return content as a string
     return blob_data.decode(detect_encoding(blob_data))
+
+
+def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
+    """
+    Counts all files (Blobs) within a Git tree, including files
+    in subdirectories.
+
+    This function recursively traverses the provided `tree`
+    object to count each file, represented as a `pygit2.Blob`,
+    within the tree and any nested subdirectories.
+
+    Args:
+        tree (Union[pygit2.Tree, pygit2.Blob]):
+            The Git tree object (of type `pygit2.Tree`)
+            to traverse and count files. The initial call
+            should be made with the root tree of a commit.
+
+    Returns:
+        int:
+            The total count of files (Blobs) within the tree,
+            including nested files in subdirectories.
+    """
+    file_count = 0
+    for entry in tree:
+        if isinstance(entry, pygit2.Blob):
+            file_count += 1
+        elif isinstance(entry, pygit2.Tree):
+            file_count += count_files(entry)  # Recurse into subdirectory
+    return file_count

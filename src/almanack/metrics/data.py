@@ -11,7 +11,13 @@ from typing import Any, Dict, Optional, Tuple
 import pygit2
 import yaml
 
-from ..git import clone_repository, find_and_read_file, get_commits, get_edited_files
+from ..git import (
+    clone_repository,
+    count_files,
+    find_and_read_file,
+    get_commits,
+    get_edited_files,
+)
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
@@ -275,9 +281,7 @@ def compute_repo_data(repo_path: str) -> None:
     return {
         "repo-path": str(repo_path),
         "repo-commits": (commits_count := len(commits)),
-        "repo-file-count": sum(
-            1 for entry in most_recent_commit.tree if isinstance(entry, pygit2.Blob)
-        ),
+        "repo-file-count": count_files(tree=most_recent_commit.tree),
         "repo-commit-time-range": (
             first_commit_date.isoformat(),
             most_recent_commit_date.isoformat(),
