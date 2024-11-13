@@ -159,7 +159,17 @@ def repo_setup(
     repo_path: pathlib.Path, files: dict, branch_name: str = "main"
 ) -> pygit2.Repository:
     """
-    Set up a temporary repository with specified files, supporting nested file paths.
+    Set up a temporary repository with specified files.
+    Args:
+        repo_path (Path):
+            The directory where the repo will be created.
+        files (dict):
+            A dictionary where keys are filenames and values are their content.
+        branch_name (str):
+            A string with the name of the branch which will be used for
+            committing changes. Defaults to "main".
+    Returns:
+        pygit2.Repository: The initialized repository with files.
     """
     # Create a new repository in the specified path
     repo = pygit2.init_repository(repo_path, bare=False)
