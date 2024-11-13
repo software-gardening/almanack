@@ -54,7 +54,7 @@ jsonschema = "^4.23.0"
 sbomdiff = "^0.5.6"
 
 [tool.poetry.scripts]
-almanack = "almanack.reporting.cli:trigger"
+almanack = "almanack.cli:cli_get_table"
 
 [tool.poetry-dynamic-versioning]
 enable = true
