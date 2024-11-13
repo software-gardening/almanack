@@ -11,11 +11,12 @@ import pytest
 from almanack.git import (
     clone_repository,
     detect_encoding,
-    find_and_read_file,
+    find_file,
     get_commits,
     get_edited_files,
     get_loc_changed,
     get_most_recent_commits,
+    read_file,
 )
 
 
@@ -129,21 +130,36 @@ def test_detect_encoding(byte_data, expected_encoding, should_raise):
 @pytest.mark.parametrize(
     "filename, expected_content",
     [
-        ("README.md", "## Citation"),  # Exact match for file1.txt
-        ("readme", None),  # Partial match, should return content of file1.txt
-        ("nonexistent.txt", None),  # Non-existent file
+        ("README.md", "## Citation"),
+        ("readme", None),
+        ("nonexistent.txt", None),
     ],
 )
-def test_find_and_read_file(repo_with_citation_in_readme, filename, expected_content):
-    """Test finding and reading files in the repository with various filename patterns."""
+def test_find_file_and_read_file(
+    repo_with_citation_in_readme, filename, expected_content
+):
+    """
+    Test finding and reading files in the repository with various filename patterns.
+    """
 
-    # Call the function under test
-    result = find_and_read_file(repo_with_citation_in_readme, filename)
-
-    # Assert the result based on the expected content
+    find_file_result = find_file(repo=repo_with_citation_in_readme, filepath=filename)
+    # test for none returns
     if expected_content is None:
-        assert result is None  # Expecting None for non-existent files
-    else:
+        assert find_file_result is expected_content
         assert (
-            result == expected_content
-        )  # Expecting the actual content for found files
+            read_file(repo=repo_with_citation_in_readme, filepath=filename)
+            is expected_content
+        )
+
+    # test for content
+    else:
+        assert isinstance(find_file_result, pygit2.Object)
+        read_file_result_filepath = read_file(
+            repo=repo_with_citation_in_readme, filepath=filename
+        )
+        read_file_result_pygit_obj = read_file(
+            repo=repo_with_citation_in_readme, entry=find_file_result
+        )
+
+        assert read_file_result_filepath == expected_content
+        assert read_file_result_filepath == read_file_result_pygit_obj

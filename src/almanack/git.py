@@ -178,11 +178,11 @@ def detect_encoding(blob_data: bytes) -> str:
     raise ValueError("Encoding could not be detected.")
 
 
-def find_and_read_file(
+def find_file(
     repo: pygit2.Repository, filepath: str, case_insensitive: bool = False
-) -> Optional[str]:
+) -> Optional[pygit2.Object]:
     """
-    Find and read the content of a file in the repository by its path.
+    Locate a file in the repository by its path.
 
     Args:
         repo (pygit2.Repository):
@@ -193,53 +193,75 @@ def find_and_read_file(
             If True, perform case-insensitive comparison.
 
     Returns:
-        Optional[str]:
-            The content of the found file,
+        Optional[pygit2.Object]:
+            The entry of the found file,
             or None if no matching file is found.
     """
-
-    # Get the tree associated with the latest commit
     tree = repo.head.peel().tree
-
     found_entry = None
+
     if not case_insensitive:
-        # pygit2 is internally case-sensitive,
-        # so we can use the tree's lookup method directly
         try:
             found_entry = tree[filepath]
         except KeyError:
             return None
-
     else:
-        # Split the file path into parts (e.g., "docs/readme.txt" -> ["docs", "readme.txt"])
         path_parts = filepath.lower().split("/")
         for i, part in enumerate(path_parts):
             try:
                 entry = next(e for e in tree if e.name.lower() == part)
             except StopIteration:
-                # If the part is not found, return None early
                 return None
+
             if entry.type == pygit2.GIT_OBJECT_TREE:
-                # If the entry is a tree (directory), navigate into it
                 tree = repo[entry.id]
             elif entry.type == pygit2.GIT_OBJECT_BLOB:
-                # If it's a blob and either the last part of the path or in the root, we're done
-                # the loop returns 'found_entry', which we'll use to get the blob's data
                 if i == len(path_parts) - 1:
                     found_entry = entry
                     break
                 else:
-                    # we found a blob without consuming the entire path, which
-                    # means it's not a match
                     return None
             else:
-                # If we encounter a non-matching structure, return None
                 return None
 
-    if found_entry is not None:
-        blob = repo.get(found_entry.id)  # Retrieve the blob object
+    return found_entry
+
+
+def read_file(
+    repo: pygit2.Repository,
+    entry: Optional[pygit2.Object] = None,
+    filepath: Optional[str] = None,
+    case_insensitive: bool = False,
+) -> Optional[str]:
+    """
+    Read the content of a file from the repository.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object.
+        entry (Optional[pygit2.Object]):
+            The entry of the file to read. If not provided, filepath must be specified.
+        filepath (Optional[str]):
+            The path to the file within the repository. Used if entry is not provided.
+        case_insensitive (bool):
+            If True, perform case-insensitive comparison when using filepath.
+
+    Returns:
+        Optional[str]:
+            The content of the file as a string,
+            or None if the file is not found or reading fails.
+    """
+    if entry is None:
+        if filepath is None:
+            raise ValueError("Either entry or filepath must be provided.")
+        entry = find_file(repo, filepath, case_insensitive)
+        if entry is None:
+            return None
+
+    try:
+        blob = repo[entry.id]
         blob_data: bytes = blob.data
         decoded_data = blob_data.decode(detect_encoding(blob_data))
-
         return decoded_data
-    return None
+    except (AttributeError, UnicodeDecodeError):
+        return None

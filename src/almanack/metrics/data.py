@@ -11,7 +11,7 @@ from typing import Any, Dict, Optional, Tuple
 import pygit2
 import yaml
 
-from ..git import clone_repository, find_and_read_file, get_commits, get_edited_files
+from ..git import clone_repository, find_file, get_commits, get_edited_files, read_file
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
@@ -141,7 +141,7 @@ def is_citable(repo: pygit2.Repository) -> bool:
 
     # Look for a README.md file and read its content
     if (
-        file_content := find_and_read_file(
+        file_content := read_file(
             repo=repo, filepath="readme.md", case_insensitive=True
         )
     ) is not None:
@@ -225,9 +225,9 @@ def includes_common_docs(repo: pygit2.Repository) -> bool:
         "docs/src/index.md",
     ]
 
-    # Check each documentation path using the find_and_read_file function
+    # Check each documentation path using the find_file function
     for doc_path in common_docs_paths:
-        if find_and_read_file(repo=repo, filepath=doc_path) is not None:
+        if find_file(repo=repo, filepath=doc_path) is not None:
             return True  # Return True as soon as we find any of the files
 
     # otherwise return false as we didn't find documentation
