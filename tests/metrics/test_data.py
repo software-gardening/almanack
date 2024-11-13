@@ -41,7 +41,9 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
 
         # check that all keys exist in the output from metrics
         # table to received dict
-        assert sorted(data.keys()) == sorted([metric["name"] for metric in metrics_table["metrics"]])
+        assert sorted(data.keys()) == sorted(
+            [metric["name"] for metric in metrics_table["metrics"]]
+        )
 
         # Check that repo_path in the output is the same as the input
         assert data["repo-path"] == str(repo_path)
