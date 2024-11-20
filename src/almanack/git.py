@@ -50,7 +50,9 @@ def get_commits(repo: pygit2.Repository) -> List[pygit2.Commit]:
     return commits
 
 
-def filter_files(file_list: List[str], exclude_files: List[str]) -> List[str]:
+def filter_files(
+    file_list: List[str], exclude_files: Optional[List[str]] = None
+) -> List[str]:
     """
     Filters out files that should not be included in desired calculation
 
