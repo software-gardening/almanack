@@ -58,7 +58,7 @@ def filter_files(file_list: List[str], exclude_files: List[str]) -> List[str]:
         file_list (List[str]): List of file paths.
         exclude_files (List[str]): List of file names or patterns to exclude.
                                     Defaults to common files like(i.e. files, configs, and docs)
-                                    
+
     Returns:
         List[str]: Filtered list of file paths.
     """
