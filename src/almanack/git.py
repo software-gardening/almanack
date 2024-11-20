@@ -2,6 +2,7 @@
 This module performs git operations
 """
 
+import fnmatch
 import pathlib
 import tempfile
 from typing import Dict, List, Optional
@@ -54,32 +55,32 @@ def filter_files(
     file_list: List[str], exclude_files: Optional[List[str]] = None
 ) -> List[str]:
     """
-    Filters out files that should not be included in desired calculation
+    Filters out files that should not be included in the desired calculation.
 
     Args:
-        file_list (List[str]): List of file paths.
+        file_list (List[str]): List of file paths to filter.
         exclude_files (List[str]): List of file names or patterns to exclude.
-                                    Defaults to common files like(i.e. files, configs, and docs)
+                                   Defaults to common file patterns like '*.json', '*.lock', etc.
 
     Returns:
         List[str]: Filtered list of file paths.
     """
     if exclude_files is None:
         exclude_files = [
-            "poetry.lock",
-            "package-lock.json",
-            "pyproject.toml",
-            "setup.cfg",
+            "*.json",
+            "*.lock",
+            "*.tmp",
             "docs/_build/",
             ".gitignore",
             ".editorconfig",
         ]
 
-    # Filter out files that match any of the exclude patterns
-    filtered_files = []
-    for file in file_list:
-        if not any(file.endswith(pattern) for pattern in exclude_files):
-            filtered_files.append(file)
+    # Filter files by excluding any that match the list of names or patterns
+    filtered_files = [
+        file
+        for file in file_list
+        if not any(fnmatch.fnmatch(file, pattern) for pattern in exclude_files)
+    ]
 
     return filtered_files
 

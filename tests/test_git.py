@@ -49,9 +49,12 @@ def test_filter_entropy_files():
     files = ["src/main.py", "poetry.lock", "package-lock.json", "README.md"]
     exclude_files = ["poetry.lock", "package-lock.json"]
 
-    result = filter_files(files, exclude_files)
+    no_filter = filter_files(files, None)
 
-    assert result == ["src/main.py", "README.md"]
+    specific_filter = filter_files(files, exclude_files)
+
+    assert no_filter == ["src/main.py", "README.md"]
+    assert specific_filter == ["src/main.py", "README.md"]
 
 
 def test_get_edited_files(entropy_repository_paths: dict[str, Any]):
