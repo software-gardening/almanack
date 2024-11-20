@@ -49,7 +49,8 @@ def get_commits(repo: pygit2.Repository) -> List[pygit2.Commit]:
     commits = list(walker)
     return commits
 
-def filter_files(file_list: List[str], exclude_files: List[str] = None) -> List[str]:
+
+def filter_files(file_list: List[str], exclude_files: List[str]) -> List[str]:
     """
     Filters out files that should not be included in desired calculation
 
@@ -57,14 +58,19 @@ def filter_files(file_list: List[str], exclude_files: List[str] = None) -> List[
         file_list (List[str]): List of file paths.
         exclude_files (List[str]): List of file names or patterns to exclude.
                                     Defaults to common files like(i.e. files, configs, and docs)
-
+                                    
     Returns:
         List[str]: Filtered list of file paths.
     """
     if exclude_files is None:
         exclude_files = [
-            "poetry.lock", "package-lock.json", "pyproject.toml", "setup.cfg",
-            "docs/_build/", ".gitignore", ".editorconfig"
+            "poetry.lock",
+            "package-lock.json",
+            "pyproject.toml",
+            "setup.cfg",
+            "docs/_build/",
+            ".gitignore",
+            ".editorconfig",
         ]
 
     # Filter out files that match any of the exclude patterns

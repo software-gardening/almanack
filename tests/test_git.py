@@ -11,12 +11,13 @@ import pytest
 from almanack.git import (
     clone_repository,
     detect_encoding,
+    filter_files,
     find_file,
     get_commits,
     get_edited_files,
     get_loc_changed,
     get_most_recent_commits,
-    read_file,filter_files
+    read_file,
 )
 
 
@@ -42,6 +43,7 @@ def test_get_commits(entropy_repository_paths: dict[str, Any]):
     assert isinstance(commits, list)
     # Assert that there is at least one commit
     assert len(commits) > 0
+
 
 def test_filter_entropy_files():
     files = ["src/main.py", "poetry.lock", "package-lock.json", "README.md"]

@@ -8,7 +8,7 @@ from typing import List
 
 import pygit2
 
-from ...git import get_loc_changed, filter_files
+from ...git import filter_files, get_loc_changed
 
 
 def calculate_normalized_entropy(
@@ -42,8 +42,10 @@ def calculate_normalized_entropy(
     # Filter out unnecessary files
     filtered_files = filter_files(file_names)
 
-    loc_changes = get_loc_changed(repo_path, source_commit, target_commit, filtered_files)
-    
+    loc_changes = get_loc_changed(
+        repo_path, source_commit, target_commit, filtered_files
+    )
+
     # Calculate total lines of code changes across all specified files
     total_changes = sum(loc_changes.values())
 
