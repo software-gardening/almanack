@@ -8,7 +8,7 @@ from typing import List
 
 import pygit2
 
-from ...git import get_loc_changed
+from ...git import get_loc_changed, filter_files
 
 
 def calculate_normalized_entropy(
@@ -38,7 +38,12 @@ def calculate_normalized_entropy(
         changes, helping identify potentially unstable code areas.
 
     """
-    loc_changes = get_loc_changed(repo_path, source_commit, target_commit, file_names)
+
+    # Filter out unnecessary files
+    filtered_files = filter_files(file_names)
+
+    loc_changes = get_loc_changed(repo_path, source_commit, target_commit, filtered_files)
+    
     # Calculate total lines of code changes across all specified files
     total_changes = sum(loc_changes.values())
 
@@ -80,6 +85,7 @@ def calculate_aggregate_entropy(
     Returns:
         float: Normalized entropy calculation.
     """
+
     # Get the entropy for each file
     entropy_calculation = calculate_normalized_entropy(
         repo_path, source_commit, target_commit, file_names
