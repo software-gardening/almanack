@@ -16,7 +16,7 @@ from almanack.git import (
     get_edited_files,
     get_loc_changed,
     get_most_recent_commits,
-    read_file,
+    read_file,filter_files
 )
 
 
@@ -42,6 +42,14 @@ def test_get_commits(entropy_repository_paths: dict[str, Any]):
     assert isinstance(commits, list)
     # Assert that there is at least one commit
     assert len(commits) > 0
+
+def test_filter_entropy_files():
+    files = ["src/main.py", "poetry.lock", "package-lock.json", "README.md"]
+    exclude_files = ["poetry.lock", "package-lock.json"]
+
+    result = filter_files(files, exclude_files)
+
+    assert result == ["src/main.py", "README.md"]
 
 
 def test_get_edited_files(entropy_repository_paths: dict[str, Any]):
