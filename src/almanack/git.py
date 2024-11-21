@@ -169,41 +169,53 @@ def detect_encoding(blob_data: bytes) -> str:
     raise ValueError("Encoding could not be detected.")
 
 
-def find_and_read_file(repo: pygit2.Repository, filename: str) -> Optional[str]:
+def find_file(
+    repo: pygit2.Repository, filepath: str, case_insensitive: bool = False
+) -> Optional[pygit2.Object]:
     """
-    Find and read the content of a file in the repository that matches the filename pattern.
+    Locate a file in the repository by its path.
 
     Args:
-        repo (str): The path to the repository.
-        filename (str): The pattern to match against filenames.
+        repo (pygit2.Repository):
+            The repository object.
+        filepath (str):
+            The path to the file within the repository.
+        case_insensitive (bool):
+            If True, perform case-insensitive comparison.
 
     Returns:
-        Optional[str]: The content of the found file, or None if no matching files are found.
+        Optional[pygit2.Object]:
+            The entry of the found file,
+            or None if no matching file is found.
     """
-
-    # Get the tree associated with the latest commit
     tree = repo.head.peel().tree
+    found_entry = None
 
-    # find the first occurrence of a matching file
-    found_file: Optional[pygit2.Blob] = next(
-        (
-            entry
-            for entry in tree
-            if entry.type == pygit2.GIT_OBJECT_BLOB
-            and filename.lower() == entry.name.lower()
-        ),
-        None,
-    )
+    if not case_insensitive:
+        try:
+            found_entry = tree[filepath]
+        except KeyError:
+            return None
+    else:
+        path_parts = filepath.lower().split("/")
+        for i, part in enumerate(path_parts):
+            try:
+                entry = next(e for e in tree if e.name.lower() == part)
+            except StopIteration:
+                return None
 
-    # if we have none, return it early to avoid trying to read nothing
-    if found_file is None:
-        return found_file
+            if entry.type == pygit2.GIT_OBJECT_TREE:
+                tree = repo[entry.id]
+            elif entry.type == pygit2.GIT_OBJECT_BLOB:
+                if i == len(path_parts) - 1:
+                    found_entry = entry
+                    break
+                else:
+                    return None
+            else:
+                return None
 
-    # Read the content of the first found blob
-    blob_data: bytes = found_file.data
-
-    # Decode and return content as a string
-    return blob_data.decode(detect_encoding(blob_data))
+    return found_entry
 
 
 def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
@@ -232,3 +244,42 @@ def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
     elif isinstance(tree, pygit2.Tree):
         # Recursively count files for Tree
         return sum(count_files(entry) for entry in tree)
+
+def read_file(
+    repo: pygit2.Repository,
+    entry: Optional[pygit2.Object] = None,
+    filepath: Optional[str] = None,
+    case_insensitive: bool = False,
+) -> Optional[str]:
+    """
+    Read the content of a file from the repository.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object.
+        entry (Optional[pygit2.Object]):
+            The entry of the file to read. If not provided, filepath must be specified.
+        filepath (Optional[str]):
+            The path to the file within the repository. Used if entry is not provided.
+        case_insensitive (bool):
+            If True, perform case-insensitive comparison when using filepath.
+
+    Returns:
+        Optional[str]:
+            The content of the file as a string,
+            or None if the file is not found or reading fails.
+    """
+    if entry is None:
+        if filepath is None:
+            raise ValueError("Either entry or filepath must be provided.")
+        entry = find_file(repo, filepath, case_insensitive)
+        if entry is None:
+            return None
+
+    try:
+        blob = repo[entry.id]
+        blob_data: bytes = blob.data
+        decoded_data = blob_data.decode(detect_encoding(blob_data))
+        return decoded_data
+    except (AttributeError, UnicodeDecodeError):
+        return None

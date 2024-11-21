@@ -11,13 +11,7 @@ from typing import Any, Dict, List, Optional, Tuple
 import pygit2
 import yaml
 
-from ..git import (
-    clone_repository,
-    count_files,
-    find_and_read_file,
-    get_commits,
-    get_edited_files,
-)
+from ..git import clone_repository, find_file, get_commits, get_edited_files, read_file, count_files
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
@@ -147,7 +141,9 @@ def is_citable(repo: pygit2.Repository) -> bool:
 
     # Look for a README.md file and read its content
     if (
-        file_content := find_and_read_file(repo=repo, filename="readme.md")
+        file_content := read_file(
+            repo=repo, filepath="readme.md", case_insensitive=True
+        )
     ) is not None:
         # Check for an H2 heading indicating a citation section
         if any(
@@ -233,6 +229,43 @@ def days_of_development(repo: pygit2.Repository) -> float:
     # Return the average commits per day
     return total_days
 
+def includes_common_docs(repo: pygit2.Repository) -> bool:
+    """
+    Check whether the repo includes common documentation files and directories
+    associated with building docsites.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object.
+
+    Returns:
+        bool:
+            True if any common documentation files
+            are found, False otherwise.
+    """
+    # List of common documentation file paths to check for
+    common_docs_paths = [
+        "docs/mkdocs.yml",
+        "docs/conf.py",
+        "docs/index.md",
+        "docs/index.rst",
+        "docs/index.html",
+        "docs/readme.md",
+        "docs/source/readme.md",
+        "docs/source/index.rst",
+        "docs/source/index.md",
+        "docs/src/readme.md",
+        "docs/src/index.rst",
+        "docs/src/index.md",
+    ]
+
+    # Check each documentation path using the find_file function
+    for doc_path in common_docs_paths:
+        if find_file(repo=repo, filepath=doc_path) is not None:
+            return True  # Return True as soon as we find any of the files
+
+    # otherwise return false as we didn't find documentation
+    return False
 
 def compute_repo_data(repo_path: str) -> None:
     """
@@ -309,6 +342,7 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-is-citable": is_citable(repo=repo),
         "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
+        "repo-includes-common-docs": includes_common_docs(repo=repo),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }

@@ -67,12 +67,3 @@ references:
     url: https://doi.org/10.1109/ICSE.2009.5070510
     notes: |
       This article is a related resource that serves as inspiration in deriving our entropy calculation.
-  - authors:
-      - name: "Various dependency authors"
-    title: "Software Bill of Materials (SBOM)"
-    date-released: "2024-11-02"
-    type: "data"
-    url: "https://github.com/software-gardening/almanack/blob/main/sbom.json"
-    abstract: >
-      This Software Bill of Materials (SBOM) provides a detailed list of dependencies
-      for the Software Gardening Almanack, generated to enhance transparency of dependencies.
