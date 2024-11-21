@@ -11,7 +11,14 @@ from typing import Any, Dict, List, Optional, Tuple
 import pygit2
 import yaml
 
-from ..git import clone_repository, find_file, get_commits, get_edited_files, read_file, count_files
+from ..git import (
+    clone_repository,
+    count_files,
+    find_file,
+    get_commits,
+    get_edited_files,
+    read_file,
+)
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
@@ -229,6 +236,7 @@ def days_of_development(repo: pygit2.Repository) -> float:
     # Return the average commits per day
     return total_days
 
+
 def includes_common_docs(repo: pygit2.Repository) -> bool:
     """
     Check whether the repo includes common documentation files and directories
@@ -266,6 +274,7 @@ def includes_common_docs(repo: pygit2.Repository) -> bool:
 
     # otherwise return false as we didn't find documentation
     return False
+
 
 def compute_repo_data(repo_path: str) -> None:
     """

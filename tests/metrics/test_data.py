@@ -416,62 +416,77 @@ def test_commit_frequency_data(  # noqa: PLR0913
     assert (
         repo_data["repo-commits-per-day"] == expected_commits_per_day
     ), f"Expected {expected_commits_per_day} commits per day, got {repo_data['repo-commits-per-day']}"
-    
-    
-@pytest.mark.parametrize("files, expected_result",
+
+
+@pytest.mark.parametrize(
+    "files, expected_result",
     [
         # Scenario 1: `docs` directory with common documentation files
         (
-            {"files":{
-                "docs/mkdocs.yml": "site_name: Test Docs",
-                "docs/index.md": "# Welcome to the documentation",
-                "README.md": "# Project Overview",
-            }},
+            {
+                "files": {
+                    "docs/mkdocs.yml": "site_name: Test Docs",
+                    "docs/index.md": "# Welcome to the documentation",
+                    "README.md": "# Project Overview",
+                }
+            },
             True,
         ),
         # Scenario 2: `docs` directory without common documentation files
         (
-            {"files":{
-                "docs/random_file.txt": "This is just a random file",
-                "README.md": "# Project Overview",
-            }},
+            {
+                "files": {
+                    "docs/random_file.txt": "This is just a random file",
+                    "README.md": "# Project Overview",
+                }
+            },
             False,
         ),
         # Scenario 3: No `docs` directory
         (
-            {"files":{
-                "README.md": "# Project Overview",
-                "src/main.py": "# Main script",
-            }},
+            {
+                "files": {
+                    "README.md": "# Project Overview",
+                    "src/main.py": "# Main script",
+                }
+            },
             False,
         ),
         # Scenario 4: `docs` directory with misleading names
         (
-            {"files":{
-                "docs/mkdoc.yml": "Not a valid mkdocs file",
-                "docs/INDEX.md": "# Not a documentation index",
-            }},
+            {
+                "files": {
+                    "docs/mkdoc.yml": "Not a valid mkdocs file",
+                    "docs/INDEX.md": "# Not a documentation index",
+                }
+            },
             False,
         ),
         # Scenario 5: `docs` directory with sphinx-like structure
         (
-            {"files":{
-                "docs/source/index.rst": "An rst index",
-            }},
+            {
+                "files": {
+                    "docs/source/index.rst": "An rst index",
+                }
+            },
             True,
         ),
         # Scenario 6: `docs` directory with sphinx-like structure
         (
-            {"files":{
-                "docs/source/index.md": "An md index",
-            }},
+            {
+                "files": {
+                    "docs/source/index.md": "An md index",
+                }
+            },
             True,
         ),
         # Scenario 6: `docs` directory with a readme under source dir
         (
-            {"files":{
-                "docs/source/readme.md": "A readme for nested docs",
-            }},
+            {
+                "files": {
+                    "docs/source/readme.md": "A readme for nested docs",
+                }
+            },
             True,
         ),
         # test the almanack itseft as a special case

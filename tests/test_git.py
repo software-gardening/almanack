@@ -166,6 +166,7 @@ def test_find_file_and_read_file(
         assert read_file_result_filepath == expected_content
         assert read_file_result_filepath == read_file_result_pygit_obj
 
+
 @pytest.mark.parametrize(
     "files, expected_count",
     [
