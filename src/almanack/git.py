@@ -5,7 +5,7 @@ This module performs git operations
 import fnmatch
 import pathlib
 import tempfile
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 import pygit2
 from charset_normalizer import from_bytes
@@ -43,9 +43,8 @@ def get_commits(repo: pygit2.Repository) -> List[pygit2.Commit]:
     # Get the latest commit (HEAD) from the repository
     head = repo.revparse_single("HEAD")
     # Create a walker to iterate over commits starting from the HEAD
-    walker = repo.walk(
-        head.id, pygit2.enums.SortMode.NONE
-    )  #  SortMode.NONE traverses commits in natural order; no sorting applied.
+    # sorting by time.
+    walker = repo.walk(head.id, pygit2.GIT_SORT_TIME)
     # Collect all commits from the walker into a list
     commits = list(walker)
     return commits
@@ -182,14 +181,6 @@ def get_most_recent_commits(repo_path: pathlib.Path) -> tuple[str, str]:
     return str(source_commit.id), str(target_commit.id)
 
 
-"""
-Module for handling various tasks with git repo blobs.
-"""
-
-
-import pygit2
-
-
 def detect_encoding(blob_data: bytes) -> str:
     """
     Detect the encoding of the given blob data using charset-normalizer.
@@ -260,6 +251,34 @@ def find_file(
                 return None
 
     return found_entry
+
+
+def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
+    """
+    Counts all files (Blobs) within a Git tree, including files
+    in subdirectories.
+
+    This function recursively traverses the provided `tree`
+    object to count each file, represented as a `pygit2.Blob`,
+    within the tree and any nested subdirectories.
+
+    Args:
+        tree (Union[pygit2.Tree, pygit2.Blob]):
+            The Git tree object (of type `pygit2.Tree`)
+            to traverse and count files. The initial call
+            should be made with the root tree of a commit.
+
+    Returns:
+        int:
+            The total count of files (Blobs) within the tree,
+            including nested files in subdirectories.
+    """
+    if isinstance(tree, pygit2.Blob):
+        # Directly return 1 if the input is a Blob
+        return 1
+    elif isinstance(tree, pygit2.Tree):
+        # Recursively count files for Tree
+        return sum(count_files(entry) for entry in tree)
 
 
 def read_file(

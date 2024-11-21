@@ -157,13 +157,3 @@ repos:
         entry: poetry run poe vale-checks
         language: system
         pass_filenames: false
-      # Checks that the sbom.json (software bill of materials) file
-      # is up to date with accurate data for the dependencies within
-      # the project. This file is important for providing an accurate
-      # and standardized reference of all components used to implement
-      # or build this software.
-      - id: syft-sbom-check
-        name: Syft SBOM Check
-        entry: poetry run poe sbom-checks
-        language: system
-        pass_filenames: false

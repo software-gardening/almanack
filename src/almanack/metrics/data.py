@@ -11,7 +11,14 @@ from typing import Any, Dict, List, Optional, Tuple
 import pygit2
 import yaml
 
-from ..git import clone_repository, find_file, get_commits, get_edited_files, read_file
+from ..git import (
+    clone_repository,
+    count_files,
+    find_file,
+    get_commits,
+    get_edited_files,
+    read_file,
+)
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
@@ -195,6 +202,41 @@ def default_branch_is_not_master(repo: pygit2.Repository) -> bool:
         return repo.head.shorthand != "master"
 
 
+def days_of_development(repo: pygit2.Repository) -> float:
+    """
+
+
+    Args:
+        repo (pygit2.Repository): Path to the git repository.
+
+    Returns:
+        float: The average number of commits per day over the period of time.
+    """
+    try:
+        # Try to get the HEAD commit. If it raises an error, there are no commits.
+        repo.revparse_single("HEAD")
+    except KeyError:
+        # If HEAD doesn't exist (repo is empty), return 0 commits.
+        return 0
+
+    # Traverse the commit history and collect commit dates
+    commit_dates = [
+        datetime.fromtimestamp(commit.commit_time).date()
+        for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME)
+    ]
+
+    # If no commits, return 0
+    if not commit_dates:
+        return 0
+
+    # Calculate the number of days between the first and last commit
+    # +1 to include the first day
+    total_days = (max(commit_dates) - min(commit_dates)).days + 1
+
+    # Return the average commits per day
+    return total_days
+
+
 def includes_common_docs(repo: pygit2.Repository) -> bool:
     """
     Check whether the repo includes common documentation files and directories
@@ -244,74 +286,75 @@ def compute_repo_data(repo_path: str) -> None:
     Returns:
         dict: A dictionary containing data key-pairs.
     """
-    try:
-        # Convert repo_path to an absolute path and initialize the repository
-        repo_path = pathlib.Path(repo_path).resolve()
-        repo = pygit2.Repository(str(repo_path))
+    # Convert repo_path to an absolute path and initialize the repository
+    repo_path = pathlib.Path(repo_path).resolve()
+    repo = pygit2.Repository(str(repo_path))
 
-        # Retrieve the list of commits from the repository
-        commits = get_commits(repo)
-        most_recent_commit = commits[0]
-        first_commit = commits[-1]
+    # Retrieve the list of commits from the repository
+    commits = get_commits(repo)
+    most_recent_commit = commits[0]
+    first_commit = commits[-1]
 
-        # Get a list of files that have been edited between the first and most recent commit
-        file_names = get_edited_files(repo, first_commit, most_recent_commit)
+    # Get a list of files that have been edited between the first and most recent commit
+    edited_file_names = get_edited_files(repo, first_commit, most_recent_commit)
 
-        # Calculate the normalized total entropy for the repository
-        normalized_total_entropy = calculate_aggregate_entropy(
-            repo_path,
-            str(first_commit.id),
-            str(most_recent_commit.id),
-            file_names,
-        )
+    # Calculate the normalized total entropy for the repository
+    normalized_total_entropy = calculate_aggregate_entropy(
+        repo_path,
+        str(first_commit.id),
+        str(most_recent_commit.id),
+        edited_file_names,
+    )
 
-        # Calculate the normalized entropy for the changes between the first and most recent commits
-        file_entropy = calculate_normalized_entropy(
-            repo_path,
-            str(first_commit.id),
-            str(most_recent_commit.id),
-            file_names,
-        )
-        # Convert commit times to UTC datetime objects, then format as date strings.
-        first_commit_date, most_recent_commit_date = (
-            datetime.fromtimestamp(commit.commit_time, tz=timezone.utc)
-            .date()
-            .isoformat()
-            for commit in (first_commit, most_recent_commit)
-        )
+    # Calculate the normalized entropy for the changes between the first and most recent commits
+    file_entropy = calculate_normalized_entropy(
+        repo_path,
+        str(first_commit.id),
+        str(most_recent_commit.id),
+        edited_file_names,
+    )
+    # Convert commit times to UTC datetime objects, then format as date strings.
+    first_commit_date, most_recent_commit_date = (
+        datetime.fromtimestamp(commit.commit_time).date()
+        for commit in (first_commit, most_recent_commit)
+    )
 
-        # Return the data structure
-        return {
-            "repo-path": str(repo_path),
-            "repo-commits": len(commits),
-            "repo-file-count": len(file_names),
-            "repo-commit-time-range": (first_commit_date, most_recent_commit_date),
-            "repo-includes-readme": file_exists_in_repo(
-                repo=repo,
-                expected_file_name="readme",
-            ),
-            "repo-includes-contributing": file_exists_in_repo(
-                repo=repo,
-                expected_file_name="contributing",
-            ),
-            "repo-includes-code-of-conduct": file_exists_in_repo(
-                repo=repo,
-                expected_file_name="code_of_conduct",
-            ),
-            "repo-includes-license": file_exists_in_repo(
-                repo=repo,
-                expected_file_name="license",
-            ),
-            "repo-is-citable": is_citable(repo=repo),
-            "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
-            "repo-includes-common-docs": includes_common_docs(repo=repo),
-            "repo-agg-info-entropy": normalized_total_entropy,
-            "repo-file-info-entropy": file_entropy,
-        }
-
-    except Exception as e:
-        # If processing fails, return an error dictionary
-        return {"repo_path": str(repo_path), "error": str(e)}
+    # Return the data structure
+    return {
+        "repo-path": str(repo_path),
+        "repo-commits": (commits_count := len(commits)),
+        "repo-file-count": count_files(tree=most_recent_commit.tree),
+        "repo-commit-time-range": (
+            first_commit_date.isoformat(),
+            most_recent_commit_date.isoformat(),
+        ),
+        "repo-days-of-development": (
+            days_of_development := (most_recent_commit_date - first_commit_date).days
+            + 1
+        ),
+        "repo-commits-per-day": commits_count / days_of_development,
+        "repo-includes-readme": file_exists_in_repo(
+            repo=repo,
+            expected_file_name="readme",
+        ),
+        "repo-includes-contributing": file_exists_in_repo(
+            repo=repo,
+            expected_file_name="contributing",
+        ),
+        "repo-includes-code-of-conduct": file_exists_in_repo(
+            repo=repo,
+            expected_file_name="code_of_conduct",
+        ),
+        "repo-includes-license": file_exists_in_repo(
+            repo=repo,
+            expected_file_name="license",
+        ),
+        "repo-is-citable": is_citable(repo=repo),
+        "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
+        "repo-includes-common-docs": includes_common_docs(repo=repo),
+        "repo-agg-info-entropy": normalized_total_entropy,
+        "repo-file-info-entropy": file_entropy,
+    }
 
 
 def compute_pr_data(repo_path: str, pr_branch: str, main_branch: str) -> Dict[str, Any]:

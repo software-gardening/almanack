@@ -4,6 +4,7 @@ test almanack capabilities.
 """
 
 import pathlib
+from datetime import datetime
 
 import pygit2
 
@@ -156,54 +157,93 @@ def create_entropy_repositories(base_path: pathlib.Path) -> None:
 
 
 def repo_setup(
-    repo_path: pathlib.Path, files: dict, branch_name: str = "main"
+    repo_path: pathlib.Path,
+    files: list[dict],
+    branch_name: str = "main",
 ) -> pygit2.Repository:
     """
-    Set up a temporary repository with specified files.
+    Set up a temporary repository with specified files and commit dates.
+
     Args:
         repo_path (Path):
-            The directory where the repo will be created.
-        files (dict):
-            A dictionary where keys are filenames and values are their content.
+            The temporary directory where the repo will be created.
+        files (list[dict]):
+            A list of dictionaries where each dictionary represents a commit.
+            Each dictionary must have:
+                - "files": A dictionary of filenames as keys and file content as values.
+                - "commit-date" (optional): The datetime of the commit.
+            If "commit-date" is not provided, the current date is used.
+
         branch_name (str):
-            A string with the name of the branch which will be used for
-            committing changes. Defaults to "main".
+            The name of the branch to use for commits. Defaults to "main".
+
     Returns:
-        pygit2.Repository: The initialized repository with files.
+        pygit2.Repository:
+            The initialized repository with the specified commits.
     """
-    # Create a new repository in the specified path
+    # Initialize the repository
     repo = pygit2.init_repository(repo_path, bare=False)
 
     # Set user.name and user.email in the config
     set_repo_user_config(repo)
 
-    # Create nested files in the repository
-    for file_path, content in files.items():
-        full_path = repo_path / file_path  # Construct full path
-        full_path.parent.mkdir(
-            parents=True, exist_ok=True
-        )  # Create any parent directories
-        full_path.write_text(content)  # Write the file content
+    branch_ref = f"refs/heads/{branch_name}"
+    parent_commit = None
 
-    # Stage and commit the files
-    index = repo.index
-    index.add_all()
-    index.write()
+    # Loop through each commit dictionary in `files`
+    for i, commit_data in enumerate(files):
+        # Extract commit files and commit date
+        commit_files = commit_data.get("files", {})
+        commit_date = commit_data.get("commit-date", datetime.now())
 
-    author = repo.default_signature
-    tree = repo.index.write_tree()
+        # Create or update each file in the current commit
+        for filename, content in commit_files.items():
+            file_path = repo_path / filename
+            file_path.parent.mkdir(
+                parents=True, exist_ok=True
+            )  # Ensure parent directories exist
+            file_path.write_text(content)
 
-    # Commit the files
-    repo.create_commit(
-        f"refs/heads/{branch_name}",
-        author,
-        author,
-        "Initial commit with setup files",
-        tree,
-        [],
-    )
+        # Stage all changes in the index
+        index = repo.index
+        index.add_all()
+        index.write()
 
-    # Set the HEAD to point to the new branch
-    repo.set_head(f"refs/heads/{branch_name}")
+        # Set the author and committer signatures with the specific commit date
+        author = pygit2.Signature(
+            repo.default_signature.name,
+            repo.default_signature.email,
+            int(commit_date.timestamp()),
+        )
+        committer = author  # Assuming the committer is the same as the author
+
+        # Write the index to a tree
+        tree = index.write_tree()
+
+        # Create the commit
+        commit_message = f"Commit #{i + 1} with files: {', '.join(commit_files.keys())}"
+        commit_id = repo.create_commit(
+            (
+                branch_ref if i == 0 else None
+            ),  # Set branch reference only for the first commit
+            author,
+            committer,
+            commit_message,
+            tree,
+            (
+                [parent_commit.id] if parent_commit else []
+            ),  # Use the .id attribute to get the commit ID
+        )
+
+        # Update the parent_commit to the latest commit for chaining
+        parent_commit = repo.get(
+            commit_id
+        )  # Explicitly get the Commit object by its ID
+
+    # Set the HEAD to the main branch after all commits
+    repo.set_head(branch_ref)
+
+    # Ensure the HEAD is pointing to the last commit
+    repo.head.set_target(parent_commit.id)
 
     return repo

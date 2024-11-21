@@ -3,13 +3,14 @@ Test git operations functionality
 """
 
 import pathlib
-from typing import Any
+from typing import Any, Dict, List
 
 import pygit2
 import pytest
 
 from almanack.git import (
     clone_repository,
+    count_files,
     detect_encoding,
     filter_files,
     find_file,
@@ -19,6 +20,7 @@ from almanack.git import (
     get_most_recent_commits,
     read_file,
 )
+from tests.data.almanack.repo_setup.create_repo import repo_setup
 
 
 def test_clone_repository(entropy_repository_paths: dict[str, Any]):
@@ -176,3 +178,65 @@ def test_find_file_and_read_file(
 
         assert read_file_result_filepath == expected_content
         assert read_file_result_filepath == read_file_result_pygit_obj
+
+
+@pytest.mark.parametrize(
+    "files, expected_count",
+    [
+        # Test case: Single file at root
+        ([{"files": {"file1.txt": "content"}}], 1),
+        # Test case: Multiple files at root
+        ([{"files": {"file1.txt": "content", "file2.txt": "content"}}], 2),
+        # Test case: Files in nested directories
+        (
+            [
+                {
+                    "files": {
+                        "dir1/file1.txt": "content",
+                        "dir1/dir2/file2.txt": "content",
+                    }
+                }
+            ],
+            2,
+        ),
+        # Test case: Empty repository (no files)
+        ([{"files": {}}], 0),
+        # Test case: Mixed root and nested files
+        (
+            [
+                {
+                    "files": {
+                        "file1.txt": "content",
+                        "dir1/file2.txt": "content",
+                        "dir1/dir2/file3.txt": "content",
+                    }
+                }
+            ],
+            3,
+        ),
+    ],
+)
+def test_count_files(
+    files: List[Dict[str, str]], expected_count: int, tmp_path: pathlib.Path
+):
+    """
+    Test the count_files function on various repository structures.
+
+    Args:
+        files (List[Dict[str, str]]): A list of dictionaries where each dictionary represents a commit
+            and contains filenames as keys and file content as values.
+        expected_count (int): The expected number of files in the most recent commit tree.
+        tmp_path (pathlib.Path): Temporary directory path provided by pytest for testing.
+    """
+    # Set up the test repository
+    repo_path = tmp_path / "test_repo"
+    repo = repo_setup(repo_path, files=files)
+
+    # Get the most recent commit and its tree
+    most_recent_commit = next(repo.walk(repo.head.target, pygit2.GIT_SORT_TIME))
+    most_recent_tree = most_recent_commit.tree
+
+    # Run the count_files function and assert the file count matches the expected count
+    assert (
+        count_files(most_recent_tree) == expected_count
+    ), f"Expected {expected_count} files, got {count_files(most_recent_tree)}"
