@@ -226,10 +226,9 @@ def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
             The total count of files (Blobs) within the tree,
             including nested files in subdirectories.
     """
-    file_count = 0
-    for entry in tree:
-        if isinstance(entry, pygit2.Blob):
-            file_count += 1
-        elif isinstance(entry, pygit2.Tree):
-            file_count += count_files(entry)  # Recurse into subdirectory
-    return file_count
+    if isinstance(tree, pygit2.Blob):
+        # Directly return 1 if the input is a Blob
+        return 1
+    elif isinstance(tree, pygit2.Tree):
+        # Recursively count files for Tree
+        return sum(count_files(entry) for entry in tree)
