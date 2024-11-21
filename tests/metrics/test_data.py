@@ -4,7 +4,7 @@ Testing metrics/data functionality
 
 import pathlib
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import jsonschema
 import pandas as pd
@@ -21,6 +21,8 @@ from almanack.metrics.data import (
     is_citable,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
+
+DATETIME_NOW = datetime.now()
 
 
 def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
@@ -173,42 +175,44 @@ def test_file_exists_in_repo(
     "files, expected",
     [
         # Test with CITATION.cff
-        ({"CITATION.cff": "CITATION content."}, True),
+        ({"files": {"CITATION.cff": "CITATION content."}}, True),
         # Test with CITATION.bib
-        ({"CITATION.bib": "CITATION content."}, True),
+        ({"files": {"CITATION.bib": "CITATION content."}}, True),
         # Test citation sections in markdown format
         (
-            {"readme.md": "## Citation\nThis is a citation."},
+            {"files": {"readme.md": "## Citation\nThis is a citation."}},
             True,
         ),
         (
-            {"readme.md": "## Citing us\n\nHere's our awesome citation."},
+            {"files": {"readme.md": "## Citing us\n\nHere's our awesome citation."}},
             True,
         ),
         # RST scenarios
-        ({"README.md": "Citation\n--------"}, True),
-        ({"README.md": "Citing\n------"}, True),
-        ({"README.md": "Cite\n----"}, True),
-        ({"README.md": "How to cite\n-----------"}, True),
+        ({"files": {"README.md": "Citation\n--------"}}, True),
+        ({"files": {"README.md": "Citing\n------"}}, True),
+        ({"files": {"README.md": "Cite\n----"}}, True),
+        ({"files": {"README.md": "How to cite\n-----------"}}, True),
         # DOI badge
         (
             {
-                "README.md": (
-                    "# Awesome project\n\n"
-                    "[![DOI](https://img.shields.io/badge/DOI-10.48550/arXiv.2311.13417-blue)]"
-                    "(https://doi.org/10.48550/arXiv.2311.13417)"
-                ),
+                "files": {
+                    "README.md": (
+                        "# Awesome project\n\n"
+                        "[![DOI](https://img.shields.io/badge/DOI-10.48550/arXiv.2311.13417-blue)]"
+                        "(https://doi.org/10.48550/arXiv.2311.13417)"
+                    ),
+                }
             },
             True,
         ),
-        ({"README.md": "## How to cite"}, True),
+        ({"files": {"README.md": "## How to cite"}}, True),
         # Test with README without citation
         (
-            {"readme.md": "This is a readme."},
+            {"files": {"readme.md": "This is a readme."}},
             False,
         ),
         # Test with no citation files
-        ({"random.txt": "Some random text."}, False),
+        ({"files": {"random.txt": "Some random text."}}, False),
         # test the almanack itseft as a special case
         (None, True),
     ],
@@ -243,21 +247,27 @@ def test_default_branch_is_not_master(tmp_path):
 
     # test with a master branch
     repo = repo_setup(
-        repo_path=example1, files=[{"example.txt": "example"}], branch_name="master"
+        repo_path=example1,
+        files=[{"files": {"example.txt": "example"}}],
+        branch_name="master",
     )
 
     assert not default_branch_is_not_master(repo)
 
     # test with a main branch
     repo = repo_setup(
-        repo_path=example2, files=[{"example.txt": "example"}], branch_name="main"
+        repo_path=example2,
+        files=[{"files": {"example.txt": "example"}}],
+        branch_name="main",
     )
 
     assert default_branch_is_not_master(repo)
 
     # test with a simulated remote head pointed at remote master
     repo = repo_setup(
-        repo_path=example3, files=[{"example.txt": "example"}], branch_name="main"
+        repo_path=example3,
+        files=[{"files": {"example.txt": "example"}}],
+        branch_name="main",
     )
 
     # simulate having a remote head pointed at a branch named master
@@ -276,7 +286,9 @@ def test_default_branch_is_not_master(tmp_path):
 
     # test with a simulated remote head pointed at remote main
     repo = repo_setup(
-        repo_path=example4, files=[{"example.txt": "example"}], branch_name="main"
+        repo_path=example4,
+        files=[{"files": {"example.txt": "example"}}],
+        branch_name="main",
     )
 
     # simulate having a remote head pointed at a branch named master
@@ -295,7 +307,9 @@ def test_default_branch_is_not_master(tmp_path):
 
     # test with a simulated remote head pointed at remote main but with local branch master
     repo = repo_setup(
-        repo_path=example5, files=[{"example.txt": "example"}], branch_name="master"
+        repo_path=example5,
+        files=[{"files": {"example.txt": "example"}}],
+        branch_name="master",
     )
 
     # simulate having a remote head pointed at a branch named master
@@ -310,23 +324,30 @@ def test_default_branch_is_not_master(tmp_path):
 
 
 @pytest.mark.parametrize(
-    "files, dates, expected_commits, expected_file_count, expected_days, expected_commits_per_day",
+    "files, expected_commits, expected_file_count, expected_days, expected_commits_per_day",
     [
         # Single commit on a single day with one file
-        ([{"file1.txt": "content"}], None, 1, 1, 1, 1.0),
+        ([{"files": {"file1.txt": "content"}}], 1, 1, 1, 1.0),
         # Two commits on the same day with two files
-        ([{"file1.txt": "content"}, {"file2.txt": "content"}], None, 2, 2, 1, 2.0),
+        (
+            [{"files": {"file1.txt": "content"}}, {"files": {"file2.txt": "content"}}],
+            2,
+            2,
+            1,
+            2.0,
+        ),
         # Multiple commits over multiple days
         (
             [
-                {"file1.txt": "content"},
-                {"file2.txt": "content"},
-                {"file3.txt": "content"},
-            ],
-            [
-                datetime.now() - timedelta(days=2),
-                datetime.now() - timedelta(days=1),
-                datetime.now(),
+                {
+                    "commit-date": DATETIME_NOW - timedelta(days=2),
+                    "files": {"file1.txt": "content"},
+                },
+                {
+                    "commit-date": DATETIME_NOW - timedelta(days=1),
+                    "files": {"file2.txt": "content"},
+                },
+                {"commit-date": DATETIME_NOW, "files": {"file3.txt": "content"}},
             ],
             3,
             3,
@@ -336,11 +357,13 @@ def test_default_branch_is_not_master(tmp_path):
         # Multiple commits on the same day with multiple files
         (
             [
-                {"file1.txt": "content"},
-                {"file2.txt": "new content"},
-                {"file3.txt": "another content"},
+                {"commit-date": DATETIME_NOW, "files": {"file1.txt": "content"}},
+                {"commit-date": DATETIME_NOW, "files": {"file2.txt": "new content"}},
+                {
+                    "commit-date": DATETIME_NOW,
+                    "files": {"file3.txt": "another content"},
+                },
             ],
-            [datetime.now()] * 3,
             3,
             3,
             1,
@@ -352,7 +375,6 @@ def test_default_branch_is_not_master(tmp_path):
 def test_commit_frequency_data(  # noqa: PLR0913
     tmp_path: pathlib.Path,
     files: List[Dict[str, str]],
-    dates: Optional[List[datetime]],
     expected_commits: int,
     expected_file_count: int,
     expected_days: int,
@@ -363,7 +385,7 @@ def test_commit_frequency_data(  # noqa: PLR0913
     working as expected.
     """
     # Setup the repository with the provided file structure and dates
-    repo_setup(tmp_path, files, dates=dates)
+    repo_setup(repo_path=tmp_path, files=files)
 
     # Run the function to compute repo data
     repo_data = compute_repo_data(str(tmp_path))
@@ -379,11 +401,11 @@ def test_commit_frequency_data(  # noqa: PLR0913
     ), f"Expected {expected_file_count} files, got {repo_data['repo-file-count']}"
 
     # Assertions for repo-commit-time-range
-    if dates:
-        first_date = dates[0].date().isoformat()
-        last_date = dates[-1].date().isoformat()
+    if "commit-date" in files[0].keys():
+        first_date = files[0]["commit-date"].date().isoformat()
+        last_date = files[-1]["commit-date"].date().isoformat()
     else:
-        today = datetime.now().date().isoformat()
+        today = DATETIME_NOW.date().isoformat()
         first_date = last_date = today
     assert repo_data["repo-commit-time-range"] == (
         first_date,

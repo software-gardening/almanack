@@ -155,20 +155,32 @@ def test_find_and_read_file(repo_with_citation_in_readme, filename, expected_con
     "files, expected_count",
     [
         # Test case: Single file at root
-        ([{"file1.txt": "content"}], 1),
+        ([{"files": {"file1.txt": "content"}}], 1),
         # Test case: Multiple files at root
-        ([{"file1.txt": "content", "file2.txt": "content"}], 2),
+        ([{"files": {"file1.txt": "content", "file2.txt": "content"}}], 2),
         # Test case: Files in nested directories
-        ([{"dir1/file1.txt": "content", "dir1/dir2/file2.txt": "content"}], 2),
+        (
+            [
+                {
+                    "files": {
+                        "dir1/file1.txt": "content",
+                        "dir1/dir2/file2.txt": "content",
+                    }
+                }
+            ],
+            2,
+        ),
         # Test case: Empty repository (no files)
-        ([{}], 0),
+        ([{"files": {}}], 0),
         # Test case: Mixed root and nested files
         (
             [
                 {
-                    "file1.txt": "content",
-                    "dir1/file2.txt": "content",
-                    "dir1/dir2/file3.txt": "content",
+                    "files": {
+                        "file1.txt": "content",
+                        "dir1/file2.txt": "content",
+                        "dir1/dir2/file3.txt": "content",
+                    }
                 }
             ],
             3,

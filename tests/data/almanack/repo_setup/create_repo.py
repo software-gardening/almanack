@@ -5,7 +5,6 @@ test almanack capabilities.
 
 import pathlib
 from datetime import datetime
-from typing import Optional
 
 import pygit2
 
@@ -161,7 +160,6 @@ def repo_setup(
     repo_path: pathlib.Path,
     files: list[dict],
     branch_name: str = "main",
-    dates: Optional[list[datetime]] = None,
 ) -> pygit2.Repository:
     """
     Set up a temporary repository with specified files and commit dates.
@@ -170,13 +168,14 @@ def repo_setup(
         repo_path (Path):
             The temporary directory where the repo will be created.
         files (list[dict]):
-            A list of dictionaries where each dictionary represents a commit
-            and contains filenames as keys and file content as values.
+            A list of dictionaries where each dictionary represents a commit.
+            Each dictionary must have:
+                - "files": A dictionary of filenames as keys and file content as values.
+                - "commit-date" (optional): The datetime of the commit.
+            If "commit-date" is not provided, the current date is used.
+
         branch_name (str):
             The name of the branch to use for commits. Defaults to "main".
-        dates (list[datetime], optional):
-            A list of commit dates corresponding to each commit.
-            If None, all commits will use the current date.
 
     Returns:
         pygit2.Repository:
@@ -188,20 +187,15 @@ def repo_setup(
     # Set user.name and user.email in the config
     set_repo_user_config(repo)
 
-    # Use current date if no specific dates are provided
-    if dates is None:
-        dates = [datetime.now()] * len(files)
-
-    # Ensure dates match the number of commits
-    assert len(dates) == len(
-        files
-    ), "Length of dates must match the number of commit dictionaries in files"
-
     branch_ref = f"refs/heads/{branch_name}"
     parent_commit = None
 
-    # Loop through each set of files and commit them
-    for i, (commit_files, commit_date) in enumerate(zip(files, dates)):
+    # Loop through each commit dictionary in `files`
+    for i, commit_data in enumerate(files):
+        # Extract commit files and commit date
+        commit_files = commit_data.get("files", {})
+        commit_date = commit_data.get("commit-date", datetime.now())
+
         # Create or update each file in the current commit
         for filename, content in commit_files.items():
             file_path = repo_path / filename

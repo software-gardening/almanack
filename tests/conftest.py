@@ -120,10 +120,12 @@ def community_health_repository_path(tmp_path_factory):
         repo_path=pathlib.Path(temp_dir),
         files=[
             {
-                "README.md": "# This is an example readme\n\nWelcome to our repo!",
-                "CONTRIBUTING.md": "# This is a stub for a CONTRIBUTING.md",
-                "CODE_OF_CONDUCT.md": "# This is a stub for a CODE_OF_CONDUCT.md",
-                "LICENSE.txt": "This is an example LICENSE file.",
+                "files": {
+                    "README.md": "# This is an example readme\n\nWelcome to our repo!",
+                    "CONTRIBUTING.md": "# This is a stub for a CONTRIBUTING.md",
+                    "CODE_OF_CONDUCT.md": "# This is a stub for a CODE_OF_CONDUCT.md",
+                    "LICENSE.txt": "This is an example LICENSE file.",
+                }
             }
         ],
     )
