@@ -162,7 +162,7 @@ def repo_setup(
     branch_name: str = "main",
 ) -> pygit2.Repository:
     """
-    Set up a temporary repository with specified files and commit dates.
+    Set up a temporary repository with specified files and commit metadata.
 
     Args:
         repo_path (Path):
@@ -172,7 +172,9 @@ def repo_setup(
             Each dictionary must have:
                 - "files": A dictionary of filenames as keys and file content as values.
                 - "commit-date" (optional): The datetime of the commit.
-            If "commit-date" is not provided, the current date is used.
+                - "author" (optional): A dictionary with "name" and "email" keys
+                  to specify the commit author. If not provided, defaults to the
+                  repository's default user configuration.
 
         branch_name (str):
             The name of the branch to use for commits. Defaults to "main".
@@ -192,16 +194,15 @@ def repo_setup(
 
     # Loop through each commit dictionary in `files`
     for i, commit_data in enumerate(files):
-        # Extract commit files and commit date
+        # Extract commit files and metadata
         commit_files = commit_data.get("files", {})
         commit_date = commit_data.get("commit-date", datetime.now())
+        author_data = commit_data.get("author", None)
 
         # Create or update each file in the current commit
         for filename, content in commit_files.items():
             file_path = repo_path / filename
-            file_path.parent.mkdir(
-                parents=True, exist_ok=True
-            )  # Ensure parent directories exist
+            file_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure parent directories exist
             file_path.write_text(content)
 
         # Stage all changes in the index
@@ -209,12 +210,19 @@ def repo_setup(
         index.add_all()
         index.write()
 
-        # Set the author and committer signatures with the specific commit date
-        author = pygit2.Signature(
-            repo.default_signature.name,
-            repo.default_signature.email,
-            int(commit_date.timestamp()),
-        )
+        # Determine the author and committer
+        if author_data:
+            author = pygit2.Signature(
+                author_data["name"],
+                author_data["email"],
+                int(commit_date.timestamp()),
+            )
+        else:
+            author = pygit2.Signature(
+                repo.default_signature.name,
+                repo.default_signature.email,
+                int(commit_date.timestamp()),
+            )
         committer = author  # Assuming the committer is the same as the author
 
         # Write the index to a tree
@@ -223,22 +231,16 @@ def repo_setup(
         # Create the commit
         commit_message = f"Commit #{i + 1} with files: {', '.join(commit_files.keys())}"
         commit_id = repo.create_commit(
-            (
-                branch_ref if i == 0 else None
-            ),  # Set branch reference only for the first commit
+            branch_ref if i == 0 else None,  # Set branch reference only for the first commit
             author,
             committer,
             commit_message,
             tree,
-            (
-                [parent_commit.id] if parent_commit else []
-            ),  # Use the .id attribute to get the commit ID
+            [parent_commit.id] if parent_commit else [],  # Use the .id attribute to get the commit ID
         )
 
         # Update the parent_commit to the latest commit for chaining
-        parent_commit = repo.get(
-            commit_id
-        )  # Explicitly get the Commit object by its ID
+        parent_commit = repo.get(commit_id)  # Explicitly get the Commit object by its ID
 
     # Set the HEAD to the main branch after all commits
     repo.set_head(branch_ref)
