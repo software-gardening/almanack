@@ -202,7 +202,9 @@ def repo_setup(
         # Create or update each file in the current commit
         for filename, content in commit_files.items():
             file_path = repo_path / filename
-            file_path.parent.mkdir(parents=True, exist_ok=True)  # Ensure parent directories exist
+            file_path.parent.mkdir(
+                parents=True, exist_ok=True
+            )  # Ensure parent directories exist
             file_path.write_text(content)
 
         # Stage all changes in the index
@@ -231,16 +233,22 @@ def repo_setup(
         # Create the commit
         commit_message = f"Commit #{i + 1} with files: {', '.join(commit_files.keys())}"
         commit_id = repo.create_commit(
-            branch_ref if i == 0 else None,  # Set branch reference only for the first commit
+            (
+                branch_ref if i == 0 else None
+            ),  # Set branch reference only for the first commit
             author,
             committer,
             commit_message,
             tree,
-            [parent_commit.id] if parent_commit else [],  # Use the .id attribute to get the commit ID
+            (
+                [parent_commit.id] if parent_commit else []
+            ),  # Use the .id attribute to get the commit ID
         )
 
         # Update the parent_commit to the latest commit for chaining
-        parent_commit = repo.get(commit_id)  # Explicitly get the Commit object by its ID
+        parent_commit = repo.get(
+            commit_id
+        )  # Explicitly get the Commit object by its ID
 
     # Set the HEAD to the main branch after all commits
     repo.set_head(branch_ref)

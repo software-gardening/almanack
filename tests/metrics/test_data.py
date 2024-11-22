@@ -3,7 +3,7 @@ Testing metrics/data functionality
 """
 
 import pathlib
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Dict, List
 
 import jsonschema
@@ -15,6 +15,7 @@ import yaml
 from almanack.metrics.data import (
     METRICS_TABLE,
     compute_repo_data,
+    count_unique_contributors,
     default_branch_is_not_master,
     file_exists_in_repo,
     get_table,
@@ -506,3 +507,86 @@ def test_includes_common_docs(tmp_path, files, expected_result):
 
     # Assert that the function returns the expected result
     assert includes_common_docs(repo) == expected_result
+
+
+@pytest.mark.parametrize(
+    "files, since, expected_count",
+    [
+        # Test case 1: All contributors since the beginning
+        (
+            [
+                {
+                    "files": {"file1.txt": "Hello, world!"},
+                    "author": {"name": "Alice", "email": "alice@example.com"},
+                },
+                {
+                    "files": {"file2.txt": "Another commit"},
+                    "author": {"name": "Bob", "email": "bob@example.com"},
+                },
+                {
+                    "files": {"file3.txt": "Yet another commit"},
+                    "author": {"name": "Alice", "email": "alice@example.com"},
+                },
+            ],
+            None,  # since: All contributors
+            2,  # Alice and Bob
+        ),
+        # Test case 2: Contributors in the past 1 year
+        (
+            [
+                {
+                    "files": {"file1.txt": "Recent commit"},
+                    "commit-date": datetime.now(timezone.utc) - timedelta(days=200),
+                    "author": {"name": "Alice", "email": "alice@example.com"},
+                },
+                {
+                    "files": {"file2.txt": "Old commit"},
+                    "commit-date": datetime.now(timezone.utc) - timedelta(days=400),
+                    "author": {"name": "Bob", "email": "bob@example.com"},
+                },
+                {
+                    "files": {"file3.txt": "Another recent commit"},
+                    "commit-date": datetime.now(timezone.utc) - timedelta(days=100),
+                    "author": {"name": "Charlie", "email": "charlie@example.com"},
+                },
+            ],
+            datetime.now(timezone.utc) - timedelta(days=365),  # since: 1 year ago
+            2,  # Alice and Charlie
+        ),
+        # Test case 3: Contributors in the past 182 days
+        (
+            [
+                {
+                    "files": {"file1.txt": "Recent commit"},
+                    "commit-date": datetime.now(timezone.utc) - timedelta(days=150),
+                    "author": {"name": "Alice", "email": "alice@example.com"},
+                },
+                {
+                    "files": {"file2.txt": "Older commit"},
+                    "commit-date": datetime.now(timezone.utc) - timedelta(days=400),
+                    "author": {"name": "Bob", "email": "bob@example.com"},
+                },
+                {
+                    "files": {"file3.txt": "Another recent commit"},
+                    "commit-date": datetime.now(timezone.utc) - timedelta(days=50),
+                    "author": {"name": "Charlie", "email": "charlie@example.com"},
+                },
+            ],
+            datetime.now(timezone.utc) - timedelta(days=182),  # since: 182 days ago
+            2,  # Alice and Charlie
+        ),
+    ],
+)
+def test_count_unique_contributors(tmp_path, files, since, expected_count):
+    """
+    Test the count_unique_contributors function with various time frames and contributors.
+    """
+    # Set up the repository
+    repo_path = tmp_path / "test_repo"
+    repo = repo_setup(repo_path, files)
+
+    # Test the count_unique_contributors function
+    result = count_unique_contributors(repo, since)
+
+    # Assert the result matches the expected count
+    assert result == expected_count, f"Expected {expected_count}, got {result}"

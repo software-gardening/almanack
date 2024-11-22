@@ -5,7 +5,7 @@ This module computes data for GitHub Repositories
 import pathlib
 import shutil
 import tempfile
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 
 import pygit2
@@ -26,6 +26,7 @@ from .entropy.calculate_entropy import (
 
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
+
 
 def get_table(repo_path: str) -> List[Dict[str, Any]]:
     """
@@ -275,12 +276,15 @@ def includes_common_docs(repo: pygit2.Repository) -> bool:
     # otherwise return false as we didn't find documentation
     return False
 
-def count_unique_contributors(repo: pygit2.Repository, since: Optional[datetime] = None) -> int:
+
+def count_unique_contributors(
+    repo: pygit2.Repository, since: Optional[datetime] = None
+) -> int:
     """
     Counts the number of unique contributors to a repository.
 
-    If a `since` datetime is provided, counts contributors 
-    who made commits after the specified datetime. 
+    If a `since` datetime is provided, counts contributors
+    who made commits after the specified datetime.
     Otherwise, counts all contributors.
 
     Args:
@@ -288,7 +292,7 @@ def count_unique_contributors(repo: pygit2.Repository, since: Optional[datetime]
             The repository to analyze.
         since (Optional[datetime]):
             The cutoff datetime. Only contributions after
-            this datetime are counted. If None, all 
+            this datetime are counted. If None, all
             contributions are considered.
 
     Returns:
@@ -302,6 +306,7 @@ def count_unique_contributors(repo: pygit2.Repository, since: Optional[datetime]
         if commit.commit_time > since_timestamp
     }
     return len(contributors)
+
 
 def compute_repo_data(repo_path: str) -> None:
     """
@@ -360,7 +365,7 @@ def compute_repo_data(repo_path: str) -> None:
             + 1
         ),
         "repo-commits-per-day": commits_count / days_of_development,
-        "almanack-table-datetime": DATETIME_NOW.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
+        "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         "repo-includes-readme": file_exists_in_repo(
             repo=repo,
             expected_file_name="readme",
@@ -381,8 +386,12 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
         "repo-includes-common-docs": includes_common_docs(repo=repo),
         "repo-unique-contributors": count_unique_contributors(repo=repo),
-        "repo-unique-contributors-past-year": count_unique_contributors(repo=repo, since=DATETIME_NOW - timedelta(days=365)),
-        "repo-unique-contributors-past-182-days": count_unique_contributors(repo=repo, since=DATETIME_NOW - timedelta(days=182)),
+        "repo-unique-contributors-past-year": count_unique_contributors(
+            repo=repo, since=DATETIME_NOW - timedelta(days=365)
+        ),
+        "repo-unique-contributors-past-182-days": count_unique_contributors(
+            repo=repo, since=DATETIME_NOW - timedelta(days=182)
+        ),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }
