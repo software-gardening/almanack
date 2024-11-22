@@ -51,6 +51,7 @@ kaleido = "0.2.1"
 pygithub = "^2.3.0"
 jupyterlab-spellchecker = "^0.8.4"
 jsonschema = "^4.23.0"
+dunamai = "^1.23.0"
 
 [tool.poetry.scripts]
 almanack = "almanack.cli:cli_get_table"

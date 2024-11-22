@@ -352,6 +352,7 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-is-citable": is_citable(repo=repo),
         "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
         "repo-includes-common-docs": includes_common_docs(repo=repo),
+        "almanack-version": _get_almanack_version(),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }
@@ -502,3 +503,27 @@ def process_repo_for_analysis(
 
     finally:
         shutil.rmtree(temp_dir)
+
+
+def _get_almanack_version() -> str:
+    """
+    Seeks the current version of almanack using either pkg_resources
+    or dunamai to determine the current version being used.
+
+    Returns:
+        str
+            A string representing the version of almanack currently being used.
+    """
+
+    try:
+        # attempt to gather the development version from dunamai
+        # for scenarios where almanack from source is used.
+        import dunamai
+
+        return dunamai.Version.from_any_vcs().serialize()
+    except (RuntimeError, ModuleNotFoundError):
+        # else grab a static version from __init__.py
+        # for scenarios where the built/packaged almanack is used.
+        import almanack
+
+        return almanack.__version__

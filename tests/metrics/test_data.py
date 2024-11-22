@@ -6,6 +6,7 @@ import pathlib
 from datetime import datetime, timedelta
 from typing import Dict, List
 
+import dunamai
 import jsonschema
 import pandas as pd
 import pygit2
@@ -14,6 +15,7 @@ import yaml
 
 from almanack.metrics.data import (
     METRICS_TABLE,
+    _get_almanack_version,
     compute_repo_data,
     default_branch_is_not_master,
     file_exists_in_repo,
@@ -506,3 +508,13 @@ def test_includes_common_docs(tmp_path, files, expected_result):
 
     # Assert that the function returns the expected result
     assert includes_common_docs(repo) == expected_result
+
+
+def test_get_almanack_version():
+    """
+    Tests _get_almanack_version()
+    """
+
+    # compare to the dev version from dunamai as we could only use
+    # this test in development.
+    assert _get_almanack_version() == dunamai.Version.from_any_vcs().serialize()

@@ -32,6 +32,12 @@ metrics:
     description: >-
       Floating point number which represents the number of commits
       per day (using days of development).
+  - name: "almanack-version"
+    id: "SGA-META-0008"
+    result-type: "string"
+    description: >-
+      String representing the version of the almanack which was used
+      to generate this table.
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
