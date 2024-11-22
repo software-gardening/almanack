@@ -32,6 +32,13 @@ metrics:
     description: >-
       Floating point number which represents the number of commits
       per day (using days of development).
+  - name: "almanack-table-datetime"
+    id: "SGA-META-0007"
+    result-type: "string"
+    description: >-
+      String representing the date when this table was generated
+      in the format of '%Y-%m-%dT%H:%M:%S.%fZ', for example:
+      2024-11-22T18:20:30.123456Z .
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
@@ -75,6 +82,26 @@ metrics:
       Boolean value indicating whether the repo includes
       common documentation directory and files associated
       with building docsites.
+  - name: "repo-unique-contributors"
+    id: "SGA-GL-0008"
+    result-type: "int"
+    description: >-
+      Count of unique contributors since the beginning
+      of the repository.
+  - name: "repo-unique-contributors-past-year"
+    id: "SGA-GL-0009"
+    result-type: "int"
+    description: >-
+      Count of unique contributors within the last year
+      from now (where now is a reference to table value
+      of almanack-table-datetime).
+  - name: "repo-unique-contributors-past-182-days"
+    id: "SGA-GL-0010"
+    result-type: "int"
+    description: >-
+      Count of unique contributors within the last 182 days
+      from now (where now is a reference to table value
+      of almanack-table-datetime).
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
