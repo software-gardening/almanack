@@ -162,7 +162,7 @@ def repo_setup(
     branch_name: str = "main",
 ) -> pygit2.Repository:
     """
-    Set up a temporary repository with specified files and commit dates.
+    Set up a temporary repository with specified files and commit metadata.
 
     Args:
         repo_path (Path):
@@ -172,7 +172,9 @@ def repo_setup(
             Each dictionary must have:
                 - "files": A dictionary of filenames as keys and file content as values.
                 - "commit-date" (optional): The datetime of the commit.
-            If "commit-date" is not provided, the current date is used.
+                - "author" (optional): A dictionary with "name" and "email" keys
+                  to specify the commit author. If not provided, defaults to the
+                  repository's default user configuration.
 
         branch_name (str):
             The name of the branch to use for commits. Defaults to "main".
@@ -192,9 +194,10 @@ def repo_setup(
 
     # Loop through each commit dictionary in `files`
     for i, commit_data in enumerate(files):
-        # Extract commit files and commit date
+        # Extract commit files and metadata
         commit_files = commit_data.get("files", {})
         commit_date = commit_data.get("commit-date", datetime.now())
+        author_data = commit_data.get("author", None)
 
         # Create or update each file in the current commit
         for filename, content in commit_files.items():
@@ -209,12 +212,19 @@ def repo_setup(
         index.add_all()
         index.write()
 
-        # Set the author and committer signatures with the specific commit date
-        author = pygit2.Signature(
-            repo.default_signature.name,
-            repo.default_signature.email,
-            int(commit_date.timestamp()),
-        )
+        # Determine the author and committer
+        if author_data:
+            author = pygit2.Signature(
+                author_data["name"],
+                author_data["email"],
+                int(commit_date.timestamp()),
+            )
+        else:
+            author = pygit2.Signature(
+                repo.default_signature.name,
+                repo.default_signature.email,
+                int(commit_date.timestamp()),
+            )
         committer = author  # Assuming the committer is the same as the author
 
         # Write the index to a tree
