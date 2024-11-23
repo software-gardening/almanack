@@ -308,6 +308,21 @@ def count_unique_contributors(
     return len(contributors)
 
 
+def count_repo_tags(repo: pygit2.Repository) -> int:
+    """
+    Counts the number of tags in a pygit2 repository.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository to analyze.
+
+    Returns:
+        int:
+            The number of tags in the repository.
+    """
+    return sum(1 for ref in repo.references if ref.startswith("refs/tags/"))
+
+
 def compute_repo_data(repo_path: str) -> None:
     """
     Computes comprehensive data for a GitHub repository.
@@ -393,6 +408,7 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-unique-contributors-past-182-days": count_unique_contributors(
             repo=repo, since=DATETIME_NOW - timedelta(days=182)
         ),
+        "repo-tags-count": count_repo_tags(repo=repo),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }

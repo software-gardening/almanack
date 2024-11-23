@@ -165,7 +165,7 @@ def repo_setup(
     Set up a temporary repository with specified files and commit metadata.
 
     Args:
-        repo_path (Path):
+        repo_path (pathlib.Path):
             The temporary directory where the repo will be created.
         files (list[dict]):
             A list of dictionaries where each dictionary represents a commit.
@@ -175,13 +175,15 @@ def repo_setup(
                 - "author" (optional): A dictionary with "name" and "email" keys
                   to specify the commit author. If not provided, defaults to the
                   repository's default user configuration.
+                - "tag" (optional): A string representing the tag to associate
+                  with the commit.
 
         branch_name (str):
             The name of the branch to use for commits. Defaults to "main".
 
     Returns:
         pygit2.Repository:
-            The initialized repository with the specified commits.
+            The initialized repository with the specified commits and tags.
     """
     # Initialize the repository
     repo = pygit2.init_repository(repo_path, bare=False)
@@ -198,6 +200,7 @@ def repo_setup(
         commit_files = commit_data.get("files", {})
         commit_date = commit_data.get("commit-date", datetime.now())
         author_data = commit_data.get("author", None)
+        tag_name = commit_data.get("tag")  # Get the optional tag name
 
         # Create or update each file in the current commit
         for filename, content in commit_files.items():
@@ -246,9 +249,17 @@ def repo_setup(
         )
 
         # Update the parent_commit to the latest commit for chaining
-        parent_commit = repo.get(
-            commit_id
-        )  # Explicitly get the Commit object by its ID
+        parent_commit = repo.get(commit_id)
+
+        # Create a tag if specified
+        if tag_name:
+            repo.create_tag(
+                tag_name,
+                parent_commit.id,
+                pygit2.GIT_OBJECT_COMMIT,
+                author,
+                f"Tag {tag_name} for commit #{i + 1}",
+            )
 
     # Set the HEAD to the main branch after all commits
     repo.set_head(branch_ref)

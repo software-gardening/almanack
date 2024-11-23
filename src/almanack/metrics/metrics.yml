@@ -108,6 +108,11 @@ metrics:
       Count of unique contributors within the last 182 days
       from now (where now is a reference to table value
       of almanack-table-datetime).
+  - name: "repo-tags-count"
+    id: "SGA-GL-0011"
+    result-type: "int"
+    description: >-
+      Count of the number of tags within the repository.
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"

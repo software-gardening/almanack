@@ -17,6 +17,7 @@ from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
     compute_repo_data,
+    count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
     file_exists_in_repo,
@@ -602,3 +603,44 @@ def test_count_unique_contributors(tmp_path, files, since, expected_count):
 
     # Assert the result matches the expected count
     assert result == expected_count, f"Expected {expected_count}, got {result}"
+
+
+@pytest.mark.parametrize(
+    "files, expected_tag_count",
+    [
+        # No tags in the repository
+        (
+            [
+                {"files": {"file1.txt": "Initial content"}},
+                {"files": {"file2.txt": "Another content"}},
+            ],
+            0,
+        ),
+        # One tag in the repository
+        (
+            [
+                {"files": {"file1.txt": "Initial content"}, "tag": "v1.0"},
+                {"files": {"file2.txt": "Another content"}},
+            ],
+            1,
+        ),
+        # Multiple tags in the repository
+        (
+            [
+                {"files": {"file1.txt": "Initial content"}, "tag": "v1.0"},
+                {"files": {"file2.txt": "More content"}, "tag": "v1.1"},
+                {"files": {"file3.txt": "Even more content"}, "tag": "v2.0"},
+            ],
+            3,
+        ),
+    ],
+)
+def test_count_repo_tags(tmp_path, files, expected_tag_count):
+    """
+    Test count_repo_tags
+    """
+
+    repo = repo_setup(repo_path=tmp_path, files=files)
+
+    # Assert the tag count matches the expected value
+    assert count_repo_tags(repo) == expected_tag_count
