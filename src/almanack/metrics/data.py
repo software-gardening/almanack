@@ -366,9 +366,7 @@ def compute_repo_data(repo_path: str) -> None:
     repo_path = pathlib.Path(repo_path).resolve()
     repo = pygit2.Repository(str(repo_path))
 
-    remote_repo_data = fetch_ecosystems_repository_data(
-        remote_url=get_remote_url(repo=repo)
-    )
+    remote_repo_data = fetch_api_data(remote_url=get_remote_url(repo=repo))
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
@@ -631,7 +629,10 @@ def _get_almanack_version() -> str:
         return almanack.__version__
 
 
-def fetch_ecosystems_repository_data(remote_url: Optional[str]) -> dict:
+def fetch_api_data(
+    remote_url: Optional[str],
+    api_endpoint: str = "https://repos.ecosyste.ms/api/v1/repositories/lookup",
+) -> dict:
     """
     Fetch repository data from the repos.ecosyste.ms API
     based on the remote URL.
@@ -639,6 +640,8 @@ def fetch_ecosystems_repository_data(remote_url: Optional[str]) -> dict:
     Args:
         remote_url (Optional[str]):
             The remote URL of the repository to look up.
+        api_endpoint (str):
+            The HTTP API endpoint to use for the request.
 
     Returns:
         dict:
@@ -653,9 +656,6 @@ def fetch_ecosystems_repository_data(remote_url: Optional[str]) -> dict:
     # check if we have no remote_url
     if remote_url is None:
         return {}
-
-    # Base API endpoint
-    api_endpoint = "https://repos.ecosyste.ms/api/v1/repositories/lookup"
 
     # Encode the remote URL for the query parameter
     encoded_url = quote(remote_url, safe="")
