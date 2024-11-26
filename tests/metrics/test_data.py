@@ -21,7 +21,7 @@ from almanack.metrics.data import (
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
-    fetch_ecosyste_ms_repository_data,
+    fetch_ecosystems_repository_data,
     file_exists_in_repo,
     get_table,
     includes_common_docs,
@@ -683,7 +683,7 @@ def test_fetch_repository_metadata(current_repo):
     ), "Remote URL could not be determined for the repository."
 
     # Fetch repository metadata
-    repo_data = fetch_ecosyste_ms_repository_data(remote_url)
+    repo_data = fetch_ecosystems_repository_data(remote_url)
 
     # Assertions to verify the response
     assert isinstance(repo_data, dict), "The returned repo_data should be a dictionary."

@@ -2,7 +2,7 @@
 metrics:
   - name: "repo-path"
     id: "SGA-META-0001"
-    result-type: "str"
+    result-type: "string"
     description: >-
       Repository path (local directory).
   - name: "repo-commits"
@@ -34,17 +34,27 @@ metrics:
       per day (using days of development).
   - name: "almanack-table-datetime"
     id: "SGA-META-0007"
-    result-type: "string"
+    result-type: "str"
     description: >-
       String representing the date when this table was generated
       in the format of '%Y-%m-%dT%H:%M:%S.%fZ', for example:
       2024-11-22T18:20:30.123456Z .
   - name: "almanack-version"
     id: "SGA-META-0008"
-    result-type: "string"
+    result-type: "str"
     description: >-
       String representing the version of the almanack which was used
       to generate this table.
+  - name: "repo-primary-language"
+    id: "SGA-META-0009"
+    result-type: "str"
+    description: >-
+      Detected primary programming language of the repository.
+  - name: "repo-primary-license"
+    id: "SGA-META-0010"
+    result-type: "str"
+    description: >-
+      Detected primary license of the repository.
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
@@ -127,6 +137,38 @@ metrics:
       Count of the number of tags within the repository
       within the last 182 days from now (where now is a
       reference to table value of almanack-table-datetime).
+  - name: "repo-stargazers-count"
+    id: "SGA-GL-0014"
+    result-type: "int"
+    description: >-
+      Count of the number of stargazers on repository
+      remote hosting platform.
+  - name: "repo-uses-issues"
+    id: "SGA-GL-0015"
+    result-type: "bool"
+    description: >-
+      Whether the repository uses issues as a bug or
+      feature tracking tool.
+  - name: "repo-issues-open-count"
+    id: "SGA-GL-0016"
+    result-type: "int"
+    description: >-
+      Count of open issues for repository.
+  - name: "repo-pull-requests-enabled"
+    id: "SGA-GL-0017"
+    result-type: "bool"
+    description: >-
+      Whether the repository enables pull requests.
+  - name: "repo-forks-count"
+    id: "SGA-GL-0018"
+    result-type: "int"
+    description: >-
+      Count of forks of the repository.
+  - name: "repo-subscribers-count"
+    id: "SGA-GL-0019"
+    result-type: "int"
+    description: >-
+      Count of subscribers (or watchers) of the repository.
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"

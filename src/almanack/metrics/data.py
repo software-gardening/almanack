@@ -2,6 +2,7 @@
 This module computes data for GitHub Repositories
 """
 
+import logging
 import pathlib
 import shutil
 import tempfile
@@ -19,12 +20,15 @@ from ..git import (
     find_file,
     get_commits,
     get_edited_files,
+    get_remote_url,
     read_file,
 )
 from .entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
 )
+
+LOGGER = logging.getLogger(__name__)
 
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
@@ -362,6 +366,9 @@ def compute_repo_data(repo_path: str) -> None:
     repo_path = pathlib.Path(repo_path).resolve()
     repo = pygit2.Repository(str(repo_path))
 
+    remote_repo_data = fetch_ecosystems_repository_data(
+        remote_url=get_remote_url(repo=repo)
+    )
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
@@ -426,6 +433,8 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-default-branch-not-master": default_branch_is_not_master(repo=repo),
         "repo-includes-common-docs": includes_common_docs(repo=repo),
         "almanack-version": _get_almanack_version(),
+        "repo-primary-language": remote_repo_data.get("language", None),
+        "repo-primary-license": remote_repo_data.get("license", None),
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -438,6 +447,14 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-tags-count-past-182-days": count_repo_tags(
             repo=repo, since=half_year_ago
         ),
+        "repo-stargazers-count": remote_repo_data.get("stargazers_count", None),
+        "repo-uses-issues": remote_repo_data.get("has_issues", None),
+        "repo-issues-open-count": remote_repo_data.get("open_issues_count", None),
+        "repo-pull-requests-enabled": remote_repo_data.get(
+            "pull_requests_enabled", None
+        ),
+        "repo-forks-count": remote_repo_data.get("forks_count", None),
+        "repo-subscribers-count": remote_repo_data.get("subscribers_count", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }
@@ -614,13 +631,13 @@ def _get_almanack_version() -> str:
         return almanack.__version__
 
 
-def fetch_ecosyste_ms_repository_data(remote_url: str) -> dict:
+def fetch_ecosystems_repository_data(remote_url: Optional[str]) -> dict:
     """
     Fetch repository data from the repos.ecosyste.ms API
     based on the remote URL.
 
     Args:
-        remote_url (str):
+        remote_url (Optional[str]):
             The remote URL of the repository to look up.
 
     Returns:
@@ -632,6 +649,11 @@ def fetch_ecosyste_ms_repository_data(remote_url: str) -> dict:
             If the API call fails or the response cannot
             be parsed as JSON.
     """
+
+    # check if we have no remote_url
+    if remote_url is None:
+        return {}
+
     # Base API endpoint
     api_endpoint = "https://repos.ecosyste.ms/api/v1/repositories/lookup"
 
@@ -643,7 +665,9 @@ def fetch_ecosyste_ms_repository_data(remote_url: str) -> dict:
 
     try:
         # Perform the GET request
-        response = requests.get(full_url, headers={"accept": "application/json"})
+        response = requests.get(
+            full_url, headers={"accept": "application/json"}, timeout=120
+        )
 
         # Raise an exception for HTTP errors
         response.raise_for_status()
@@ -652,4 +676,6 @@ def fetch_ecosyste_ms_repository_data(remote_url: str) -> dict:
         return response.json()
 
     except requests.RequestException as e:
-        raise RuntimeError(f"Failed to fetch repository data: {e}") from e
+        # return an empty dictionary if anything goes wrong
+        LOGGER.warning(f"Failed to fetch repository data: {e}")
+        return {}
