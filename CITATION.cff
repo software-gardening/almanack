@@ -67,3 +67,21 @@ references:
     url: https://doi.org/10.1109/ICSE.2009.5070510
     notes: |
       This article is a related resource that serves as inspiration in deriving our entropy calculation.
+  - title: 'Ecosyste.ms: Repos'
+    type: software
+    authors:
+      - given-names: Andrew
+        family-names: Nesbitt
+        email: andrew@ecosyste.ms
+        orcid: 'https://orcid.org/0009-0007-2710-1118'
+    repository-code: 'https://github.com/ecosyste-ms/repos'
+    url: 'https://repos.ecosyste.ms'
+    abstract: >-
+      An open API service providing repository metadata for many open source software ecosystems.
+    keywords:
+      - open source
+      - package management
+      - software
+    license: AGPL-3.0
+    notes: |
+      The Ecosyste.ms Repos API is used to source data for use within the Almanack Python package.
