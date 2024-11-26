@@ -666,7 +666,7 @@ def fetch_ecosystems_repository_data(remote_url: Optional[str]) -> dict:
     try:
         # Perform the GET request
         response = requests.get(
-            full_url, headers={"accept": "application/json"}, timeout=120
+            full_url, headers={"accept": "application/json"}, timeout=300
         )
 
         # Raise an exception for HTTP errors

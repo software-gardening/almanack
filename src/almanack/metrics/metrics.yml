@@ -2,7 +2,7 @@
 metrics:
   - name: "repo-path"
     id: "SGA-META-0001"
-    result-type: "string"
+    result-type: "str"
     description: >-
       Repository path (local directory).
   - name: "repo-commits"
