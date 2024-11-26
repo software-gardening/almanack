@@ -4,6 +4,7 @@ Test git operations functionality
 
 import pathlib
 from typing import Any, Dict, List
+from urllib.parse import urlparse
 
 import pygit2
 import pytest
@@ -17,6 +18,7 @@ from almanack.git import (
     get_edited_files,
     get_loc_changed,
     get_most_recent_commits,
+    get_remote_url,
     read_file,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
@@ -227,3 +229,32 @@ def test_count_files(
     assert (
         count_files(most_recent_tree) == expected_count
     ), f"Expected {expected_count} files, got {count_files(most_recent_tree)}"
+
+
+def test_get_remote_url_with_current_repo():
+    """
+    Test get_remote_url using the repository containing this test.
+    """
+    # Get the path of the current repository
+    current_repo_path = pathlib.Path(__file__).resolve().parent
+
+    # Initialize the pygit2 repository object
+    repo = pygit2.Repository(current_repo_path)
+
+    # Call the function to get the remote URL
+    remote_url = get_remote_url(repo)
+
+    # Assert that a remote URL is found
+    assert remote_url is not None, "No remote URL found for the current repository."
+
+    # Validate the remote URL structure
+    parsed_url = urlparse(remote_url)
+    assert parsed_url.scheme in {
+        "http",
+        "https",
+        "ssh",
+    }, f"Unexpected scheme in URL: {parsed_url.scheme}"
+    assert parsed_url.netloc, f"Invalid net location in URL: {remote_url}"
+
+    # Optionally, print the remote URL for debugging
+    print(f"Remote URL: {remote_url}")

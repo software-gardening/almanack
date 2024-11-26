@@ -5,6 +5,7 @@ This module performs git operations
 import pathlib
 import tempfile
 from typing import Dict, List, Optional, Union
+from urllib.parse import urlparse
 
 import pygit2
 from charset_normalizer import from_bytes
@@ -284,3 +285,43 @@ def read_file(
         return decoded_data
     except (AttributeError, UnicodeDecodeError):
         return None
+
+
+def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
+    """
+    Determines the remote URL of a git repository, if available.
+
+    Args:
+        repo (pygit2.Repository): The pygit2 repository object.
+
+    Returns:
+        Optional[str]: The remote URL if found, otherwise None.
+    """
+    try:
+        # Get the 'origin' remote URL (common convention)
+        remote = repo.remotes["origin"]
+        remote_url = remote.url
+
+        # Validate the URL structure using urlparse
+        parsed_url = urlparse(remote_url)
+        if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
+            return remote_url
+    except KeyError:
+        # 'origin' remote does not exist
+        pass
+    except AttributeError:
+        # Remote URL is not accessible
+        pass
+
+    # Fallback: Try to get any remote URL if 'origin' does not exist
+    try:
+        for remote in repo.remotes:
+            remote_url = remote.url
+            parsed_url = urlparse(remote_url)
+            if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
+                return remote_url
+    except AttributeError:
+        pass
+
+    # Return None if no valid URL is found
+    return None
