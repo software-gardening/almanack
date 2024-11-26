@@ -606,7 +606,7 @@ def test_count_unique_contributors(tmp_path, files, since, expected_count):
 
 
 @pytest.mark.parametrize(
-    "files, expected_tag_count",
+    "files, since, expected_tag_count",
     [
         # No tags in the repository
         (
@@ -614,33 +614,57 @@ def test_count_unique_contributors(tmp_path, files, since, expected_count):
                 {"files": {"file1.txt": "Initial content"}},
                 {"files": {"file2.txt": "Another content"}},
             ],
+            None,
             0,
         ),
-        # One tag in the repository
+        # One tag in the repository, no since filter
         (
             [
                 {"files": {"file1.txt": "Initial content"}, "tag": "v1.0"},
                 {"files": {"file2.txt": "Another content"}},
             ],
+            None,
             1,
         ),
-        # Multiple tags in the repository
+        # Multiple tags in the repository, no since filter
         (
             [
                 {"files": {"file1.txt": "Initial content"}, "tag": "v1.0"},
                 {"files": {"file2.txt": "More content"}, "tag": "v1.1"},
                 {"files": {"file3.txt": "Even more content"}, "tag": "v2.0"},
             ],
+            None,
             3,
+        ),
+        # Filter by datetime: Only recent tags count
+        (
+            [
+                {
+                    "files": {"file1.txt": "Initial content"},
+                    "tag": "v1.0",
+                    "commit-date": datetime.now() - timedelta(days=10),
+                },
+                {
+                    "files": {"file2.txt": "More content"},
+                    "tag": "v1.1",
+                    "commit-date": datetime.now() - timedelta(days=5),
+                },
+                {
+                    "files": {"file3.txt": "Even more content"},
+                    "tag": "v2.0",
+                    "commit-date": datetime.now() - timedelta(days=1),
+                },
+            ],
+            datetime.now() - timedelta(days=7),  # Only tags from the last 7 days
+            2,
         ),
     ],
 )
-def test_count_repo_tags(tmp_path, files, expected_tag_count):
+def test_count_repo_tags(tmp_path, files, since, expected_tag_count):
     """
-    Test count_repo_tags
+    Test count_repo_tags with optional since parameter.
     """
-
     repo = repo_setup(repo_path=tmp_path, files=files)
 
     # Assert the tag count matches the expected value
-    assert count_repo_tags(repo) == expected_tag_count
+    assert count_repo_tags(repo, since=since) == expected_tag_count
