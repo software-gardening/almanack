@@ -7,8 +7,10 @@ import shutil
 import tempfile
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
+from urllib.parse import quote
 
 import pygit2
+import requests
 import yaml
 
 from ..git import (
@@ -610,3 +612,44 @@ def _get_almanack_version() -> str:
         import almanack
 
         return almanack.__version__
+
+
+def fetch_ecosyste_ms_repository_data(remote_url: str) -> dict:
+    """
+    Fetch repository data from the repos.ecosyste.ms API
+    based on the remote URL.
+
+    Args:
+        remote_url (str):
+            The remote URL of the repository to look up.
+
+    Returns:
+        dict:
+            The JSON response from the API as a dictionary.
+
+    Raises:
+        requests.RequestException:
+            If the API call fails or the response cannot
+            be parsed as JSON.
+    """
+    # Base API endpoint
+    api_endpoint = "https://repos.ecosyste.ms/api/v1/repositories/lookup"
+
+    # Encode the remote URL for the query parameter
+    encoded_url = quote(remote_url, safe="")
+
+    # Construct the full API URL
+    full_url = f"{api_endpoint}?url={encoded_url}"
+
+    try:
+        # Perform the GET request
+        response = requests.get(full_url, headers={"accept": "application/json"})
+
+        # Raise an exception for HTTP errors
+        response.raise_for_status()
+
+        # Parse and return the JSON response
+        return response.json()
+
+    except requests.RequestException as e:
+        raise RuntimeError(f"Failed to fetch repository data: {e}") from e

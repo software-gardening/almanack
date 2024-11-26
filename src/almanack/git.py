@@ -305,7 +305,7 @@ def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
         # Validate the URL structure using urlparse
         parsed_url = urlparse(remote_url)
         if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
-            return remote_url
+            return remote_url.removesuffix(".git")
     except KeyError:
         # 'origin' remote does not exist
         pass
@@ -319,7 +319,7 @@ def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
             remote_url = remote.url
             parsed_url = urlparse(remote_url)
             if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
-                return remote_url
+                return remote_url.removesuffix(".git")
     except AttributeError:
         pass
 

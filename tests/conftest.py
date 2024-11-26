@@ -163,3 +163,12 @@ def repo_with_citation_in_readme(tmp_path):
     repo.set_head("refs/heads/main")
 
     yield repo  # Provide the repository to the tests
+
+
+@pytest.fixture
+def current_repo():
+    """
+    Fixture to get the current repository being tested.
+    """
+    repo_path = pathlib.Path(".").resolve()
+    return pygit2.Repository(str(repo_path))

@@ -231,18 +231,13 @@ def test_count_files(
     ), f"Expected {expected_count} files, got {count_files(most_recent_tree)}"
 
 
-def test_get_remote_url_with_current_repo():
+def test_get_remote_url_with_current_repo(current_repo):
     """
     Test get_remote_url using the repository containing this test.
     """
-    # Get the path of the current repository
-    current_repo_path = pathlib.Path(__file__).resolve().parent
-
-    # Initialize the pygit2 repository object
-    repo = pygit2.Repository(current_repo_path)
 
     # Call the function to get the remote URL
-    remote_url = get_remote_url(repo)
+    remote_url = get_remote_url(current_repo)
 
     # Assert that a remote URL is found
     assert remote_url is not None, "No remote URL found for the current repository."

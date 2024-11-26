@@ -13,6 +13,7 @@ import pygit2
 import pytest
 import yaml
 
+from almanack.git import get_remote_url
 from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
@@ -20,6 +21,7 @@ from almanack.metrics.data import (
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
+    fetch_ecosyste_ms_repository_data,
     file_exists_in_repo,
     get_table,
     includes_common_docs,
@@ -668,3 +670,25 @@ def test_count_repo_tags(tmp_path, files, since, expected_tag_count):
 
     # Assert the tag count matches the expected value
     assert count_repo_tags(repo, since=since) == expected_tag_count
+
+
+def test_fetch_repository_metadata(current_repo):
+    """
+    Test fetch_repository_metadata using the current repository's remote URL.
+    """
+    # Get the remote URL of the current repository
+    remote_url = get_remote_url(current_repo)
+    assert (
+        remote_url is not None
+    ), "Remote URL could not be determined for the repository."
+
+    # Fetch repository metadata
+    repo_data = fetch_ecosyste_ms_repository_data(remote_url)
+
+    # Assertions to verify the response
+    assert isinstance(repo_data, dict), "The returned repo_data should be a dictionary."
+    assert "id" in repo_data, "repo_data should contain the 'name' key."
+    assert "full_name" in repo_data, "repo_data should contain the 'url' key."
+    assert (
+        repo_data["html_url"] == remote_url
+    ), "The repo_data URL should match the repository's remote URL."
