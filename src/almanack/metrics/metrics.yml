@@ -147,7 +147,7 @@ metrics:
     id: "SGA-GL-0015"
     result-type: "bool"
     description: >-
-      Whether the repository uses issues as a bug or
+      Whether the repository uses issues (for example, as a bug and/or
       feature tracking tool.
   - name: "repo-issues-open-count"
     id: "SGA-GL-0016"
