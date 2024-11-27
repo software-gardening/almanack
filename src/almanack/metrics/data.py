@@ -6,6 +6,7 @@ import logging
 import pathlib
 import shutil
 import tempfile
+import time
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlparse
@@ -649,7 +650,7 @@ def get_api_data(
     params: Optional[Dict[str, str]] = None,
 ) -> dict:
     """
-    Get data from an API based on the remote URL.
+    Get data from an API based on the remote URL, with retry logic for GitHub rate limiting.
 
     Args:
         api_endpoint (str):
@@ -661,32 +662,53 @@ def get_api_data(
         dict: The JSON response from the API as a dictionary.
 
     Raises:
-        requests.RequestException: If the API call fails or the response cannot
-                                   be parsed as JSON.
+        requests.RequestException: If the API call fails for reasons other than rate limiting.
     """
-
-    # Encode the remote URL and add it to the query parameters
     if params is None:
         params = {}
 
-    try:
-        # Perform the GET request with query parameters
-        response = requests.get(
-            api_endpoint,
-            headers={"accept": "application/json"},
-            params=params,
-            timeout=300,
-        )
+    retries = 3  # Number of attempts for rate limit errors
+    backoff = 3  # Seconds to wait between retries
 
-        # Raise an exception for HTTP errors
-        response.raise_for_status()
+    for attempt in range(retries):
+        try:
+            # Perform the GET request with query parameters
+            response = requests.get(
+                api_endpoint,
+                headers={"accept": "application/json"},
+                params=params,
+                timeout=300,
+            )
 
-        # Parse and return the JSON response
-        return response.json()
+            # Raise an exception for HTTP errors
+            response.raise_for_status()
 
-    except requests.RequestException as e:
-        LOGGER.warning(f"Failed to fetch repository data: {e}")
-        return {}
+            # Parse and return the JSON response
+            return response.json()
+
+        except requests.HTTPError:
+            # Check for rate limit error (403 with a rate limit header)
+            if (
+                # ignore ruff linting code below as 403 is a known HTTP error code
+                response.status_code == 403  # noqa: PLR2004
+                and "X-RateLimit-Remaining" in response.headers
+            ):
+                if attempt < retries - 1:
+                    print(
+                        f"Rate limit exceeded (attempt {attempt + 1}/{retries}). Retrying in {backoff} seconds..."
+                    )
+                    time.sleep(backoff)
+                else:
+                    print("Rate limit exceeded. All retry attempts exhausted.")
+                    return {}
+            else:
+                # Raise other HTTP errors immediately
+                return {}
+        except requests.RequestException:
+            # Raise other non-HTTP exceptions immediately
+            return {}
+
+    return {}  # Default return in case all retries fail
 
 
 def get_github_build_success_ratio(
