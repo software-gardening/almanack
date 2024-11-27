@@ -700,14 +700,14 @@ def get_github_build_success_ratio(
     """
     # Validate and parse the repository URL
     parsed_url = urlparse(repo_url)
-    print(parsed_url)
     if parsed_url.netloc != "github.com" or not parsed_url.path:
-        return {"error": "Invalid GitHub repository URL"}
+        return {}
 
     try:
+        # gather the owner and repo name from the parsed url path
         owner, repo_name = parsed_url.path.strip("/").split("/")
     except ValueError:
-        return {"error": "Invalid GitHub repository URL structure"}
+        return {}
 
     # Fetch the latest workflow run data using get_api_data
     github_response = get_api_data(
