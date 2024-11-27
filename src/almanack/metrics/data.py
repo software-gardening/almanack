@@ -366,7 +366,8 @@ def compute_repo_data(repo_path: str) -> None:
     repo_path = pathlib.Path(repo_path).resolve()
     repo = pygit2.Repository(str(repo_path))
 
-    remote_repo_data = fetch_api_data(remote_url=get_remote_url(repo=repo))
+    remote_url = get_remote_url(repo=repo)
+    remote_repo_data = get_api_data(params={"url": remote_url} if remote_url is not None else None)
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
@@ -629,44 +630,38 @@ def _get_almanack_version() -> str:
         return almanack.__version__
 
 
-def fetch_api_data(
-    remote_url: Optional[str],
+def get_api_data(
     api_endpoint: str = "https://repos.ecosyste.ms/api/v1/repositories/lookup",
+    params: Optional[Dict[str, str]] = None,
 ) -> dict:
     """
-    Fetch repository data from the repos.ecosyste.ms API
-    based on the remote URL.
+    Get data from an API based on the remote URL.
 
     Args:
-        remote_url (Optional[str]):
-            The remote URL of the repository to look up.
         api_endpoint (str):
             The HTTP API endpoint to use for the request.
+        params (Optional[Dict[str, str]])
+             Additional query parameters to include in the GET request.
 
     Returns:
-        dict:
-            The JSON response from the API as a dictionary.
+        dict: The JSON response from the API as a dictionary.
 
     Raises:
-        requests.RequestException:
-            If the API call fails or the response cannot
-            be parsed as JSON.
+        requests.RequestException: If the API call fails or the response cannot
+                                   be parsed as JSON.
     """
 
-    # check if we have no remote_url
-    if remote_url is None:
-        return {}
-
-    # Encode the remote URL for the query parameter
-    encoded_url = quote(remote_url, safe="")
-
-    # Construct the full API URL
-    full_url = f"{api_endpoint}?url={encoded_url}"
+    # Encode the remote URL and add it to the query parameters
+    if params is None:
+        params = {}
 
     try:
-        # Perform the GET request
+        # Perform the GET request with query parameters
         response = requests.get(
-            full_url, headers={"accept": "application/json"}, timeout=300
+            api_endpoint,
+            headers={"accept": "application/json"},
+            params=params,
+            timeout=300,
         )
 
         # Raise an exception for HTTP errors
@@ -676,6 +671,5 @@ def fetch_api_data(
         return response.json()
 
     except requests.RequestException as e:
-        # return an empty dictionary if anything goes wrong
         LOGGER.warning(f"Failed to fetch repository data: {e}")
         return {}
