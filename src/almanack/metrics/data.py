@@ -668,7 +668,7 @@ def get_api_data(
         params = {}
 
     retries = 5  # Number of attempts for rate limit errors
-    backoff = 4  # Seconds to wait between retries
+    backoff = 10  # Seconds to wait between retries
 
     for attempt in range(retries):
         try:
