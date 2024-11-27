@@ -21,12 +21,12 @@ from almanack.metrics.data import (
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
-    get_api_data,
     file_exists_in_repo,
+    get_api_data,
+    get_github_build_success_ratio,
     get_table,
     includes_common_docs,
     is_citable,
-    get_github_build_success_ratio,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 

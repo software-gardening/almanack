@@ -169,6 +169,33 @@ metrics:
     result-type: "int"
     description: >-
       Count of subscribers (or watchers) of the repository.
+  - name: "repo-gh-workflow-success-ratio"
+    id: "SGA-SF-0001"
+    result-type: "float"
+    description: >-
+      Ratio of succeeding workflow runs out of queried
+      workflow runs from GitHub (only applies to GitHub
+      hosted repositories which use workflows).
+  - name: "repo-gh-workflow-succeeding-runs"
+    id: "SGA-SF-0002"
+    result-type: "int"
+    description: >-
+      Number of succeeding workflow runs out of queried
+      workflow runs from GitHub (only applies to GitHub
+      hosted repositories which use workflows).
+  - name: "repo-gh-workflow-failing-runs"
+    id: "SGA-SF-0003"
+    result-type: "int"
+    description: >-
+      Number of failing workflow runs out of queried
+      workflow runs from GitHub (only applies to GitHub
+      hosted repositories which use workflows).
+  - name: "repo-gh-workflow-queried-total"
+    id: "SGA-SF-0004"
+    result-type: "int"
+    description: >-
+      Number of GitHub workflow runs queried for
+      GitHub workflow run metrics.
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"

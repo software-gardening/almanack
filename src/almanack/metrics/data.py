@@ -6,10 +6,9 @@ import logging
 import pathlib
 import shutil
 import tempfile
-from urllib.parse import urlparse
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
-from urllib.parse import quote
+from urllib.parse import urlparse
 
 import pygit2
 import requests
@@ -368,7 +367,17 @@ def compute_repo_data(repo_path: str) -> None:
     repo = pygit2.Repository(str(repo_path))
 
     remote_url = get_remote_url(repo=repo)
-    remote_repo_data = get_api_data(params={"url": remote_url} if remote_url is not None else None)
+
+    # gather data from ecosystems repo api
+    remote_repo_data = get_api_data(
+        params={"url": remote_url} if remote_url is not None else None
+    )
+
+    # gather data from github repo workflows api
+    gh_workflows_data = get_github_build_success_ratio(
+        repo_url=remote_url, branch=repo.head.shorthand, max_runs=100
+    )
+
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
@@ -455,6 +464,10 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-forks-count": remote_repo_data.get("forks_count", None),
         "repo-subscribers-count": remote_repo_data.get("subscribers_count", None),
+        "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
+        "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
+        "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
+        "repo-gh-workflow-queried-total": gh_workflows_data.get("failing_runs", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }
@@ -675,6 +688,7 @@ def get_api_data(
         LOGGER.warning(f"Failed to fetch repository data: {e}")
         return {}
 
+
 def get_github_build_success_ratio(
     repo_url: str,
     branch: str = "main",
@@ -716,7 +730,7 @@ def get_github_build_success_ratio(
         params={"event": "push", "branch": branch, "per_page": max_runs},
     )
 
-    if "workflow_runs" in github_response and github_response["workflow_runs"]:
+    if github_response.get("workflow_runs"):
         workflow_runs = github_response["workflow_runs"]
 
         # Count successes and total runs
@@ -726,7 +740,7 @@ def get_github_build_success_ratio(
         )
 
         return {
-            "success_ratio": successful_runs/total_runs,
+            "success_ratio": successful_runs / total_runs,
             "total_runs": total_runs,
             "successful_runs": successful_runs,
             "failing_runs": total_runs - successful_runs,
