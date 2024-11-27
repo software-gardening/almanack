@@ -26,6 +26,7 @@ from almanack.metrics.data import (
     get_table,
     includes_common_docs,
     is_citable,
+    get_github_build_success_ratio,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
@@ -692,3 +693,22 @@ def test_get_api_data(current_repo):
     assert (
         repo_data["html_url"] == remote_url
     ), "The repo_data URL should match the repository's remote URL."
+
+
+def test_get_github_build_success_ratio():
+    """
+    Tests get_github_build_success_ratio
+    """
+
+    # perform a query against the upstream almanack repo
+    result = get_github_build_success_ratio(
+        repo_url="https://github.com/software-gardening/almanack",
+        branch="main",
+        max_runs=100,
+    )
+
+    # check the types for the results (actual values may vary)
+    assert isinstance(result["success_ratio"], float)
+    assert isinstance(result["total_runs"], int)
+    assert isinstance(result["successful_runs"], int)
+    assert isinstance(result["failing_runs"], int)

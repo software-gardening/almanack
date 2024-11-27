@@ -6,6 +6,7 @@ import logging
 import pathlib
 import shutil
 import tempfile
+from urllib.parse import urlparse
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import quote
@@ -673,3 +674,63 @@ def get_api_data(
     except requests.RequestException as e:
         LOGGER.warning(f"Failed to fetch repository data: {e}")
         return {}
+
+def get_github_build_success_ratio(
+    repo_url: str,
+    branch: str = "main",
+    max_runs: int = 100,
+    github_api_endpoint: str = "https://api.github.com/repos",
+) -> dict:
+    """
+    Fetches the success ratio of the latest GitHub Actions build runs for a specified branch.
+
+    Args:
+        repo_url (str):
+            The full URL of the repository (e.g., 'http://github.com/org/repo').
+        branch (str):
+            The branch to filter for the workflow runs (default: "main").
+        max_runs (int):
+            The maximum number of latest workflow runs to analyze.
+        github_api_endpoint (str):
+            Base API endpoint for GitHub repositories.
+
+    Returns:
+        dict:
+            The success ratio and details of the analyzed workflow runs.
+    """
+    # Validate and parse the repository URL
+    parsed_url = urlparse(repo_url)
+    print(parsed_url)
+    if parsed_url.netloc != "github.com" or not parsed_url.path:
+        return {"error": "Invalid GitHub repository URL"}
+
+    try:
+        owner, repo_name = parsed_url.path.strip("/").split("/")
+    except ValueError:
+        return {"error": "Invalid GitHub repository URL structure"}
+
+    # Fetch the latest workflow run data using get_api_data
+    github_response = get_api_data(
+        # Construct the API URL for GitHub Actions runs
+        api_endpoint=f"{github_api_endpoint}/{owner}/{repo_name}/actions/runs",
+        params={"event": "push", "branch": branch, "per_page": max_runs},
+    )
+
+    if "workflow_runs" in github_response and github_response["workflow_runs"]:
+        workflow_runs = github_response["workflow_runs"]
+
+        # Count successes and total runs
+        total_runs = len(workflow_runs)
+        successful_runs = sum(
+            1 for run in workflow_runs if run["conclusion"] == "success"
+        )
+
+        return {
+            "success_ratio": successful_runs/total_runs,
+            "total_runs": total_runs,
+            "successful_runs": successful_runs,
+            "failing_runs": total_runs - successful_runs,
+        }
+
+    # else we return an empty dictionary
+    return {}
