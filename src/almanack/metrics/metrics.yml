@@ -169,6 +169,25 @@ metrics:
     result-type: "int"
     description: >-
       Count of subscribers (or watchers) of the repository.
+  - name: "repo-packages-ecosystems"
+    id: "SGA-GL-0020"
+    result-type: "list"
+    description: >-
+      List of package platforms or services where the repository
+      was detected (leveraging the ecosyste.ms packages API).
+  - name: "repo-packages-ecosystems-count"
+    id: "SGA-GL-0021"
+    result-type: "int"
+    description: >-
+      Count of package platforms or services where the repository
+      was detected (leveraging the ecosyste.ms packages API).
+  - name: "repo-packages-versions-count"
+    id: "SGA-GL-0022"
+    result-type: "int"
+    description: >-
+      Count of package versions on package hosts or services
+      where the repository was detected (leveraging the
+      ecosyste.ms packages API).
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"

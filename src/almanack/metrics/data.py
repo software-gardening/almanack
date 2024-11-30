@@ -379,6 +379,9 @@ def compute_repo_data(repo_path: str) -> None:
         repo_url=remote_url, branch=repo.head.shorthand, max_runs=100
     )
 
+    # gather data from ecosystems packages api
+    packages_data = get_ecosystems_package_metrics(repo_url=remote_url)
+
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
@@ -465,6 +468,9 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-forks-count": remote_repo_data.get("forks_count", None),
         "repo-subscribers-count": remote_repo_data.get("subscribers_count", None),
+        "repo-packages-ecosystems": packages_data.get("ecosystems_names", None),
+        "repo-packages-ecosystems-count": packages_data.get("ecosystems_count", None),
+        "repo-packages-versions-count": packages_data.get("versions_count", None),
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
@@ -770,3 +776,43 @@ def get_github_build_metrics(
 
     # else we return an empty dictionary
     return {}
+
+
+def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
+    """
+    Fetches package data from the ecosystem API and calculates metrics
+    about the number of unique ecosystems, total version counts,
+    and the list of ecosystem names.
+
+    Args:
+        repo_url (str):
+            The repository URL of the package to query.
+
+    Returns:
+        Dict[str, Any]:
+            A dictionary containing information about packages
+            related to the repository.
+    """
+
+    package_data = get_api_data(
+        api_endpoint="https://packages.ecosyste.ms/api/v1/packages/lookup",
+        params={"repository_url": repo_url},
+    )
+
+    # Initialize counters
+    ecosystems = set()
+    total_versions = 0
+
+    for entry in package_data:
+        # count ecosystems
+        if "ecosystem" in entry:
+            ecosystems.add(entry["ecosystem"])
+
+        # sum versions
+        total_versions += entry.get("versions_count", 0)
+
+    return {
+        "ecosystems_count": len(ecosystems),
+        "versions_count": total_versions,
+        "ecosystems_names": sorted(ecosystems),
+    }

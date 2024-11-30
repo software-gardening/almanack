@@ -23,6 +23,7 @@ from almanack.metrics.data import (
     default_branch_is_not_master,
     file_exists_in_repo,
     get_api_data,
+    get_ecosystems_package_metrics,
     get_github_build_metrics,
     get_table,
     includes_common_docs,
@@ -712,3 +713,19 @@ def test_get_github_build_metrics():
     assert isinstance(result["total_runs"], int)
     assert isinstance(result["successful_runs"], int)
     assert isinstance(result["failing_runs"], int)
+
+
+def test_get_ecosystems_package_metrics():
+    """
+    Tests get_ecosystems_package_metrics
+    """
+
+    # perform a query against the upstream almanack repo
+    result = get_ecosystems_package_metrics(
+        repo_url="https://github.com/software-gardening/almanack",
+    )
+
+    # check the types for the results (actual values may vary)
+    assert isinstance(result["versions_count"], int)
+    assert isinstance(result["ecosystems_count"], int)
+    assert isinstance(result["ecosystems_names"], list)
