@@ -196,7 +196,7 @@ metrics:
     description: >-
       Total number of workflow runs from GitHub
       (only applies to GitHub hosted repositories
-      which use workflows)
+      which use workflows).
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
