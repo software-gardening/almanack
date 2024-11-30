@@ -375,7 +375,7 @@ def compute_repo_data(repo_path: str) -> None:
     )
 
     # gather data from github repo workflows api
-    gh_workflows_data = get_github_build_success_ratio(
+    gh_workflows_data = get_github_build_metrics(
         repo_url=remote_url, branch=repo.head.shorthand, max_runs=100
     )
 
@@ -667,8 +667,8 @@ def get_api_data(
     if params is None:
         params = {}
 
-    retries = 5  # Number of attempts for rate limit errors
-    backoff = 10  # Seconds to wait between retries
+    retries = 10  # Number of attempts for rate limit errors
+    backoff = 15  # Seconds to wait between retries
 
     for attempt in range(retries):
         try:
@@ -711,7 +711,7 @@ def get_api_data(
     return {}  # Default return in case all retries fail
 
 
-def get_github_build_success_ratio(
+def get_github_build_metrics(
     repo_url: str,
     branch: str = "main",
     max_runs: int = 100,

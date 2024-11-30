@@ -23,7 +23,7 @@ from almanack.metrics.data import (
     default_branch_is_not_master,
     file_exists_in_repo,
     get_api_data,
-    get_github_build_success_ratio,
+    get_github_build_metrics,
     get_table,
     includes_common_docs,
     is_citable,
@@ -695,13 +695,13 @@ def test_get_api_data(current_repo):
     ), "The repo_data URL should match the repository's remote URL."
 
 
-def test_get_github_build_success_ratio():
+def test_get_github_build_metrics():
     """
-    Tests get_github_build_success_ratio
+    Tests get_github_build_metrics
     """
 
     # perform a query against the upstream almanack repo
-    result = get_github_build_success_ratio(
+    result = get_github_build_metrics(
         repo_url="https://github.com/software-gardening/almanack",
         branch="main",
         max_runs=100,
