@@ -694,12 +694,12 @@ def get_api_data(
                 and "X-RateLimit-Remaining" in response.headers
             ):
                 if attempt < retries - 1:
-                    print(
+                    LOGGER.warning(
                         f"Rate limit exceeded (attempt {attempt + 1}/{retries}). Retrying in {backoff} seconds..."
                     )
                     time.sleep(backoff)
                 else:
-                    print("Rate limit exceeded. All retry attempts exhausted.")
+                    LOGGER.warning("Rate limit exceeded. All retry attempts exhausted.")
                     return {}
             else:
                 # Raise other HTTP errors immediately
