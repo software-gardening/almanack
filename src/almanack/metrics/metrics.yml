@@ -194,8 +194,9 @@ metrics:
     id: "SGA-SF-0004"
     result-type: "int"
     description: >-
-      Number of GitHub workflow runs queried for
-      GitHub workflow run metrics.
+      Total number of workflow runs from GitHub
+      (only applies to GitHub hosted repositories
+      which use workflows)
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
