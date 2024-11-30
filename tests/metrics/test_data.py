@@ -21,6 +21,7 @@ from almanack.metrics.data import (
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
+    detect_social_media_links,
     file_exists_in_repo,
     get_api_data,
     get_github_build_metrics,
@@ -712,3 +713,65 @@ def test_get_github_build_metrics():
     assert isinstance(result["total_runs"], int)
     assert isinstance(result["successful_runs"], int)
     assert isinstance(result["failing_runs"], int)
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        # Test case: Single platform (Twitter)
+        (
+            "Follow us on Twitter: https://twitter.com/ourproject",
+            {"social_media_platforms": ["Twitter"], "social_media_platforms_count": 1},
+        ),
+        # Test case: Multiple platforms
+        (
+            """Connect with us:
+            - Twitter: https://twitter.com/ourproject
+            - LinkedIn: https://linkedin.com/company/ourcompany
+            - Discord: https://discord.gg/invitecode
+            """,
+            {
+                "social_media_platforms": ["Discord", "LinkedIn", "Twitter"],
+                "social_media_platforms_count": 3,
+            },
+        ),
+        # Test case: No social media links
+        (
+            "This README.md contains no social media links.",
+            {"social_media_platforms": [], "social_media_platforms_count": 0},
+        ),
+        # Test case: Duplicate platforms (should only count each platform once)
+        (
+            """Follow us:
+            - Twitter: https://twitter.com/ourproject
+            - Twitter: https://twitter.com/anotherproject
+            """,
+            {"social_media_platforms": ["Twitter"], "social_media_platforms_count": 1},
+        ),
+        # Test case: Less common platforms (Bluesky and Threads)
+        (
+            """Find us:
+            - Bluesky: https://bsky.app/profile/ourproject
+            - Threads: https://threads.net/ourproject
+            """,
+            {
+                "social_media_platforms": ["Bluesky", "Threads"],
+                "social_media_platforms_count": 2,
+            },
+        ),
+        # Test case: Mixed case URLs (case-insensitive match)
+        (
+            """Stay connected:
+            - YouTube: https://www.youtube.com/channel/OurChannel
+            - Facebook: https://facebook.com/OurPage
+            """,
+            {
+                "social_media_platforms": ["Facebook", "YouTube"],
+                "social_media_platforms_count": 2,
+            },
+        ),
+    ],
+)
+def test_detect_social_media_links(content, expected):
+    result = detect_social_media_links(content)
+    assert result == expected

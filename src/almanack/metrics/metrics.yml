@@ -169,6 +169,16 @@ metrics:
     result-type: "int"
     description: >-
       Count of subscribers (or watchers) of the repository.
+  - name: "repo-social-media-platforms"
+    id: "SGA-GL-0022"
+    result-type: "list"
+    description: >-
+      Social media platforms detected within the readme.
+  - name: "repo-social-media-platforms-count"
+    id: "SGA-GL-0023"
+    result-type: "int"
+    description: >-
+      Count of social media platforms detected within the readme.
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"

@@ -4,6 +4,7 @@ This module computes data for GitHub Repositories
 
 import logging
 import pathlib
+import re
 import shutil
 import tempfile
 import time
@@ -408,6 +409,19 @@ def compute_repo_data(repo_path: str) -> None:
         for commit in (first_commit, most_recent_commit)
     )
 
+    readme_exists = file_exists_in_repo(
+        repo=repo,
+        expected_file_name="readme",
+    )
+
+    social_media_metrics = (
+        detect_social_media_links(
+            content=read_file(repo=repo, filepath="readme.md", case_insensitive=True)
+        )
+        if readme_exists
+        else {}
+    )
+
     # Return the data structure
     return {
         "repo-path": str(repo_path),
@@ -423,10 +437,7 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-commits-per-day": commits_count / days_of_development,
         "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-        "repo-includes-readme": file_exists_in_repo(
-            repo=repo,
-            expected_file_name="readme",
-        ),
+        "repo-includes-readme": readme_exists,
         "repo-includes-contributing": file_exists_in_repo(
             repo=repo,
             expected_file_name="contributing",
@@ -465,6 +476,12 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-forks-count": remote_repo_data.get("forks_count", None),
         "repo-subscribers-count": remote_repo_data.get("subscribers_count", None),
+        "repo-social-media-platforms": social_media_metrics.get(
+            "social_media_platforms", None
+        ),
+        "repo-social-media-platforms-count": social_media_metrics.get(
+            "social_media_platforms_count", None
+        ),
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
@@ -770,3 +787,47 @@ def get_github_build_metrics(
 
     # else we return an empty dictionary
     return {}
+
+
+def detect_social_media_links(content: str) -> Dict[str, List[str]]:
+    """
+    Analyzes README.md content to identify social media links.
+
+    Args:
+        readme_content (str):
+            The content of the README.md file as a string.
+
+    Returns:
+        Dict[str, List[str]]:
+            A dictionary containing social media details
+            discovered from readme.md content.
+    """
+    # Define patterns for social media links
+    social_media_patterns = {
+        "Twitter": r"https?://(?:www\.)?twitter\.com/[\w]+",
+        "LinkedIn": r"https?://(?:www\.)?linkedin\.com/(?:in|company)/[\w-]+",
+        "YouTube": r"https?://(?:www\.)?youtube\.com/(?:channel|c|user)/[\w-]+",
+        "Facebook": r"https?://(?:www\.)?facebook\.com/[\w.-]+",
+        "Instagram": r"https?://(?:www\.)?instagram\.com/[\w.-]+",
+        "TikTok": r"https?://(?:www\.)?tiktok\.com/@[\w.-]+",
+        "Discord": r"https?://(?:www\.)?discord(?:\.gg|\.com/invite)/[\w-]+",
+        "Slack": r"https?://[\w.-]+\.slack\.com",
+        "Gitter": r"https?://gitter\.im/[\w/-]+",
+        "Telegram": r"https?://(?:www\.)?t\.me/[\w-]+",
+        "Mastodon": r"https?://[\w.-]+/users/[\w-]+",
+        "Threads": r"https?://(?:www\.)?threads\.net/[\w.-]+",
+        "Bluesky": r"https?://(?:www\.)?bsky\.app/profile/[\w.-]+",
+    }
+
+    # Initialize results
+    found_platforms = set()
+
+    # Search for social media links
+    for platform, pattern in social_media_patterns.items():
+        if re.search(pattern, content, re.IGNORECASE):
+            found_platforms.add(platform)
+
+    return {
+        "social_media_platforms": sorted(found_platforms),
+        "social_media_platforms_count": len(found_platforms),
+    }
