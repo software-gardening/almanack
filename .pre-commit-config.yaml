@@ -159,15 +159,20 @@ repos:
         pass_filenames: false
       # Generage code coverage data
       - id: code-cov-gen
-        name: Generate code coverage
+        name: Generate code coverage data
         language: system
         entry: poetry run coverage run -m pytest --ignore tests/test_build.py
+        pass_filenames: false
+        always_run: true
+      - id: code-cov-report
+        name: Generate code coverage report
+        language: system
+        entry: poetry run coverage xml
         pass_filenames: false
         always_run: true
   - repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
     rev: 0.1.1
     hooks:
       # generate code coverage report and badge
-      - id: coverage-xml
       - id: coverage-badge
         args: ["-o", "media/coverage-badge.svg"]
