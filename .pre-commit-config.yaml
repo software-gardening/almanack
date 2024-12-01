@@ -157,3 +157,17 @@ repos:
         entry: poetry run poe vale-checks
         language: system
         pass_filenames: false
+      # Generage code coverage data
+      - id: code-cov-gen
+        name: Generate code coverage
+        language: system
+        entry: poetry run coverage run -m pytest --ignore tests/test_build.py
+        pass_filenames: false
+        always_run: true
+  - repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
+    rev: 0.1.1
+    hooks:
+      # generate code coverage report and badge
+      - id: coverage-xml
+      - id: coverage-badge
+        args: ["-o", "media/coverage-badge.svg"]

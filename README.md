@@ -1,5 +1,9 @@
 # The Software Gardening Almanack
 
+![PyPI - Version](https://img.shields.io/pypi/v/almanack)
+[![Build Status](https://github.com/software-gardening/almanack/actions/workflows/pytest-tests.yml/badge.svg?branch=main)](https://github.com/software-gardening/almanack/actions/workflows/pytest-tests.yml?query=branch%3Amain)
+![Coverage Status](https://raw.githubusercontent.com/software-gardening/almanack/main/media/coverage-badge.svg)
+
 An open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 
 Please see the following links to access published content:
