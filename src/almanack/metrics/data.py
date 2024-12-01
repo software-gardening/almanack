@@ -5,6 +5,7 @@ This module computes data for GitHub Repositories
 import logging
 import pathlib
 import shutil
+import sqlite3
 import tempfile
 import time
 from datetime import datetime, timedelta, timezone
@@ -770,3 +771,86 @@ def get_github_build_metrics(
 
     # else we return an empty dictionary
     return {}
+
+
+def measure_coverage(
+    repo: pygit2.Repository, primary_language: str
+) -> Optional[Dict[str, Any]]:
+    """
+    Measures code coverage for a given repository.
+
+    Args:
+        repo (pygit2.Repository):
+            The pygit2 repository object to analyze.
+        primary_language (str):
+            The primary programming language of the repository.
+
+    Returns:
+        Optional[dict[str,Any]]:
+            Code coverage data or an empty dictionary if unable
+            to find code coverage data.
+    """
+    if primary_language.lower() == "python":
+        return parse_python_coverage_data(repo)
+    else:
+        return {}
+
+
+def parse_python_coverage_data(
+    repo: pygit2.Repository,
+) -> Optional[Dict[str, Optional[float | datetime]]]:
+    """
+    Parses Python code coverage data from an existing .coverage SQLite file.
+
+    Args:
+        repo (pygit2.Repository): The pygit2 repository object containing Python code.
+
+    Returns:
+        Optional[Dict[str, Any]]:
+            A dictionary with code coverage data or empty dict.
+    """
+
+    # Determine if we have a coverage.py file
+    if (coverage_object := find_file(repo=repo, filepath=".coverage")) is None:
+        LOGGER.warning("No coverage data found in Python repo.")
+        print("here")
+        return {}
+
+    conn = None  # Initialize conn to None to avoid UnboundLocalError
+    try:
+        # Connect to the SQLite .coverage file
+        conn = sqlite3.connect(repo.workdir / coverage_object.name)
+        cursor = conn.cursor()
+
+        # Retrieve total and executed lines from the coverage data
+        cursor.execute("SELECT SUM(num_statements), SUM(num_executed) FROM line_counts")
+        result = cursor.fetchone()
+
+        # Retrieve the last coverage run's timestamp
+        cursor.execute("SELECT value FROM meta WHERE key = 'timestamp'")
+        timestamp_result = cursor.fetchone()
+
+        if result and result[0] > 0:  # Ensure there is coverage data to parse
+            total_lines, executed_lines = result
+            coverage_percentage = (executed_lines / total_lines) * 100
+
+            # Convert the timestamp to a datetime object if available
+            timestamp = None
+            if timestamp_result and timestamp_result[0]:
+                timestamp = datetime.fromtimestamp(float(timestamp_result[0]))
+
+            return {
+                "code_coverage_percent": coverage_percentage,
+                "date_of_last_coverage_run": timestamp,
+                "total_lines": total_lines,
+                "executed_lines": executed_lines,
+            }
+        else:
+            LOGGER.warning("No coverage data available in the .coverage file.")
+            return None
+    except sqlite3.Error as e:
+        LOGGER.warning(f"Error reading coverage data: {e}")
+        return None
+    finally:
+        if conn:
+            conn.close()

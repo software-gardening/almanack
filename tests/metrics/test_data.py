@@ -27,6 +27,7 @@ from almanack.metrics.data import (
     get_table,
     includes_common_docs,
     is_citable,
+    measure_coverage
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
@@ -712,3 +713,18 @@ def test_get_github_build_metrics():
     assert isinstance(result["total_runs"], int)
     assert isinstance(result["successful_runs"], int)
     assert isinstance(result["failing_runs"], int)
+
+def test_measure_coverage():
+    """
+    Test measure_coverage
+    """
+
+    # test the almanack itself
+    repo_path = pathlib.Path(".").resolve()
+    repo = pygit2.Repository(str(repo_path))
+
+    # Run the test function
+    coverage_data = measure_coverage(repo, primary_language="Python")
+
+    # Assert that the result matches the expected outcome
+    print(coverage_data)
