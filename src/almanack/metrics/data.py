@@ -2,16 +2,17 @@
 This module computes data for GitHub Repositories
 """
 
+import json
 import logging
 import pathlib
 import shutil
-import sqlite3
 import tempfile
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.parse import urlparse
 
+import defusedxml.ElementTree as ET
 import pygit2
 import requests
 import yaml
@@ -800,57 +801,91 @@ def parse_python_coverage_data(
     repo: pygit2.Repository,
 ) -> Optional[Dict[str, Optional[float | datetime]]]:
     """
-    Parses Python code coverage data from an existing .coverage SQLite file.
+    Parses coverage.py data from recognized formats such as JSON, XML, or LCOV.
 
     Args:
-        repo (pygit2.Repository): The pygit2 repository object containing Python code.
+        repo (pygit2.Repository):
+            The pygit2 repository object containing code.
 
     Returns:
-        Optional[Dict[str, Any]]:
-            A dictionary with code coverage data or empty dict.
+        Optional[Dict[str, Optional[float | datetime]]]:
+            A dictionary with standardized code coverage data or an empty dict if no data is found.
     """
-
-    # Determine if we have a coverage.py file
-    if (coverage_object := find_file(repo=repo, filepath=".coverage")) is None:
-        LOGGER.warning("No coverage data found in Python repo.")
-        print("here")
-        return {}
-
-    conn = None  # Initialize conn to None to avoid UnboundLocalError
-    try:
-        # Connect to the SQLite .coverage file
-        conn = sqlite3.connect(repo.workdir / coverage_object.name)
-        cursor = conn.cursor()
-
-        # Retrieve total and executed lines from the coverage data
-        cursor.execute("SELECT SUM(num_statements), SUM(num_executed) FROM line_counts")
-        result = cursor.fetchone()
-
-        # Retrieve the last coverage run's timestamp
-        cursor.execute("SELECT value FROM meta WHERE key = 'timestamp'")
-        timestamp_result = cursor.fetchone()
-
-        if result and result[0] > 0:  # Ensure there is coverage data to parse
-            total_lines, executed_lines = result
-            coverage_percentage = (executed_lines / total_lines) * 100
-
-            # Convert the timestamp to a datetime object if available
+    coverage_files = [
+        "coverage.json",
+        "coverage.xml",
+        "coverage.lcov",
+    ]  # Recognized formats
+    for coverage_file in coverage_files:
+        if (
+            coverage_object := find_file(repo=repo, filepath=coverage_file)
+        ) is not None:
+            file_path = f"{repo.workdir}/{coverage_object.name}"
+            total_lines = executed_lines = 0
             timestamp = None
-            if timestamp_result and timestamp_result[0]:
-                timestamp = datetime.fromtimestamp(float(timestamp_result[0]))
 
-            return {
-                "code_coverage_percent": coverage_percentage,
-                "date_of_last_coverage_run": timestamp,
-                "total_lines": total_lines,
-                "executed_lines": executed_lines,
-            }
-        else:
-            LOGGER.warning("No coverage data available in the .coverage file.")
-            return None
-    except sqlite3.Error as e:
-        LOGGER.warning(f"Error reading coverage data: {e}")
-        return None
-    finally:
-        if conn:
-            conn.close()
+            try:
+                if coverage_file.endswith(".json"):
+                    # Parse JSON coverage data
+                    with open(file_path, "r") as f:
+                        coverage_data = json.load(f)
+                    total_lines = coverage_data.get("totals", {}).get(
+                        "num_statements", 0
+                    )
+                    executed_lines = coverage_data.get("totals", {}).get(
+                        "covered_lines", 0
+                    )
+                    timestamp = datetime.fromtimestamp(
+                        float(coverage_data["timestamp"])
+                    )
+
+                elif coverage_file.endswith(".xml"):
+                    # Parse XML coverage data (using defusedxml for safety)
+                    tree = ET.parse(file_path)
+                    root = tree.getroot()
+
+                    # Extract the total lines and executed lines directly from the root element
+                    total_lines = int(root.attrib.get("lines-valid", 0))
+                    executed_lines = int(root.attrib.get("lines-covered", 0))
+
+                    # Optional: parse timestamp if present in XML attributes
+                    timestamp_str = root.attrib.get("timestamp")
+                    timestamp = datetime.fromtimestamp(
+                        float(timestamp_str)
+                        / 1000  # Convert from milliseconds to seconds
+                    )
+
+                elif coverage_file.endswith(".lcov"):
+                    # Parse LCOV coverage data
+                    with open(file_path, "r") as f:
+                        for line in f:
+                            working_line = line.strip()
+                            if working_line.startswith(
+                                "DA:"
+                            ):  # DA:<line number>,<execution count>
+                                _, execution_count = working_line.split(":")[1].split(
+                                    ","
+                                )
+                                total_lines += 1
+                                if int(execution_count) > 0:
+                                    executed_lines += 1
+
+                # Calculate coverage percentage
+                coverage_percentage = (
+                    (executed_lines / total_lines * 100) if total_lines > 0 else 0.0
+                )
+
+                return {
+                    "code_coverage_percent": coverage_percentage,
+                    "date_of_last_coverage_run": timestamp,
+                    "total_lines": total_lines,
+                    "executed_lines": executed_lines,
+                }
+
+            except Exception as e:
+                LOGGER.warning(f"Error reading {coverage_file}: {e}")
+                continue
+
+    # No recognized coverage files found
+    LOGGER.warning("No coverage.py data found in the repository.")
+    return {}

@@ -27,7 +27,7 @@ from almanack.metrics.data import (
     get_table,
     includes_common_docs,
     is_citable,
-    measure_coverage
+    measure_coverage,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
@@ -714,6 +714,7 @@ def test_get_github_build_metrics():
     assert isinstance(result["successful_runs"], int)
     assert isinstance(result["failing_runs"], int)
 
+
 def test_measure_coverage():
     """
     Test measure_coverage
@@ -727,4 +728,7 @@ def test_measure_coverage():
     coverage_data = measure_coverage(repo, primary_language="Python")
 
     # Assert that the result matches the expected outcome
-    print(coverage_data)
+    assert isinstance(coverage_data["code_coverage_percent"], float)
+    assert isinstance(coverage_data["date_of_last_coverage_run"], datetime)
+    assert isinstance(coverage_data["total_lines"], int)
+    assert isinstance(coverage_data["executed_lines"], int)
