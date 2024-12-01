@@ -13,6 +13,7 @@ repos:
       # Ensures each file ends with a newline, which is a POSIX standard
       # for text files and can prevent errors with certain parsers.
       - id: end-of-file-fixer
+        exclude: media/coverage-badge.svg
 
       # Validates YAML file syntax, which is helpful since YAML is
       # whitespace-sensitive and prone to syntax errors.
