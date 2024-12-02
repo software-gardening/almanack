@@ -814,7 +814,7 @@ def measure_coverage(
 
 def parse_python_coverage_data(
     repo: pygit2.Repository,
-) -> Optional[Dict[str, Optional[float | datetime]]]:
+) -> Optional[Dict[str, Any]]:
     """
     Parses coverage.py data from recognized formats such as JSON, XML, or LCOV.
 
@@ -823,7 +823,7 @@ def parse_python_coverage_data(
             The pygit2 repository object containing code.
 
     Returns:
-        Optional[Dict[str, Optional[float | datetime]]]:
+        Optional[Dict[str, Any]]:
             A dictionary with standardized code coverage data or an
             empty dict if no data is found.
     """
