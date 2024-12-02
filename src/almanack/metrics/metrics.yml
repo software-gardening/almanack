@@ -197,6 +197,30 @@ metrics:
       Total number of workflow runs from GitHub
       (only applies to GitHub hosted repositories
       which use workflows).
+  - name: "repo-code-coverage-percent"
+    id: "SGA-SF-0005"
+    result-type: "float"
+    description: >-
+      Percentage of code coverage for repository
+      given detected code coverage data.
+  - name: "repo-date-of-last-coverage-run"
+    id: "SGA-SF-0006"
+    result-type: "datetime"
+    description: >-
+      Date of code coverage run for repository
+      given detected code coverage data.
+  - name: "repo-code-coverage-total-lines"
+    id: "SGA-SF-0007"
+    result-type: "int"
+    description: >-
+      Total lines of code used for code coverage within repository
+      given detected code coverage data.
+  - name: "repo-code-coverage-executed-lines"
+    id: "SGA-SF-0008"
+    result-type: "int"
+    description: >-
+      Total lines covered code within repository
+      given detected code coverage data.
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"

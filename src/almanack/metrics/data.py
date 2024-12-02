@@ -381,6 +381,11 @@ def compute_repo_data(repo_path: str) -> None:
         repo_url=remote_url, branch=repo.head.shorthand, max_runs=100
     )
 
+    # gather data on code coverage
+    code_coverage = measure_coverage(
+        repo=repo, primary_language=remote_repo_data.get("language", None)
+    )
+
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
@@ -471,6 +476,12 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
         "repo-gh-workflow-queried-total": gh_workflows_data.get("failing_runs", None),
+        "repo-code-coverage-percent": code_coverage.get("code_coverage_percent", None),
+        "repo-date-of-last-coverage-run": code_coverage.get(
+            "date_of_last_coverage_run", None
+        ),
+        "repo-code-coverage-total-lines": code_coverage.get("total_lines", None),
+        "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
     }
@@ -775,7 +786,7 @@ def get_github_build_metrics(
 
 
 def measure_coverage(
-    repo: pygit2.Repository, primary_language: str
+    repo: pygit2.Repository, primary_language: Optional[str]
 ) -> Optional[Dict[str, Any]]:
     """
     Measures code coverage for a given repository.
@@ -783,7 +794,7 @@ def measure_coverage(
     Args:
         repo (pygit2.Repository):
             The pygit2 repository object to analyze.
-        primary_language (str):
+        primary_language (Optional[str]):
             The primary programming language of the repository.
 
     Returns:
@@ -791,10 +802,14 @@ def measure_coverage(
             Code coverage data or an empty dictionary if unable
             to find code coverage data.
     """
+
+    if primary_language is None:
+        return {}
+
     if primary_language.lower() == "python":
         return parse_python_coverage_data(repo)
-    else:
-        return {}
+
+    return {}
 
 
 def parse_python_coverage_data(
@@ -809,13 +824,14 @@ def parse_python_coverage_data(
 
     Returns:
         Optional[Dict[str, Optional[float | datetime]]]:
-            A dictionary with standardized code coverage data or an empty dict if no data is found.
+            A dictionary with standardized code coverage data or an
+            empty dict if no data is found.
     """
     coverage_files = [
         "coverage.json",
         "coverage.xml",
         "coverage.lcov",
-    ]  # Recognized formats
+    ]
     for coverage_file in coverage_files:
         if (
             coverage_object := find_file(repo=repo, filepath=coverage_file)
@@ -829,14 +845,16 @@ def parse_python_coverage_data(
                     # Parse JSON coverage data
                     with open(file_path, "r") as f:
                         coverage_data = json.load(f)
-                    total_lines = coverage_data.get("totals", {}).get(
-                        "num_statements", 0
-                    )
-                    executed_lines = coverage_data.get("totals", {}).get(
-                        "covered_lines", 0
-                    )
-                    timestamp = datetime.fromtimestamp(
-                        float(coverage_data["timestamp"])
+
+                    # Use the `summary` key directly
+                    summary = coverage_data.get("summary", {})
+                    total_lines = summary.get("num_statements", 0)
+                    executed_lines = summary.get("covered_lines", 0)
+                    coverage_percentage = summary.get("percent_covered", 0.0)
+
+                    # Retrieve the timestamp
+                    timestamp = datetime.fromisoformat(
+                        coverage_data["meta"]["timestamp"]
                     )
 
                 elif coverage_file.endswith(".xml"):
@@ -870,6 +888,18 @@ def parse_python_coverage_data(
                                 if int(execution_count) > 0:
                                     executed_lines += 1
 
+                    # Determine the latest commit date for the LCOV file
+                    timestamp = next(
+                        (
+                            datetime.fromtimestamp(commit.commit_time)
+                            for commit in repo.walk(
+                                repo.head.target, pygit2.GIT_SORT_TIME
+                            )
+                            if coverage_object.name in commit.tree
+                        ),
+                        None,
+                    )
+
                 # Calculate coverage percentage
                 coverage_percentage = (
                     (executed_lines / total_lines * 100) if total_lines > 0 else 0.0
@@ -877,7 +907,9 @@ def parse_python_coverage_data(
 
                 return {
                     "code_coverage_percent": coverage_percentage,
-                    "date_of_last_coverage_run": timestamp,
+                    "date_of_last_coverage_run": timestamp.strftime(
+                        "%Y-%m-%dT%H:%M:%S.%fZ"
+                    ),
                     "total_lines": total_lines,
                     "executed_lines": executed_lines,
                 }
@@ -888,4 +920,4 @@ def parse_python_coverage_data(
 
     # No recognized coverage files found
     LOGGER.warning("No coverage.py data found in the repository.")
-    return {}
+    return
