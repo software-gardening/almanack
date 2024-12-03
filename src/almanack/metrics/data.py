@@ -794,6 +794,20 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
             related to the repository.
     """
 
+    if repo_url is None:
+        LOGGER.warning(
+            "Did not receive a valid repository URL and unable to gather package metrics."
+        )
+        return {}
+
+    # normalize http to https if necessary
+    if repo_url.startswith("http://"):
+        LOGGER.warning(
+            "Received `http://` repository URL for package metrics search. Normalizing to use `https://`."
+        )
+        repo_url = repo_url.replace("http://", "https://")
+
+    # perform package srequest
     package_data = get_api_data(
         api_endpoint="https://packages.ecosyste.ms/api/v1/packages/lookup",
         params={"repository_url": repo_url},

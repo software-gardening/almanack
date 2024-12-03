@@ -721,11 +721,18 @@ def test_get_ecosystems_package_metrics():
     """
 
     # perform a query against the upstream almanack repo
-    result = get_ecosystems_package_metrics(
+    https_result = get_ecosystems_package_metrics(
         repo_url="https://github.com/software-gardening/almanack",
     )
 
     # check the types for the results (actual values may vary)
-    assert isinstance(result["versions_count"], int)
-    assert isinstance(result["ecosystems_count"], int)
-    assert isinstance(result["ecosystems_names"], list)
+    assert isinstance(https_result["versions_count"], int)
+    assert isinstance(https_result["ecosystems_count"], int)
+    assert isinstance(https_result["ecosystems_names"], list)
+
+    # check that http and https results are the same
+    http_result = get_ecosystems_package_metrics(
+        repo_url="http://github.com/software-gardening/almanack",
+    )
+
+    assert https_result == http_result
