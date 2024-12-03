@@ -829,14 +829,13 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
         )
         repo_url = repo_url.replace("http://", "https://")
 
-    # normalize git@github.com ssh links to https if necessary
-    if repo_url.startswith("git@github.com:"):
+    # normalize git@ ssh links to https if necessary
+    if repo_url.startswith("git@"):
         LOGGER.warning(
-            "Received `git@github.com:` repository URL for package metrics search. Normalizing to use `https://`."
+            "Received `git@` repository URL for package metrics search. Normalizing to use `https://`."
         )
-        repo_url = repo_url.replace(
-            "git@github.com:", "https://github.com/"
-        ).removesuffix(".git")
+        domain, path = repo_url[4:].split(":", 1)
+        repo_url = f"https://{domain}/{path}".removesuffix(".git")
 
     # perform package srequest
     package_data = get_api_data(
