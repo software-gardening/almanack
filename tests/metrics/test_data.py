@@ -744,6 +744,8 @@ def test_get_ecosystems_package_metrics():
     )
 
     assert https_result == git_result
+
+
 @pytest.mark.parametrize(
     "content, expected",
     [

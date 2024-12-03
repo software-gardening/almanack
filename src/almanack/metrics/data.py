@@ -862,6 +862,7 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
         "ecosystems_names": sorted(ecosystems),
     }
 
+
 def detect_social_media_links(content: str) -> Dict[str, List[str]]:
     """
     Analyzes README.md content to identify social media links.
