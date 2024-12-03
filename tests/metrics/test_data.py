@@ -770,6 +770,17 @@ def test_get_github_build_metrics():
                 "social_media_platforms_count": 2,
             },
         ),
+        # Test case: social media links without specific channels / users
+        (
+            """Stay connected:
+            - YouTube: https://www.youtube.com
+            - Facebook: https://facebook.com
+            """,
+            {
+                "social_media_platforms": [],
+                "social_media_platforms_count": 0,
+            },
+        ),
     ],
 )
 def test_detect_social_media_links(content, expected):
