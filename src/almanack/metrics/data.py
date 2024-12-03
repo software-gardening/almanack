@@ -479,15 +479,15 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-forks-count": remote_repo_data.get("forks_count", None),
         "repo-subscribers-count": remote_repo_data.get("subscribers_count", None),
+        "repo-packages-ecosystems": packages_data.get("ecosystems_names", None),
+        "repo-packages-ecosystems-count": packages_data.get("ecosystems_count", None),
+        "repo-packages-versions-count": packages_data.get("versions_count", None),
         "repo-social-media-platforms": social_media_metrics.get(
             "social_media_platforms", None
         ),
         "repo-social-media-platforms-count": social_media_metrics.get(
             "social_media_platforms_count", None
         ),
-        "repo-packages-ecosystems": packages_data.get("ecosystems_names", None),
-        "repo-packages-ecosystems-count": packages_data.get("ecosystems_count", None),
-        "repo-packages-versions-count": packages_data.get("versions_count", None),
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
