@@ -736,3 +736,10 @@ def test_get_ecosystems_package_metrics():
     )
 
     assert https_result == http_result
+
+    # check that git@github.com ssh and https results are the same
+    git_result = get_ecosystems_package_metrics(
+        repo_url="git@github.com:software-gardening/almanack.git",
+    )
+
+    assert https_result == git_result

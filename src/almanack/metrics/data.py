@@ -692,7 +692,7 @@ def get_api_data(
             # Parse and return the JSON response
             return response.json()
 
-        except requests.HTTPError:
+        except requests.HTTPError as httpe:
             # Check for rate limit error (403 with a rate limit header)
             if (
                 # ignore ruff linting code below as 403 is a known HTTP error code
@@ -709,11 +709,16 @@ def get_api_data(
                     return {}
             else:
                 # Raise other HTTP errors immediately
+                LOGGER.warning(f"Experienced an unexpected HTTP request error: {httpe}")
                 return {}
-        except requests.RequestException:
+        except requests.RequestException as reqe:
             # Raise other non-HTTP exceptions immediately
+            LOGGER.warning(f"Experienced an unexpected request error: {reqe}")
             return {}
 
+    LOGGER.warning(
+        "Experienced an unexpected error which resulted in a empty request return."
+    )
     return {}  # Default return in case all retries fail
 
 
@@ -806,6 +811,15 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
             "Received `http://` repository URL for package metrics search. Normalizing to use `https://`."
         )
         repo_url = repo_url.replace("http://", "https://")
+
+    # normalize git@github.com ssh links to https if necessary
+    if repo_url.startswith("git@github.com:"):
+        LOGGER.warning(
+            "Received `git@github.com:` repository URL for package metrics search. Normalizing to use `https://`."
+        )
+        repo_url = repo_url.replace(
+            "git@github.com:", "https://github.com/"
+        ).removesuffix(".git")
 
     # perform package srequest
     package_data = get_api_data(
