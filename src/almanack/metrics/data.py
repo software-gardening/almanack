@@ -817,6 +817,8 @@ def parse_python_coverage_data(
 ) -> Optional[Dict[str, Any]]:
     """
     Parses coverage.py data from recognized formats such as JSON, XML, or LCOV.
+    See here for more information:
+    https://coverage.readthedocs.io/en/latest/cmd.html#cmd-report
 
     Args:
         repo (pygit2.Repository):
@@ -858,7 +860,7 @@ def parse_python_coverage_data(
                     )
 
                 elif coverage_file.endswith(".xml"):
-                    # Parse XML coverage data (using defusedxml for safety)
+                    # Parse XML coverage data (using defusedxml for safely parsing xml)
                     tree = ET.parse(file_path)
                     root = tree.getroot()
 
@@ -866,13 +868,15 @@ def parse_python_coverage_data(
                     total_lines = int(root.attrib.get("lines-valid", 0))
                     executed_lines = int(root.attrib.get("lines-covered", 0))
 
-                    # Optional: parse timestamp if present in XML attributes
+                    # parse timestamp in XML attributes
                     timestamp_str = root.attrib.get("timestamp")
                     timestamp = datetime.fromtimestamp(
                         float(timestamp_str)
                         / 1000  # Convert from milliseconds to seconds
                     )
 
+                # lcov files are one of the report types
+                # produced by coverage.py
                 elif coverage_file.endswith(".lcov"):
                     # Parse LCOV coverage data
                     with open(file_path, "r") as f:
