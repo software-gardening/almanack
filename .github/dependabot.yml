@@ -6,13 +6,13 @@
 
 version: 2
 updates:
-  # GitHub Actions checks
+  # GitHub Actions update checks
   # See here for more information:
   # https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
+      # Check for updates every week
       interval: "weekly"
 
   # Perform checks and updates for python poetry environment.
@@ -21,5 +21,12 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      # Check for updates to poetry lockfile every week
+      # Check for updates every week
+      interval: "weekly"
+
+  # Perform checks and updates for nodejs environment.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      # Check for updates every week
       interval: "weekly"
