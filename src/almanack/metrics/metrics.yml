@@ -209,14 +209,19 @@ metrics:
     description: >-
       Date of code coverage run for repository
       given detected code coverage data.
-  - name: "repo-code-coverage-total-lines"
+  - name: "repo-days-between-last-coverage-run-latest-commit"
     id: "SGA-SF-0007"
+    result-type: "int"
+    description: >-
+      Days between last coverage run date and latest commit date.
+  - name: "repo-code-coverage-total-lines"
+    id: "SGA-SF-0008"
     result-type: "int"
     description: >-
       Total lines of code used for code coverage within repository
       given detected code coverage data.
   - name: "repo-code-coverage-executed-lines"
-    id: "SGA-SF-0008"
+    id: "SGA-SF-0009"
     result-type: "int"
     description: >-
       Total lines covered code within repository

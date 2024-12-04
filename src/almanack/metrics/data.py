@@ -415,6 +415,9 @@ def compute_repo_data(repo_path: str) -> None:
         for commit in (first_commit, most_recent_commit)
     )
 
+    # date of last code coverage run
+    date_of_last_coverage_run = code_coverage.get("date_of_last_coverage_run", None)
+
     # Return the data structure
     return {
         "repo-path": str(repo_path),
@@ -477,8 +480,17 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
         "repo-gh-workflow-queried-total": gh_workflows_data.get("failing_runs", None),
         "repo-code-coverage-percent": code_coverage.get("code_coverage_percent", None),
-        "repo-date-of-last-coverage-run": code_coverage.get(
-            "date_of_last_coverage_run", None
+        "repo-date-of-last-coverage-run": (
+            date_of_last_coverage_run.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            if date_of_last_coverage_run is not None
+            else None
+        ),
+        "repo-days-between-last-coverage-run-latest-commit": (
+            (most_recent_commit_date - date_of_last_coverage_run).strftime(
+                "%Y-%m-%dT%H:%M:%S.%fZ"
+            )
+            if date_of_last_coverage_run is not None
+            else None
         ),
         "repo-code-coverage-total-lines": code_coverage.get("total_lines", None),
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
@@ -911,9 +923,7 @@ def parse_python_coverage_data(
 
                 return {
                     "code_coverage_percent": coverage_percentage,
-                    "date_of_last_coverage_run": timestamp.strftime(
-                        "%Y-%m-%dT%H:%M:%S.%fZ"
-                    ),
+                    "date_of_last_coverage_run": timestamp,
                     "total_lines": total_lines,
                     "executed_lines": executed_lines,
                 }

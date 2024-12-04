@@ -748,6 +748,6 @@ def test_measure_coverage(tmp_path, repo_or_path, primary_language, local_file):
 
     # Assert that the result matches the expected outcome
     assert isinstance(coverage_metrics["code_coverage_percent"], float)
-    assert isinstance(coverage_metrics["date_of_last_coverage_run"], str)
+    assert isinstance(coverage_metrics["date_of_last_coverage_run"], datetime)
     assert isinstance(coverage_metrics["total_lines"], int)
     assert isinstance(coverage_metrics["executed_lines"], int)
