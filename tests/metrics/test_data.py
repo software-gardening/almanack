@@ -753,6 +753,8 @@ def test_measure_coverage(tmp_path, repo_or_path, primary_language, local_file):
     assert isinstance(coverage_metrics["date_of_last_coverage_run"], datetime)
     assert isinstance(coverage_metrics["total_lines"], int)
     assert isinstance(coverage_metrics["executed_lines"], int)
+
+
 def test_get_ecosystems_package_metrics():
     """
     Tests get_ecosystems_package_metrics
