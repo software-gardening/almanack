@@ -5,6 +5,7 @@ This module computes data for GitHub Repositories
 import json
 import logging
 import pathlib
+import re
 import shutil
 import tempfile
 import time
@@ -385,6 +386,8 @@ def compute_repo_data(repo_path: str) -> None:
     code_coverage = measure_coverage(
         repo=repo, primary_language=remote_repo_data.get("language", None)
     )
+    # gather data from ecosystems packages api
+    packages_data = get_ecosystems_package_metrics(repo_url=remote_url)
 
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
@@ -417,6 +420,18 @@ def compute_repo_data(repo_path: str) -> None:
 
     # date of last code coverage run
     date_of_last_coverage_run = code_coverage.get("date_of_last_coverage_run", None)
+    readme_exists = file_exists_in_repo(
+        repo=repo,
+        expected_file_name="readme",
+    )
+
+    social_media_metrics = (
+        detect_social_media_links(
+            content=read_file(repo=repo, filepath="readme.md", case_insensitive=True)
+        )
+        if readme_exists
+        else {}
+    )
 
     # Return the data structure
     return {
@@ -433,10 +448,7 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-commits-per-day": commits_count / days_of_development,
         "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
-        "repo-includes-readme": file_exists_in_repo(
-            repo=repo,
-            expected_file_name="readme",
-        ),
+        "repo-includes-readme": readme_exists,
         "repo-includes-contributing": file_exists_in_repo(
             repo=repo,
             expected_file_name="contributing",
@@ -475,6 +487,15 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-forks-count": remote_repo_data.get("forks_count", None),
         "repo-subscribers-count": remote_repo_data.get("subscribers_count", None),
+        "repo-packages-ecosystems": packages_data.get("ecosystems_names", None),
+        "repo-packages-ecosystems-count": packages_data.get("ecosystems_count", None),
+        "repo-packages-versions-count": packages_data.get("versions_count", None),
+        "repo-social-media-platforms": social_media_metrics.get(
+            "social_media_platforms", None
+        ),
+        "repo-social-media-platforms-count": social_media_metrics.get(
+            "social_media_platforms_count", None
+        ),
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
@@ -693,7 +714,7 @@ def get_api_data(
         params = {}
 
     retries = 30  # Number of attempts for rate limit errors
-    backoff = 15  # Seconds to wait between retries
+    backoff = 35  # Seconds to wait between retries
 
     for attempt in range(retries):
         try:
@@ -711,7 +732,7 @@ def get_api_data(
             # Parse and return the JSON response
             return response.json()
 
-        except requests.HTTPError:
+        except requests.HTTPError as httpe:
             # Check for rate limit error (403 with a rate limit header)
             if (
                 # ignore ruff linting code below as 403 is a known HTTP error code
@@ -728,11 +749,16 @@ def get_api_data(
                     return {}
             else:
                 # Raise other HTTP errors immediately
+                LOGGER.warning(f"Experienced an unexpected HTTP request error: {httpe}")
                 return {}
-        except requests.RequestException:
+        except requests.RequestException as reqe:
             # Raise other non-HTTP exceptions immediately
+            LOGGER.warning(f"Experienced an unexpected request error: {reqe}")
             return {}
 
+    LOGGER.warning(
+        "Experienced an unexpected error which resulted in a empty request return."
+    )
     return {}  # Default return in case all retries fail
 
 
@@ -934,4 +960,110 @@ def parse_python_coverage_data(
 
     # No recognized coverage files found
     LOGGER.warning("No coverage.py data found in the repository.")
-    return
+    return {}
+
+
+def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
+    """
+    Fetches package data from the ecosystem API and calculates metrics
+    about the number of unique ecosystems, total version counts,
+    and the list of ecosystem names.
+
+    Args:
+        repo_url (str):
+            The repository URL of the package to query.
+
+    Returns:
+        Dict[str, Any]:
+            A dictionary containing information about packages
+            related to the repository.
+    """
+
+    if repo_url is None:
+        LOGGER.warning(
+            "Did not receive a valid repository URL and unable to gather package metrics."
+        )
+        return {}
+
+    # normalize http to https if necessary
+    if repo_url.startswith("http://"):
+        LOGGER.warning(
+            "Received `http://` repository URL for package metrics search. Normalizing to use `https://`."
+        )
+        repo_url = repo_url.replace("http://", "https://")
+
+    # normalize git@ ssh links to https if necessary
+    if repo_url.startswith("git@"):
+        LOGGER.warning(
+            "Received `git@` repository URL for package metrics search. Normalizing to use `https://`."
+        )
+        domain, path = repo_url[4:].split(":", 1)
+        repo_url = f"https://{domain}/{path}".removesuffix(".git")
+
+    # perform package srequest
+    package_data = get_api_data(
+        api_endpoint="https://packages.ecosyste.ms/api/v1/packages/lookup",
+        params={"repository_url": repo_url},
+    )
+
+    # Initialize counters
+    ecosystems = set()
+    total_versions = 0
+
+    for entry in package_data:
+        # count ecosystems
+        if "ecosystem" in entry:
+            ecosystems.add(entry["ecosystem"])
+
+        # sum versions
+        total_versions += entry.get("versions_count", 0)
+
+    return {
+        "ecosystems_count": len(ecosystems),
+        "versions_count": total_versions,
+        "ecosystems_names": sorted(ecosystems),
+    }
+
+
+def detect_social_media_links(content: str) -> Dict[str, List[str]]:
+    """
+    Analyzes README.md content to identify social media links.
+
+    Args:
+        readme_content (str):
+            The content of the README.md file as a string.
+
+    Returns:
+        Dict[str, List[str]]:
+            A dictionary containing social media details
+            discovered from readme.md content.
+    """
+    # Define patterns for social media links
+    social_media_patterns = {
+        "Twitter": r"https?://(?:www\.)?twitter\.com/[\w]+",
+        "LinkedIn": r"https?://(?:www\.)?linkedin\.com/(?:in|company)/[\w-]+",
+        "YouTube": r"https?://(?:www\.)?youtube\.com/(?:channel|c|user)/[\w-]+",
+        "Facebook": r"https?://(?:www\.)?facebook\.com/[\w.-]+",
+        "Instagram": r"https?://(?:www\.)?instagram\.com/[\w.-]+",
+        "TikTok": r"https?://(?:www\.)?tiktok\.com/@[\w.-]+",
+        "Discord": r"https?://(?:www\.)?discord(?:\.gg|\.com/invite)/[\w-]+",
+        "Slack": r"https?://[\w.-]+\.slack\.com",
+        "Gitter": r"https?://gitter\.im/[\w/-]+",
+        "Telegram": r"https?://(?:www\.)?t\.me/[\w-]+",
+        "Mastodon": r"https?://[\w.-]+/users/[\w-]+",
+        "Threads": r"https?://(?:www\.)?threads\.net/[\w.-]+",
+        "Bluesky": r"https?://(?:www\.)?bsky\.app/profile/[\w.-]+",
+    }
+
+    # Initialize results
+    found_platforms = set()
+
+    # Search for social media links
+    for platform, pattern in social_media_patterns.items():
+        if re.search(pattern, content, re.IGNORECASE):
+            found_platforms.add(platform)
+
+    return {
+        "social_media_platforms": sorted(found_platforms),
+        "social_media_platforms_count": len(found_platforms),
+    }

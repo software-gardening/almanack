@@ -21,8 +21,10 @@ from almanack.metrics.data import (
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
+    detect_social_media_links,
     file_exists_in_repo,
     get_api_data,
+    get_ecosystems_package_metrics,
     get_github_build_metrics,
     get_table,
     includes_common_docs,
@@ -751,3 +753,104 @@ def test_measure_coverage(tmp_path, repo_or_path, primary_language, local_file):
     assert isinstance(coverage_metrics["date_of_last_coverage_run"], datetime)
     assert isinstance(coverage_metrics["total_lines"], int)
     assert isinstance(coverage_metrics["executed_lines"], int)
+def test_get_ecosystems_package_metrics():
+    """
+    Tests get_ecosystems_package_metrics
+    """
+
+    # perform a query against the upstream almanack repo
+    https_result = get_ecosystems_package_metrics(
+        repo_url="https://github.com/software-gardening/almanack",
+    )
+
+    # check the types for the results (actual values may vary)
+    assert isinstance(https_result["versions_count"], int)
+    assert isinstance(https_result["ecosystems_count"], int)
+    assert isinstance(https_result["ecosystems_names"], list)
+
+    # check that http and https results are the same
+    http_result = get_ecosystems_package_metrics(
+        repo_url="http://github.com/software-gardening/almanack",
+    )
+
+    assert https_result == http_result
+
+    # check that git@github.com ssh and https results are the same
+    git_result = get_ecosystems_package_metrics(
+        repo_url="git@github.com:software-gardening/almanack.git",
+    )
+
+    assert https_result == git_result
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        # Test case: Single platform (Twitter)
+        (
+            "Follow us on Twitter: https://twitter.com/ourproject",
+            {"social_media_platforms": ["Twitter"], "social_media_platforms_count": 1},
+        ),
+        # Test case: Multiple platforms
+        (
+            """Connect with us:
+            - Twitter: https://twitter.com/ourproject
+            - LinkedIn: https://linkedin.com/company/ourcompany
+            - Discord: https://discord.gg/invitecode
+            """,
+            {
+                "social_media_platforms": ["Discord", "LinkedIn", "Twitter"],
+                "social_media_platforms_count": 3,
+            },
+        ),
+        # Test case: No social media links
+        (
+            "This README.md contains no social media links.",
+            {"social_media_platforms": [], "social_media_platforms_count": 0},
+        ),
+        # Test case: Duplicate platforms (should only count each platform once)
+        (
+            """Follow us:
+            - Twitter: https://twitter.com/ourproject
+            - Twitter: https://twitter.com/anotherproject
+            """,
+            {"social_media_platforms": ["Twitter"], "social_media_platforms_count": 1},
+        ),
+        # Test case: Less common platforms (Bluesky and Threads)
+        (
+            """Find us:
+            - Bluesky: https://bsky.app/profile/ourproject
+            - Threads: https://threads.net/ourproject
+            """,
+            {
+                "social_media_platforms": ["Bluesky", "Threads"],
+                "social_media_platforms_count": 2,
+            },
+        ),
+        # Test case: Mixed case URLs (case-insensitive match)
+        (
+            """Stay connected:
+            - YouTube: https://www.youtube.com/channel/OurChannel
+            - Facebook: https://facebook.com/OurPage
+            """,
+            {
+                "social_media_platforms": ["Facebook", "YouTube"],
+                "social_media_platforms_count": 2,
+            },
+        ),
+        # Test case: social media links without specific channels / users
+        (
+            """Stay connected:
+            - YouTube: https://www.youtube.com
+            - Facebook: https://facebook.com
+            """,
+            {
+                "social_media_platforms": [],
+                "social_media_platforms_count": 0,
+            },
+        ),
+    ],
+)
+def test_detect_social_media_links(content, expected):
+    result = detect_social_media_links(content)
+    assert result == expected
