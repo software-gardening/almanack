@@ -23,6 +23,7 @@ from almanack.metrics.data import (
     default_branch_is_not_master,
     detect_social_media_links,
     file_exists_in_repo,
+    find_doi_citation_data,
     get_api_data,
     get_ecosystems_package_metrics,
     get_github_build_metrics,
@@ -856,3 +857,59 @@ def test_get_ecosystems_package_metrics():
 def test_detect_social_media_links(content, expected):
     result = detect_social_media_links(content)
     assert result == expected
+
+
+@pytest.mark.parametrize(
+    "files_data, expected_result",
+    [
+        (
+            [
+                {
+                    "files": {
+                        "CITATION.cff": """
+                    doi: "10.48550/arXiv.2311.13417"
+                    """
+                    }
+                }
+            ],
+            {
+                "doi": "10.48550/arXiv.2311.13417",
+                "valid_format_doi": True,
+                "https_resolvable_doi": True,
+                "publication_date": datetime(2023, 1, 1, 0, 0),
+                "cited_by_count": 4,
+            },
+        ),
+        (
+            None,
+            {
+                "doi": None,
+                "valid_format_doi": None,
+                "https_resolvable_doi": None,
+                "publication_date": None,
+                "cited_by_count": None,
+            },
+        ),
+    ],
+)
+def test_find_doi_citation_data(tmp_path, files_data, expected_result):
+    # Setup the temporary repository
+    if files_data is None:
+        # test the almanack itself
+        repo_path = pathlib.Path(".").resolve()
+        repo = pygit2.Repository(str(repo_path))
+    else:
+        repo = repo_setup(
+            repo_path=tmp_path,
+            files=files_data,
+        )
+
+    # Run the function
+    result = find_doi_citation_data(repo)
+
+    # Assertions to check if the returned data matches the expected result
+    assert result["doi"] == expected_result["doi"]
+    assert result["valid_format_doi"] == expected_result["valid_format_doi"]
+    assert result["https_resolvable_doi"] == expected_result["https_resolvable_doi"]
+    assert result["publication_date"] == expected_result["publication_date"]
+    assert isinstance(result["cited_by_count"], type(expected_result["cited_by_count"]))

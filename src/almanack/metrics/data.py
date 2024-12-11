@@ -1067,3 +1067,102 @@ def detect_social_media_links(content: str) -> Dict[str, List[str]]:
         "social_media_platforms": sorted(found_platforms),
         "social_media_platforms_count": len(found_platforms),
     }
+
+
+def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
+    """
+    Find and validate DOI information from a CITATION.cff
+    file in a repository.
+
+    This function searches for a `CITATION.cff` file in the provided repository,
+    extracts the DOI (if available), validates its format, checks its
+    resolvability via HTTP, and performs an exact DOI lookup on the OpenAlex API.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object to search for the CITATION.cff file.
+
+    Returns:
+        Dict[str, Any]:
+            A dictionary containing DOI-related information and metadata.
+    """
+
+    result = {
+        "doi": None,
+        "valid_format_doi": None,
+        "https_resolvable_doi": None,
+        "publication_date": None,
+        "cited_by_count": None,
+    }
+
+    # Find the CITATION.cff file
+    if (citationcff_file := find_file(repo=repo, filepath="CITATION.cff")) is None:
+        LOGGER.warning("No CITATION.cff file discovered.")
+        return result
+
+    try:
+        # Read and parse the CITATION.cff file
+        citation_data = yaml.safe_load(read_file(repo=repo, entry=citationcff_file))
+
+        # Extract DOI from 'doi' or 'identifiers' field
+        if "doi" in citation_data.keys():
+            result["doi"] = citation_data.get("doi", None)
+        elif "identifiers" in citation_data.keys():
+            result["doi"] = next(
+                (
+                    identifier["value"]
+                    for identifier in citation_data.get("identifiers", [])
+                    if identifier.get("type") == "doi"
+                ),
+                None,
+            )
+    except yaml.YAMLError as e:
+        LOGGER.warning(f"Error reading YAML: {e}")
+
+    if result["doi"]:
+        # Validate the DOI format
+        result["valid_format_doi"] = bool(
+            re.match(r"^10\.\d{4,9}/[-._;()/:A-Za-z0-9]+$", result["doi"])
+        )
+        if result["valid_format_doi"]:
+            try:
+                # Check DOI resolvability via HTTPS
+                if (
+                    requests.head(
+                        f"https://doi.org/{result['doi']}",
+                        allow_redirects=True,
+                        timeout=30,
+                    ).status_code
+                    == 200  # noqa: PLR2004
+                ):
+                    result["https_resolvable_doi"] = True
+                else:
+                    LOGGER.warning(
+                        f"DOI does not resolve properly: https://doi.org/{result['doi']}"
+                    )
+                    result["https_resolvable_doi"] = False
+
+            except requests.RequestException as e:
+                LOGGER.warning(f"Error resolving DOI: {e}")
+                result["https_resolvable_doi"] = False
+
+            # Perform exact DOI lookup on OpenAlex
+            try:
+                openalex_result = get_api_data(
+                    api_endpoint=f"https://api.openalex.org/works/doi:{result['doi']}"
+                )
+                publication_date = openalex_result.get("publication_date", None)
+                result.update(
+                    {
+                        "publication_date": (
+                            datetime.strptime(publication_date, "%Y-%m-%d")
+                            if publication_date is not None
+                            else None
+                        ),
+                        "cited_by_count": openalex_result.get("cited_by_count", None),
+                    }
+                )
+            except requests.RequestException as e:
+                LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
+
+    return result
