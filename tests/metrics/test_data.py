@@ -881,6 +881,26 @@ def test_detect_social_media_links(content, expected):
             },
         ),
         (
+            [
+                {
+                    "files": {
+                        "CITATION.cff": """
+                    identifiers:
+                        - type: doi
+                          value: "10.1186/s44330-024-00014-3"
+                    """
+                    }
+                }
+            ],
+            {
+                "doi": "10.1186/s44330-024-00014-3",
+                "valid_format_doi": True,
+                "https_resolvable_doi": True,
+                "publication_date": datetime(2024, 12, 8, 0, 0),
+                "cited_by_count": 0,
+            },
+        ),
+        (
             None,
             {
                 "doi": None,
@@ -893,7 +913,10 @@ def test_detect_social_media_links(content, expected):
     ],
 )
 def test_find_doi_citation_data(tmp_path, files_data, expected_result):
-    # Setup the temporary repository
+    """
+    Tests find_doi_citation_data
+    """
+    # Setup repository
     if files_data is None:
         # test the almanack itself
         repo_path = pathlib.Path(".").resolve()
