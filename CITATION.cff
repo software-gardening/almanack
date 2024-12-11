@@ -85,3 +85,98 @@ references:
     license: AGPL-3.0
     notes: |
       The Ecosyste.ms Repos API is used to source data for use within the Almanack Python package.
+  - title: >-
+      OpenAlex: A fully-open index of scholarly works, authors, venues, institutions, and concepts
+    abstract: |
+      OpenAlex is a new, fully-open scientific knowledge graph (SKG), launched to replace the discontinued Microsoft Academic Graph (MAG). It contains metadata for 209M works (journal articles, books, etc); 2013M disambiguated authors; 124k venues (places that host works, such as journals and online repositories); 109k institutions; and 65k Wikidata concepts (linked to works via an automated hierarchical multi-tag classifier). The dataset is fully and freely available via a web-based GUI, a full data dump, and high-volume REST API. The resource is under active development and future work will improve accuracy and coverage of citation information and author/institution parsing and deduplication.
+    type: article
+    license: CC0-1.0
+    copyright: Creative Commons Zero v1.0 Universal
+    database: DOI.org (Datacite)
+    date-accessed: "2024-12-11"
+    url: https://arxiv.org/abs/2205.01833
+    keywords:
+      - "Digital Libraries (cs.DL)"
+      - "FOS: Computer and information sciences"
+    authors:
+      - family-names: Priem
+        given-names: Jason
+      - family-names: Piwowar
+        given-names: Heather
+      - family-names: Orr
+        given-names: Richard
+    date-published: "2022-05-04"
+    identifiers:
+      - type: doi
+        value: 10.48550/ARXIV.2205.01833
+    notes: |
+      The OpenAlex API is used to source data for use within the Almanack Python package.
+  - title: >-
+      Evaluation of software impact designed for biomedical research: Are we measuring what's meaningful?
+    abstract: |
+      Software is vital for the advancement of biology and medicine. Analysis of usage and impact metrics can help developers determine user and community engagement, justify additional funding, encourage additional use, identify unanticipated use cases, and help define improvement areas. However, there are challenges associated with these analyses including distorted or misleading metrics, as well as ethical and security concerns. More attention to the nuances involved in capturing impact across the spectrum of biological software is needed. Furthermore, some tools may be especially beneficial to a small audience, yet may not have compelling typical usage metrics. We propose more general guidelines, as well as strategies for more specific types of software. We highlight outstanding issues regarding how communities measure or evaluate software impact. To get a deeper understanding of current practices for software evaluations, we performed a survey of participants in the Informatics Technology for Cancer Research (ITCR) program funded by the National Cancer Institute (NCI). We also investigated software among this community and others to assess how often infrastructure that supports such evaluations is implemented and how this impacts rates of papers describing usage of the software. We find that developers recognize the utility of analyzing software usage, but struggle to find the time or funding for such analyses. We also find that infrastructure such as social media presence, more in-depth documentation, the presence of software health metrics, and clear information on how to contact developers seem to be associated with increased usage rates. Our findings can help scientific software developers make the most out of evaluations of their software.
+    type: article
+    database: arXiv.org
+    date-accessed: "2024-10-02"
+    url: http://arxiv.org/abs/2306.03255
+    keywords:
+      - Computer Science - Software Engineering
+      - Quantitative Biology - Other Quantitative Biology
+    authors:
+      - family-names: Afiaz
+        given-names: Awan
+      - family-names: Ivanov
+        given-names: Andrey
+      - family-names: Chamberlin
+        given-names: John
+      - family-names: Hanauer
+        given-names: David
+      - family-names: Savonen
+        given-names: Candace
+      - family-names: Goldman
+        given-names: Mary J.
+      - family-names: Morgan
+        given-names: Martin
+      - family-names: Reich
+        given-names: Michael
+      - family-names: Getka
+        given-names: Alexander
+      - family-names: Holmes
+        given-names: Aaron
+      - family-names: Pati
+        given-names: Sarthak
+      - family-names: Knight
+        given-names: Dan
+      - family-names: Boutros
+        given-names: Paul C.
+      - family-names: Bakas
+        given-names: Spyridon
+      - family-names: Caporaso
+        given-names: J. Gregory
+      - family-names: Del Fiol
+        given-names: Guilherme
+      - family-names: Hochheiser
+        given-names: Harry
+      - family-names: Haas
+        given-names: Brian
+      - family-names: Schloss
+        given-names: Patrick D.
+      - family-names: Eddy
+        given-names: James A.
+      - family-names: Albrecht
+        given-names: Jake
+      - family-names: Fedorov
+        given-names: Andrey
+      - family-names: Waldron
+        given-names: Levi
+      - family-names: Hoffman
+        given-names: Ava M.
+      - family-names: Bradshaw
+        given-names: Richard L.
+      - family-names: Leek
+        given-names: Jeffrey T.
+      - family-names: Wright
+        given-names: Carrie
+    date-published: "2023-06-05"
+    notes: |
+      This article was used to help inspire metrics and content found within the Almanack.
