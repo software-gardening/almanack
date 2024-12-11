@@ -55,6 +55,17 @@ metrics:
     result-type: "str"
     description: >-
       Detected primary license of the repository.
+  - name: "repo-doi"
+    id: "SGA-META-0011"
+    result-type: "int"
+    description: >-
+      Repository DOI value detected from CITATION.cff file.
+  - name: "repo-doi-publication-date"
+    id: "SGA-META-0012"
+    result-type: "datetime"
+    description: >-
+      Repository DOI publication date detected from CITATION.cff file
+      and OpenAlex.org.
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
@@ -198,6 +209,30 @@ metrics:
     result-type: "int"
     description: >-
       Count of social media platforms detected within the readme.
+  - name: "repo-doi-valid-format"
+    id: "SGA-GL-0025"
+    result-type: "bool"
+    description: >-
+      Whether the DOI found in the CITATION.cff file is of a valid
+      format.
+  - name: "repo-doi-https-resolvable"
+    id: "SGA-GL-0026"
+    result-type: "bool"
+    description: >-
+      Whether the DOI found in the CITATION.cff file is https resolvable.
+  - name: "repo-doi-cited-by-count"
+    id: "SGA-GL-0027"
+    result-type: "int"
+    description: >-
+      How many other works cite the DOI for the repository found within
+      the CITATION.cff as discovered by the OpenAlex.org API.
+  - name: "repo-days-between-doi-publication-date-and-latest-commit"
+    id: "SGA-GL-0028"
+    result-type: "int"
+    description: >-
+      The number of days between the most recent commit and DOI
+      for the repository's publication date as discovered by
+      the OpenAlex.org API.
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"

@@ -425,6 +425,7 @@ def compute_repo_data(repo_path: str) -> None:
         expected_file_name="readme",
     )
 
+    # gather social media metrics
     social_media_metrics = (
         detect_social_media_links(
             content=read_file(repo=repo, filepath="readme.md", case_insensitive=True)
@@ -432,6 +433,9 @@ def compute_repo_data(repo_path: str) -> None:
         if readme_exists
         else {}
     )
+
+    # gather doi citation data
+    doi_citation_data = find_doi_citation_data(repo=repo)
 
     # Return the data structure
     return {
@@ -467,6 +471,12 @@ def compute_repo_data(repo_path: str) -> None:
         "almanack-version": _get_almanack_version(),
         "repo-primary-language": remote_repo_data.get("language", None),
         "repo-primary-license": remote_repo_data.get("license", None),
+        "repo-doi": doi_citation_data["doi"],
+        "repo-doi-publication-date": (
+            doi_citation_data["publication_date"].strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+            if doi_citation_data["publication_date"] is not None
+            else None
+        ),
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -496,6 +506,14 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-social-media-platforms-count": social_media_metrics.get(
             "social_media_platforms_count", None
         ),
+        "repo-doi-valid-format": doi_citation_data["valid_format_doi"],
+        "repo-doi-https-resolvable": doi_citation_data["https_resolvable_doi"],
+        "repo-days-between-doi-publication-date-and-latest-commit": (
+            (most_recent_commit_date - doi_citation_data["publication_date"]).days
+            if doi_citation_data["publication_date"] is not None
+            else None
+        ),
+        "repo-doi-cited-by-count": doi_citation_data["cited_by_count"],
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
@@ -507,9 +525,7 @@ def compute_repo_data(repo_path: str) -> None:
             else None
         ),
         "repo-days-between-last-coverage-run-latest-commit": (
-            (most_recent_commit_date - date_of_last_coverage_run).strftime(
-                "%Y-%m-%dT%H:%M:%S.%fZ"
-            )
+            (most_recent_commit_date - date_of_last_coverage_run).days
             if date_of_last_coverage_run is not None
             else None
         ),
