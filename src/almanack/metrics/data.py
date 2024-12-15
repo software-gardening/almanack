@@ -1216,17 +1216,14 @@ def compute_sustainability_score(
     directions = []
     boolean_results = []
 
+    # gather numeric and boolean values which have a direction besides 0
     for item in table:
-        result = item["result"]
-        if isinstance(result, (int, float)):
-            numeric_results.append(result)
-            directions.append(
-                item.get("direction", 1)
-            )  # Default to positive correlation
-        elif isinstance(result, bool):
-            boolean_results.append(1 if result else 0)
+        if isinstance(item["result"], (int, float)) and item["direction"] != 0:
+            numeric_results.append(item["result"])
+        elif isinstance(item["result"], bool) and item["direction"] != 0:
+            boolean_results.append(1 if item["result"] else 0)
 
-    # Normalize numeric values
+    # Normalize non-boolean values
     if numeric_results:
         scaler = MinMaxScaler()
         numeric_results = scaler.fit_transform(
@@ -1242,4 +1239,5 @@ def compute_sustainability_score(
     normalized_results = list(numeric_results) + boolean_results
     total_score = sum(normalized_results)
 
+    # return sustainability score
     return total_score / len(normalized_results) if normalized_results else 0
