@@ -81,6 +81,7 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "name",
             "id",
             "result-type",
+            "direction",
             "description",
             "result",
         ]
@@ -103,6 +104,7 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
+                        "direction": {"type": "integer"},
                         "description": {"type": "string"},
                     },
                     "required": [
