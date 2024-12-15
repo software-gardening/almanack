@@ -18,6 +18,7 @@ from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
     compute_repo_data,
+    compute_sustainability_score,
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
@@ -938,3 +939,59 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
     assert result["https_resolvable_doi"] == expected_result["https_resolvable_doi"]
     assert result["publication_date"] == expected_result["publication_date"]
     assert isinstance(result["cited_by_count"], type(expected_result["cited_by_count"]))
+
+
+@pytest.mark.parametrize(
+    "table, expected_score",
+    [
+        # Test case 1: Single boolean with positive correlation (True should contribute 1)
+        ([{"result": True, "direction": 1}], 1.0),
+        # Test case 2: Single boolean with positive correlation (False should contribute 0)
+        ([{"result": False, "direction": 1}], 0.0),
+        # Test case 3: Single boolean with negative correlation (True should contribute 0)
+        ([{"result": True, "direction": -1}], 0.0),
+        # Test case 4: Single boolean with negative correlation (False should contribute 1)
+        ([{"result": False, "direction": -1}], 1.0),
+        # Test case 5: Simple numeric only calculation
+        (
+            [
+                {"result": 100, "direction": 1},
+                {"result": 200, "direction": 1},
+                {"result": 300, "direction": 1},
+            ],
+            0.5,  # (0 + .5 + 1) / 3 = .5
+        ),
+        # Test case 5: Multiple boolean and numeric with mixed directions
+        # Should normalize numeric results and treat booleans as per the logic above
+        (
+            [
+                {"result": True, "direction": 1},  # Should contribute 1
+                {"result": False, "direction": 1},  # Should contribute 0
+                {"result": 50, "direction": 1},  # Should be normalized to 1
+                {"result": 75, "direction": -1},  # Should be normalized to 0 (reversed)
+            ],
+            0.5,  # (1 + 0 + 1 + 0) / 4 = .5
+        ),
+        # Test case 6: Only numeric values
+        (
+            [{"result": 100, "direction": 1}, {"result": 200, "direction": -1}],
+            0.5,  # Should normalize the values and return average
+        ),
+        # Test case 7: Mixed True/False values with zero direction (should be ignored)
+        (
+            [
+                {"result": True, "direction": 0},  # Ignored
+                {"result": False, "direction": 0},  # Ignored
+            ],
+            0.0,  # No results contribute
+        ),
+    ],
+)
+def test_compute_sustainability_score(table, expected_score):
+    """
+    Testing compute_sustainability_score
+    """
+    score = compute_sustainability_score(table)
+    assert (
+        abs(score - expected_score) < 1e-9  # noqa: PLR2004
+    )  # Allowing for floating-point precision errors

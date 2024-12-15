@@ -1193,24 +1193,6 @@ def compute_sustainability_score(
     Computes a sustainability score by normalizing numeric metrics
     and incorporating boolean metrics. Adjusts for metrics that
     should be inversely proportional to the sustainability score.
-
-    Args:
-        table (List[Dict[str, Union[int, float, bool]]]):
-            A list of dictionaries containing metrics.
-            Each dictionary must have a "result" key
-            with a value that is an int, float, or bool.
-            Optionally, a "direction" key may be
-            included for numeric values to specify
-            the relationship to sustainability:
-                - 1 (positive correlation)
-                - 0 (no correlation)
-                - -1 (negative correlation)
-
-    Returns:
-        float:
-            The computed sustainability score,
-            normalized between 0 and 1.
-
     """
     numeric_results = []
     directions = []
@@ -1218,26 +1200,35 @@ def compute_sustainability_score(
 
     # gather numeric and boolean values which have a direction besides 0
     for item in table:
-        if isinstance(item["result"], (int, float)) and item["direction"] != 0:
+        if isinstance(item["result"], bool) and item["direction"] != 0:
+            # for direction == 1 we treat True as positive correction
+            # and False as a negative correlation.
+            if item["direction"] == 1:
+                boolean_results.append(1 if item["result"] else 0)
+            # for direction == -1 we treat True as negative correction
+            # and False as a positive correlation.
+            elif item["direction"] == -1:
+                boolean_results.append(0 if item["result"] else 1)
+        elif isinstance(item["result"], (int, float)) and item["direction"] != 0:
             numeric_results.append(item["result"])
-        elif isinstance(item["result"], bool) and item["direction"] != 0:
-            boolean_results.append(1 if item["result"] else 0)
+            directions.append(item["direction"])
 
     # Normalize non-boolean values
     if numeric_results:
-        scaler = MinMaxScaler()
-        numeric_results = scaler.fit_transform(
-            np.array(numeric_results).reshape(-1, 1)
-        ).flatten()
         # Adjust for direction (invert values where direction is -1)
         numeric_results = [
             value if direction == 1 else 1 - value
             for value, direction in zip(numeric_results, directions)
         ]
+        scaler = MinMaxScaler()
+        numeric_results = scaler.fit_transform(
+            np.array(numeric_results).reshape(-1, 1)
+        ).flatten()
 
     # Combine normalized numeric and boolean results
     normalized_results = list(numeric_results) + boolean_results
     total_score = sum(normalized_results)
 
     # return sustainability score
-    return total_score / len(normalized_results) if normalized_results else 0
+    score = total_score / len(normalized_results) if normalized_results else 0
+    return score
