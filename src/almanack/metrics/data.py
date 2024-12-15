@@ -1190,9 +1190,26 @@ def compute_sustainability_score(
     table: List[Dict[str, Union[int, float, bool]]]
 ) -> float:
     """
-    Computes a sustainability score by normalizing numeric metrics
-    and incorporating boolean metrics. Adjusts for metrics that
-    should be inversely proportional to the sustainability score.
+    Computes a sustainability score by normalizing
+    numeric metrics and incorporating boolean metrics.
+    Adjusts for metrics that should be inversely
+    proportional to the sustainability score.
+
+    Args:
+        data (List[Dict[str, Union[int, float, bool]]]):
+            A list of dictionaries containing metrics.
+            Each dictionary must have a "result" key
+            with a value that is an int, float, or bool.
+              Optionally, a "direction" key may be
+            included for numeric values to specify the
+            relationship to sustainability:
+            - 1 (positive correlation)
+            - 0 (no correlation)
+            - -1 (negative correlation)
+
+    Returns:
+        float:
+            The computed sustainability score, normalized between 0 and 1.
     """
     numeric_results = []
     directions = []
