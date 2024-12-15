@@ -10,13 +10,15 @@ import shutil
 import tempfile
 import time
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import defusedxml.ElementTree as ET
+import numpy as np
 import pygit2
 import requests
 import yaml
+from sklearn.preprocessing import MinMaxScaler
 
 from ..git import (
     clone_repository,
@@ -1182,3 +1184,62 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                 LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
 
     return result
+
+
+def compute_sustainability_score(
+    table: List[Dict[str, Union[int, float, bool]]]
+) -> float:
+    """
+    Computes a sustainability score by normalizing numeric metrics
+    and incorporating boolean metrics. Adjusts for metrics that
+    should be inversely proportional to the sustainability score.
+
+    Args:
+        table (List[Dict[str, Union[int, float, bool]]]):
+            A list of dictionaries containing metrics.
+            Each dictionary must have a "result" key
+            with a value that is an int, float, or bool.
+            Optionally, a "direction" key may be
+            included for numeric values to specify
+            the relationship to sustainability:
+                - 1 (positive correlation)
+                - 0 (no correlation)
+                - -1 (negative correlation)
+
+    Returns:
+        float:
+            The computed sustainability score,
+            normalized between 0 and 1.
+
+    """
+    numeric_results = []
+    directions = []
+    boolean_results = []
+
+    for item in table:
+        result = item["result"]
+        if isinstance(result, (int, float)):
+            numeric_results.append(result)
+            directions.append(
+                item.get("direction", 1)
+            )  # Default to positive correlation
+        elif isinstance(result, bool):
+            boolean_results.append(1 if result else 0)
+
+    # Normalize numeric values
+    if numeric_results:
+        scaler = MinMaxScaler()
+        numeric_results = scaler.fit_transform(
+            np.array(numeric_results).reshape(-1, 1)
+        ).flatten()
+        # Adjust for direction (invert values where direction is -1)
+        numeric_results = [
+            value if direction == 1 else 1 - value
+            for value, direction in zip(numeric_results, directions)
+        ]
+
+    # Combine normalized numeric and boolean results
+    normalized_results = list(numeric_results) + boolean_results
+    total_score = sum(normalized_results)
+
+    return total_score / len(normalized_results) if normalized_results else 0
