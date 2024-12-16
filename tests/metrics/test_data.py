@@ -2,12 +2,14 @@
 Testing metrics/data functionality
 """
 
+import builtins
 import pathlib
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import dunamai
 import jsonschema
+import numpy as np
 import pandas as pd
 import pygit2
 import pytest
@@ -18,6 +20,7 @@ from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
     compute_repo_data,
+    compute_sustainability_score,
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
@@ -81,9 +84,18 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "name",
             "id",
             "result-type",
+            "direction",
             "description",
             "result",
         ]
+
+        # check types for the results
+        for record in table:
+            assert (
+                isinstance(record["result"], getattr(builtins, record["result-type"]))
+                # sometimes we have None which is compared by type otherwise
+                or record["result"] is None
+            ), f"Result {record['result']} is not of type {record['result-type']}."
 
 
 def test_metrics_yaml():
@@ -103,12 +115,14 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
+                        "direction": {"type": "integer", "enum": [1, -1, 0]},
                         "description": {"type": "string"},
                     },
                     "required": [
                         "name",
                         "id",
                         "result-type",
+                        "direction",
                         "description",
                     ],
                 },
@@ -936,3 +950,70 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
     assert result["https_resolvable_doi"] == expected_result["https_resolvable_doi"]
     assert result["publication_date"] == expected_result["publication_date"]
     assert isinstance(result["cited_by_count"], type(expected_result["cited_by_count"]))
+
+
+@pytest.mark.parametrize(
+    "data, expected",
+    [
+        # Test case 1: Positive correlation with numeric values
+        (
+            [
+                {"result": 10, "direction": 1},
+                {"result": 20, "direction": 1},
+                {"result": 30, "direction": 1},
+            ],
+            0.5,  # Scaled values will average to 0.5 (10 -> 0.0, 20 -> 0.5, 30 -> 1.0)
+        ),
+        # Test case 2: Negative correlation with numeric values
+        (
+            [
+                {"result": 10, "direction": -1},
+                {"result": 20, "direction": -1},
+                {"result": 30, "direction": -1},
+            ],
+            0.5,  # Inverted values average to 0.5 (30 -> 0.0, 20 -> 0.5, 10 -> 1.0)
+        ),
+        # Test case 3: Mixed correlation with numeric values
+        (
+            [
+                {"result": 10, "direction": 1},
+                {"result": 30, "direction": -1},
+            ],
+            0.5,  # Positive and inverted negative scaled values balance out
+        ),
+        # Test case 4: Boolean metrics only
+        (
+            [
+                {"result": True, "direction": 1},
+                {"result": False, "direction": 1},
+                {"result": True, "direction": 1},
+            ],
+            0.6666666666666666,  # Two "True" values contribute 1 each, one "False" contributes 0
+        ),
+        # Test case 5: Mixed numeric and boolean metrics
+        (
+            [
+                {"result": 10, "direction": 1},
+                {"result": 30, "direction": -1},
+                {"result": True, "direction": 1},
+            ],
+            (1.0 + 0.0 + 1.0) / 3,  # Scaled numeric and boolean metrics combined
+        ),
+        # Test case 6: Single value
+        (
+            [
+                {"result": 42, "direction": 1},
+            ],
+            0.0,  # Single value is scaled to 0
+        ),
+        # Test case 7: No valid metrics
+        ([], 0.0),  # No metrics, score should be 0
+    ],
+)
+def test_compute_sustainability_score(
+    data: List[Dict[str, Union[int, float, bool]]], expected: float
+):
+    result = compute_sustainability_score(data)
+    assert np.isclose(
+        result, expected, atol=1e-6
+    ), f"Expected {expected}, but got {result}"

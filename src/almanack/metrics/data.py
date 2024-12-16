@@ -10,13 +10,15 @@ import shutil
 import tempfile
 import time
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import defusedxml.ElementTree as ET
+import numpy as np
 import pygit2
 import requests
 import yaml
+from sklearn.preprocessing import RobustScaler
 
 from ..git import (
     clone_repository,
@@ -72,16 +74,25 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
         raise ReferenceError("Encountered an error with processing the data.", data)
 
     # return metrics table (list of dictionaries as records of metrics)
-    return [
+    data_table = [
         {
-            # remove the result-data-key as this won't be useful to external output
-            **{key: val for key, val in metric.items() if key != "result-data-key"},
+            **metric,
             # add the data results for the metrics to the table
             "result": data[metric["name"]],
         }
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
         for metric in metrics_table
+    ]
+
+    # calculate sustainability score (modify placeholder)
+    return [
+        (
+            {**entry, "result": compute_sustainability_score(table=data_table)}
+            if entry["name"] == "repo-almanack-sustainability-score"
+            else entry
+        )
+        for entry in data_table
     ]
 
 
@@ -477,6 +488,8 @@ def compute_repo_data(repo_path: str) -> None:
             if doi_citation_data["publication_date"] is not None
             else None
         ),
+        # placeholder for sustainability score
+        "repo-almanack-sustainability-score": 0,
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -1182,3 +1195,71 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                 LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
 
     return result
+
+
+def compute_sustainability_score(
+    table: List[Dict[str, Union[int, float, bool]]]
+) -> float:
+    """
+    Computes a sustainability score by normalizing
+    numeric metrics and incorporating boolean metrics.
+    Adjusts for metrics that should be inversely
+    proportional to the sustainability score.
+
+    Args:
+        data (List[Dict[str, Union[int, float, bool]]]):
+            A list of dictionaries containing metrics.
+            Each dictionary must have a "result" key
+            with a value that is an int, float, or bool.
+              Optionally, a "direction" key may be
+            included for numeric values to specify the
+            relationship to sustainability:
+            - 1 (positive correlation)
+            - 0 (no correlation)
+            - -1 (negative correlation)
+
+    Returns:
+        float:
+            The computed sustainability score, normalized between 0 and 1.
+    """
+    results = []
+    bool_results = []
+
+    # Gather numeric and boolean values with a direction
+    for item in table:
+        if isinstance(item["result"], bool) and item["direction"] != 0:
+            # for direction == 1 we treat True as positive correction
+            # and False as a negative correlation.
+            if item["direction"] == 1:
+                bool_results.append(1 if item["result"] else 0)
+            # for direction == -1 we treat True as negative correction
+            # and False as a positive correlation.
+            elif item["direction"] == -1:
+                bool_results.append(0 if item["result"] else 1)
+
+        elif isinstance(item["result"], (int, float)) and item["direction"] != 0:
+            # Numeric values inverted or kept as-is based on direction
+            results.append(
+                item["result"] if item["direction"] == 1 else 1 - item["result"]
+            )
+
+    # Normalize numeric values if any
+    if results:
+        scaler = RobustScaler()
+        normalized_results = scaler.fit_transform(
+            np.array(results).reshape(-1, 1)
+        ).flatten()
+
+        # Rescale to [0, 1] range
+        numeric_min = normalized_results.min()
+        numeric_max = normalized_results.max()
+        if numeric_max > numeric_min:  # Avoid division by zero
+            normalized_results = (normalized_results - numeric_min) / (
+                numeric_max - numeric_min
+            )
+    else:
+        normalized_results = []
+
+    # Combine normalized numeric and boolean results
+    all_results = list(normalized_results) + bool_results
+    return sum(all_results) / len(all_results) if all_results else 0
