@@ -170,4 +170,4 @@ repos:
     hooks:
       # generate code coverage badge
       - id: coverage-badge
-        args: ["-o", "media/coverage-badge.svg"]
+        args: ["-i", "coverage.xml", "-o", "media/coverage-badge.svg"]
