@@ -159,23 +159,16 @@ repos:
         language: system
         pass_filenames: false
       # Generage code coverage data
-      - id: code-cov-gen
-        name: Generate code coverage data
-        language: system
-        entry: poetry run coverage run -m pytest --ignore tests/test_build.py
-        pass_filenames: false
-        always_run: true
-      - id: code-cov-report
+      - id: generate-coverage-report
         name: Generate coverage report
         language: system
-        entry: poetry run coverage report
-        pass_filenames: false
-        always_run: true
-        types: [python]
-      - id: code-cov-report-xml
-        name: Generate coverage xml
-        language: system
-        entry: poetry run coverage xml || exit 0
+        entry: >
+          bash -c "
+          poetry run coverage run -m pytest --ignore tests/test_build.py && \
+          poetry run coverage report && \
+          poetry run coverage html || \
+          exit 0
+          "
         pass_filenames: false
         always_run: true
         types: [python]
