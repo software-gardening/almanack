@@ -18,7 +18,7 @@ import numpy as np
 import pygit2
 import requests
 import yaml
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import RobustScaler
 
 from ..git import (
     clone_repository,
@@ -74,16 +74,25 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
         raise ReferenceError("Encountered an error with processing the data.", data)
 
     # return metrics table (list of dictionaries as records of metrics)
-    return [
+    data_table = [
         {
-            # remove the result-data-key as this won't be useful to external output
-            **{key: val for key, val in metric.items() if key != "result-data-key"},
+            **metric,
             # add the data results for the metrics to the table
             "result": data[metric["name"]],
         }
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
         for metric in metrics_table
+    ]
+
+    # calculate sustainability score (modify placeholder)
+    return [
+        (
+            {**entry, "result": compute_sustainability_score(table=data_table)}
+            if entry["name"] == "repo-almanack-sustainability-score"
+            else entry
+        )
+        for entry in data_table
     ]
 
 
@@ -479,6 +488,8 @@ def compute_repo_data(repo_path: str) -> None:
             if doi_citation_data["publication_date"] is not None
             else None
         ),
+        # placeholder for sustainability score
+        "repo-almanack-sustainability-score": 0,
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -1211,41 +1222,44 @@ def compute_sustainability_score(
         float:
             The computed sustainability score, normalized between 0 and 1.
     """
-    numeric_results = []
-    directions = []
-    boolean_results = []
+    results = []
+    bool_results = []
 
-    # gather numeric and boolean values which have a direction besides 0
+    # Gather numeric and boolean values with a direction
     for item in table:
         if isinstance(item["result"], bool) and item["direction"] != 0:
             # for direction == 1 we treat True as positive correction
             # and False as a negative correlation.
             if item["direction"] == 1:
-                boolean_results.append(1 if item["result"] else 0)
+                bool_results.append(1 if item["result"] else 0)
             # for direction == -1 we treat True as negative correction
             # and False as a positive correlation.
             elif item["direction"] == -1:
-                boolean_results.append(0 if item["result"] else 1)
-        elif isinstance(item["result"], (int, float)) and item["direction"] != 0:
-            numeric_results.append(item["result"])
-            directions.append(item["direction"])
+                bool_results.append(0 if item["result"] else 1)
 
-    # Normalize non-boolean values
-    if numeric_results:
-        # Adjust for direction (invert values where direction is -1)
-        numeric_results = [
-            value if direction == 1 else 1 - value
-            for value, direction in zip(numeric_results, directions)
-        ]
-        scaler = MinMaxScaler()
-        numeric_results = scaler.fit_transform(
-            np.array(numeric_results).reshape(-1, 1)
+        elif isinstance(item["result"], (int, float)) and item["direction"] != 0:
+            # Numeric values inverted or kept as-is based on direction
+            results.append(
+                item["result"] if item["direction"] == 1 else 1 - item["result"]
+            )
+
+    # Normalize numeric values if any
+    if results:
+        scaler = RobustScaler()
+        normalized_results = scaler.fit_transform(
+            np.array(results).reshape(-1, 1)
         ).flatten()
 
-    # Combine normalized numeric and boolean results
-    normalized_results = list(numeric_results) + boolean_results
-    total_score = sum(normalized_results)
+        # Rescale to [0, 1] range
+        numeric_min = normalized_results.min()
+        numeric_max = normalized_results.max()
+        if numeric_max > numeric_min:  # Avoid division by zero
+            normalized_results = (normalized_results - numeric_min) / (
+                numeric_max - numeric_min
+            )
+    else:
+        normalized_results = []
 
-    # return sustainability score
-    score = total_score / len(normalized_results) if normalized_results else 0
-    return score
+    # Combine normalized numeric and boolean results
+    all_results = list(normalized_results) + bool_results
+    return sum(all_results) / len(all_results) if all_results else 0

@@ -9,13 +9,13 @@ metrics:
   - name: "repo-commits"
     id: "SGA-META-0002"
     result-type: "int"
-    direction: 0
+    direction: 1
     description: >-
       Total number of commits for the repository.
   - name: "repo-file-count"
     id: "SGA-META-0003"
     result-type: "int"
-    direction: 0
+    direction: 1
     description: >-
       Total number of files tracked within the repository.
   - name: "repo-commit-time-range"
@@ -27,7 +27,7 @@ metrics:
   - name: "repo-days-of-development"
     id: "SGA-META-0005"
     result-type: "int"
-    direction: 0
+    direction: 1
     description: >-
       Integer representing the number of days of development
       between most recent commit and first commit.
@@ -73,11 +73,19 @@ metrics:
       Repository DOI value detected from CITATION.cff file.
   - name: "repo-doi-publication-date"
     id: "SGA-META-0012"
-    result-type: "datetime"
+    result-type: "str"
     direction: 0
     description: >-
       Repository DOI publication date detected from CITATION.cff file
       and OpenAlex.org.
+  - name: "repo-almanack-sustainability-score"
+    id: "SGA-META-0013"
+    result-type: "float"
+    direction: 0
+    description: >-
+      Score which summarizes other metrics as a single normalized value
+      to simplify understanding of software sustainability from the lens
+      of the Software Gardening Almanack.
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
@@ -314,7 +322,7 @@ metrics:
       given detected code coverage data.
   - name: "repo-date-of-last-coverage-run"
     id: "SGA-SF-0006"
-    result-type: "datetime"
+    result-type: "str"
     direction: 0
     description: >-
       Date of code coverage run for repository

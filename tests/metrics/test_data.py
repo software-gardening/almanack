@@ -2,12 +2,14 @@
 Testing metrics/data functionality
 """
 
+import builtins
 import pathlib
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import dunamai
 import jsonschema
+import numpy as np
 import pandas as pd
 import pygit2
 import pytest
@@ -87,6 +89,14 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "result",
         ]
 
+        # check types for the results
+        for record in table:
+            assert (
+                isinstance(record["result"], getattr(builtins, record["result-type"]))
+                # sometimes we have None which is compared by type otherwise
+                or record["result"] is None
+            ), f"Result {record['result']} is not of type {record['result-type']}."
+
 
 def test_metrics_yaml():
     """
@@ -105,13 +115,14 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
-                        "direction": {"type": "integer"},
+                        "direction": {"type": "integer", "enum": [1, -1, 0]},
                         "description": {"type": "string"},
                     },
                     "required": [
                         "name",
                         "id",
                         "result-type",
+                        "direction",
                         "description",
                     ],
                 },
@@ -942,56 +953,67 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
 
 
 @pytest.mark.parametrize(
-    "table, expected_score",
+    "data, expected",
     [
-        # Test case 1: Single boolean with positive correlation (True should contribute 1)
-        ([{"result": True, "direction": 1}], 1.0),
-        # Test case 2: Single boolean with positive correlation (False should contribute 0)
-        ([{"result": False, "direction": 1}], 0.0),
-        # Test case 3: Single boolean with negative correlation (True should contribute 0)
-        ([{"result": True, "direction": -1}], 0.0),
-        # Test case 4: Single boolean with negative correlation (False should contribute 1)
-        ([{"result": False, "direction": -1}], 1.0),
-        # Test case 5: Simple numeric only calculation
+        # Test case 1: Positive correlation with numeric values
         (
             [
-                {"result": 100, "direction": 1},
-                {"result": 200, "direction": 1},
-                {"result": 300, "direction": 1},
+                {"result": 10, "direction": 1},
+                {"result": 20, "direction": 1},
+                {"result": 30, "direction": 1},
             ],
-            0.5,  # (0 + .5 + 1) / 3 = .5
+            0.5,  # Scaled values will average to 0.5 (10 -> 0.0, 20 -> 0.5, 30 -> 1.0)
         ),
-        # Test case 5: Multiple boolean and numeric with mixed directions
-        # Should normalize numeric results and treat booleans as per the logic above
+        # Test case 2: Negative correlation with numeric values
         (
             [
-                {"result": True, "direction": 1},  # Should contribute 1
-                {"result": False, "direction": 1},  # Should contribute 0
-                {"result": 50, "direction": 1},  # Should be normalized to 1
-                {"result": 75, "direction": -1},  # Should be normalized to 0 (reversed)
+                {"result": 10, "direction": -1},
+                {"result": 20, "direction": -1},
+                {"result": 30, "direction": -1},
             ],
-            0.5,  # (1 + 0 + 1 + 0) / 4 = .5
+            0.5,  # Inverted values average to 0.5 (30 -> 0.0, 20 -> 0.5, 10 -> 1.0)
         ),
-        # Test case 6: Only numeric values
-        (
-            [{"result": 100, "direction": 1}, {"result": 200, "direction": -1}],
-            0.5,  # Should normalize the values and return average
-        ),
-        # Test case 7: Mixed True/False values with zero direction (should be ignored)
+        # Test case 3: Mixed correlation with numeric values
         (
             [
-                {"result": True, "direction": 0},  # Ignored
-                {"result": False, "direction": 0},  # Ignored
+                {"result": 10, "direction": 1},
+                {"result": 30, "direction": -1},
             ],
-            0.0,  # No results contribute
+            0.5,  # Positive and inverted negative scaled values balance out
         ),
+        # Test case 4: Boolean metrics only
+        (
+            [
+                {"result": True, "direction": 1},
+                {"result": False, "direction": 1},
+                {"result": True, "direction": 1},
+            ],
+            0.6666666666666666,  # Two "True" values contribute 1 each, one "False" contributes 0
+        ),
+        # Test case 5: Mixed numeric and boolean metrics
+        (
+            [
+                {"result": 10, "direction": 1},
+                {"result": 30, "direction": -1},
+                {"result": True, "direction": 1},
+            ],
+            (1.0 + 0.0 + 1.0) / 3,  # Scaled numeric and boolean metrics combined
+        ),
+        # Test case 6: Single value
+        (
+            [
+                {"result": 42, "direction": 1},
+            ],
+            0.0,  # Single value is scaled to 0
+        ),
+        # Test case 7: No valid metrics
+        ([], 0.0),  # No metrics, score should be 0
     ],
 )
-def test_compute_sustainability_score(table, expected_score):
-    """
-    Testing compute_sustainability_score
-    """
-    score = compute_sustainability_score(table)
-    assert (
-        abs(score - expected_score) < 1e-9  # noqa: PLR2004
-    )  # Allowing for floating-point precision errors
+def test_compute_sustainability_score(
+    data: List[Dict[str, Union[int, float, bool]]], expected: float
+):
+    result = compute_sustainability_score(data)
+    assert np.isclose(
+        result, expected, atol=1e-6
+    ), f"Expected {expected}, but got {result}"
