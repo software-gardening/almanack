@@ -775,9 +775,7 @@ def get_api_data(
             LOGGER.warning(f"Unexpected request error: {reqe}")
             return {}
 
-    LOGGER.warning(
-        "All retries failed. Returning an empty response."
-    )
+    LOGGER.warning("All retries failed. Returning an empty response.")
     return {}  # Default return in case all retries fail
 
 
