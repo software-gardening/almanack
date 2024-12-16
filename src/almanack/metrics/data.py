@@ -751,7 +751,7 @@ def get_api_data(
         except requests.HTTPError as httpe:
             # Check for rate limit error (403 with a rate limit header)
             if (
-                response.status_code == 403
+                response.status_code == 403  # noqa: PLR2004
                 and "X-RateLimit-Remaining" in response.headers
             ):
                 if attempt < max_retries:
@@ -775,9 +775,7 @@ def get_api_data(
             LOGGER.warning(f"Unexpected request error: {reqe}")
             return {}
 
-    LOGGER.warning(
-        "All retries failed. Returning an empty response."
-    )
+    LOGGER.warning("All retries failed. Returning an empty response.")
     return {}  # Default return in case all retries fail
 
 
