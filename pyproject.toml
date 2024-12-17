@@ -140,3 +140,9 @@ fi
 pkg-tests.shell = """
 pytest --ignore tests/test_build.py
 """
+# task for running code coverage report steps
+code-coverage-report.shell = """
+coverage run -m pytest --ignore tests/test_build.py
+coverage report
+coverage xml
+"""
