@@ -140,3 +140,42 @@ fi
 pkg-tests.shell = """
 pytest --ignore tests/test_build.py
 """
+# task for running code coverage report steps
+code-coverage-report.shell = """
+coverage run -m pytest --ignore tests/test_build.py
+coverage report
+coverage xml -o new_cov.xml
+
+# Define a Python function for reusable attribute extraction
+PYTHON_FUNC="
+import xml.etree.ElementTree as ET
+def extract_relevant_attributes(file):
+    attributes = ET.parse(file).getroot().attrib
+    return [v for k, v in attributes.items() if k != 'timestamp']
+
+if __name__ == '__main__':
+    import sys
+    file_path = sys.argv[1]
+    print(extract_relevant_attributes(file_path))
+"
+
+# Check if the existing coverage file exists
+if [[ ! -f "coverage.xml" ]]; then
+    echo "Existing coverage file not found. Creating a new one."
+    mv "new_cov.xml" "coverage.xml"
+    exit 0
+fi
+
+# Extract attributes (excluding timestamp) from both files using Python
+EXISTING_ATTRS=$(python -c "$PYTHON_FUNC" "coverage.xml")
+NEW_ATTRS=$(python -c "$PYTHON_FUNC" "new_cov.xml")
+
+# Compare the extracted attributes
+if [[ "$EXISTING_ATTRS" != "$NEW_ATTRS" ]]; then
+    echo "Files differ (ignoring timestamps). Replacing the existing file."
+    mv "new_cov.xml" "coverage.xml"
+else
+    echo "No differences found (ignoring timestamps)."
+    rm "new_cov.xml"
+fi
+"""
