@@ -729,10 +729,10 @@ def get_api_data(
     if params is None:
         params = {}
 
-    retries = 30  # Number of attempts for rate limit errors
-    backoff = 35  # Seconds to wait between retries
+    max_retries = 100  # Number of attempts for rate limit errors
+    base_backoff = 5  # Base backoff time in seconds
 
-    for attempt in range(retries):
+    for attempt in range(1, max_retries + 1):
         try:
             # Perform the GET request with query parameters
             response = requests.get(
@@ -751,13 +751,16 @@ def get_api_data(
         except requests.HTTPError as httpe:
             # Check for rate limit error (403 with a rate limit header)
             if (
-                # ignore ruff linting code below as 403 is a known HTTP error code
                 response.status_code == 403  # noqa: PLR2004
                 and "X-RateLimit-Remaining" in response.headers
             ):
-                if attempt < retries - 1:
+                if attempt < max_retries:
+                    # Calculate backoff time multiplied by attempt number
+                    # (linear growth)
+                    backoff = base_backoff * (attempt - 1)
                     LOGGER.warning(
-                        f"Rate limit exceeded (attempt {attempt + 1}/{retries}). Retrying in {backoff} seconds..."
+                        f"Rate limit exceeded (attempt {attempt}/{max_retries}). "
+                        f"Retrying in {backoff} seconds..."
                     )
                     time.sleep(backoff)
                 else:
@@ -765,16 +768,14 @@ def get_api_data(
                     return {}
             else:
                 # Raise other HTTP errors immediately
-                LOGGER.warning(f"Experienced an unexpected HTTP request error: {httpe}")
+                LOGGER.warning(f"Unexpected HTTP error: {httpe}")
                 return {}
         except requests.RequestException as reqe:
             # Raise other non-HTTP exceptions immediately
-            LOGGER.warning(f"Experienced an unexpected request error: {reqe}")
+            LOGGER.warning(f"Unexpected request error: {reqe}")
             return {}
 
-    LOGGER.warning(
-        "Experienced an unexpected error which resulted in a empty request return."
-    )
+    LOGGER.warning("All retries failed. Returning an empty response.")
     return {}  # Default return in case all retries fail
 
 
