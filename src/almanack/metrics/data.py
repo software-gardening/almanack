@@ -1268,4 +1268,4 @@ def compute_sustainability_score(
 
     # Combine normalized numeric and boolean results
     all_results = list(normalized_results) + bool_results
-    return sum(all_results) / len(all_results) if all_results else 0
+    return sum(all_results) / len(all_results) if all_results else None
