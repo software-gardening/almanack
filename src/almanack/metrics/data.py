@@ -1206,7 +1206,7 @@ def compute_sustainability_score(
     sustainable development analysis.
 
     Args:
-        data (List[Dict[str, Union[int, float, bool]]]):
+        almanack_table (List[Dict[str, Union[int, float, bool]]]):
             A list of dictionaries containing metrics.
             Each dictionary must have a "result" key
             with a value that is an int, float, or bool.
