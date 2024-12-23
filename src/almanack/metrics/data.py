@@ -1257,20 +1257,21 @@ def compute_sustainability_score(
     # Normalize numeric values if any
     if results:
         scaler = RobustScaler()
-        normalized_results = scaler.fit_transform(
-            np.array(results).reshape(-1, 1)
-        ).flatten()
+        normalized_results = list(
+            scaler.fit_transform(np.array(results).reshape(-1, 1)).flatten()
+        )
 
         # Rescale to [0, 1] range
-        numeric_min = normalized_results.min()
-        numeric_max = normalized_results.max()
+        numeric_min = min(normalized_results)
+        numeric_max = max(normalized_results)
         if numeric_max > numeric_min:  # Avoid division by zero
-            normalized_results = (normalized_results - numeric_min) / (
-                numeric_max - numeric_min
-            )
+            normalized_results = [
+                (x - numeric_min) / (numeric_max - numeric_min)
+                for x in normalized_results
+            ]
     else:
         normalized_results = []
 
     # Combine normalized numeric and boolean results
-    all_results = list(normalized_results) + bool_results
+    all_results = normalized_results + bool_results
     return sum(all_results) / len(all_results) if all_results else None
