@@ -1225,13 +1225,20 @@ def compute_sustainability_score(
     bool_results = []
 
     # Gather numeric and boolean values with a direction
-    for item in table:
+    for item in almanack_table:
+        # We translate boolean values into numeric values based on the
+        # direction provided from the metrics.yml file.
+        # For example, see below:
+        # - True with direction 1 = 1
+        # - True with direction -1 = 0
+        # - False with direction 1 = 0
+        # - False with direction -1 = 1
         if isinstance(item["result"], bool) and item["direction"] != 0:
-            # for direction == 1 we treat True as positive correction
+            # for direction == 1 we treat True as positive correlation
             # and False as a negative correlation.
             if item["direction"] == 1:
                 bool_results.append(1 if item["result"] else 0)
-            # for direction == -1 we treat True as negative correction
+            # for direction == -1 we treat True as negative correlation
             # and False as a positive correlation.
             elif item["direction"] == -1:
                 bool_results.append(0 if item["result"] else 1)
