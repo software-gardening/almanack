@@ -88,7 +88,7 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     # calculate sustainability score (modify placeholder)
     return [
         (
-            {**entry, "result": compute_sustainability_score(table=data_table)}
+            {**entry, "result": compute_sustainability_score(almanack_table=data_table)}
             if entry["name"] == "repo-almanack-sustainability-score"
             else entry
         )
@@ -1198,7 +1198,7 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
 
 
 def compute_sustainability_score(
-    table: List[Dict[str, Union[int, float, bool]]]
+    almanack_table: List[Dict[str, Union[int, float, bool]]]
 ) -> float:
     """
     Computes a sustainability score by normalizing
