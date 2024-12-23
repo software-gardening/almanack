@@ -84,8 +84,7 @@ metrics:
     sustainability_correlation: 0
     description: >-
       Score which summarizes other metrics as a single normalized value
-      to simplify understanding of software sustainability from the lens
-      of the Software Gardening Almanack.
+      which represents how likely a repository will be maintained over time.
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
