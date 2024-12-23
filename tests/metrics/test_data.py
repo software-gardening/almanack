@@ -84,7 +84,7 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "name",
             "id",
             "result-type",
-            "direction",
+            "sustainability_correlation",
             "description",
             "result",
         ]
@@ -115,14 +115,14 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
-                        "direction": {"type": "integer", "enum": [1, -1, 0]},
+                        "sustainability_correlation": {"type": "integer", "enum": [1, -1, 0]},
                         "description": {"type": "string"},
                     },
                     "required": [
                         "name",
                         "id",
                         "result-type",
-                        "direction",
+                        "sustainability_correlation",
                         "description",
                     ],
                 },
@@ -958,51 +958,51 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
         # Test case 1: Positive correlation with numeric values
         (
             [
-                {"result": 10, "direction": 1},
-                {"result": 20, "direction": 1},
-                {"result": 30, "direction": 1},
+                {"result": 10, "sustainability_correlation": 1},
+                {"result": 20, "sustainability_correlation": 1},
+                {"result": 30, "sustainability_correlation": 1},
             ],
             0.5,  # Scaled values will average to 0.5 (10 -> 0.0, 20 -> 0.5, 30 -> 1.0)
         ),
         # Test case 2: Negative correlation with numeric values
         (
             [
-                {"result": 10, "direction": -1},
-                {"result": 20, "direction": -1},
-                {"result": 30, "direction": -1},
+                {"result": 10, "sustainability_correlation": -1},
+                {"result": 20, "sustainability_correlation": -1},
+                {"result": 30, "sustainability_correlation": -1},
             ],
             0.5,  # Inverted values average to 0.5 (30 -> 0.0, 20 -> 0.5, 10 -> 1.0)
         ),
         # Test case 3: Mixed correlation with numeric values
         (
             [
-                {"result": 10, "direction": 1},
-                {"result": 30, "direction": -1},
+                {"result": 10, "sustainability_correlation": 1},
+                {"result": 30, "sustainability_correlation": -1},
             ],
             0.5,  # Positive and inverted negative scaled values balance out
         ),
         # Test case 4: Boolean metrics only
         (
             [
-                {"result": True, "direction": 1},
-                {"result": False, "direction": 1},
-                {"result": True, "direction": 1},
+                {"result": True, "sustainability_correlation": 1},
+                {"result": False, "sustainability_correlation": 1},
+                {"result": True, "sustainability_correlation": 1},
             ],
             0.6666666666666666,  # Two "True" values contribute 1 each, one "False" contributes 0
         ),
         # Test case 5: Mixed numeric and boolean metrics
         (
             [
-                {"result": 10, "direction": 1},
-                {"result": 30, "direction": -1},
-                {"result": True, "direction": 1},
+                {"result": 10, "sustainability_correlation": 1},
+                {"result": 30, "sustainability_correlation": -1},
+                {"result": True, "sustainability_correlation": 1},
             ],
             (1.0 + 0.0 + 1.0) / 3,  # Scaled numeric and boolean metrics combined
         ),
         # Test case 6: Single value
         (
             [
-                {"result": 42, "direction": 1},
+                {"result": 42, "sustainability_correlation": 1},
             ],
             0.0,  # Single value is scaled to 0
         ),

@@ -1210,8 +1210,8 @@ def compute_sustainability_score(
             A list of dictionaries containing metrics.
             Each dictionary must have a "result" key
             with a value that is an int, float, or bool.
-              Optionally, a "direction" key may be
-            included for numeric values to specify the
+            A "sustainability_correlation" key is
+            included for values to specify the
             relationship to sustainability:
             - 1 (positive correlation)
             - 0 (no correlation)
@@ -1224,29 +1224,29 @@ def compute_sustainability_score(
     results = []
     bool_results = []
 
-    # Gather numeric and boolean values with a direction
+    # Gather numeric and boolean values with a sustainability_correlation
     for item in almanack_table:
         # We translate boolean values into numeric values based on the
-        # direction provided from the metrics.yml file.
+        # sustainability_correlation provided from the metrics.yml file.
         # For example, see below:
-        # - True with direction 1 = 1
-        # - True with direction -1 = 0
-        # - False with direction 1 = 0
-        # - False with direction -1 = 1
-        if isinstance(item["result"], bool) and item["direction"] != 0:
-            # for direction == 1 we treat True as positive correlation
+        # - True with sustainability_correlation 1 = 1
+        # - True with sustainability_correlation -1 = 0
+        # - False with sustainability_correlation 1 = 0
+        # - False with sustainability_correlation -1 = 1
+        if isinstance(item["result"], bool) and item["sustainability_correlation"] != 0:
+            # for sustainability_correlation == 1 we treat True as positive correlation
             # and False as a negative correlation.
-            if item["direction"] == 1:
+            if item["sustainability_correlation"] == 1:
                 bool_results.append(1 if item["result"] else 0)
-            # for direction == -1 we treat True as negative correlation
+            # for sustainability_correlation == -1 we treat True as negative correlation
             # and False as a positive correlation.
-            elif item["direction"] == -1:
+            elif item["sustainability_correlation"] == -1:
                 bool_results.append(0 if item["result"] else 1)
 
-        elif isinstance(item["result"], (int, float)) and item["direction"] != 0:
-            # Numeric values inverted or kept as-is based on direction
+        elif isinstance(item["result"], (int, float)) and item["sustainability_correlation"] != 0:
+            # Numeric values inverted or kept as-is based on sustainability_correlation
             results.append(
-                item["result"] if item["direction"] == 1 else 1 - item["result"]
+                item["result"] if item["sustainability_correlation"] == 1 else 1 - item["result"]
             )
 
     # Normalize numeric values if any
