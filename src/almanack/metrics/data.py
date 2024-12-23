@@ -1202,9 +1202,8 @@ def compute_sustainability_score(
 ) -> float:
     """
     Computes a sustainability score by normalizing
-    numeric metrics and incorporating boolean metrics.
-    Adjusts for metrics that should be inversely
-    proportional to the sustainability score.
+    numeric and boolean metrics in order to summarize
+    sustainable development analysis.
 
     Args:
         data (List[Dict[str, Union[int, float, bool]]]):
