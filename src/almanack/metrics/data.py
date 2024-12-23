@@ -1243,10 +1243,15 @@ def compute_sustainability_score(
             elif item["sustainability_correlation"] == -1:
                 bool_results.append(0 if item["result"] else 1)
 
-        elif isinstance(item["result"], (int, float)) and item["sustainability_correlation"] != 0:
+        elif (
+            isinstance(item["result"], (int, float))
+            and item["sustainability_correlation"] != 0
+        ):
             # Numeric values inverted or kept as-is based on sustainability_correlation
             results.append(
-                item["result"] if item["sustainability_correlation"] == 1 else 1 - item["result"]
+                item["result"]
+                if item["sustainability_correlation"] == 1
+                else 1 - item["result"]
             )
 
     # Normalize numeric values if any

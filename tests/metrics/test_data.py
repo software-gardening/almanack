@@ -115,7 +115,10 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
-                        "sustainability_correlation": {"type": "integer", "enum": [1, -1, 0]},
+                        "sustainability_correlation": {
+                            "type": "integer",
+                            "enum": [1, -1, 0],
+                        },
                         "description": {"type": "string"},
                     },
                     "required": [
@@ -1007,13 +1010,16 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
             0.0,  # Single value is scaled to 0
         ),
         # Test case 7: No valid metrics
-        ([], 0.0),  # No metrics, score should be 0
+        ([], None),  # No metrics, score should be 0
     ],
 )
 def test_compute_sustainability_score(
     data: List[Dict[str, Union[int, float, bool]]], expected: float
 ):
     result = compute_sustainability_score(data)
-    assert np.isclose(
-        result, expected, atol=1e-6
-    ), f"Expected {expected}, but got {result}"
+    if expected is not None:
+        assert np.isclose(
+            result, expected, atol=1e-6
+        ), f"Expected {expected}, but got {result}"
+    else:
+        assert result is None, f"Expected {expected}, but got {result}"
