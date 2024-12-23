@@ -489,7 +489,7 @@ def compute_repo_data(repo_path: str) -> None:
             else None
         ),
         # placeholder for sustainability score
-        "repo-almanack-sustainability-score": 0,
+        "repo-almanack-sustainability-score": None,
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
