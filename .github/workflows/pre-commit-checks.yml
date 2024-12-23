@@ -4,7 +4,7 @@ name: pre-commit checks
 
 on:
   push:
-    branches: [main]
+    branches: [main, code-cov-fix-alt]
   pull_request:
     branches: [main]
 
