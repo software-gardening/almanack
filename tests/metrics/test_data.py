@@ -2,12 +2,14 @@
 Testing metrics/data functionality
 """
 
+import builtins
 import pathlib
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import dunamai
 import jsonschema
+import numpy as np
 import pandas as pd
 import pygit2
 import pytest
@@ -18,6 +20,7 @@ from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
     compute_repo_data,
+    compute_sustainability_score,
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
@@ -81,9 +84,18 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "name",
             "id",
             "result-type",
+            "sustainability_correlation",
             "description",
             "result",
         ]
+
+        # check types for the results
+        for record in table:
+            assert (
+                isinstance(record["result"], getattr(builtins, record["result-type"]))
+                # sometimes we have None which is compared by type otherwise
+                or record["result"] is None
+            ), f"Result {record['result']} is not of type {record['result-type']}."
 
 
 def test_metrics_yaml():
@@ -103,12 +115,17 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
+                        "sustainability_correlation": {
+                            "type": "integer",
+                            "enum": [1, -1, 0],
+                        },
                         "description": {"type": "string"},
                     },
                     "required": [
                         "name",
                         "id",
                         "result-type",
+                        "sustainability_correlation",
                         "description",
                     ],
                 },
@@ -936,3 +953,62 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
     assert result["https_resolvable_doi"] == expected_result["https_resolvable_doi"]
     assert result["publication_date"] == expected_result["publication_date"]
     assert isinstance(result["cited_by_count"], type(expected_result["cited_by_count"]))
+
+
+@pytest.mark.parametrize(
+    "data, expected",
+    [
+        # Test case 1: Positive correlation with boolean values
+        (
+            [
+                {"result": True, "sustainability_correlation": 1},
+                {"result": False, "sustainability_correlation": 1},
+                {"result": True, "sustainability_correlation": 1},
+            ],
+            0.6666666666666666,  # Two "True" values contribute 1 each, one "False" contributes 0
+        ),
+        # Test case 2: Negative correlation with boolean values
+        (
+            [
+                {"result": True, "sustainability_correlation": -1},
+                {"result": False, "sustainability_correlation": -1},
+                {"result": True, "sustainability_correlation": -1},
+            ],
+            0.3333333333333333,  # Two "True" values contribute 0 each, one "False" contributes 1
+        ),
+        # Test case 3: Mixed correlation with boolean values
+        (
+            [
+                {"result": True, "sustainability_correlation": 1},
+                {"result": False, "sustainability_correlation": -1},
+            ],
+            1.0,  # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
+        ),
+        # Test case 4: Single boolean value with positive correlation
+        (
+            [
+                {"result": True, "sustainability_correlation": 1},
+            ],
+            1.0,  # Single "True" value with positive correlation contributes 1
+        ),
+        # Test case 5: Single boolean value with negative correlation
+        (
+            [
+                {"result": False, "sustainability_correlation": -1},
+            ],
+            1.0,  # Single "False" value with negative correlation contributes 1
+        ),
+        # Test case 6: No valid metrics
+        ([], None),  # No metrics, score should be None
+    ],
+)
+def test_compute_sustainability_score(
+    data: List[Dict[str, Union[int, float, bool]]], expected: float
+):
+    result = compute_sustainability_score(data)
+    if expected is not None:
+        assert np.isclose(
+            result, expected, atol=1e-6
+        ), f"Expected {expected}, but got {result}"
+    else:
+        assert result is None, f"Expected {expected}, but got {result}"
