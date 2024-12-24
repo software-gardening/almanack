@@ -958,33 +958,7 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
 @pytest.mark.parametrize(
     "data, expected",
     [
-        # Test case 1: Positive correlation with numeric values
-        (
-            [
-                {"result": 10, "sustainability_correlation": 1},
-                {"result": 20, "sustainability_correlation": 1},
-                {"result": 30, "sustainability_correlation": 1},
-            ],
-            0.5,  # Scaled values will average to 0.5 (10 -> 0.0, 20 -> 0.5, 30 -> 1.0)
-        ),
-        # Test case 2: Negative correlation with numeric values
-        (
-            [
-                {"result": 10, "sustainability_correlation": -1},
-                {"result": 20, "sustainability_correlation": -1},
-                {"result": 30, "sustainability_correlation": -1},
-            ],
-            0.5,  # Inverted values average to 0.5 (30 -> 0.0, 20 -> 0.5, 10 -> 1.0)
-        ),
-        # Test case 3: Mixed correlation with numeric values
-        (
-            [
-                {"result": 10, "sustainability_correlation": 1},
-                {"result": 30, "sustainability_correlation": -1},
-            ],
-            0.5,  # Positive and inverted negative scaled values balance out
-        ),
-        # Test case 4: Boolean metrics only
+        # Test case 1: Positive correlation with boolean values
         (
             [
                 {"result": True, "sustainability_correlation": 1},
@@ -993,24 +967,39 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
             ],
             0.6666666666666666,  # Two "True" values contribute 1 each, one "False" contributes 0
         ),
-        # Test case 5: Mixed numeric and boolean metrics
+        # Test case 2: Negative correlation with boolean values
         (
             [
-                {"result": 10, "sustainability_correlation": 1},
-                {"result": 30, "sustainability_correlation": -1},
+                {"result": True, "sustainability_correlation": -1},
+                {"result": False, "sustainability_correlation": -1},
+                {"result": True, "sustainability_correlation": -1},
+            ],
+            0.3333333333333333,  # Two "True" values contribute 0 each, one "False" contributes 1
+        ),
+        # Test case 3: Mixed correlation with boolean values
+        (
+            [
+                {"result": True, "sustainability_correlation": 1},
+                {"result": False, "sustainability_correlation": -1},
+            ],
+            1.0,  # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
+        ),
+        # Test case 4: Single boolean value with positive correlation
+        (
+            [
                 {"result": True, "sustainability_correlation": 1},
             ],
-            (1.0 + 0.0 + 1.0) / 3,  # Scaled numeric and boolean metrics combined
+            1.0,  # Single "True" value with positive correlation contributes 1
         ),
-        # Test case 6: Single value
+        # Test case 5: Single boolean value with negative correlation
         (
             [
-                {"result": 42, "sustainability_correlation": 1},
+                {"result": False, "sustainability_correlation": -1},
             ],
-            0.0,  # Single value is scaled to 0
+            1.0,  # Single "False" value with negative correlation contributes 1
         ),
-        # Test case 7: No valid metrics
-        ([], None),  # No metrics, score should be 0
+        # Test case 6: No valid metrics
+        ([], None),  # No metrics, score should be None
     ],
 )
 def test_compute_sustainability_score(

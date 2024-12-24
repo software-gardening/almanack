@@ -9,13 +9,13 @@ metrics:
   - name: "repo-commits"
     id: "SGA-META-0002"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Total number of commits for the repository.
   - name: "repo-file-count"
     id: "SGA-META-0003"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Total number of files tracked within the repository.
   - name: "repo-commit-time-range"
@@ -27,14 +27,14 @@ metrics:
   - name: "repo-days-of-development"
     id: "SGA-META-0005"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Integer representing the number of days of development
       between most recent commit and first commit.
   - name: "repo-commits-per-day"
     id: "SGA-META-0006"
     result-type: "float"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Floating point number which represents the number of commits
       per day (using days of development).
@@ -138,14 +138,14 @@ metrics:
   - name: "repo-unique-contributors"
     id: "SGA-GL-0008"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of unique contributors since the beginning
       of the repository.
   - name: "repo-unique-contributors-past-year"
     id: "SGA-GL-0009"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of unique contributors within the last year
       from now (where now is a reference to table value
@@ -153,7 +153,7 @@ metrics:
   - name: "repo-unique-contributors-past-182-days"
     id: "SGA-GL-0010"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of unique contributors within the last 182 days
       from now (where now is a reference to table value
@@ -161,13 +161,13 @@ metrics:
   - name: "repo-tags-count"
     id: "SGA-GL-0011"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of the number of tags within the repository.
   - name: "repo-tags-count-past-year"
     id: "SGA-GL-0012"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of the number of tags within the repository
       within the last year from now (where now is a
@@ -175,7 +175,7 @@ metrics:
   - name: "repo-tags-count-past-182-days"
     id: "SGA-GL-0013"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of the number of tags within the repository
       within the last 182 days from now (where now is a
@@ -183,7 +183,7 @@ metrics:
   - name: "repo-stargazers-count"
     id: "SGA-GL-0014"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of the number of stargazers on repository
       remote hosting platform.
@@ -197,7 +197,7 @@ metrics:
   - name: "repo-issues-open-count"
     id: "SGA-GL-0016"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of open issues for repository.
   - name: "repo-pull-requests-enabled"
@@ -209,13 +209,13 @@ metrics:
   - name: "repo-forks-count"
     id: "SGA-GL-0018"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of forks of the repository.
   - name: "repo-subscribers-count"
     id: "SGA-GL-0019"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of subscribers (or watchers) of the repository.
   - name: "repo-packages-ecosystems"
@@ -228,14 +228,14 @@ metrics:
   - name: "repo-packages-ecosystems-count"
     id: "SGA-GL-0021"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of package platforms or services where the repository
       was detected (leveraging the ecosyste.ms packages API).
   - name: "repo-packages-versions-count"
     id: "SGA-GL-0022"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of package versions on package hosts or services
       where the repository was detected (leveraging the
@@ -249,7 +249,7 @@ metrics:
   - name: "repo-social-media-platforms-count"
     id: "SGA-GL-0024"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Count of social media platforms detected within the readme.
   - name: "repo-doi-valid-format"
@@ -268,14 +268,14 @@ metrics:
   - name: "repo-doi-cited-by-count"
     id: "SGA-GL-0027"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       How many other works cite the DOI for the repository found within
       the CITATION.cff as discovered by the OpenAlex.org API.
   - name: "repo-days-between-doi-publication-date-and-latest-commit"
     id: "SGA-GL-0028"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       The number of days between the most recent commit and DOI
       for the repository's publication date as discovered by
@@ -283,7 +283,7 @@ metrics:
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Ratio of succeeding workflow runs out of queried
       workflow runs from GitHub (only applies to GitHub
@@ -291,7 +291,7 @@ metrics:
   - name: "repo-gh-workflow-succeeding-runs"
     id: "SGA-SF-0002"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Number of succeeding workflow runs out of queried
       workflow runs from GitHub (only applies to GitHub
@@ -299,7 +299,7 @@ metrics:
   - name: "repo-gh-workflow-failing-runs"
     id: "SGA-SF-0003"
     result-type: "int"
-    sustainability_correlation: -1
+    sustainability_correlation: 0
     description: >-
       Number of failing workflow runs out of queried
       workflow runs from GitHub (only applies to GitHub
@@ -307,7 +307,7 @@ metrics:
   - name: "repo-gh-workflow-queried-total"
     id: "SGA-SF-0004"
     result-type: "int"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Total number of workflow runs from GitHub
       (only applies to GitHub hosted repositories
@@ -315,7 +315,7 @@ metrics:
   - name: "repo-code-coverage-percent"
     id: "SGA-SF-0005"
     result-type: "float"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Percentage of code coverage for repository
       given detected code coverage data.
@@ -329,7 +329,7 @@ metrics:
   - name: "repo-days-between-last-coverage-run-latest-commit"
     id: "SGA-SF-0007"
     result-type: "int"
-    sustainability_correlation: -1
+    sustainability_correlation: 0
     description: >-
       Days between last coverage run date and latest commit date.
   - name: "repo-code-coverage-total-lines"
@@ -349,7 +349,7 @@ metrics:
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
-    sustainability_correlation: -1
+    sustainability_correlation: 0
     description: >-
       Aggregated information entropy for all files within a repository
       given a range between two commits (by default, the first and

@@ -14,11 +14,9 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import defusedxml.ElementTree as ET
-import numpy as np
 import pygit2
 import requests
 import yaml
-from sklearn.preprocessing import RobustScaler
 
 from ..git import (
     clone_repository,
@@ -1202,7 +1200,7 @@ def compute_sustainability_score(
 ) -> float:
     """
     Computes a sustainability score by normalizing
-    numeric and boolean metrics in order to summarize
+    boolean Almanack table metrics in order to summarize
     sustainable development analysis.
 
     Args:
@@ -1221,7 +1219,7 @@ def compute_sustainability_score(
         float:
             The computed sustainability score, normalized between 0 and 1.
     """
-    results = []
+
     bool_results = []
 
     # Gather numeric and boolean values with a sustainability_correlation
@@ -1243,35 +1241,4 @@ def compute_sustainability_score(
             elif item["sustainability_correlation"] == -1:
                 bool_results.append(0 if item["result"] else 1)
 
-        elif (
-            isinstance(item["result"], (int, float))
-            and item["sustainability_correlation"] != 0
-        ):
-            # Numeric values inverted or kept as-is based on sustainability_correlation
-            results.append(
-                item["result"]
-                if item["sustainability_correlation"] == 1
-                else 1 - item["result"]
-            )
-
-    # Normalize numeric values if any
-    if results:
-        scaler = RobustScaler()
-        normalized_results = list(
-            scaler.fit_transform(np.array(results).reshape(-1, 1)).flatten()
-        )
-
-        # Rescale to [0, 1] range
-        numeric_min = min(normalized_results)
-        numeric_max = max(normalized_results)
-        if numeric_max > numeric_min:  # Avoid division by zero
-            normalized_results = [
-                (x - numeric_min) / (numeric_max - numeric_min)
-                for x in normalized_results
-            ]
-    else:
-        normalized_results = []
-
-    # Combine normalized numeric and boolean results
-    all_results = normalized_results + bool_results
-    return sum(all_results) / len(all_results) if all_results else None
+    return sum(bool_results) / len(bool_results) if bool_results else None
