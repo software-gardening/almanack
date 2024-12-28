@@ -5,36 +5,17 @@ which encompass aspects of human understanding.
 
 import logging
 import pathlib
+from datetime import datetime, timezone
 
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
-from urllib.parse import urlparse
-
-import defusedxml.ElementTree as ET
 import pygit2
-import requests
-import yaml
 
-from ...git import (
-    clone_repository,
-    count_files,
-    find_file,
-    get_commits,
-    get_edited_files,
-    get_remote_url,
-    read_file,
-    file_exists_in_repo
-)
-from ..entropy.calculate_entropy import (
-    calculate_aggregate_entropy,
-    calculate_normalized_entropy,
-)
-
+from ...git import file_exists_in_repo, find_file, read_file
 
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
 LOGGER = logging.getLogger(__name__)
+
 
 def is_citable(repo: pygit2.Repository) -> bool:
     """
@@ -87,6 +68,7 @@ def is_citable(repo: pygit2.Repository) -> bool:
             return True
 
     return False
+
 
 def includes_common_docs(repo: pygit2.Repository) -> bool:
     """

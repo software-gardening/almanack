@@ -4,35 +4,16 @@ which focus on elements of human connection and engagement.
 """
 
 import logging
-import pathlib
-import re 
+import re
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
-from urllib.parse import urlparse
-
-import defusedxml.ElementTree as ET
 import pygit2
 import requests
 import yaml
 
-from ...git import (
-    clone_repository,
-    count_files,
-    find_file,
-    get_commits,
-    get_edited_files,
-    get_remote_url,
-    read_file,
-    file_exists_in_repo
-)
-
+from ...git import find_file, read_file
 from ..remote import get_api_data
-from ..entropy.calculate_entropy import (
-    calculate_aggregate_entropy,
-    calculate_normalized_entropy,
-)
-
 
 LOGGER = logging.getLogger(__name__)
 
@@ -63,6 +44,7 @@ def default_branch_is_not_master(repo: pygit2.Repository) -> bool:
         # fall back to the local HEAD check
         return repo.head.shorthand != "master"
 
+
 def count_unique_contributors(
     repo: pygit2.Repository, since: Optional[datetime] = None
 ) -> int:
@@ -92,6 +74,7 @@ def count_unique_contributors(
         if commit.commit_time > since_timestamp
     }
     return len(contributors)
+
 
 def detect_social_media_links(content: str) -> Dict[str, List[str]]:
     """
@@ -135,6 +118,7 @@ def detect_social_media_links(content: str) -> Dict[str, List[str]]:
         "social_media_platforms": sorted(found_platforms),
         "social_media_platforms_count": len(found_platforms),
     }
+
 
 def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
     """

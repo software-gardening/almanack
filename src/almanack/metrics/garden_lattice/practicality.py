@@ -4,36 +4,15 @@ which involve how people can apply software in practice.
 """
 
 import logging
-import pathlib
+from datetime import datetime
+from typing import Any, Dict, Optional
 
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
-from urllib.parse import urlparse
-
-import defusedxml.ElementTree as ET
 import pygit2
-import requests
-import yaml
-
-from ...git import (
-    clone_repository,
-    count_files,
-    find_file,
-    get_commits,
-    get_edited_files,
-    get_remote_url,
-    read_file,
-    file_exists_in_repo
-)
-from ..entropy.calculate_entropy import (
-    calculate_aggregate_entropy,
-    calculate_normalized_entropy,
-)
 
 from ..remote import get_api_data
 
-
 LOGGER = logging.getLogger(__name__)
+
 
 def count_repo_tags(repo: pygit2.Repository, since: Optional[datetime] = None) -> int:
     """
@@ -71,6 +50,7 @@ def count_repo_tags(repo: pygit2.Repository, since: Optional[datetime] = None) -
                 count += 1
 
     return count
+
 
 def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
     """
@@ -132,4 +112,3 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
         "versions_count": total_versions,
         "ecosystems_names": sorted(ecosystems),
     }
-

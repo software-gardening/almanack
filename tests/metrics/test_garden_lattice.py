@@ -2,39 +2,9 @@
 Tests for the Almanack's Garden Lattice specific functions.
 """
 
-import pathlib
-from datetime import datetime, timedelta, timezone
-from typing import Dict, List
-
-import dunamai
-import jsonschema
-import pandas as pd
-import pygit2
 import pytest
-import yaml
 
-from almanack.git import get_remote_url
-from almanack.metrics.data import (
-    METRICS_TABLE,
-    _get_almanack_version,
-    compute_repo_data,
-    count_repo_tags,
-    count_unique_contributors,
-    default_branch_is_not_master,
-    find_doi_citation_data,
-    get_api_data,
-    get_ecosystems_package_metrics,
-    get_github_build_metrics,
-    get_table,
-    includes_common_docs,
-    is_citable,
-    measure_coverage,
-)
-from tests.data.almanack.repo_setup.create_repo import repo_setup
-
-from almanack.metrics.garden_lattice.understanding import includes_common_docs, is_citable
-from almanack.metrics.garden_lattice.connectedness import default_branch_is_not_master, count_unique_contributors, find_doi_citation_data, detect_social_media_links
-from almanack.metrics.garden_lattice.practicality import count_repo_tags, get_ecosystems_package_metrics
+from almanack.metrics.garden_lattice.connectedness import detect_social_media_links
 
 
 @pytest.mark.parametrize(

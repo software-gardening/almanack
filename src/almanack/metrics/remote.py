@@ -2,20 +2,13 @@
 This module focuses on remote API requests and similar
 """
 
-import json
 import logging
 import pathlib
-import re
-import shutil
-import tempfile
 import time
-from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
-from urllib.parse import urlparse
-
+from datetime import datetime, timezone
+from typing import Dict, Optional
 
 import requests
-
 
 LOGGER = logging.getLogger(__name__)
 
