@@ -43,7 +43,7 @@ pd.DataFrame(almanack_table)
 Alternatively, you can use the Almanack package as a command-line interface (CLI):
 
 ```bash
-almanack "repository directory"
+almanack path/to/repository
 ```
 
 ## Contributing
