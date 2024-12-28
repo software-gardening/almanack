@@ -24,7 +24,7 @@ pip install almanack
 pip install git+https://github.com/software-gardening/almanack.git
 ```
 
-Once installed, the Almanack may be used to analyze repositories for sustainable development practices.
+Once installed, the Almanack can be used to analyze repositories for sustainable development practices.
 Output from the Almanack includes metrics which are defined through `metrics.yml` as a Python dictionary (JSON-compatible) record structure.
 
 For example:
