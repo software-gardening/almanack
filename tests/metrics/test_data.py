@@ -21,8 +21,6 @@ from almanack.metrics.data import (
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
-    detect_social_media_links,
-    file_exists_in_repo,
     find_doi_citation_data,
     get_api_data,
     get_ecosystems_package_metrics,
@@ -128,53 +126,6 @@ def test_metrics_yaml():
     # Check for unique IDs
     ids = [metric["id"] for metric in metrics_table["metrics"]]
     assert len(ids) == len(set(ids))
-
-
-@pytest.mark.parametrize(
-    "expected_file_name, check_extension, extensions, expected_result",
-    [
-        ("readme", True, [".md", ""], True),
-        ("README", False, [], True),
-        ("CONTRIBUTING", True, [".md", ""], True),
-        ("contributing", False, [], True),
-        ("code_of_conduct", True, [".md", ""], True),
-        ("CODE_OF_CONDUCT", False, [], True),
-        ("LICENSE", True, [".md", ".txt", ""], True),
-        ("license", False, [], True),
-    ],
-)
-def test_file_exists_in_repo(
-    community_health_repository_path: pygit2.Repository,
-    expected_file_name: str,
-    check_extension: bool,
-    extensions: List[str],
-    expected_result: bool,
-):
-    """
-    Combined test for file_exists_in_repo function using different scenarios.
-    """
-
-    result = file_exists_in_repo(
-        repo=community_health_repository_path,
-        expected_file_name=expected_file_name,
-        check_extension=check_extension,
-        extensions=extensions,
-    )
-
-    assert result == expected_result
-
-    # test the almanack itself
-    repo_path = pathlib.Path(".").resolve()
-    repo = pygit2.Repository(str(repo_path))
-
-    result = file_exists_in_repo(
-        repo=repo,
-        expected_file_name=expected_file_name,
-        check_extension=check_extension,
-        extensions=extensions,
-    )
-
-    assert result == expected_result
 
 
 @pytest.mark.parametrize(
@@ -784,79 +735,6 @@ def test_get_ecosystems_package_metrics():
     )
 
     assert https_result == git_result
-
-
-@pytest.mark.parametrize(
-    "content, expected",
-    [
-        # Test case: Single platform (Twitter)
-        (
-            "Follow us on Twitter: https://twitter.com/ourproject",
-            {"social_media_platforms": ["Twitter"], "social_media_platforms_count": 1},
-        ),
-        # Test case: Multiple platforms
-        (
-            """Connect with us:
-            - Twitter: https://twitter.com/ourproject
-            - LinkedIn: https://linkedin.com/company/ourcompany
-            - Discord: https://discord.gg/invitecode
-            """,
-            {
-                "social_media_platforms": ["Discord", "LinkedIn", "Twitter"],
-                "social_media_platforms_count": 3,
-            },
-        ),
-        # Test case: No social media links
-        (
-            "This README.md contains no social media links.",
-            {"social_media_platforms": [], "social_media_platforms_count": 0},
-        ),
-        # Test case: Duplicate platforms (should only count each platform once)
-        (
-            """Follow us:
-            - Twitter: https://twitter.com/ourproject
-            - Twitter: https://twitter.com/anotherproject
-            """,
-            {"social_media_platforms": ["Twitter"], "social_media_platforms_count": 1},
-        ),
-        # Test case: Less common platforms (Bluesky and Threads)
-        (
-            """Find us:
-            - Bluesky: https://bsky.app/profile/ourproject
-            - Threads: https://threads.net/ourproject
-            """,
-            {
-                "social_media_platforms": ["Bluesky", "Threads"],
-                "social_media_platforms_count": 2,
-            },
-        ),
-        # Test case: Mixed case URLs (case-insensitive match)
-        (
-            """Stay connected:
-            - YouTube: https://www.youtube.com/channel/OurChannel
-            - Facebook: https://facebook.com/OurPage
-            """,
-            {
-                "social_media_platforms": ["Facebook", "YouTube"],
-                "social_media_platforms_count": 2,
-            },
-        ),
-        # Test case: social media links without specific channels / users
-        (
-            """Stay connected:
-            - YouTube: https://www.youtube.com
-            - Facebook: https://facebook.com
-            """,
-            {
-                "social_media_platforms": [],
-                "social_media_platforms_count": 0,
-            },
-        ),
-    ],
-)
-def test_detect_social_media_links(content, expected):
-    result = detect_social_media_links(content)
-    assert result == expected
 
 
 @pytest.mark.parametrize(

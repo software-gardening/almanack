@@ -13,6 +13,7 @@ from almanack.git import (
     clone_repository,
     count_files,
     detect_encoding,
+    file_exists_in_repo,
     find_file,
     get_commits,
     get_edited_files,
@@ -253,3 +254,50 @@ def test_get_remote_url_with_current_repo(current_repo):
 
     # Optionally, print the remote URL for debugging
     print(f"Remote URL: {remote_url}")
+
+
+@pytest.mark.parametrize(
+    "expected_file_name, check_extension, extensions, expected_result",
+    [
+        ("readme", True, [".md", ""], True),
+        ("README", False, [], True),
+        ("CONTRIBUTING", True, [".md", ""], True),
+        ("contributing", False, [], True),
+        ("code_of_conduct", True, [".md", ""], True),
+        ("CODE_OF_CONDUCT", False, [], True),
+        ("LICENSE", True, [".md", ".txt", ""], True),
+        ("license", False, [], True),
+    ],
+)
+def test_file_exists_in_repo(
+    community_health_repository_path: pygit2.Repository,
+    expected_file_name: str,
+    check_extension: bool,
+    extensions: List[str],
+    expected_result: bool,
+):
+    """
+    Combined test for file_exists_in_repo function using different scenarios.
+    """
+
+    result = file_exists_in_repo(
+        repo=community_health_repository_path,
+        expected_file_name=expected_file_name,
+        check_extension=check_extension,
+        extensions=extensions,
+    )
+
+    assert result == expected_result
+
+    # test the almanack itself
+    repo_path = pathlib.Path(".").resolve()
+    repo = pygit2.Repository(str(repo_path))
+
+    result = file_exists_in_repo(
+        repo=repo,
+        expected_file_name=expected_file_name,
+        check_extension=check_extension,
+        extensions=extensions,
+    )
+
+    assert result == expected_result

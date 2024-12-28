@@ -325,3 +325,51 @@ def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
 
     # Return None if no valid URL is found
     return None
+
+
+def file_exists_in_repo(
+    repo: pygit2.Repository,
+    expected_file_name: str,
+    check_extension: bool = False,
+    extensions: list[str] = [".md", ""],
+) -> bool:
+    """
+    Check if a file (case-insensitive and with optional extensions)
+    exists in the latest commit of the repository.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object to search in.
+        expected_file_name (str):
+            The base file name to check (e.g., "readme").
+        check_extension (bool):
+            Whether to check the extension of the file or not.
+        extensions (list[str]):
+            List of possible file extensions to check (e.g., [".md", ""]).
+
+    Returns:
+        bool:
+            True if the file exists, False otherwise.
+    """
+
+    # Gather a tree from the HEAD of the repo
+    tree = repo.revparse_single("HEAD").tree
+
+    # Normalize expected file name to lowercase for case-insensitive comparison
+    expected_file_name = expected_file_name.lower()
+
+    for entry in tree:
+        # Normalize entry name to lowercase
+        entry_name = entry.name.lower()
+
+        # Check if the base file name matches with any allowed extension
+        if check_extension and any(
+            entry_name == f"{expected_file_name}{ext.lower()}" for ext in extensions
+        ):
+            return True
+
+        # Check whether the filename without an extension matches the expected file name
+        if not check_extension and entry_name.split(".", 1)[0] == expected_file_name:
+            return True
+
+    return False
