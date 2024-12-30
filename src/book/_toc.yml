@@ -30,4 +30,4 @@ parts:
           - title: Garden Map
             file: garden-circle/garden-map.md
           - title: Almanack Package API
-            file: garden-circle/almanack-package-api.md
+            file: garden-circle/package-api.md
