@@ -9,7 +9,7 @@ parts:
           - title: Understanding
             file: garden-lattice/understanding.md
           - title: Connectedness
-          file: garden-lattice/connectedness.md
+            file: garden-lattice/connectedness.md
           - title: Practicality
             file: garden-lattice/practicality.md
       - title: Software Forest
