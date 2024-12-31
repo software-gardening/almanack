@@ -34,7 +34,9 @@ For further reading on `README` file practices, see the following resources:
 A `CONTRIBUTING` file outlines the guidelines for contributing to the project.
 Its presence fosters a welcoming environment for new contributors, ensuring that they have the necessary information to participate effectively.
 In the same way that a garden flourishes when there's good understanding of roles and how to care for one another, a project grows stronger when contributors are guided by clear and inclusive instructions.
+
 All development procedures which are specific to the project should be outlined within the `CONTRIBUTING` file (for example, testing and linting expectations, release cadence, etc.).
+Consider writing this documentation for each project from the standpoint of an outsider or beginner who may be trying to add a new task, understand the project, or complete an existing task {cite:p}`treude_towards_2024`.
 
 For further reading on `CONTRIBUTING` file practices, see the following resources:
 
