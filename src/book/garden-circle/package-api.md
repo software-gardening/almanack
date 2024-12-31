@@ -5,7 +5,7 @@
 ### Understanding
 
 ```{eval-rst}
-.. automodule:: src.almnanack.metrics.garden_lattice.understanding
+.. automodule:: almanack.metrics.garden_lattice.understanding
    :members:
    :private-members:
    :undoc-members:
@@ -15,7 +15,7 @@
 ### Connectedness
 
 ```{eval-rst}
-.. automodule:: src.almnanack.metrics.garden_lattice.connectedness
+.. automodule:: almanack.metrics.garden_lattice.connectedness
    :members:
    :private-members:
    :undoc-members:
@@ -25,7 +25,7 @@
 ### Practicality
 
 ```{eval-rst}
-.. automodule:: src.almnanack.metrics.garden_lattice.practicality
+.. automodule:: almanack.metrics.garden_lattice.practicality
    :members:
    :private-members:
    :undoc-members:
