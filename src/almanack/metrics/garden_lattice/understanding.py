@@ -9,65 +9,12 @@ from datetime import datetime, timezone
 
 import pygit2
 
-from ...git import file_exists_in_repo, find_file, read_file
+from ...git import find_file
 
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
 LOGGER = logging.getLogger(__name__)
-
-
-def is_citable(repo: pygit2.Repository) -> bool:
-    """
-    Check if the given repository is citable.
-
-    A repository is considered citable if it contains a CITATION.cff or CITATION.bib
-    file, or if the README.md file contains a citation section indicated by "## Citation"
-    or "## Citing".
-
-    Args:
-        repo (pygit2.Repository): The repository to check for citation files.
-
-    Returns:
-        bool: True if the repository is citable, False otherwise.
-    """
-
-    # Check for a CITATION.cff or CITATION.bib file
-    if file_exists_in_repo(
-        repo=repo,
-        expected_file_name="citation",
-        check_extension=True,
-        extensions=[".cff", ".bib"],
-    ):
-        return True
-
-    # Look for a README.md file and read its content
-    if (
-        file_content := read_file(
-            repo=repo, filepath="readme.md", case_insensitive=True
-        )
-    ) is not None:
-        # Check for an H2 heading indicating a citation section
-        if any(
-            check_string in file_content
-            for check_string in [
-                # markdown sub-headers
-                "## Citation",
-                "## Citing",
-                "## Cite",
-                "## How to cite",
-                # RST sub-headers
-                "Citation\n--------",
-                "Citing\n------",
-                "Cite\n----",
-                "How to cite\n-----------",
-                # DOI shield
-                "[![DOI](https://img.shields.io/badge/DOI",
-            ]
-        ):
-            return True
-
-    return False
 
 
 def includes_common_docs(repo: pygit2.Repository) -> bool:

@@ -34,9 +34,10 @@ from .garden_lattice.connectedness import (
     default_branch_is_not_master,
     detect_social_media_links,
     find_doi_citation_data,
+    is_citable,
 )
 from .garden_lattice.practicality import count_repo_tags, get_ecosystems_package_metrics
-from .garden_lattice.understanding import includes_common_docs, is_citable
+from .garden_lattice.understanding import includes_common_docs
 from .remote import get_api_data
 
 LOGGER = logging.getLogger(__name__)
