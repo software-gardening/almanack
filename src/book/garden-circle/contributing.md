@@ -33,7 +33,7 @@ This commitment requires a good relationship and open communication with our use
 We encourage you to file a [GitHub issue](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) to report bugs or propose enhancements to improve the Software Gardening Almanack.
 
 First, figure out if your idea is already implemented by reading existing issues or pull requests!
-Check the issues (<https://github.com/software-gardening/almanack/issues>) and pull requests (<https://github.com/software-gardening/almanack/pulls>)  to see if someone else has already documented or began implementation of your idea.
+Check the issues (<https://github.com/software-gardening/almanack/issues>) and pull requests (<https://github.com/software-gardening/almanack/pulls>) to see if someone else has already documented or began implementation of your idea.
 If you do find your idea in an existing issue, please comment on the existing issue noting that you are also interested in the functionality.
 If you do not find your idea, please open a new issue and document why it would be helpful for your particular use case.
 
@@ -104,7 +104,7 @@ To enable local development, perform the following steps.
 
 ### Development Tasks
 
-We use [Poe the Poet](https://poethepoet.natn.io/) to define common development tasks, which simplifies repeated  commands.
+We use [Poe the Poet](https://poethepoet.natn.io/) to define common development tasks, which simplifies repeated commands.
 We include Poe the Poet as a Python Poetry `dev` group dependency, which users access through the Poetry environment.
 Please see the [`pyproject.toml`](https://github.com/software-gardening/almanack/blob/main/pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
 

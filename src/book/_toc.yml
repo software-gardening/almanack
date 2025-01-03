@@ -5,6 +5,9 @@ parts:
   - chapters:
       - title: Garden Lattice
         file: garden-lattice/garden-lattice.md
+        sections:
+          - title: Understanding
+            file: garden-lattice/understanding.md
       - title: Software Forest
         file: software-forest/software-forest.md
       - title: Verdant Sundial
@@ -22,3 +25,5 @@ parts:
             file: garden-circle/contributing.md
           - title: Garden Map
             file: garden-circle/garden-map.md
+          - title: Almanack Package API
+            file: garden-circle/package-api.md

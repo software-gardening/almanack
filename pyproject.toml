@@ -110,8 +110,9 @@ exclude_dirs = [ "tests" ]
 
 [tool.poe.tasks]
 # builds the jupyter book related to this project
+# note: we include the pythonpath var to properly build sphinx autodocs
 build-book.shell = """
-  jupyter-book build src/book --all
+  PYTHONPATH="./src/almanack" jupyter-book build src/book --all
 """
 # build a PDF from the HTML content
 # note: depends on build-book content and creates copy to avoid
@@ -121,8 +122,9 @@ build-book-pdf.shell = """
   jupyter-book build src/_pdfbuild --builder pdfhtml
 """
 # builds the jupyter book related to this project and opens a new browser window
+# note: we include the pythonpath var to properly build sphinx autodocs
 build-book-dev.shell = """
-  jupyter-book build src/book && \
+  PYTHONPATH="./src/almanack" jupyter-book build src/book && \
   python -m webbrowser -t "file://$PWD/src/book/_build/html/index.html"
 """
 # syncs and runs vale relative to this project

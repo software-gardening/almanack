@@ -4,7 +4,7 @@ default_language_version:
   python: python3.11
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       # Ensures no trailing whitespace in files, which can cause
       # merge conflicts and makes diffs harder to read.
@@ -39,7 +39,7 @@ repos:
       - id: poetry-check
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "2.2.4"
+    rev: "v2.5.0"
     hooks:
       # Formats the `pyproject.toml` file to follow a consistent structure
       # and style, making it easier to read and maintain.
@@ -62,7 +62,7 @@ repos:
           - tomli
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.17
+    rev: 0.7.21
     hooks:
       # Formats Markdown files to ensure a consistent style,
       # making the documentation easier to read and maintain.
@@ -79,19 +79,29 @@ repos:
       - id: yamllint
 
   - repo: https://github.com/psf/black
-    rev: 24.4.2
+    rev: 24.10.0
     hooks:
       # Formats Python code to follow the Black code style,
       # promoting consistency and readability across the codebase.
       - id: black
 
   - repo: https://github.com/asottile/blacken-docs
-    rev: 1.18.0
+    rev: 1.19.1
     hooks:
       # Formats code blocks in Markdown and reStructuredText
       # documentation files with Black's style, ensuring
       # consistency in inline code snippets.
       - id: blacken-docs
+
+  - repo: https://github.com/PyCQA/autoflake
+    rev: v2.3.1
+    hooks:
+      # removes unused imports automatically
+      - id: autoflake
+        args:
+          - "--remove-all-unused-imports"
+          - "--in-place"
+          - "--ignore-init-module-imports"
 
   - repo: https://github.com/PyCQA/isort
     rev: 5.13.2
@@ -101,7 +111,7 @@ repos:
       - id: isort
 
   - repo: https://github.com/PyCQA/bandit
-    rev: 1.7.9
+    rev: 1.8.0
     hooks:
       # Scans Python code for common security issues, helping to identify
       # and fix potential vulnerabilities in the codebase.
@@ -110,14 +120,14 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.5.2"
+    rev: "v0.8.4"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
       - id: ruff
 
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.1
+    rev: v1.7.5
     hooks:
       # Lints GitHub Actions workflows, ensuring syntax correctness and
       # reducing errors in continuous integration and automation configurations.
@@ -131,14 +141,14 @@ repos:
       - id: validate-cff
 
   - repo: https://github.com/jendrikseipp/vulture
-    rev: 'v2.13'
+    rev: 'v2.14'
     hooks:
       # Detects unused code, helping identify dead code that can be removed
       # to keep the codebase lean and maintainable.
       - id: vulture
 
   - repo: https://github.com/nbQA-dev/nbQA
-    rev: 1.8.5
+    rev: 1.9.1
     hooks:
       # Runs Black formatting on Jupyter notebooks, ensuring code cells
       # adhere to the Black code style.

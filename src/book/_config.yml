@@ -29,6 +29,11 @@ repository:
 #######################################################################################
 # Sphinx configuration
 sphinx:
+  extra_extensions:
+    # enable sphinx autodoc for package api documentation
+    - 'sphinx.ext.autodoc'
+    - 'sphinx.ext.napoleon'
+    - 'sphinx.ext.viewcode'
   config:
     bibtex_reference_style: super
     # added to help render plotly plots within jupyter-book builds
