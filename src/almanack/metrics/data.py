@@ -1223,23 +1223,25 @@ def compute_sustainability_score(
 
     bool_results = []
 
-    # Gather numeric and boolean values with a sustainability_correlation
+    # Gather boolean Almanack values, contingent on sustainability_correlation
     for item in almanack_table:
         # We translate boolean values into numeric values based on the
         # sustainability_correlation provided from the metrics.yml file.
-        # For example, see below:
+        # We transform the score based on the following logic:
         # - True with sustainability_correlation 1 = 1
         # - True with sustainability_correlation -1 = 0
         # - False with sustainability_correlation 1 = 0
         # - False with sustainability_correlation -1 = 1
         if isinstance(item["result"], bool) and item["sustainability_correlation"] != 0:
-            # for sustainability_correlation == 1 we treat True as positive correlation
-            # and False as a negative correlation.
+            # for sustainability_correlation == 1 we treat True as positive sustainability indicator
+            # and False as a negative sustainability indicator.
             if item["sustainability_correlation"] == 1:
                 bool_results.append(1 if item["result"] else 0)
-            # for sustainability_correlation == -1 we treat True as negative correlation
-            # and False as a positive correlation.
+            # for sustainability_correlation == -1 we treat True as negative sustainability indicator.
+            # and False as a positive sustainability indicator.
             elif item["sustainability_correlation"] == -1:
                 bool_results.append(0 if item["result"] else 1)
 
-    return sum(bool_results) / len(bool_results) if bool_results else None
+    # Calculate sustainability score, normalized to between 0 and 1
+    sustainability_score = sum(bool_results) / len(bool_results) if bool_results else None
+    return sustainability_score
