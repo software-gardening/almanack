@@ -1231,19 +1231,24 @@ def compute_almanack_score(
         # - True with sustainability_correlation -1 = 0
         # - False with sustainability_correlation 1 = 0
         # - False with sustainability_correlation -1 = 1
-        if isinstance(item["result"], bool) and item["sustainability_correlation"] != 0:
+        if item["result-type"] == "bool" and item["sustainability_correlation"] != 0:
             # for sustainability_correlation == 1 we treat True as positive sustainability indicator
             # and False as a negative sustainability indicator.
             # note: bools are a subclass of ints in Python.
             if item["sustainability_correlation"] == 1:
-                bool_results.append(int(item["result"]))
+                bool_results.append(
+                    int(item["result"]) if item["result"] is not None else 0
+                )
             # for sustainability_correlation == -1 we treat True as negative sustainability indicator.
             # and False as a positive sustainability indicator.
             # note: bools are a subclass of ints in Python.
             elif item["sustainability_correlation"] == -1:
-                bool_results.append(int(not item["result"]))
+                bool_results.append(
+                    int(not item["result"]) if item["result"] is not None else 0
+                )
 
     almanack_score_values = {
+        # capture numerator and denominator for use alongside the almanack score data
         "almanack-score-numerator": sum(bool_results) if bool_results else None,
         "almanack-score-denominator": len(bool_results) if bool_results else None,
         # Calculate almanack score, normalized to between 0 and 1

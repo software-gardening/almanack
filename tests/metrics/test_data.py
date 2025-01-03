@@ -960,47 +960,86 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
         # Test case 1: Positive correlation with boolean values
         (
             [
-                {"result": True, "sustainability_correlation": 1},
-                {"result": False, "sustainability_correlation": 1},
-                {"result": True, "sustainability_correlation": 1},
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
             ],
             {
                 "almanack-score-numerator": 2,
                 "almanack-score-denominator": 3,
+                # Two "True" values contribute 1 each, one "False" contributes 0
                 "almanack-score": 0.6666666666666666,
-            },  # Two "True" values contribute 1 each, one "False" contributes 0
+            },
         ),
         # Test case 2: Negative correlation with boolean values
         (
             [
-                {"result": True, "sustainability_correlation": -1},
-                {"result": False, "sustainability_correlation": -1},
-                {"result": True, "sustainability_correlation": -1},
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": -1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": -1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": -1,
+                },
             ],
             (
                 {
                     "almanack-score-numerator": 1,
                     "almanack-score-denominator": 3,
+                    # Two "True" values contribute 0 each, one "False" contributes 1
                     "almanack-score": 0.3333333333333333,
                 }
-            ),  # Two "True" values contribute 0 each, one "False" contributes 1
+            ),
         ),
         # Test case 3: Mixed correlation with boolean values
         (
             [
-                {"result": True, "sustainability_correlation": 1},
-                {"result": False, "sustainability_correlation": -1},
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": -1,
+                },
             ],
             {
                 "almanack-score-numerator": 2,
                 "almanack-score-denominator": 2,
+                # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
                 "almanack-score": 1.0,
-            },  # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
+            },
         ),
         # Test case 4: Single boolean value with positive correlation
         (
             [
-                {"result": True, "sustainability_correlation": 1},
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
             ],
             {
                 "almanack-score-numerator": 1,
@@ -1011,23 +1050,49 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
         # Test case 5: Single boolean value with negative correlation
         (
             [
-                {"result": False, "sustainability_correlation": -1},
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": -1,
+                },
+            ],
+            {
+                "almanack-score-numerator": 1,
+                "almanack-score-denominator": 1,
+                # Single "False" value with negative correlation contributes 1
+                "almanack-score": 1.0,
+            },
+        ),
+        # Test case 6: Single boolean value with positive correlation and a numeric metric
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "float",
+                    "result": 0.77,
+                    "sustainability_correlation": 0,
+                },
             ],
             {
                 "almanack-score-numerator": 1,
                 "almanack-score-denominator": 1,
                 "almanack-score": 1.0,
-            },  # Single "False" value with negative correlation contributes 1
+            },
         ),
-        # Test case 6: No valid metrics
+        # Test case 7: No valid metrics
         (
             [],
             {
                 "almanack-score-numerator": None,
                 "almanack-score-denominator": None,
+                # No metrics, score should be None
                 "almanack-score": None,
             },
-        ),  # No metrics, score should be None
+        ),
     ],
 )
 def test_compute_almanack_score(
