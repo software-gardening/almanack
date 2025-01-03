@@ -2,9 +2,10 @@
 Testing metrics/data functionality
 """
 
+import builtins
 import pathlib
 from datetime import datetime, timedelta, timezone
-from typing import Dict, List
+from typing import Dict, List, Union
 
 import dunamai
 import jsonschema
@@ -17,6 +18,7 @@ from almanack.git import get_remote_url
 from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
+    compute_almanack_score,
     compute_repo_data,
     count_repo_tags,
     count_unique_contributors,
@@ -81,9 +83,18 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "name",
             "id",
             "result-type",
+            "sustainability_correlation",
             "description",
             "result",
         ]
+
+        # check types for the results
+        for record in table:
+            assert (
+                isinstance(record["result"], getattr(builtins, record["result-type"]))
+                # sometimes we have None which is compared by type otherwise
+                or record["result"] is None
+            ), f"Result {record['result']} is not of type {record['result-type']}."
 
 
 def test_metrics_yaml():
@@ -103,12 +114,17 @@ def test_metrics_yaml():
                         "name": {"type": "string"},
                         "id": {"type": "string"},
                         "result-type": {"type": "string"},
+                        "sustainability_correlation": {
+                            "type": "integer",
+                            "enum": [1, -1, 0],
+                        },
                         "description": {"type": "string"},
                     },
                     "required": [
                         "name",
                         "id",
                         "result-type",
+                        "sustainability_correlation",
                         "description",
                     ],
                 },
@@ -936,3 +952,155 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
     assert result["https_resolvable_doi"] == expected_result["https_resolvable_doi"]
     assert result["publication_date"] == expected_result["publication_date"]
     assert isinstance(result["cited_by_count"], type(expected_result["cited_by_count"]))
+
+
+@pytest.mark.parametrize(
+    "almanack_table_data, expected",
+    [
+        # Test case 1: Positive correlation with boolean values
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+            ],
+            {
+                "almanack-score-numerator": 2,
+                "almanack-score-denominator": 3,
+                # Two "True" values contribute 1 each, one "False" contributes 0
+                "almanack-score": 0.6666666666666666,
+            },
+        ),
+        # Test case 2: Negative correlation with boolean values
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": -1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": -1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": -1,
+                },
+            ],
+            (
+                {
+                    "almanack-score-numerator": 1,
+                    "almanack-score-denominator": 3,
+                    # Two "True" values contribute 0 each, one "False" contributes 1
+                    "almanack-score": 0.3333333333333333,
+                }
+            ),
+        ),
+        # Test case 3: Mixed correlation with boolean values
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": -1,
+                },
+            ],
+            {
+                "almanack-score-numerator": 2,
+                "almanack-score-denominator": 2,
+                # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
+                "almanack-score": 1.0,
+            },
+        ),
+        # Test case 4: Single boolean value with positive correlation
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+            ],
+            {
+                "almanack-score-numerator": 1,
+                "almanack-score-denominator": 1,
+                "almanack-score": 1.0,
+            },  # Single "True" value with positive correlation contributes 1
+        ),
+        # Test case 5: Single boolean value with negative correlation
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": False,
+                    "sustainability_correlation": -1,
+                },
+            ],
+            {
+                "almanack-score-numerator": 1,
+                "almanack-score-denominator": 1,
+                # Single "False" value with negative correlation contributes 1
+                "almanack-score": 1.0,
+            },
+        ),
+        # Test case 6: Single boolean value with positive correlation and a numeric metric
+        (
+            [
+                {
+                    "result-type": "bool",
+                    "result": True,
+                    "sustainability_correlation": 1,
+                },
+                {
+                    "result-type": "float",
+                    "result": 0.77,
+                    "sustainability_correlation": 0,
+                },
+            ],
+            {
+                "almanack-score-numerator": 1,
+                "almanack-score-denominator": 1,
+                "almanack-score": 1.0,
+            },
+        ),
+        # Test case 7: No valid metrics
+        (
+            [],
+            {
+                "almanack-score-numerator": None,
+                "almanack-score-denominator": None,
+                # No metrics, score should be None
+                "almanack-score": None,
+            },
+        ),
+    ],
+)
+def test_compute_almanack_score(
+    almanack_table_data: List[Dict[str, Union[int, float, bool]]], expected: float
+):
+    """
+    Tests the compute_almanack_score function.
+    """
+
+    result = compute_almanack_score(almanack_table_data)
+    assert result == expected, f"Expected {expected}, but got {result}"

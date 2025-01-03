@@ -10,7 +10,7 @@ import shutil
 import tempfile
 import time
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import defusedxml.ElementTree as ET
@@ -72,16 +72,25 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
         raise ReferenceError("Encountered an error with processing the data.", data)
 
     # return metrics table (list of dictionaries as records of metrics)
-    return [
+    data_table = [
         {
-            # remove the result-data-key as this won't be useful to external output
-            **{key: val for key, val in metric.items() if key != "result-data-key"},
+            **metric,
             # add the data results for the metrics to the table
             "result": data[metric["name"]],
         }
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
         for metric in metrics_table
+    ]
+
+    # calculate sustainability score (modify placeholder)
+    return [
+        (
+            {**entry, "result": compute_almanack_score(almanack_table=data_table)}
+            if entry["name"] == "repo-almanack-score"
+            else entry
+        )
+        for entry in data_table
     ]
 
 
@@ -477,6 +486,8 @@ def compute_repo_data(repo_path: str) -> None:
             if doi_citation_data["publication_date"] is not None
             else None
         ),
+        # placeholders for almanack score metrics
+        "repo-almanack-score": None,
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -1183,3 +1194,66 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                 LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
 
     return result
+
+
+def compute_almanack_score(
+    almanack_table: List[Dict[str, Union[int, float, bool]]]
+) -> float:
+    """
+    Computes an Almanack score by normalizing boolean Almanack
+    table metrics in order to summarize analysis.
+
+    Args:
+        almanack_table (List[Dict[str, Union[int, float, bool]]]):
+            A list of dictionaries containing metrics.
+            Each dictionary must have a "result" key
+            with a value that is an int, float, or bool.
+            A "sustainability_correlation" key is
+            included for values to specify the
+            relationship to sustainability:
+            - 1 (positive correlation)
+            - 0 (no correlation)
+            - -1 (negative correlation)
+
+    Returns:
+        float:
+            The computed almanack score, normalized between 0 and 1.
+    """
+
+    bool_results = []
+
+    # Gather boolean Almanack values, contingent on sustainability_correlation
+    for item in almanack_table:
+        # We translate boolean values into numeric values based on the
+        # sustainability_correlation provided from the metrics.yml file.
+        # We transform the score based on the following logic:
+        # - True with sustainability_correlation 1 = 1
+        # - True with sustainability_correlation -1 = 0
+        # - False with sustainability_correlation 1 = 0
+        # - False with sustainability_correlation -1 = 1
+        if item["result-type"] == "bool" and item["sustainability_correlation"] != 0:
+            # for sustainability_correlation == 1 we treat True as positive sustainability indicator
+            # and False as a negative sustainability indicator.
+            # note: bools are a subclass of ints in Python.
+            if item["sustainability_correlation"] == 1:
+                bool_results.append(
+                    int(item["result"]) if item["result"] is not None else 0
+                )
+            # for sustainability_correlation == -1 we treat True as negative sustainability indicator.
+            # and False as a positive sustainability indicator.
+            # note: bools are a subclass of ints in Python.
+            elif item["sustainability_correlation"] == -1:
+                bool_results.append(
+                    int(not item["result"]) if item["result"] is not None else 0
+                )
+
+    almanack_score_values = {
+        # capture numerator and denominator for use alongside the almanack score data
+        "almanack-score-numerator": sum(bool_results) if bool_results else None,
+        "almanack-score-denominator": len(bool_results) if bool_results else None,
+        # Calculate almanack score, normalized to between 0 and 1
+        "almanack-score": (
+            sum(bool_results) / len(bool_results) if bool_results else None
+        ),
+    }
+    return almanack_score_values
