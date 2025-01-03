@@ -2,7 +2,8 @@
 
 ```{figure} ../assets/garden-lattice-understanding-transfer.png
 ---
-alt: Image showing two silhouettes with one showing transferrence of software idea to another.
+alt: Image showing two silhouettes with one showing transferrence of software idea
+  to another.
 ---
 _We transfer understanding of software projects in the form of documentation artifacts._
 ```
@@ -11,7 +12,7 @@ Shared understanding forms the heartbeat of any successful software project.
 Peter Naur, in his work "Programming as Theory Building" (1985), emphasized that programming is fundamentally about building a shared theory of the project among all contributors {cite:p}`naur_programming_1985`.
 Understanding encompasses not only the technical aspects but also the collaborative and ethical dimensions that ensure a project's growth and sustainability.
 Just as a gardener must understand the needs of each plant to cultivate a thriving garden, contributors to a project must grasp its goals, structure, and community standards to foster a productive and harmonious environment.
-We present the following as beginnings towards shared understanding in a project, recognizing that digital files do not equate to human cognitition.
+We present the following as beginnings towards shared understanding in a project.
 
 ## Common files for shared understanding
 
@@ -69,8 +70,9 @@ For further reading and examples of `CODE_OF_CONDUCT` files, see the following:
 ### LICENSE
 
 A `LICENSE` file specifies the terms under which the project's code can be used, modified, and shared.
+
 > "When you make a creative work (which includes code), the work is under exclusive copyright by default. Unless you include a license that specifies otherwise, nobody else can copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation. Once the work has other contributors (each a copyright holder), “nobody” starts including you." {cite:p}`choosealicense_nopermission`.
-The presence of a `LICENSE` file is crucial for legal clarity, encourages the responsible use or distribution of the project, and is considered an indicator of project maturity{cite:p}`deekshitha_rsmm_2024`.
+> The presence of a `LICENSE` file is crucial for legal clarity, encourages the responsible use or distribution of the project, and is considered an indicator of project maturity{cite:p}`deekshitha_rsmm_2024`.
 
 Similar to how a garden's health depends on understanding the rules of nature and respecting boundaries, a project's sustainability relies on clear licensing that protects both the creators and users, fostering a culture of trust and collaboration.
 
@@ -79,16 +81,28 @@ For further reading and examples of `LICENSE` files, see the following:
 - [OSF: Licensing](https://help.osf.io/article/148-licensing)
 - [GitHub: Licensing a repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
 - [Choosealicense.com](https://choosealicense.com/)
+- [SPDX License List](https://spdx.org/licenses/)
 
 ## Project documentation
 
 Common documentation files like `README`'s, `CONTRIBUTING` guides, and `LICENSE` files are only a start towards more specific project information.
 Comprehensive project documentation is akin to a detailed gardener's notebook for a well-maintained project, illustrating how the project may be used and guiding philosophy.
 This includes in-depth explanations of the project's architecture, practical usage examples, API references, and development workflows.
+Oftentimes this type of documentation is provided through a "documentation website" or "docsite" to facilitate a user experience that includes a search bar, multimedia, and other HTML-enabled features.
+
 Such documentation should strive to go above and beyond to ensure that both novice and seasoned contributors can grasp the project's complexities and contribute effectively.
+"We … find that tools appear to be more widely used when software developers provide deeper documentation, …" {cite:p}`afiaz_evaluation_2023`.
 Just as a thriving garden benefits from meticulous care instructions and shared horticultural knowledge, a project flourishes when its documentation offers a clear and thorough guide to its inner workings, nurturing a collaborative and informed community.
 
 Project documentation often exists within a dedicated `docs` directory where the materials may be created and versioned distinctly from other code.
+Oftentimes this material will leverage a specific documentation tooling technology in alignment with the programming language(s) being used (for example, Python projects often leverage [Sphinx](https://www.sphinx-doc.org/en/master/)).
+These tools often increase the utility of the output by styling the material with pre-built HTML themes, automating application programming interface (API) documentation generation, and an ecosystem of plugins to help extend the capabilities of your documentation without writing new code.
+
+For further reading and examples of deep Project documentation, see the following:
+
+- [Berkeley Library: How to Write Good Documentation](https://guides.lib.berkeley.edu/how-to-write-good-documentation)
+- [Write the Docs: Software documentation guide](https://www.writethedocs.org/guide/)
+- [Overcoming Open Source Project Entry Barriers with a Portal for Newcomers](https://dl.acm.org/doi/10.1145/2884781.2884806)
 
 ```{bibliography}
 ---
