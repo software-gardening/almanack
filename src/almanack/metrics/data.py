@@ -1243,5 +1243,7 @@ def compute_sustainability_score(
                 bool_results.append(0 if item["result"] else 1)
 
     # Calculate sustainability score, normalized to between 0 and 1
-    sustainability_score = sum(bool_results) / len(bool_results) if bool_results else None
+    sustainability_score = (
+        sum(bool_results) / len(bool_results) if bool_results else None
+    )
     return sustainability_score
