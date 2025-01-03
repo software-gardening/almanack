@@ -86,8 +86,8 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     # calculate sustainability score (modify placeholder)
     return [
         (
-            {**entry, "result": compute_sustainability_score(almanack_table=data_table)}
-            if entry["name"] == "repo-almanack-sustainability-score"
+            {**entry, "result": compute_almanack_score(almanack_table=data_table)}
+            if entry["name"] == "repo-almanack-score"
             else entry
         )
         for entry in data_table
@@ -486,8 +486,8 @@ def compute_repo_data(repo_path: str) -> None:
             if doi_citation_data["publication_date"] is not None
             else None
         ),
-        # placeholder for sustainability score
-        "repo-almanack-sustainability-score": None,
+        # placeholders for almanack score metrics
+        "repo-almanack-score": None,
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -1196,13 +1196,12 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
     return result
 
 
-def compute_sustainability_score(
+def compute_almanack_score(
     almanack_table: List[Dict[str, Union[int, float, bool]]]
 ) -> float:
     """
-    Computes a sustainability score by normalizing
-    boolean Almanack table metrics in order to summarize
-    sustainable development analysis.
+    Computes an Almanack score by normalizing boolean Almanack
+    table metrics in order to summarize analysis.
 
     Args:
         almanack_table (List[Dict[str, Union[int, float, bool]]]):
@@ -1218,7 +1217,7 @@ def compute_sustainability_score(
 
     Returns:
         float:
-            The computed sustainability score, normalized between 0 and 1.
+            The computed almanack score, normalized between 0 and 1.
     """
 
     bool_results = []
@@ -1235,15 +1234,21 @@ def compute_sustainability_score(
         if isinstance(item["result"], bool) and item["sustainability_correlation"] != 0:
             # for sustainability_correlation == 1 we treat True as positive sustainability indicator
             # and False as a negative sustainability indicator.
+            # note: bools are a subclass of ints in Python.
             if item["sustainability_correlation"] == 1:
-                bool_results.append(1 if item["result"] else 0)
+                bool_results.append(int(item["result"]))
             # for sustainability_correlation == -1 we treat True as negative sustainability indicator.
             # and False as a positive sustainability indicator.
+            # note: bools are a subclass of ints in Python.
             elif item["sustainability_correlation"] == -1:
-                bool_results.append(0 if item["result"] else 1)
+                bool_results.append(int(not item["result"]))
 
-    # Calculate sustainability score, normalized to between 0 and 1
-    sustainability_score = (
-        sum(bool_results) / len(bool_results) if bool_results else None
-    )
-    return sustainability_score
+    almanack_score_values = {
+        "almanack-score-numerator": sum(bool_results) if bool_results else None,
+        "almanack-score-denominator": len(bool_results) if bool_results else None,
+        # Calculate almanack score, normalized to between 0 and 1
+        "almanack-score": (
+            sum(bool_results) / len(bool_results) if bool_results else None
+        ),
+    }
+    return almanack_score_values

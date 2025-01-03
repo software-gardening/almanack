@@ -9,7 +9,6 @@ from typing import Dict, List, Union
 
 import dunamai
 import jsonschema
-import numpy as np
 import pandas as pd
 import pygit2
 import pytest
@@ -19,8 +18,8 @@ from almanack.git import get_remote_url
 from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
+    compute_almanack_score,
     compute_repo_data,
-    compute_sustainability_score,
     count_repo_tags,
     count_unique_contributors,
     default_branch_is_not_master,
@@ -956,7 +955,7 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
 
 
 @pytest.mark.parametrize(
-    "data, expected",
+    "almanack_table_data, expected",
     [
         # Test case 1: Positive correlation with boolean values
         (
@@ -965,7 +964,11 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
                 {"result": False, "sustainability_correlation": 1},
                 {"result": True, "sustainability_correlation": 1},
             ],
-            0.6666666666666666,  # Two "True" values contribute 1 each, one "False" contributes 0
+            {
+                "almanack-score-numerator": 2,
+                "almanack-score-denominator": 3,
+                "almanack-score": 0.6666666666666666,
+            },  # Two "True" values contribute 1 each, one "False" contributes 0
         ),
         # Test case 2: Negative correlation with boolean values
         (
@@ -974,7 +977,13 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
                 {"result": False, "sustainability_correlation": -1},
                 {"result": True, "sustainability_correlation": -1},
             ],
-            0.3333333333333333,  # Two "True" values contribute 0 each, one "False" contributes 1
+            (
+                {
+                    "almanack-score-numerator": 1,
+                    "almanack-score-denominator": 3,
+                    "almanack-score": 0.3333333333333333,
+                }
+            ),  # Two "True" values contribute 0 each, one "False" contributes 1
         ),
         # Test case 3: Mixed correlation with boolean values
         (
@@ -982,33 +991,51 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
                 {"result": True, "sustainability_correlation": 1},
                 {"result": False, "sustainability_correlation": -1},
             ],
-            1.0,  # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
+            {
+                "almanack-score-numerator": 2,
+                "almanack-score-denominator": 2,
+                "almanack-score": 1.0,
+            },  # One "True" with positive correlation contributes 1, one "False" with negative correlation contributes 1
         ),
         # Test case 4: Single boolean value with positive correlation
         (
             [
                 {"result": True, "sustainability_correlation": 1},
             ],
-            1.0,  # Single "True" value with positive correlation contributes 1
+            {
+                "almanack-score-numerator": 1,
+                "almanack-score-denominator": 1,
+                "almanack-score": 1.0,
+            },  # Single "True" value with positive correlation contributes 1
         ),
         # Test case 5: Single boolean value with negative correlation
         (
             [
                 {"result": False, "sustainability_correlation": -1},
             ],
-            1.0,  # Single "False" value with negative correlation contributes 1
+            {
+                "almanack-score-numerator": 1,
+                "almanack-score-denominator": 1,
+                "almanack-score": 1.0,
+            },  # Single "False" value with negative correlation contributes 1
         ),
         # Test case 6: No valid metrics
-        ([], None),  # No metrics, score should be None
+        (
+            [],
+            {
+                "almanack-score-numerator": None,
+                "almanack-score-denominator": None,
+                "almanack-score": None,
+            },
+        ),  # No metrics, score should be None
     ],
 )
-def test_compute_sustainability_score(
-    data: List[Dict[str, Union[int, float, bool]]], expected: float
+def test_compute_almanack_score(
+    almanack_table_data: List[Dict[str, Union[int, float, bool]]], expected: float
 ):
-    result = compute_sustainability_score(data)
-    if expected is not None:
-        assert np.isclose(
-            result, expected, atol=1e-6
-        ), f"Expected {expected}, but got {result}"
-    else:
-        assert result is None, f"Expected {expected}, but got {result}"
+    """
+    Tests the compute_almanack_score function.
+    """
+
+    result = compute_almanack_score(almanack_table_data)
+    assert result == expected, f"Expected {expected}, but got {result}"

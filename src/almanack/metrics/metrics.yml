@@ -78,13 +78,17 @@ metrics:
     description: >-
       Repository DOI publication date detected from CITATION.cff file
       and OpenAlex.org.
-  - name: "repo-almanack-sustainability-score"
+  - name: "repo-almanack-score"
     id: "SGA-META-0013"
-    result-type: "float"
+    result-type: "dict"
     sustainability_correlation: 0
     description: >-
-      Score which summarizes other metrics as a single normalized value
-      which represents how likely a repository will be maintained over time.
+      Dictionary which includes number of almanack boolean metrics
+      with a non-zero sustainability correction which passed, number
+      of almanack checks in total, and a score which is the number
+      of passed checks divided by the total number of checks that
+      represents how likely a repository will be maintained over
+      time based on the existing Almanack metrics.
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
