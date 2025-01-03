@@ -8,10 +8,6 @@ parts:
         sections:
           - title: Understanding
             file: garden-lattice/understanding.md
-          - title: Connectedness
-            file: garden-lattice/connectedness.md
-          - title: Practicality
-            file: garden-lattice/practicality.md
       - title: Software Forest
         file: software-forest/software-forest.md
       - title: Verdant Sundial
