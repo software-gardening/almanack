@@ -28,7 +28,7 @@ GitHub, GitLab, and other software source control hosting platforms often automa
 
 The `README` file is the cornerstone of any repository, providing essential information about the project.
 Its presence signifies a well-documented and accessible project, inviting contributors and users alike to understand and engage with the work.
-A well-structured `README` will reference other pieces of important information that exist elsewhere, such as dependencies and other files we describe below. 
+A well-structured `README` will reference other pieces of important information that exist elsewhere, such as dependencies and other files we describe below.
 A repository thrives when its purpose and usage are communicated through a `README` file, much like a garden benefits from a clear plan and understanding of its layout.
 
 > "A good rule of thumb is to assume that the information contained within the README will be the only documentation your users read.
