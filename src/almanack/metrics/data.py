@@ -1198,7 +1198,7 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
 
 def compute_almanack_score(
     almanack_table: List[Dict[str, Union[int, float, bool]]]
-) -> float:
+) -> Dict[str, Union[int, float]]:
     """
     Computes an Almanack score by counting boolean Almanack
     table metrics to provide a quick summary of software sustainability.
@@ -1216,8 +1216,13 @@ def compute_almanack_score(
             - -1 (negative correlation)
 
     Returns:
-        float:
-            The computed almanack score, normalized between 0 and 1.
+        Dict[str, Union[int, float]]:
+            Dictionary of length three, including the following:
+            1) number of Almanack boolean metrics that passed
+            (numerator), 2) number of total Almanack boolean
+            metrics considered (denominator), and 3) a score that
+            represents how likely the repository will be maintained
+            over time based (numerator / denominator).
     """
 
     bool_results = []
