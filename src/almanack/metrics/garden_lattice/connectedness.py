@@ -1,6 +1,7 @@
 """
-This module focuses on the Almanack's Garden Lattice materials
-which focus on elements of human connection and engagement.
+Module for Almanack metrics covering human connection and engagement
+in software projects such as contributor activity, collaboration
+frequency.
 """
 
 import logging
