@@ -1,5 +1,6 @@
 """
-This module focuses on remote API requests and similar
+This module focuses on remote API requests
+and related aspects.
 """
 
 import logging
