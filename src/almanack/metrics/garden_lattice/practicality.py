@@ -54,7 +54,7 @@ def count_repo_tags(repo: pygit2.Repository, since: Optional[datetime] = None) -
 
 def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
     """
-    Fetches package data from the ecosystem API and calculates metrics
+    Fetches package data from the ecosyste.ms API and calculates metrics
     about the number of unique ecosystems, total version counts,
     and the list of ecosystem names.
 
