@@ -83,7 +83,7 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
         for metric in metrics_table
     ]
 
-    # calculate sustainability score (modify placeholder)
+    # calculate almanack score (the function modifies the placeholder)
     return [
         (
             {**entry, "result": compute_almanack_score(almanack_table=data_table)}
@@ -1200,8 +1200,8 @@ def compute_almanack_score(
     almanack_table: List[Dict[str, Union[int, float, bool]]]
 ) -> float:
     """
-    Computes an Almanack score by normalizing boolean Almanack
-    table metrics in order to summarize analysis.
+    Computes an Almanack score by counting boolean Almanack
+    table metrics to provide a quick summary of software sustainability.
 
     Args:
         almanack_table (List[Dict[str, Union[int, float, bool]]]):

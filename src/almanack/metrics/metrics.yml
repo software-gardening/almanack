@@ -83,12 +83,11 @@ metrics:
     result-type: "dict"
     sustainability_correlation: 0
     description: >-
-      Dictionary which includes number of almanack boolean metrics
-      with a non-zero sustainability correction which passed, number
-      of almanack checks in total, and a score which is the number
-      of passed checks divided by the total number of checks that
-      represents how likely a repository will be maintained over
-      time based on the existing Almanack metrics.
+      Dictionary of length three, including the following: 1) number of
+      Almanack boolean metrics that passed (numerator), 2) number of
+      total Almanack boolean metrics considered (denominator), and 3) a
+      score that represents how likely the repository will be maintained
+      over time based (numerator / denominator).
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
