@@ -331,7 +331,7 @@ def file_exists_in_repo(
     repo: pygit2.Repository,
     expected_file_name: str,
     check_extension: bool = False,
-    extensions: list[str] = [".md", ""],
+    extensions: list[str] = [".md", ".txt", ".rtf", ""],
 ) -> bool:
     """
     Check if a file (case-insensitive and with optional extensions)
