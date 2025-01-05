@@ -89,7 +89,7 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
         domain, path = repo_url[4:].split(":", 1)
         repo_url = f"https://{domain}/{path}".removesuffix(".git")
 
-    # perform package srequest
+    # perform packages request on the ecosyste.ms API
     package_data = get_api_data(
         api_endpoint="https://packages.ecosyste.ms/api/v1/packages/lookup",
         params={"repository_url": repo_url},
