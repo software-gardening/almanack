@@ -93,7 +93,7 @@ Comprehensive project documentation is akin to a detailed gardener's notebook fo
 This includes in-depth explanations of the project's architecture, practical usage examples, application programming interface (API) references, and development workflows.
 Oftentimes this type of documentation is provided through a "documentation website" or "docsite" to facilitate a user experience that includes a search bar, multimedia, and other HTML-enabled features.
 
-Such documentation should strive to to ensure that both novice and seasoned contributors can grasp the project's complexities and contribute effectively by delivering valuable information.
+Such documentation should strive to ensure that both novice and seasoned contributors can grasp the project's complexities and contribute effectively by delivering valuable information.
 Writing valuable content entails conveying information that the code alone cannot communicate to the user {cite:p}`henney_97_2010`.
 In addition to increased value from understanding, software tends to be more extensively utilized when developers offer more comprehensive documentation {cite:p}`afiaz_evaluation_2023`.
 Just as a thriving garden benefits from meticulous care instructions and shared horticultural knowledge, a project flourishes when its documentation offers a clear and thorough guide to its inner workings, nurturing a collaborative and informed community.
