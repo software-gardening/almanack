@@ -89,7 +89,7 @@ For further reading and examples of `LICENSE` files, see the following:
 
 Common documentation files like `README`'s, `CONTRIBUTING` guides, and `LICENSE` files are only a start towards more specific project information.
 Comprehensive project documentation is akin to a detailed gardener's notebook for a well-maintained project, illustrating how the project may be used and the guiding philosophy.
-This includes in-depth explanations of the project's architecture, practical usage examples, API references, and development workflows.
+This includes in-depth explanations of the project's architecture, practical usage examples, application programming interface (API) references, and development workflows.
 Oftentimes this type of documentation is provided through a "documentation website" or "docsite" to facilitate a user experience that includes a search bar, multimedia, and other HTML-enabled features.
 
 Such documentation should strive to go above and beyond to ensure that both novice and seasoned contributors can grasp the project's complexities and contribute effectively.
@@ -98,7 +98,7 @@ Just as a thriving garden benefits from meticulous care instructions and shared 
 
 Project documentation often exists within a dedicated `docs` directory where the materials may be created and versioned distinctly from other code.
 Oftentimes this material will leverage a specific documentation tooling technology in alignment with the programming language(s) being used (for example, Python projects often leverage [Sphinx](https://www.sphinx-doc.org/en/master/)).
-These tools often increase the utility of the output by styling the material with pre-built HTML themes, automating application programming interface (API) documentation generation, and an ecosystem of plugins to help extend the capabilities of your documentation without writing new code.
+These tools often increase the utility of the output by styling the material with pre-built HTML themes, automating API documentation generation, and an ecosystem of plugins to help extend the capabilities of your documentation without writing new code.
 
 For further reading and examples of deep Project documentation, see the following:
 
