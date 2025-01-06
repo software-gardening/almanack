@@ -100,7 +100,7 @@ To enable local development, perform the following steps.
 1. [Install Poetry environment](https://python-poetry.org/docs/basic-usage/#installing-dependencies): `poetry install`
 1. [Install Node](https://nodejs.org/en/download) (suggested: use [`nvm`](https://github.com/nvm-sh/nvm) for managing Node versions)
 1. [Install Node environment](https://docs.npmjs.com/cli/v9/commands/npm-install): `npm install`
-1. [Install Vale dependencies](https://vale.sh/manual/sync/): `poetry run vale sync`
+1. [Install Vale dependencies](https://vale.sh/docs/cli): `poetry run vale sync`
 
 ### Development Tasks
 

@@ -8,7 +8,7 @@ import pathlib
 import shutil
 import tempfile
 from datetime import datetime, timedelta, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import defusedxml.ElementTree as ET
@@ -80,16 +80,25 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
         raise ReferenceError("Encountered an error with processing the data.", data)
 
     # return metrics table (list of dictionaries as records of metrics)
-    return [
+    data_table = [
         {
-            # remove the result-data-key as this won't be useful to external output
-            **{key: val for key, val in metric.items() if key != "result-data-key"},
+            **metric,
             # add the data results for the metrics to the table
             "result": data[metric["name"]],
         }
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
         for metric in metrics_table
+    ]
+
+    # calculate almanack score (the function modifies the placeholder)
+    return [
+        (
+            {**entry, "result": compute_almanack_score(almanack_table=data_table)}
+            if entry["name"] == "repo-almanack-score"
+            else entry
+        )
+        for entry in data_table
     ]
 
 
@@ -249,6 +258,8 @@ def compute_repo_data(repo_path: str) -> None:
             if doi_citation_data["publication_date"] is not None
             else None
         ),
+        # placeholders for almanack score metrics
+        "repo-almanack-score": None,
         "repo-unique-contributors": count_unique_contributors(repo=repo),
         "repo-unique-contributors-past-year": count_unique_contributors(
             repo=repo, since=(one_year_ago := DATETIME_NOW - timedelta(days=365))
@@ -678,3 +689,276 @@ def parse_python_coverage_data(
     # No recognized coverage files found
     LOGGER.warning("No coverage.py data found in the repository.")
     return {}
+
+
+def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
+    """
+    Fetches package data from the ecosystem API and calculates metrics
+    about the number of unique ecosystems, total version counts,
+    and the list of ecosystem names.
+
+    Args:
+        repo_url (str):
+            The repository URL of the package to query.
+
+    Returns:
+        Dict[str, Any]:
+            A dictionary containing information about packages
+            related to the repository.
+    """
+
+    if repo_url is None:
+        LOGGER.warning(
+            "Did not receive a valid repository URL and unable to gather package metrics."
+        )
+        return {}
+
+    # normalize http to https if necessary
+    if repo_url.startswith("http://"):
+        LOGGER.warning(
+            "Received `http://` repository URL for package metrics search. Normalizing to use `https://`."
+        )
+        repo_url = repo_url.replace("http://", "https://")
+
+    # normalize git@ ssh links to https if necessary
+    if repo_url.startswith("git@"):
+        LOGGER.warning(
+            "Received `git@` repository URL for package metrics search. Normalizing to use `https://`."
+        )
+        domain, path = repo_url[4:].split(":", 1)
+        repo_url = f"https://{domain}/{path}".removesuffix(".git")
+
+    # perform package srequest
+    package_data = get_api_data(
+        api_endpoint="https://packages.ecosyste.ms/api/v1/packages/lookup",
+        params={"repository_url": repo_url},
+    )
+
+    # Initialize counters
+    ecosystems = set()
+    total_versions = 0
+
+    for entry in package_data:
+        # count ecosystems
+        if "ecosystem" in entry:
+            ecosystems.add(entry["ecosystem"])
+
+        # sum versions
+        total_versions += entry.get("versions_count", 0)
+
+    return {
+        "ecosystems_count": len(ecosystems),
+        "versions_count": total_versions,
+        "ecosystems_names": sorted(ecosystems),
+    }
+
+
+def detect_social_media_links(content: str) -> Dict[str, List[str]]:
+    """
+    Analyzes README.md content to identify social media links.
+
+    Args:
+        readme_content (str):
+            The content of the README.md file as a string.
+
+    Returns:
+        Dict[str, List[str]]:
+            A dictionary containing social media details
+            discovered from readme.md content.
+    """
+    # Define patterns for social media links
+    social_media_patterns = {
+        "Twitter": r"https?://(?:www\.)?twitter\.com/[\w]+",
+        "LinkedIn": r"https?://(?:www\.)?linkedin\.com/(?:in|company)/[\w-]+",
+        "YouTube": r"https?://(?:www\.)?youtube\.com/(?:channel|c|user)/[\w-]+",
+        "Facebook": r"https?://(?:www\.)?facebook\.com/[\w.-]+",
+        "Instagram": r"https?://(?:www\.)?instagram\.com/[\w.-]+",
+        "TikTok": r"https?://(?:www\.)?tiktok\.com/@[\w.-]+",
+        "Discord": r"https?://(?:www\.)?discord(?:\.gg|\.com/invite)/[\w-]+",
+        "Slack": r"https?://[\w.-]+\.slack\.com",
+        "Gitter": r"https?://gitter\.im/[\w/-]+",
+        "Telegram": r"https?://(?:www\.)?t\.me/[\w-]+",
+        "Mastodon": r"https?://[\w.-]+/users/[\w-]+",
+        "Threads": r"https?://(?:www\.)?threads\.net/[\w.-]+",
+        "Bluesky": r"https?://(?:www\.)?bsky\.app/profile/[\w.-]+",
+    }
+
+    # Initialize results
+    found_platforms = set()
+
+    # Search for social media links
+    for platform, pattern in social_media_patterns.items():
+        if re.search(pattern, content, re.IGNORECASE):
+            found_platforms.add(platform)
+
+    return {
+        "social_media_platforms": sorted(found_platforms),
+        "social_media_platforms_count": len(found_platforms),
+    }
+
+
+def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
+    """
+    Find and validate DOI information from a CITATION.cff
+    file in a repository.
+
+    This function searches for a `CITATION.cff` file in the provided repository,
+    extracts the DOI (if available), validates its format, checks its
+    resolvability via HTTP, and performs an exact DOI lookup on the OpenAlex API.
+
+    Args:
+        repo (pygit2.Repository):
+            The repository object to search for the CITATION.cff file.
+
+    Returns:
+        Dict[str, Any]:
+            A dictionary containing DOI-related information and metadata.
+    """
+
+    result = {
+        "doi": None,
+        "valid_format_doi": None,
+        "https_resolvable_doi": None,
+        "publication_date": None,
+        "cited_by_count": None,
+    }
+
+    # Find the CITATION.cff file
+    if (citationcff_file := find_file(repo=repo, filepath="CITATION.cff")) is None:
+        LOGGER.warning("No CITATION.cff file discovered.")
+        return result
+
+    try:
+        # Read and parse the CITATION.cff file
+        citation_data = yaml.safe_load(read_file(repo=repo, entry=citationcff_file))
+
+        # Extract DOI from 'doi' or 'identifiers' field
+        if "doi" in citation_data.keys():
+            result["doi"] = citation_data.get("doi", None)
+        elif "identifiers" in citation_data.keys():
+            result["doi"] = next(
+                (
+                    identifier["value"]
+                    for identifier in citation_data.get("identifiers", [])
+                    if identifier.get("type") == "doi"
+                ),
+                None,
+            )
+    except yaml.YAMLError as e:
+        LOGGER.warning(f"Error reading YAML: {e}")
+
+    if result["doi"]:
+        # Validate the DOI format
+        result["valid_format_doi"] = bool(
+            re.match(r"^10\.\d{4,9}/[-._;()/:A-Za-z0-9]+$", result["doi"])
+        )
+        if result["valid_format_doi"]:
+            try:
+                # Check DOI resolvability via HTTPS
+                if (
+                    requests.head(
+                        f"https://doi.org/{result['doi']}",
+                        allow_redirects=True,
+                        timeout=30,
+                    ).status_code
+                    == 200  # noqa: PLR2004
+                ):
+                    result["https_resolvable_doi"] = True
+                else:
+                    LOGGER.warning(
+                        f"DOI does not resolve properly: https://doi.org/{result['doi']}"
+                    )
+                    result["https_resolvable_doi"] = False
+
+            except requests.RequestException as e:
+                LOGGER.warning(f"Error resolving DOI: {e}")
+                result["https_resolvable_doi"] = False
+
+            # Perform exact DOI lookup on OpenAlex
+            try:
+                openalex_result = get_api_data(
+                    api_endpoint=f"https://api.openalex.org/works/doi:{result['doi']}"
+                )
+                publication_date = openalex_result.get("publication_date", None)
+                result.update(
+                    {
+                        "publication_date": (
+                            datetime.strptime(publication_date, "%Y-%m-%d")
+                            if publication_date is not None
+                            else None
+                        ),
+                        "cited_by_count": openalex_result.get("cited_by_count", None),
+                    }
+                )
+            except requests.RequestException as e:
+                LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
+
+    return result
+
+
+def compute_almanack_score(
+    almanack_table: List[Dict[str, Union[int, float, bool]]]
+) -> Dict[str, Union[int, float]]:
+    """
+    Computes an Almanack score by counting boolean Almanack
+    table metrics to provide a quick summary of software sustainability.
+
+    Args:
+        almanack_table (List[Dict[str, Union[int, float, bool]]]):
+            A list of dictionaries containing metrics.
+            Each dictionary must have a "result" key
+            with a value that is an int, float, or bool.
+            A "sustainability_correlation" key is
+            included for values to specify the
+            relationship to sustainability:
+            - 1 (positive correlation)
+            - 0 (no correlation)
+            - -1 (negative correlation)
+
+    Returns:
+        Dict[str, Union[int, float]]:
+            Dictionary of length three, including the following:
+            1) number of Almanack boolean metrics that passed
+            (numerator), 2) number of total Almanack boolean
+            metrics considered (denominator), and 3) a score that
+            represents how likely the repository will be maintained
+            over time based (numerator / denominator).
+    """
+
+    bool_results = []
+
+    # Gather boolean Almanack values, contingent on sustainability_correlation
+    for item in almanack_table:
+        # We translate boolean values into numeric values based on the
+        # sustainability_correlation provided from the metrics.yml file.
+        # We transform the score based on the following logic:
+        # - True with sustainability_correlation 1 = 1
+        # - True with sustainability_correlation -1 = 0
+        # - False with sustainability_correlation 1 = 0
+        # - False with sustainability_correlation -1 = 1
+        if item["result-type"] == "bool" and item["sustainability_correlation"] != 0:
+            # for sustainability_correlation == 1 we treat True as positive sustainability indicator
+            # and False as a negative sustainability indicator.
+            # note: bools are a subclass of ints in Python.
+            if item["sustainability_correlation"] == 1:
+                bool_results.append(
+                    int(item["result"]) if item["result"] is not None else 0
+                )
+            # for sustainability_correlation == -1 we treat True as negative sustainability indicator.
+            # and False as a positive sustainability indicator.
+            # note: bools are a subclass of ints in Python.
+            elif item["sustainability_correlation"] == -1:
+                bool_results.append(
+                    int(not item["result"]) if item["result"] is not None else 0
+                )
+
+    almanack_score_values = {
+        # capture numerator and denominator for use alongside the almanack score data
+        "almanack-score-numerator": sum(bool_results) if bool_results else None,
+        "almanack-score-denominator": len(bool_results) if bool_results else None,
+        # Calculate almanack score, normalized to between 0 and 1
+        "almanack-score": (
+            sum(bool_results) / len(bool_results) if bool_results else None
+        ),
+    }
+    return almanack_score_values
