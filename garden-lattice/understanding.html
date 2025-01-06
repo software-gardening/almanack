@@ -1,0 +1,685 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Understanding &#8212; The Software Gardening Almanack</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8a490771" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'garden-lattice/understanding';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Software Forest" href="../software-forest/software-forest.html" />
+    <link rel="prev" title="Garden Lattice" href="garden-lattice.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
+    <script>document.write(`<img src="../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../introduction.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="garden-lattice.html">Garden Lattice</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Understanding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../software-forest/software-forest.html">Software Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../verdant-sundial/verdant-sundial.html">Verdant Sundial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../garden-circle/contributing.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../garden-circle/garden-map.html">Garden Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../garden-circle/package-api.html">Almanack Package API</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack/issues/new?title=Issue%20on%20page%20%2Fgarden-lattice/understanding.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/garden-lattice/understanding.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Understanding</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-files-for-shared-understanding">Common files for shared understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#readme">README</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">CONTRIBUTING</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-of-conduct">CODE_OF_CONDUCT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#license">LICENSE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-documentation">Project documentation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="understanding">
+<h1>Understanding<a class="headerlink" href="#understanding" title="Link to this heading">#</a></h1>
+<figure class="align-default" id="id35">
+<img alt="Image showing two silhouettes with one showing transferrence of software idea to another." src="../_images/garden-lattice-understanding-transfer.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text"><em>We transfer understanding of software projects in the form of documentation artifacts.</em></span><a class="headerlink" href="#id35" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Shared understanding forms the heartbeat of any successful software project.
+Peter Naur, in his work “Programming as Theory Building” (1985), emphasized that programming is fundamentally about building a shared theory of the project among all contributors <span id="id1"><sup><a class="reference internal" href="#id32" title="Peter Naur. Programming as theory building. Microprocessing and Microprogramming, 15(5):253–261, May 1985. URL: https://linkinghub.elsevier.com/retrieve/pii/0165607485900328 (visited on 2025-01-02), doi:10.1016/0165-6074(85)90032-8.">GLU1</a></sup></span>.
+Understanding encompasses not only the technical aspects of software, but also the collaborative and ethical dimensions that ensure a software project’s growth and sustainability.
+Just as a gardener must understand the needs of each plant to cultivate a thriving garden, contributors to a project must grasp its goals, structure, and community standards to foster a productive and harmonious environment.
+Documentation, of which there are many different forms that we describe below, cultivates a shared understanding of a software project.</p>
+<section id="common-files-for-shared-understanding">
+<h2>Common files for shared understanding<a class="headerlink" href="#common-files-for-shared-understanding" title="Link to this heading">#</a></h2>
+<p>In software development, certain files are expected to ensure project scope, clarity, collaboration, and legal compliance.
+These files serve as the foundational elements that guide contributors and users, much like a well-tended garden benefits from clear paths and signs.
+When present, these files are also correlated with increased rates of project success <span id="id2"><sup><a class="reference internal" href="#id27" title="Jailton Coelho and Marco Tulio Valente. Why modern open source projects fail. In Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering, 186–196. Paderborn Germany, August 2017. ACM. URL: https://dl.acm.org/doi/10.1145/3106237.3106246 (visited on 2024-12-31), doi:10.1145/3106237.3106246.">GLU2</a></sup></span>.</p>
+<p>Historically, developers had written the following files in plain-text without formatting.
+More recently, developers prefer <a class="reference external" href="https://en.wikipedia.org/wiki/Markdown">markdown</a> to format the documents with rich styles and media.
+GitHub, GitLab, and other software source control hosting platforms often automatically render markdown materials in HTML.</p>
+<section id="readme">
+<h3>README<a class="headerlink" href="#readme" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">README</span></code> file is the cornerstone of any repository, providing essential information about the project.
+Its presence signifies a well-documented and accessible project, inviting contributors and users alike to understand and engage with the work.
+A well-structured <code class="docutils literal notranslate"><span class="pre">README</span></code> will reference other pieces of important information that exist elsewhere, such as dependencies and other files we describe below.
+A repository thrives when its purpose and usage are communicated through a <code class="docutils literal notranslate"><span class="pre">README</span></code> file, much like a garden benefits from a clear plan and understanding of its layout.</p>
+<blockquote>
+<div><p>“A good rule of thumb is to assume that the information contained within the README will be the only documentation your users read.
+For this reason, your README should include how to install and configure your software, where to find its full documentation, under what license it’s released, how to test it to ensure functionality, and acknowledgments.” <span id="id3"><sup><a class="reference internal" href="#id26" title="Benjamin D. Lee. Ten simple rules for documenting scientific software. PLOS Computational Biology, 14(12):e1006561, December 2018. URL: https://dx.plos.org/10.1371/journal.pcbi.1006561 (visited on 2024-12-31), doi:10.1371/journal.pcbi.1006561.">GLU3</a></sup></span></p>
+</div></blockquote>
+<p>For further reading on <code class="docutils literal notranslate"><span class="pre">README</span></code> file practices, see the following resources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://book.the-turing-way.org/project-design/project-repo/project-repo-readme.html">The Turing Way: Landing Page - README File</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes">GitHub: About <code class="docutils literal notranslate"><span class="pre">README</span></code>s</a></p></li>
+<li><p><a class="reference external" href="https://www.makeareadme.com/">Makeareadme.com</a></p></li>
+</ul>
+</section>
+<section id="contributing">
+<h3>CONTRIBUTING<a class="headerlink" href="#contributing" title="Link to this heading">#</a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING</span></code> file outlines guidelines for how to add to the project.
+Its presence fosters a welcoming environment for new contributors, ensuring that they have the necessary information to participate effectively.
+In the same way that a garden flourishes when there’s good understanding of how to provide care to the garden and gardeners, a project grows stronger when contributors are guided by clear and inclusive instructions.
+The resulting nurturing environment fosters growth, resilience, and a sense of community, ensuring the project remains healthy and vibrant.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING</span></code> file should outline all development procedures that are specific to the project.
+For example, the file might contain testing guidelines, linting/formatting expectations, release cadence, and more.
+Consider writing this file from the perspective of both an outsider and a beginner: an outsider who might enhance your project by adding a new task or completing an existing task, and a beginner who seeks to understand your project from the ground up <span id="id4"><sup><a class="reference internal" href="#id28" title="Christoph Treude, Marco A. Gerosa, and Igor Steinmacher. Towards the First Code Contribution: Processes and Information Needs. 2024. Version Number: 1. URL: https://arxiv.org/abs/2404.18677 (visited on 2024-12-31), doi:10.48550/ARXIV.2404.18677.">GLU4</a></sup></span>.</p>
+<p>For further reading on <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING</span></code> file practices, see the following resources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.github.com/en/communities/setting-up-your-project-for-healthy-contributions/setting-guidelines-for-repository-contributors">GitHub: Setting guidelines for repository contributors</a></p></li>
+<li><p><a class="reference external" href="https://mozillascience.github.io/working-open-workshop/contributing/">Mozilla: Wrangling Web Contributions: How to Build a CONTRIBUTING.md</a></p></li>
+</ul>
+</section>
+<section id="code-of-conduct">
+<h3>CODE_OF_CONDUCT<a class="headerlink" href="#code-of-conduct" title="Link to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">CODE_OF_CONDUCT</span></code> (CoC) file sets the standards for behavior within the project community.
+Its presence signals a commitment to maintaining a respectful and inclusive environment for all participants.
+It also may provide an outline for acceptable participation when it comes to conflicts of interest.
+A CoC is a foundational document that defines community values, guides governance and moderation, and signals inclusivity within the project, particularly for vulnerable contributors. <span id="id5"><sup><a class="reference internal" href="#id29" title="Hana Frluckaj and James Howison. Codes of Conduct in Open Source. In Daniela Damian, Kelly Blincoe, Denae Ford, Alexander Serebrenik, and Zainab Masood, editors, Equity, Diversity, and Inclusion in Software Engineering, pages 295–308. Apress, Berkeley, CA, 2024. URL: https://link.springer.com/10.1007/978-1-4842-9651-6_17 (visited on 2025-01-02), doi:10.1007/978-1-4842-9651-6_17.">GLU5</a></sup></span>
+A project community benefits from a shared understanding of respectful and supportive interactions, ensuring that all members can contribute positively, much like a garden requires a harmonious ecosystem to thrive.</p>
+<p>For further reading and examples of <code class="docutils literal notranslate"><span class="pre">CODE_OF_CONDUCT</span></code> files, see the following:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.contributor-covenant.org/">Contributor Covenant Code of Conduct</a></p></li>
+<li><p><a class="reference external" href="https://policies.python.org/python.org/code-of-conduct/">Example: Python Software Foundation Code of Conduct</a></p></li>
+<li><p><a class="reference external" href="https://www.rust-lang.org/policies/code-of-conduct">Example: Rust Code of Conduct</a></p></li>
+</ul>
+</section>
+<section id="license">
+<h3>LICENSE<a class="headerlink" href="#license" title="Link to this heading">#</a></h3>
+<p>A <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> file specifies the terms under which the project’s code can be used, modified, and shared.</p>
+<blockquote>
+<div><p>“When you make a creative work (which includes code), the work is under exclusive copyright by default. Unless you include a license that specifies otherwise, nobody else can copy, distribute, or modify your work without being at risk of take-downs, shake-downs, or litigation. Once the work has other contributors (each a copyright holder), “nobody” starts including you.” <span id="id6"><sup><a class="reference internal" href="#id30" title="Inc. GitHub. No license. Accessed: 2025-01-02. URL: https://choosealicense.com/no-permission/.">GLU6</a></sup></span>.
+The presence of a <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> file is crucial for legal clarity, encourages the responsible use or distribution of the project, and is considered an indicator of project maturity<span id="id7"><sup><a class="reference internal" href="#id31" title="Deekshitha, Rena Bakhshi, Jason Maassen, Carlos Martinez Ortiz, Rob van Nieuwpoort, and Slinger Jansen. RSMM: A Framework to Assess Maturity of Research Software Project. June 2024. arXiv:2406.01788 [cs]. URL: http://arxiv.org/abs/2406.01788 (visited on 2024-10-02).">GLU7</a></sup></span>.</p>
+</div></blockquote>
+<p>Just as a garden’s health depends on understanding natural laws and respecting boundaries, a project’s sustainability hinges on clear licensing that safeguards and empowers both creators and users, cultivating a culture of trust and collaboration.</p>
+<p>For further reading and examples of <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> files, see the following:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://help.osf.io/article/148-licensing">OSF: Licensing</a></p></li>
+<li><p><a class="reference external" href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository">GitHub: Licensing a repository</a></p></li>
+<li><p><a class="reference external" href="https://choosealicense.com/">Choosealicense.com</a></p></li>
+<li><p><a class="reference external" href="https://spdx.org/licenses/">SPDX License List</a></p></li>
+</ul>
+</section>
+</section>
+<section id="project-documentation">
+<h2>Project documentation<a class="headerlink" href="#project-documentation" title="Link to this heading">#</a></h2>
+<p>Common documentation files like <code class="docutils literal notranslate"><span class="pre">README</span></code>’s, <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING</span></code> guides, and <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> files are only a start towards more specific project information.
+Comprehensive project documentation is akin to a detailed gardener’s notebook for a well-maintained project, illustrating how the project may be used and the guiding philosophy.
+This includes in-depth explanations of the project’s architecture, practical usage examples, application programming interface (API) references, and development workflows.
+Oftentimes this type of documentation is provided through a “documentation website” or “docsite” to facilitate a user experience that includes a search bar, multimedia, and other HTML-enabled features.</p>
+<p>Such documentation should strive to ensure that both novice and seasoned contributors can grasp the project’s complexities and contribute effectively by delivering valuable information.
+Writing valuable content entails conveying information that the code alone cannot communicate to the user <span id="id8"><sup><a class="reference internal" href="#id34">GLU8</a></sup></span>.
+In addition to increased value from understanding, software tends to be more extensively utilized when developers offer more comprehensive documentation <span id="id9"><sup><a class="reference internal" href="#id33" title="Awan Afiaz, Andrey Ivanov, John Chamberlin, David Hanauer, Candace Savonen, Mary J. Goldman, Martin Morgan, Michael Reich, Alexander Getka, Aaron Holmes, Sarthak Pati, Dan Knight, Paul C. Boutros, Spyridon Bakas, J. Gregory Caporaso, Guilherme Del Fiol, Harry Hochheiser, Brian Haas, Patrick D. Schloss, James A. Eddy, Jake Albrecht, Andrey Fedorov, Levi Waldron, Ava M. Hoffman, Richard L. Bradshaw, Jeffrey T. Leek, and Carrie Wright. Evaluation of software impact designed for biomedical research: Are we measuring what's meaningful? June 2023. arXiv:2306.03255 [cs, q-bio]. URL: http://arxiv.org/abs/2306.03255 (visited on 2024-10-02).">GLU9</a></sup></span>.
+Just as a thriving garden benefits from meticulous care instructions and shared horticultural knowledge, a project flourishes when its documentation offers a clear and thorough guide to its inner workings, nurturing a collaborative and informed community.</p>
+<p>Project documentation often exists within a dedicated <code class="docutils literal notranslate"><span class="pre">docs</span></code> directory where the materials may be created and versioned distinctly from other code.
+Oftentimes this material will leverage a specific documentation tooling technology in alignment with the programming language(s) being used (for example, Python projects often leverage <a class="reference external" href="https://www.sphinx-doc.org/en/master/">Sphinx</a>).
+These tools often increase the utility of the output by styling the material with pre-built HTML themes, automating API documentation generation, and an ecosystem of plugins to help extend the capabilities of your documentation without writing new code.</p>
+<p>For further reading and examples of deep Project documentation, see the following:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://guides.lib.berkeley.edu/how-to-write-good-documentation">Berkeley Library: How to Write Good Documentation</a></p></li>
+<li><p><a class="reference external" href="https://www.writethedocs.org/guide/">Write the Docs: Software documentation guide</a></p></li>
+<li><p><a class="reference external" href="https://dl.acm.org/doi/10.1145/2884781.2884806">Overcoming Open Source Project Entry Barriers with a Portal for Newcomers</a></p></li>
+</ul>
+<div class="docutils container" id="id10">
+<div role="list" class="citation-list">
+<div class="citation" id="id32" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">GLU1</a><span class="fn-bracket">]</span></span>
+<p>Peter Naur. Programming as theory building. <em>Microprocessing and Microprogramming</em>, 15(5):253–261, May 1985. URL: <a class="reference external" href="https://linkinghub.elsevier.com/retrieve/pii/0165607485900328">https://linkinghub.elsevier.com/retrieve/pii/0165607485900328</a> (visited on 2025-01-02), <a class="reference external" href="https://doi.org/10.1016/0165-6074(85)90032-8">doi:10.1016/0165-6074(85)90032-8</a>.</p>
+</div>
+<div class="citation" id="id27" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">GLU2</a><span class="fn-bracket">]</span></span>
+<p>Jailton Coelho and Marco Tulio Valente. Why modern open source projects fail. In <em>Proceedings of the 2017 11th Joint Meeting on Foundations of Software Engineering</em>, 186–196. Paderborn Germany, August 2017. ACM. URL: <a class="reference external" href="https://dl.acm.org/doi/10.1145/3106237.3106246">https://dl.acm.org/doi/10.1145/3106237.3106246</a> (visited on 2024-12-31), <a class="reference external" href="https://doi.org/10.1145/3106237.3106246">doi:10.1145/3106237.3106246</a>.</p>
+</div>
+<div class="citation" id="id26" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">GLU3</a><span class="fn-bracket">]</span></span>
+<p>Benjamin D. Lee. Ten simple rules for documenting scientific software. <em>PLOS Computational Biology</em>, 14(12):e1006561, December 2018. URL: <a class="reference external" href="https://dx.plos.org/10.1371/journal.pcbi.1006561">https://dx.plos.org/10.1371/journal.pcbi.1006561</a> (visited on 2024-12-31), <a class="reference external" href="https://doi.org/10.1371/journal.pcbi.1006561">doi:10.1371/journal.pcbi.1006561</a>.</p>
+</div>
+<div class="citation" id="id28" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">GLU4</a><span class="fn-bracket">]</span></span>
+<p>Christoph Treude, Marco A. Gerosa, and Igor Steinmacher. Towards the First Code Contribution: Processes and Information Needs. 2024. Version Number: 1. URL: <a class="reference external" href="https://arxiv.org/abs/2404.18677">https://arxiv.org/abs/2404.18677</a> (visited on 2024-12-31), <a class="reference external" href="https://doi.org/10.48550/ARXIV.2404.18677">doi:10.48550/ARXIV.2404.18677</a>.</p>
+</div>
+<div class="citation" id="id29" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">GLU5</a><span class="fn-bracket">]</span></span>
+<p>Hana Frluckaj and James Howison. Codes of Conduct in Open Source. In Daniela Damian, Kelly Blincoe, Denae Ford, Alexander Serebrenik, and Zainab Masood, editors, <em>Equity, Diversity, and Inclusion in Software Engineering</em>, pages 295–308. Apress, Berkeley, CA, 2024. URL: <a class="reference external" href="https://link.springer.com/10.1007/978-1-4842-9651-6_17">https://link.springer.com/10.1007/978-1-4842-9651-6_17</a> (visited on 2025-01-02), <a class="reference external" href="https://doi.org/10.1007/978-1-4842-9651-6_17">doi:10.1007/978-1-4842-9651-6_17</a>.</p>
+</div>
+<div class="citation" id="id30" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">GLU6</a><span class="fn-bracket">]</span></span>
+<p>Inc. GitHub. No license. Accessed: 2025-01-02. URL: <a class="reference external" href="https://choosealicense.com/no-permission/">https://choosealicense.com/no-permission/</a>.</p>
+</div>
+<div class="citation" id="id31" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">GLU7</a><span class="fn-bracket">]</span></span>
+<p>Deekshitha, Rena Bakhshi, Jason Maassen, Carlos Martinez Ortiz, Rob van Nieuwpoort, and Slinger Jansen. RSMM: A Framework to Assess Maturity of Research Software Project. June 2024. arXiv:2406.01788 [cs]. URL: <a class="reference external" href="http://arxiv.org/abs/2406.01788">http://arxiv.org/abs/2406.01788</a> (visited on 2024-10-02).</p>
+</div>
+<div class="citation" id="id34" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id8">GLU8</a><span class="fn-bracket">]</span></span>
+<p><strong>missing author in henney_97_2010</strong></p>
+</div>
+<div class="citation" id="id33" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id9">GLU9</a><span class="fn-bracket">]</span></span>
+<p>Awan Afiaz, Andrey Ivanov, John Chamberlin, David Hanauer, Candace Savonen, Mary J. Goldman, Martin Morgan, Michael Reich, Alexander Getka, Aaron Holmes, Sarthak Pati, Dan Knight, Paul C. Boutros, Spyridon Bakas, J. Gregory Caporaso, Guilherme Del Fiol, Harry Hochheiser, Brian Haas, Patrick D. Schloss, James A. Eddy, Jake Albrecht, Andrey Fedorov, Levi Waldron, Ava M. Hoffman, Richard L. Bradshaw, Jeffrey T. Leek, and Carrie Wright. Evaluation of software impact designed for biomedical research: Are we measuring what's meaningful? June 2023. arXiv:2306.03255 [cs, q-bio]. URL: <a class="reference external" href="http://arxiv.org/abs/2306.03255">http://arxiv.org/abs/2306.03255</a> (visited on 2024-10-02).</p>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./garden-lattice"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="garden-lattice.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Garden Lattice</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../software-forest/software-forest.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Software Forest</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-files-for-shared-understanding">Common files for shared understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#readme">README</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing">CONTRIBUTING</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#code-of-conduct">CODE_OF_CONDUCT</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#license">LICENSE</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-documentation">Project documentation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Software Gardening Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

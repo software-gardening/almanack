@@ -180,16 +180,20 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../garden-lattice/garden-lattice.html">Garden Lattice</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../garden-lattice/garden-lattice.html">Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../garden-lattice/understanding.html">Understanding</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../software-forest/software-forest.html">Software Forest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../verdant-sundial/verdant-sundial.html">Verdant Sundial</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
 </li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="garden-circle.html">Garden Circle</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="garden-circle.html">Garden Circle</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Contributing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="garden-map.html">Garden Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="package-api.html">Almanack Package API</a></li>
 </ul>
 </li>
 </ul>
@@ -457,7 +461,7 @@ Please report unacceptable behavior by following the procedures listed under the
 This commitment requires a good relationship and open communication with our users.</p>
 <p>We encourage you to file a <a class="reference external" href="https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue">GitHub issue</a> to report bugs or propose enhancements to improve the Software Gardening Almanack.</p>
 <p>First, figure out if your idea is already implemented by reading existing issues or pull requests!
-Check the issues (<a class="github reference external" href="https://github.com/software-gardening/almanack/issues">software-gardening/almanack#issues</a>) and pull requests (<a class="github reference external" href="https://github.com/software-gardening/almanack/pulls">software-gardening/almanack</a>)  to see if someone else has already documented or began implementation of your idea.
+Check the issues (<a class="github reference external" href="https://github.com/software-gardening/almanack/issues">software-gardening/almanack#issues</a>) and pull requests (<a class="github reference external" href="https://github.com/software-gardening/almanack/pulls">software-gardening/almanack</a>) to see if someone else has already documented or began implementation of your idea.
 If you do find your idea in an existing issue, please comment on the existing issue noting that you are also interested in the functionality.
 If you do not find your idea, please open a new issue and document why it would be helpful for your particular use case.</p>
 <p>Please also provide the following specifics:</p>
@@ -527,7 +531,7 @@ We use <a class="reference external" href="https://docs.github.com/en/actions">G
 </section>
 <section id="development-tasks">
 <h3>Development Tasks<a class="headerlink" href="#development-tasks" title="Link to this heading">#</a></h3>
-<p>We use <a class="reference external" href="https://poethepoet.natn.io/">Poe the Poet</a> to define common development tasks, which simplifies repeated  commands.
+<p>We use <a class="reference external" href="https://poethepoet.natn.io/">Poe the Poet</a> to define common development tasks, which simplifies repeated commands.
 We include Poe the Poet as a Python Poetry <code class="docutils literal notranslate"><span class="pre">dev</span></code> group dependency, which users access through the Poetry environment.
 Please see the <a class="reference external" href="https://github.com/software-gardening/almanack/blob/main/pyproject.toml"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a> file’s <code class="docutils literal notranslate"><span class="pre">[tool.poe.tasks]</span></code> table for a list of available tasks.</p>
 <p>For example:</p>

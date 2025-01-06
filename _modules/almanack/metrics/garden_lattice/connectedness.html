@@ -1,0 +1,706 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>almanack.metrics.garden_lattice.connectedness &#8212; The Software Gardening Almanack</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/custom.css?v=8a490771" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/almanack/metrics/garden_lattice/connectedness';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
+    <script>document.write(`<img src="../../../../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../../introduction.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../garden-lattice/garden-lattice.html">Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../garden-lattice/understanding.html">Understanding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../software-forest/software-forest.html">Software Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../verdant-sundial/verdant-sundial.html">Verdant Sundial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../../garden-circle/contributing.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../garden-circle/garden-map.html">Garden Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../garden-circle/package-api.html">Almanack Package API</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack/issues/new?title=Issue%20on%20page%20%2F_modules/almanack/metrics/garden_lattice/connectedness.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for almanack.metrics.garden_lattice.connectedness</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for Almanack metrics covering human connection and engagement</span>
+<span class="sd">in software projects such as contributor activity, collaboration</span>
+<span class="sd">frequency.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="kn">import</span> <span class="nn">pygit2</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">from</span> <span class="nn">...git</span> <span class="kn">import</span> <span class="n">file_exists_in_repo</span><span class="p">,</span> <span class="n">find_file</span><span class="p">,</span> <span class="n">read_file</span>
+<span class="kn">from</span> <span class="nn">..remote</span> <span class="kn">import</span> <span class="n">get_api_data</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="default_branch_is_not_master">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master">[docs]</a>
+<span class="k">def</span> <span class="nf">default_branch_is_not_master</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if the default branch of the specified</span>
+<span class="sd">    repository is &quot;master&quot;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (Repository):</span>
+<span class="sd">            A pygit2.Repository object representing the Git repository.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool:</span>
+<span class="sd">            True if the default branch is &quot;master&quot;, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Access the &quot;refs/remotes/origin/HEAD&quot; reference to find the default branch</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># check whether remote head and remote master are the same</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">repo</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;refs/remotes/origin/HEAD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">target</span>
+            <span class="o">==</span> <span class="n">repo</span><span class="o">.</span><span class="n">references</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;refs/remotes/origin/master&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">target</span>
+        <span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="c1"># If &quot;refs/remotes/origin/HEAD&quot; or &quot;refs/remotes/origin/master&quot; doesn&#39;t exist,</span>
+        <span class="c1"># fall back to the local HEAD check</span>
+        <span class="k">return</span> <span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">shorthand</span> <span class="o">!=</span> <span class="s2">&quot;master&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="count_unique_contributors">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.count_unique_contributors">[docs]</a>
+<span class="k">def</span> <span class="nf">count_unique_contributors</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span> <span class="n">since</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Counts the number of unique contributors to a repository.</span>
+
+<span class="sd">    If a `since` datetime is provided, counts contributors</span>
+<span class="sd">    who made commits after the specified datetime.</span>
+<span class="sd">    Otherwise, counts all contributors.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository):</span>
+<span class="sd">            The repository to analyze.</span>
+<span class="sd">        since (Optional[datetime]):</span>
+<span class="sd">            The cutoff datetime. Only contributions after</span>
+<span class="sd">            this datetime are counted. If None, all</span>
+<span class="sd">            contributions are considered.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int:</span>
+<span class="sd">            The number of unique contributors.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">since_timestamp</span> <span class="o">=</span> <span class="n">since</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span> <span class="k">if</span> <span class="n">since</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="n">contributors</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">commit</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">email</span>
+        <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GIT_SORT_TIME</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">commit</span><span class="o">.</span><span class="n">commit_time</span> <span class="o">&gt;</span> <span class="n">since_timestamp</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">contributors</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="detect_social_media_links">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.detect_social_media_links">[docs]</a>
+<span class="k">def</span> <span class="nf">detect_social_media_links</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Analyzes README.md content to identify social media links.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        readme_content (str):</span>
+<span class="sd">            The content of the README.md file as a string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, List[str]]:</span>
+<span class="sd">            A dictionary containing social media details</span>
+<span class="sd">            discovered from readme.md content.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Define patterns for social media links</span>
+    <span class="n">social_media_patterns</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;Twitter&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?twitter\.com/[\w]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;LinkedIn&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?linkedin\.com/(?:in|company)/[\w-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;YouTube&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?youtube\.com/(?:channel|c|user)/[\w-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Facebook&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?facebook\.com/[\w.-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Instagram&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?instagram\.com/[\w.-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TikTok&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?tiktok\.com/@[\w.-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Discord&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?discord(?:\.gg|\.com/invite)/[\w-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Slack&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://[\w.-]+\.slack\.com&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Gitter&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://gitter\.im/[\w/-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Telegram&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?t\.me/[\w-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Mastodon&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://[\w.-]+/users/[\w-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Threads&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?threads\.net/[\w.-]+&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Bluesky&quot;</span><span class="p">:</span> <span class="sa">r</span><span class="s2">&quot;https?://(?:www\.)?bsky\.app/profile/[\w.-]+&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Initialize results</span>
+    <span class="n">found_platforms</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># Search for social media links</span>
+    <span class="k">for</span> <span class="n">platform</span><span class="p">,</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="n">social_media_patterns</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">content</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">):</span>
+            <span class="n">found_platforms</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">platform</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;social_media_platforms&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">found_platforms</span><span class="p">),</span>
+        <span class="s2">&quot;social_media_platforms_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">found_platforms</span><span class="p">),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="is_citable">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.is_citable">[docs]</a>
+<span class="k">def</span> <span class="nf">is_citable</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if the given repository is citable.</span>
+
+<span class="sd">    A repository is considered citable if it contains a CITATION.cff or CITATION.bib</span>
+<span class="sd">    file, or if the README.md file contains a citation section indicated by &quot;## Citation&quot;</span>
+<span class="sd">    or &quot;## Citing&quot;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository): The repository to check for citation files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the repository is citable, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check for a CITATION.cff or CITATION.bib file</span>
+    <span class="k">if</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+        <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;citation&quot;</span><span class="p">,</span>
+        <span class="n">check_extension</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;.cff&quot;</span><span class="p">,</span> <span class="s2">&quot;.bib&quot;</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="c1"># Look for a README.md file and read its content</span>
+    <span class="k">if</span> <span class="p">(</span>
+        <span class="n">file_content</span> <span class="o">:=</span> <span class="n">read_file</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;readme.md&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+    <span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Check for an H2 heading indicating a citation section</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">check_string</span> <span class="ow">in</span> <span class="n">file_content</span>
+            <span class="k">for</span> <span class="n">check_string</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="c1"># markdown sub-headers</span>
+                <span class="s2">&quot;## Citation&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;## Citing&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;## Cite&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;## How to cite&quot;</span><span class="p">,</span>
+                <span class="c1"># RST sub-headers</span>
+                <span class="s2">&quot;Citation</span><span class="se">\n</span><span class="s2">--------&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Citing</span><span class="se">\n</span><span class="s2">------&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Cite</span><span class="se">\n</span><span class="s2">----&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;How to cite</span><span class="se">\n</span><span class="s2">-----------&quot;</span><span class="p">,</span>
+                <span class="c1"># DOI shield</span>
+                <span class="s2">&quot;[![DOI](https://img.shields.io/badge/DOI&quot;</span><span class="p">,</span>
+            <span class="p">]</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+
+<div class="viewcode-block" id="find_doi_citation_data">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data">[docs]</a>
+<span class="k">def</span> <span class="nf">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Find and validate DOI information from a CITATION.cff</span>
+<span class="sd">    file in a repository.</span>
+
+<span class="sd">    This function searches for a `CITATION.cff` file in the provided repository,</span>
+<span class="sd">    extracts the DOI (if available), validates its format, checks its</span>
+<span class="sd">    resolvability via HTTP, and performs an exact DOI lookup on the OpenAlex API.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository):</span>
+<span class="sd">            The repository object to search for the CITATION.cff file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, Any]:</span>
+<span class="sd">            A dictionary containing DOI-related information and metadata.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;valid_format_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Find the CITATION.cff file</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">citationcff_file</span> <span class="o">:=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;CITATION.cff&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No CITATION.cff file discovered.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Read and parse the CITATION.cff file</span>
+        <span class="n">citation_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">citationcff_file</span><span class="p">))</span>
+
+        <span class="c1"># Extract DOI from &#39;doi&#39; or &#39;identifiers&#39; field</span>
+        <span class="k">if</span> <span class="s2">&quot;doi&quot;</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;identifiers&quot;</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="n">identifier</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;identifiers&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                    <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;doi&quot;</span>
+                <span class="p">),</span>
+                <span class="kc">None</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading YAML: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]:</span>
+        <span class="c1"># Validate the DOI format</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;valid_format_doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^10\.\d{4,9}/[-._;()/:A-Za-z0-9]+$&quot;</span><span class="p">,</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">])</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;valid_format_doi&quot;</span><span class="p">]:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="c1"># Check DOI resolvability via HTTPS</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                        <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+                    <span class="p">)</span><span class="o">.</span><span class="n">status_code</span>
+                    <span class="o">==</span> <span class="mi">200</span>  <span class="c1"># noqa: PLR2004</span>
+                <span class="p">):</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;DOI does not resolve properly: https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error resolving DOI: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># Perform exact DOI lookup on OpenAlex</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">openalex_result</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+                    <span class="n">api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.openalex.org/works/doi:</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="n">publication_date</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;publication_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">publication_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">if</span> <span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                            <span class="k">else</span> <span class="kc">None</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error during OpenAlex exact DOI lookup: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">result</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Software Gardening Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
