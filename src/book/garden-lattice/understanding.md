@@ -44,7 +44,8 @@ For further reading on `README` file practices, see the following resources:
 
 A `CONTRIBUTING` file outlines guidelines for how to add to the project.
 Its presence fosters a welcoming environment for new contributors, ensuring that they have the necessary information to participate effectively.
-In the same way that a garden flourishes when there's good understanding of roles and how to care for one another, a project grows stronger when contributors are guided by clear and inclusive instructions.
+In the same way that a garden flourishes when there's good understanding of how to provide care to the garden and gardeners, a project grows stronger when contributors are guided by clear and inclusive instructions.
+The resulting nurturing environment fosters growth, resilience, and a sense of community, ensuring the project remains healthy and vibrant.
 
 The `CONTRIBUTING` file should outline all development procedures that are specific to the project.
 For example, the file might contain testing guidelines, linting/formatting expectations, release cadence, and more.
