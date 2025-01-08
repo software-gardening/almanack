@@ -69,14 +69,14 @@ def get_ecosystems_package_metrics(repo_url: str) -> Dict[str, Any]:
     """
 
     if repo_url is None:
-        LOGGER.warning(
+        LOGGER.info(
             "Did not receive a valid repository URL and unable to gather package metrics."
         )
         return {}
 
     # normalize http to https if necessary
     if repo_url.startswith("http://"):
-        LOGGER.warning(
+        LOGGER.info(
             "Received `http://` repository URL for package metrics search. Normalizing to use `https://`."
         )
         repo_url = repo_url.replace("http://", "https://")

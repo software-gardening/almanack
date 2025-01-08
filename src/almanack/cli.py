@@ -10,7 +10,11 @@ from datetime import datetime, timezone
 import fire
 from tabulate import tabulate
 
-from .metrics.data import gather_failed_almanack_metrics, get_table
+from .metrics.data import (
+    _get_almanack_version,
+    gather_failed_almanack_metrics,
+    get_table,
+)
 
 
 class AlmanackCLI(object):
@@ -18,22 +22,33 @@ class AlmanackCLI(object):
     Almanack CLI class for Google Fire
     """
 
-    def table(self, repo_path: str) -> str:
+    def table(self, repo_path: str) -> None:
         """
         Used through CLI to
         generate a table of metrics
 
         This enables the use of CLI such as:
         `almanack table <repo path>`
+
+        Args:
+            repo_path (str):
+                The path to the repository to analyze.
         """
 
-        # serialize the JSON as a string
-        return json.dumps(
-            # gather table data from Almanack
-            get_table(repo_path=repo_path)
+        # print serialized JSON as a string
+        print(
+            json.dumps(
+                # gather table data from Almanack
+                get_table(repo_path=repo_path)
+            )
         )
 
-    def check(self, repo_path: str) -> str:
+        # exit with zero status for no errors
+        # (we don't check for failures with this
+        # CLI option.)
+        sys.exit(0)
+
+    def check(self, repo_path: str) -> None:
         """
         Used through CLI to
         check table of metrics for
@@ -43,12 +58,21 @@ class AlmanackCLI(object):
 
         This enables the use of CLI such as:
         `almanack check <repo path>`
+
+        Args:
+            repo_path (str):
+                The path to the repository to analyze.
         """
 
         # header for CLI output
         datetime_now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-        print(f"Running Sofftware Gardening Almanack checks at {datetime_now}.")
-        print(f"Target repository path: {repo_path}")
+        print(
+            "Running Sofftware Gardening Almanack checks.",
+            f"Datetime: {datetime_now}",
+            f"Almanack version: {_get_almanack_version()}",
+            f"Target repository path: {repo_path}",
+            sep="\n",
+        )
 
         # gather failed metrics
         failed_metrics = gather_failed_almanack_metrics(repo_path=repo_path)
@@ -61,6 +85,13 @@ class AlmanackCLI(object):
                 if metric["name"] == "repo-almanack-score"
             ),
             None,
+        )
+
+        # prepare almanack score output
+        almanack_score_output = (
+            f"Software Gardening Almanack score: {100 * almanack_score_metrics['almanack-score']:.2f}% "
+            f"({almanack_score_metrics['almanack-score-numerator']}/"
+            f"{almanack_score_metrics['almanack-score-denominator']})"
         )
 
         # if we have under 1 almanack score, we have failures
@@ -103,21 +134,17 @@ class AlmanackCLI(object):
                 )
             )
 
-            print(
-                f"Software Gardening Almanack score: {100 * almanack_score_metrics['almanack-score']:.2f}% "
-                f"({almanack_score_metrics['almanack-score-numerator']}/"
-                f"{almanack_score_metrics['almanack-score-denominator']})"
-            )
+            # show the almanack score output
+            print(almanack_score_output)
 
             # return non-zero exit code for failures
-            return sys.exit(1)
+            sys.exit(1)
 
-        print(
-            f"Software Gardening Almanack score: {100 * almanack_score_metrics['almanack-score']:.2f}% "
-            f"({almanack_score_metrics['almanack-score-numerator']}/"
-            f"{almanack_score_metrics['almanack-score-denominator']})"
-        )
-        return sys.exit(0)
+        # show the almanack score output
+        print(almanack_score_output)
+
+        # exit with zero (no failures)
+        sys.exit(0)
 
 
 def trigger():
