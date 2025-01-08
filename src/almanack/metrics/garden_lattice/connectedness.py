@@ -202,7 +202,7 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
 
     # Find the CITATION.cff file
     if (citationcff_file := find_file(repo=repo, filepath="CITATION.cff")) is None:
-        LOGGER.warning("No CITATION.cff file discovered.")
+        LOGGER.info("No CITATION.cff file discovered.")
         return result
 
     try:

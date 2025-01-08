@@ -102,6 +102,58 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     ]
 
 
+def gather_failed_almanack_metrics(repo_path: str) -> List[Dict[str, Any]]:
+    """
+    Gather checks on the repository metrics and returns a list of failed checks
+    for use in helping others understand errors and rectify them.
+
+    Args:
+        repo_path (str):
+            The file path to the repository for which metrics are
+            to be performed.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the metrics and
+        their associated results. Each dictionary includes the name, id, and
+        correction guidance for each failed check. The dictionary also
+        includes data about the almanack score for use in summarizing the results.
+    """
+
+    return [
+        {
+            key: val
+            for key, val in metric.items()
+            if key in ["name", "id", "correction_guidance", "result"]
+        }
+        for metric in get_table(repo_path=repo_path)
+        if
+        # gathers the almanack score
+        (metric["name"] == "repo-almanack-score") or
+        # gathers failed checks
+        (
+            (
+                # bool results with a non-zero sustainability correlation
+                metric["result-type"] == "bool"
+                and metric["sustainability_correlation"] != 0
+            )
+            and (
+                # failures for positive sustainability correlation
+                # (good things missing)
+                (
+                    (metric["result"] == False or metric["result"] == None)
+                    and metric["sustainability_correlation"] == 1
+                )
+                # failures for negative sustainability correlation
+                # (bad things present)
+                or (
+                    (metric["result"] == True or metric["result"] == None)
+                    and metric["sustainability_correlation"] == -1
+                )
+            )
+        )
+    ]
+
+
 def days_of_development(repo: pygit2.Repository) -> float:
     """
 

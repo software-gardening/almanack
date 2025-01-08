@@ -31,7 +31,7 @@ def test_cli_almanack(tmp_path):
     repo = repo_setup(repo_path=tmp_path, files=[{"files": {"example.txt": "example"}}])
 
     # gather output and return code from running a CLI command
-    stdout, _, returncode = run_cli_command(command=["almanack", repo.path])
+    stdout, _, returncode = run_cli_command(command=["almanack", "table", repo.path])
 
     # make sure we return 0 on success
     assert returncode == 0

@@ -87,6 +87,7 @@ def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
             "result-type",
             "sustainability_correlation",
             "description",
+            "correction_guidance",
             "result",
         ]
 
@@ -121,6 +122,9 @@ def test_metrics_yaml():
                             "enum": [1, -1, 0],
                         },
                         "description": {"type": "string"},
+                        "correction_guidance": {
+                            "anyOf": [{"type": "string"}, {"type": "null"}]
+                        },
                     },
                     "required": [
                         "name",
@@ -128,6 +132,7 @@ def test_metrics_yaml():
                         "result-type",
                         "sustainability_correlation",
                         "description",
+                        "correction_guidance",
                     ],
                 },
             }
