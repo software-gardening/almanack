@@ -553,7 +553,8 @@ def get_github_build_metrics(
 
     Args:
         repo_url (str):
-            The full URL of the repository (e.g., 'http://github.com/org/repo').
+            The full URL of the repository
+            (e.g., 'https://github.com/software-gardening/almanack').
         branch (str):
             The branch to filter for the workflow runs (default: "main").
         max_runs (int):
