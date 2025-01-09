@@ -201,16 +201,12 @@ def compute_repo_data(repo_path: str) -> None:
 
     # date of last code coverage run
     date_of_last_coverage_run = code_coverage.get("date_of_last_coverage_run", None)
-    readme_exists = file_exists_in_repo(
-        repo=repo,
-        expected_file_name="readme",
-    )
+    readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
+    readme_exists = True if readme_file is not None else False
 
     # gather social media metrics
     social_media_metrics = (
-        detect_social_media_links(
-            content=read_file(repo=repo, filepath="readme.md", case_insensitive=True)
-        )
+        detect_social_media_links(content=read_file(repo=repo, entry=readme_file))
         if readme_exists
         else {}
     )

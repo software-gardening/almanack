@@ -67,36 +67,96 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
         assert data["repo-path"] == str(repo_path)
 
 
-def test_get_table(entropy_repository_paths: dict[str, pathlib.Path]) -> None:
+@pytest.mark.parametrize(
+    "repo_files",
+    [
+        [
+            {
+                "files": {
+                    "README.md": "# Sample Repo",
+                    "CONTRIBUTING.md": "Contribution guidelines",
+                },
+                "commit-date": datetime(2018, 1, 1),
+                "author": {"name": "Author One", "email": "author1@example.com"},
+            },
+            {
+                "files": {
+                    "CODE_OF_CONDUCT.md": "Code of conduct",
+                    "LICENSE": "MIT License",
+                },
+                "commit-date": datetime(2021, 1, 2),
+                "author": {"name": "Author Two", "email": "author2@example.com"},
+            },
+        ],
+        [
+            {
+                "files": {
+                    "README.txt": "Sample Repo in text format",
+                },
+                "commit-date": datetime(2023, 1, 1),
+                "author": {"name": "Author One", "email": "author1@example.com"},
+                "tag": "v3.0.0",
+            },
+        ],
+        [
+            {
+                "files": {
+                    "docs/index.rst": "Documentation index",
+                },
+                "commit-date": datetime(2024, 1, 1),
+                "author": {"name": "author@example.io", "email": "anauthor"},
+                "tag": "2024",
+            },
+        ],
+        [
+            {
+                "files": {
+                    "readme.rst": "Read me",
+                },
+                "commit-date": datetime(2024, 8, 1),
+                "author": {"name": "author", "email": "author@example3.edu"},
+            },
+            {
+                "files": {
+                    "readme.rst": "Read me",
+                },
+                "commit-date": datetime(2024, 9, 2),
+                "tag": "atag",
+            },
+        ],
+    ],
+)
+def test_get_table(repo_files, tmp_path: pathlib.Path) -> None:
     """
     Tests the almanack.metrics.data.get_table function
     """
 
-    for _, repo_path in entropy_repository_paths.items():
+    # Set up the repository with the provided files
+    repo_path = tmp_path / "test_repo"
+    repo_setup(repo_path=repo_path, files=repo_files)
 
-        # create a table from the repo
-        table = get_table(str(repo_path))
+    # Create a table from the repo
+    table = get_table(str(repo_path))
 
-        # check table type
-        assert isinstance(table, list)
+    # Check table type
+    assert isinstance(table, list)
 
-        # check that the columns appear as expected when forming a dataframe of the output
-        assert pd.DataFrame(table).columns.tolist() == [
-            "name",
-            "id",
-            "result-type",
-            "sustainability_correlation",
-            "description",
-            "result",
-        ]
+    # Check that the columns appear as expected when forming a dataframe of the output
+    assert pd.DataFrame(table).columns.tolist() == [
+        "name",
+        "id",
+        "result-type",
+        "sustainability_correlation",
+        "description",
+        "result",
+    ]
 
-        # check types for the results
-        for record in table:
-            assert (
-                isinstance(record["result"], getattr(builtins, record["result-type"]))
-                # sometimes we have None which is compared by type otherwise
-                or record["result"] is None
-            ), f"Result {record['result']} is not of type {record['result-type']}."
+    # Check types for the results
+    for record in table:
+        assert (
+            isinstance(record["result"], getattr(builtins, record["result-type"]))
+            or record["result"] is None
+        ), f"Result {record['result']} is not of type {record['result-type']}."
 
 
 def test_metrics_yaml():
@@ -188,6 +248,8 @@ def test_metrics_yaml():
             {"files": {"readme.md": "This is a readme."}},
             False,
         ),
+        # test an rst file
+        ({"files": {"README.rst": "## How to cite"}}, True),
         # Test with no citation files
         ({"files": {"random.txt": "Some random text."}}, False),
         # test the almanack itseft as a special case
@@ -419,7 +481,7 @@ def test_commit_frequency_data(  # noqa: PLR0913
             {
                 "files": {
                     "docs/random_file.txt": "This is just a random file",
-                    "README.md": "# Project Overview",
+                    "README.rst": "# Project Overview",
                 }
             },
             False,

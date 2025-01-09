@@ -171,7 +171,10 @@ def detect_encoding(blob_data: bytes) -> str:
 
 
 def find_file(
-    repo: pygit2.Repository, filepath: str, case_insensitive: bool = False
+    repo: pygit2.Repository,
+    filepath: str,
+    case_insensitive: bool = False,
+    extensions: list[str] = [".md", ".txt", ".rtf", ".rst", ""],
 ) -> Optional[pygit2.Object]:
     """
     Locate a file in the repository by its path.
@@ -183,6 +186,8 @@ def find_file(
             The path to the file within the repository.
         case_insensitive (bool):
             If True, perform case-insensitive comparison.
+        extensions (list[str]):
+            List of possible file extensions to check (e.g., [".md", ""]).
 
     Returns:
         Optional[pygit2.Object]:
@@ -190,33 +195,35 @@ def find_file(
             or None if no matching file is found.
     """
     tree = repo.head.peel().tree
-    found_entry = None
 
-    if not case_insensitive:
-        try:
-            found_entry = tree[filepath]
-        except KeyError:
-            return None
-    else:
-        path_parts = filepath.lower().split("/")
-        for i, part in enumerate(path_parts):
+    for ext in extensions:
+        full_path = f"{filepath}{ext}"
+        if not case_insensitive:
             try:
-                entry = next(e for e in tree if e.name.lower() == part)
-            except StopIteration:
-                return None
-
-            if entry.type == pygit2.GIT_OBJECT_TREE:
-                tree = repo[entry.id]
-            elif entry.type == pygit2.GIT_OBJECT_BLOB:
-                if i == len(path_parts) - 1:
-                    found_entry = entry
+                return tree[full_path]
+            except KeyError:
+                continue
+        else:
+            path_parts = full_path.lower().split("/")
+            current_tree = tree
+            for i, part in enumerate(path_parts):
+                try:
+                    entry = next(e for e in current_tree if e.name.lower() == part)
+                except StopIteration:
                     break
-                else:
-                    return None
-            else:
-                return None
 
-    return found_entry
+                if entry.type == pygit2.GIT_OBJECT_TREE:
+                    current_tree = repo[entry.id]
+                elif entry.type == pygit2.GIT_OBJECT_BLOB:
+                    if i == len(path_parts) - 1:
+                        return entry
+                    else:
+                        break
+                else:
+                    break
+
+    # Return None if no valid file is found
+    return None
 
 
 def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
