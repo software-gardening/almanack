@@ -3,6 +3,7 @@ Test git operations functionality
 """
 
 import pathlib
+from datetime import datetime
 from typing import Any, Dict, List
 from urllib.parse import urlparse
 
@@ -301,3 +302,95 @@ def test_file_exists_in_repo(
     )
 
     assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    "repo_files, filepath, case_insensitive, extensions, expected_filename",
+    [
+        (
+            [
+                {
+                    "files": {
+                        "README.md": "# Sample Repo",
+                        "CONTRIBUTING.md": "Contribution guidelines",
+                    },
+                    "commit-date": datetime(2023, 1, 1),
+                    "author": {"name": "Author One", "email": "author1@example.com"},
+                },
+            ],
+            "README",
+            False,
+            [".md", ".txt", ".rtf", ".rst", ""],
+            "README.md",
+        ),
+        (
+            [
+                {
+                    "files": {
+                        "readme.md": "# Sample Repo",
+                    },
+                    "commit-date": datetime(2023, 1, 1),
+                    "author": {"name": "Author One", "email": "author1@example.com"},
+                },
+            ],
+            "README",
+            True,
+            [".md", ".txt", ".rtf", ".rst", ""],
+            "readme.md",
+        ),
+        (
+            [
+                {
+                    "files": {
+                        "docs/index.rst": "Documentation index",
+                    },
+                    "commit-date": datetime(2023, 1, 1),
+                    "author": {"name": "Author One", "email": "author1@example.com"},
+                },
+            ],
+            "docs/index",
+            False,
+            [".md", ".txt", ".rtf", ".rst", ""],
+            "index.rst",
+        ),
+        (
+            [
+                {
+                    "files": {
+                        "README.txt": "Sample Repo in text format",
+                    },
+                    "commit-date": datetime(2023, 1, 1),
+                    "author": {"name": "Author One", "email": "author1@example.com"},
+                },
+            ],
+            "README",
+            False,
+            [".md", ".txt", ".rtf", ".rst", ""],
+            "README.txt",
+        ),
+    ],
+)
+def test_find_file(  # noqa: PLR0913
+    repo_files: List[Dict[str, Dict[str, str]]],
+    filepath: str,
+    case_insensitive: bool,
+    extensions: List[str],
+    expected_filename: str,
+    tmp_path: pathlib.Path,
+) -> None:
+    """
+    Tests the almanack.git.find_file function with various types of repositories.
+    """
+
+    # Set up the repository with the provided files
+    repo_path = tmp_path / "test_repo"
+    repo = repo_setup(repo_path, repo_files)
+
+    # Find the file in the repo
+    file_entry = find_file(repo, filepath, case_insensitive, extensions)
+
+    # Check that the file entry is found and matches the expected filename
+    assert file_entry is not None, f"File {filepath} not found in the repository."
+    assert (
+        file_entry.name == expected_filename
+    ), f"Expected {expected_filename}, but found {file_entry.name}."
