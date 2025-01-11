@@ -109,13 +109,12 @@ def gather_failed_almanack_metrics(repo_path: str) -> List[Dict[str, Any]]:
 
     Args:
         repo_path (str):
-            The file path to the repository for which metrics are
-            to be performed.
+            The file path to the repository to calculate metrics for.
 
     Returns:
         List[Dict[str, Any]]: A list of dictionaries containing the metrics and
         their associated results. Each dictionary includes the name, id, and
-        correction guidance for each failed check. The dictionary also
+       guidance on how to fix each failed check. The dictionary also
         includes data about the almanack score for use in summarizing the results.
     """
 
