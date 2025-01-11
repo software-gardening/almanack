@@ -43,7 +43,11 @@ pd.DataFrame(almanack_table)
 Alternatively, you can use the Almanack package as a command-line interface (CLI):
 
 ```bash
-almanack path/to/repository
+# generate a table of metrics based on a repository
+almanack table path/to/repository
+
+# perform linting-style checks on a repository
+almanack check path/to/repository
 ```
 
 ## Contributing
