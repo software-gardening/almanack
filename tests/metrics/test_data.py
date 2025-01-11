@@ -20,7 +20,7 @@ from almanack.metrics.data import (
     _get_almanack_version,
     compute_almanack_score,
     compute_repo_data,
-    gather_failed_almanack_metrics,
+    gather_failed_almanack_metric_checks,
     get_api_data,
     get_github_build_metrics,
     get_table,
@@ -1018,9 +1018,9 @@ def test_compute_almanack_score(
         ],
     ],
 )
-def test_gather_failed_almanack_metrics(tmp_path, files):
+def test_gather_failed_almanack_metric_checks(tmp_path, files):
     """
-    Test gather_failed_almanack_metrics
+    Test gather_failed_almanack_metric_checks
     """
 
     # setup the repo
@@ -1031,7 +1031,7 @@ def test_gather_failed_almanack_metrics(tmp_path, files):
     almanack_score_metrics = compute_almanack_score(
         almanack_table=(get_table(repo_path=tmp_path))
     )
-    failed_metrics = gather_failed_almanack_metrics(repo_path=tmp_path)
+    failed_metrics = gather_failed_almanack_metric_checks(repo_path=tmp_path)
 
     # calculate the number of expected failures
     # by subtracting the number of successful metrics

@@ -70,3 +70,16 @@ def test_cli_almanack_check(tmp_path):
     # make sure we return 1 on failures
     # (the example repo likely has many failures)
     assert returncode == 1
+
+    # check that we see the following strings within the output
+    assert all(
+        check_str in stdout
+        for check_str in [
+            "Running Software Gardening Almanack checks.",
+            "Datetime:",
+            "Almanack version:",
+            "Target repository path:",
+            "The following Software Gardening Almanack metrics have failed:",
+            "Software Gardening Almanack score:",
+        ]
+    )

@@ -12,7 +12,7 @@ from tabulate import tabulate
 
 from .metrics.data import (
     _get_almanack_version,
-    gather_failed_almanack_metrics,
+    gather_failed_almanack_metric_checks,
     get_table,
 )
 
@@ -20,6 +20,20 @@ from .metrics.data import (
 class AlmanackCLI(object):
     """
     Almanack CLI class for Google Fire
+
+    The following CLI-based commands are available
+    (and in alignment with the methods below based
+    on their name):
+
+    - `almanack table <repo path>`: Provides a JSON data
+        structure which includes Almanack metric data.
+        Always returns a 0 exit.
+    - `almanack check <repo path>`: Provides a report
+        of boolean metrics which include a non-zero
+        sustainability direction ("checks") that are
+        failing to inform a user whether they pass.
+        Returns non-zero exit (1) if any checks are failing,
+        otherwise 0.
     """
 
     def table(self, repo_path: str) -> None:
@@ -67,7 +81,7 @@ class AlmanackCLI(object):
         # header for CLI output
         datetime_now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
         print(
-            "Running Sofftware Gardening Almanack checks.",
+            "Running Software Gardening Almanack checks.",
             f"Datetime: {datetime_now}",
             f"Almanack version: {_get_almanack_version()}",
             f"Target repository path: {repo_path}",
@@ -75,7 +89,7 @@ class AlmanackCLI(object):
         )
 
         # gather failed metrics
-        failed_metrics = gather_failed_almanack_metrics(repo_path=repo_path)
+        failed_metrics = gather_failed_almanack_metric_checks(repo_path=repo_path)
 
         # gather almanack score metrics
         almanack_score_metrics = next(

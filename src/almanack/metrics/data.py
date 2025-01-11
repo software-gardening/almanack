@@ -102,14 +102,15 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     ]
 
 
-def gather_failed_almanack_metrics(repo_path: str) -> List[Dict[str, Any]]:
+def gather_failed_almanack_metric_checks(repo_path: str) -> List[Dict[str, Any]]:
     """
     Gather checks on the repository metrics and returns a list of failed checks
-    for use in helping others understand errors and rectify them.
+    for use in helping others understand the failed checks and rectify them.
 
     Args:
         repo_path (str):
-            The file path to the repository to calculate metrics for.
+            The file path to the repository which will have metrics
+            calculated and includes boolean checks.
 
     Returns:
         List[Dict[str, Any]]: A list of dictionaries containing the metrics and
@@ -120,9 +121,11 @@ def gather_failed_almanack_metrics(repo_path: str) -> List[Dict[str, Any]]:
 
     return [
         {
-            key: val
-            for key, val in metric.items()
-            if key in ["name", "id", "correction_guidance", "result"]
+            metric_key: metric_val
+            for metric_key, metric_val in metric.items()
+            # iterate through the metric keys and only gather the following
+            # (we need only these for the output)
+            if metric_key in ["name", "id", "correction_guidance", "result"]
         }
         for metric in get_table(repo_path=repo_path)
         if
