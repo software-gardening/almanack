@@ -305,7 +305,8 @@ def test_file_exists_in_repo(
 
 
 @pytest.mark.parametrize(
-    # test various scenarios of repostiories and the expected filename returned
+    # test various scenarios of repositories
+    # and the expected filename returned
     # when using the find_file function.
     "repo_files, filepath, case_insensitive, extensions, expected_filename",
     [
