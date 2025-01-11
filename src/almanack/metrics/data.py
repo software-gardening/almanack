@@ -102,6 +102,60 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     ]
 
 
+def gather_failed_almanack_metric_checks(repo_path: str) -> List[Dict[str, Any]]:
+    """
+    Gather checks on the repository metrics and returns a list of failed checks
+    for use in helping others understand the failed checks and rectify them.
+
+    Args:
+        repo_path (str):
+            The file path to the repository which will have metrics
+            calculated and includes boolean checks.
+
+    Returns:
+        List[Dict[str, Any]]: A list of dictionaries containing the metrics and
+        their associated results. Each dictionary includes the name, id, and
+       guidance on how to fix each failed check. The dictionary also
+        includes data about the almanack score for use in summarizing the results.
+    """
+
+    return [
+        {
+            metric_key: metric_val
+            for metric_key, metric_val in metric.items()
+            # iterate through the metric keys and only gather the following
+            # (we need only these for the output)
+            if metric_key in ["name", "id", "correction_guidance", "result"]
+        }
+        for metric in get_table(repo_path=repo_path)
+        if
+        # gathers the almanack score
+        (metric["name"] == "repo-almanack-score") or
+        # gathers failed checks
+        (
+            (
+                # bool results with a non-zero sustainability correlation
+                metric["result-type"] == "bool"
+                and metric["sustainability_correlation"] != 0
+            )
+            and (
+                # failures for positive sustainability correlation
+                # (good things missing)
+                (
+                    (metric["result"] == False or metric["result"] == None)
+                    and metric["sustainability_correlation"] == 1
+                )
+                # failures for negative sustainability correlation
+                # (bad things present)
+                or (
+                    (metric["result"] == True or metric["result"] == None)
+                    and metric["sustainability_correlation"] == -1
+                )
+            )
+        )
+    ]
+
+
 def days_of_development(repo: pygit2.Repository) -> float:
     """
 
@@ -497,7 +551,8 @@ def get_github_build_metrics(
 
     Args:
         repo_url (str):
-            The full URL of the repository (e.g., 'http://github.com/org/repo').
+            The full URL of the repository
+            (e.g., 'https://github.com/software-gardening/almanack').
         branch (str):
             The branch to filter for the workflow runs (default: "main").
         max_runs (int):

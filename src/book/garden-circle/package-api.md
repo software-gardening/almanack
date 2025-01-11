@@ -1,5 +1,17 @@
 # `almanack` Package API
 
+## Metrics
+
+### Data
+
+```{eval-rst}
+.. automodule:: almanack.metrics.data
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
 ## Garden Lattice
 
 ### Understanding

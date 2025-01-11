@@ -22,16 +22,16 @@ def test_cli_util():
     assert returncode == 0
 
 
-def test_cli_almanack(tmp_path):
+def test_cli_almanack_table(tmp_path):
     """
-    Tests running `almanack` as a CLI
+    Tests running `almanack table` as a CLI
     """
 
     # create a repo with a single file and commit
     repo = repo_setup(repo_path=tmp_path, files=[{"files": {"example.txt": "example"}}])
 
     # gather output and return code from running a CLI command
-    stdout, _, returncode = run_cli_command(command=["almanack", repo.path])
+    stdout, _, returncode = run_cli_command(command=["almanack", "table", repo.path])
 
     # make sure we return 0 on success
     assert returncode == 0
@@ -53,4 +53,33 @@ def test_cli_almanack(tmp_path):
             sorted([result["name"] for result in results]),
             sorted([metric["name"] for metric in metrics_table["metrics"]]),
         )
+    )
+
+
+def test_cli_almanack_check(tmp_path):
+    """
+    Tests running `almanack check` as a CLI
+    """
+
+    # create a repo with a single file and commit
+    repo = repo_setup(repo_path=tmp_path, files=[{"files": {"example.txt": "example"}}])
+
+    # gather output and return code from running a CLI command
+    stdout, _, returncode = run_cli_command(command=["almanack", "check", repo.path])
+
+    # make sure we return 1 on failures
+    # (the example repo likely has many failures)
+    assert returncode == 1
+
+    # check that we see the following strings within the output
+    assert all(
+        check_str in stdout
+        for check_str in [
+            "Running Software Gardening Almanack checks.",
+            "Datetime:",
+            "Almanack version:",
+            "Target repository path:",
+            "The following Software Gardening Almanack metrics have failed:",
+            "Software Gardening Almanack score:",
+        ]
     )

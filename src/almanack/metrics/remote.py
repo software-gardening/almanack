@@ -74,16 +74,16 @@ def get_api_data(
                     )
                     time.sleep(backoff)
                 else:
-                    LOGGER.warning("Rate limit exceeded. All retry attempts exhausted.")
+                    LOGGER.info("Rate limit exceeded. All retry attempts exhausted.")
                     return {}
             else:
                 # Raise other HTTP errors immediately
-                LOGGER.warning(f"Unexpected HTTP error: {httpe}")
+                LOGGER.info(f"Unexpected HTTP error: {httpe}")
                 return {}
         except requests.RequestException as reqe:
             # Raise other non-HTTP exceptions immediately
-            LOGGER.warning(f"Unexpected request error: {reqe}")
+            LOGGER.info(f"Unexpected request error: {reqe}")
             return {}
 
-    LOGGER.warning("All retries failed. Returning an empty response.")
+    LOGGER.info("All retries failed. Returning an empty response.")
     return {}  # Default return in case all retries fail

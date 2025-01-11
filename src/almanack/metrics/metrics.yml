@@ -6,24 +6,28 @@ metrics:
     sustainability_correlation: 0
     description: >-
       Repository path (local directory).
+    correction_guidance:
   - name: "repo-commits"
     id: "SGA-META-0002"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Total number of commits for the repository.
+    correction_guidance:
   - name: "repo-file-count"
     id: "SGA-META-0003"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Total number of files tracked within the repository.
+    correction_guidance:
   - name: "repo-commit-time-range"
     id: "SGA-META-0004"
     result-type: "tuple"
     sustainability_correlation: 0
     description: >-
       Starting commit and most recent commit for the repository.
+    correction_guidance:
   - name: "repo-days-of-development"
     id: "SGA-META-0005"
     result-type: "int"
@@ -31,6 +35,7 @@ metrics:
     description: >-
       Integer representing the number of days of development
       between most recent commit and first commit.
+    correction_guidance:
   - name: "repo-commits-per-day"
     id: "SGA-META-0006"
     result-type: "float"
@@ -38,6 +43,7 @@ metrics:
     description: >-
       Floating point number which represents the number of commits
       per day (using days of development).
+    correction_guidance:
   - name: "almanack-table-datetime"
     id: "SGA-META-0007"
     result-type: "str"
@@ -46,6 +52,7 @@ metrics:
       String representing the date when this table was generated
       in the format of '%Y-%m-%dT%H:%M:%S.%fZ', for example:
       2024-11-22T18:20:30.123456Z .
+    correction_guidance:
   - name: "almanack-version"
     id: "SGA-META-0008"
     result-type: "str"
@@ -53,24 +60,28 @@ metrics:
     description: >-
       String representing the version of the almanack which was used
       to generate this table.
+    correction_guidance:
   - name: "repo-primary-language"
     id: "SGA-META-0009"
     result-type: "str"
     sustainability_correlation: 0
     description: >-
       Detected primary programming language of the repository.
+    correction_guidance:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
     sustainability_correlation: 0
     description: >-
       Detected primary license of the repository.
+    correction_guidance:
   - name: "repo-doi"
     id: "SGA-META-0011"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Repository DOI value detected from CITATION.cff file.
+    correction_guidance:
   - name: "repo-doi-publication-date"
     id: "SGA-META-0012"
     result-type: "str"
@@ -78,6 +89,7 @@ metrics:
     description: >-
       Repository DOI publication date detected from CITATION.cff file
       and OpenAlex.org.
+    correction_guidance:
   - name: "repo-almanack-score"
     id: "SGA-META-0013"
     result-type: "dict"
@@ -88,6 +100,7 @@ metrics:
       total Almanack boolean metrics considered (denominator), and 3) a
       score that represents how likely the repository will be maintained
       over time based (numerator / denominator).
+    correction_guidance:
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
@@ -95,6 +108,8 @@ metrics:
     description: >-
       Boolean value indicating the presence of a README file
       in the repository.
+    correction_guidance: >-
+      Consider adding a README file to the repository.
   - name: "repo-includes-contributing"
     id: "SGA-GL-0002"
     result-type: "bool"
@@ -102,6 +117,8 @@ metrics:
     description: >-
       Boolean value indicating the presence of a CONTRIBUTING file
       in the repository.
+    correction_guidance: >-
+      Consider adding a CONTRIBUTING file to the repository.
   - name: "repo-includes-code-of-conduct"
     id: "SGA-GL-0003"
     result-type: "bool"
@@ -109,6 +126,8 @@ metrics:
     description: >-
       Boolean value indicating the presence of a CODE_OF_CONDUCT file
       in the repository.
+    correction_guidance: >-
+      Consider adding a CODE_OF_CONDUCT file to the repository.
   - name: "repo-includes-license"
     id: "SGA-GL-0004"
     result-type: "bool"
@@ -116,6 +135,8 @@ metrics:
     description: >-
       Boolean value indicating the presence of a LICENSE file
       in the repository.
+    correction_guidance: >-
+      Consider adding a LICENSE file to the repository.
   - name: "repo-is-citable"
     id: "SGA-GL-0005"
     result-type: "bool"
@@ -123,6 +144,9 @@ metrics:
     description: >-
       Boolean value indicating the presence of a CITATION file
       or some other means of indicating how to cite the work.
+    correction_guidance: >-
+      Consider adding a CITATION file to the repository
+      (e.g. citation.cff, etc.).
   - name: "repo-default-branch-not-master"
     id: "SGA-GL-0006"
     result-type: "bool"
@@ -130,6 +154,9 @@ metrics:
     description: >-
       Boolean value indicating that the repo uses a
       default branch name besides 'master'.
+    correction_guidance: >-
+      Consider using a default source control
+      branch name other than 'master'.
   - name: "repo-includes-common-docs"
     id: "SGA-GL-0007"
     result-type: "bool"
@@ -138,6 +165,9 @@ metrics:
       Boolean value indicating whether the repo includes
       common documentation directory and files associated
       with building docsites.
+    correction_guidance: >-
+      Consider including project documentation through the
+      'docs/' directory.
   - name: "repo-unique-contributors"
     id: "SGA-GL-0008"
     result-type: "int"
@@ -145,6 +175,7 @@ metrics:
     description: >-
       Count of unique contributors since the beginning
       of the repository.
+    correction_guidance:
   - name: "repo-unique-contributors-past-year"
     id: "SGA-GL-0009"
     result-type: "int"
@@ -153,6 +184,7 @@ metrics:
       Count of unique contributors within the last year
       from now (where now is a reference to table value
       of almanack-table-datetime).
+    correction_guidance:
   - name: "repo-unique-contributors-past-182-days"
     id: "SGA-GL-0010"
     result-type: "int"
@@ -161,12 +193,14 @@ metrics:
       Count of unique contributors within the last 182 days
       from now (where now is a reference to table value
       of almanack-table-datetime).
+    correction_guidance:
   - name: "repo-tags-count"
     id: "SGA-GL-0011"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Count of the number of tags within the repository.
+    correction_guidance:
   - name: "repo-tags-count-past-year"
     id: "SGA-GL-0012"
     result-type: "int"
@@ -175,6 +209,7 @@ metrics:
       Count of the number of tags within the repository
       within the last year from now (where now is a
       reference to table value of almanack-table-datetime).
+    correction_guidance:
   - name: "repo-tags-count-past-182-days"
     id: "SGA-GL-0013"
     result-type: "int"
@@ -183,6 +218,7 @@ metrics:
       Count of the number of tags within the repository
       within the last 182 days from now (where now is a
       reference to table value of almanack-table-datetime).
+    correction_guidance:
   - name: "repo-stargazers-count"
     id: "SGA-GL-0014"
     result-type: "int"
@@ -190,6 +226,7 @@ metrics:
     description: >-
       Count of the number of stargazers on repository
       remote hosting platform.
+    correction_guidance:
   - name: "repo-uses-issues"
     id: "SGA-GL-0015"
     result-type: "bool"
@@ -197,30 +234,39 @@ metrics:
     description: >-
       Whether the repository uses issues (for example, as a bug and/or
       feature tracking tool.
+    correction_guidance: >-
+      Consider leveraging issues for tracking bugs and/or features
+      within your repository hosting platform.
   - name: "repo-issues-open-count"
     id: "SGA-GL-0016"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Count of open issues for repository.
+    correction_guidance:
   - name: "repo-pull-requests-enabled"
     id: "SGA-GL-0017"
     result-type: "bool"
     sustainability_correlation: 1
     description: >-
       Whether the repository enables pull requests.
+    correction_guidance: >-
+      Consider enabling pull requests for the repository
+      through your repository hosting platform.
   - name: "repo-forks-count"
     id: "SGA-GL-0018"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Count of forks of the repository.
+    correction_guidance:
   - name: "repo-subscribers-count"
     id: "SGA-GL-0019"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Count of subscribers (or watchers) of the repository.
+    correction_guidance:
   - name: "repo-packages-ecosystems"
     id: "SGA-GL-0020"
     result-type: "list"
@@ -228,6 +274,7 @@ metrics:
     description: >-
       List of package platforms or services where the repository
       was detected (leveraging the ecosyste.ms packages API).
+    correction_guidance:
   - name: "repo-packages-ecosystems-count"
     id: "SGA-GL-0021"
     result-type: "int"
@@ -235,6 +282,7 @@ metrics:
     description: >-
       Count of package platforms or services where the repository
       was detected (leveraging the ecosyste.ms packages API).
+    correction_guidance:
   - name: "repo-packages-versions-count"
     id: "SGA-GL-0022"
     result-type: "int"
@@ -243,18 +291,21 @@ metrics:
       Count of package versions on package hosts or services
       where the repository was detected (leveraging the
       ecosyste.ms packages API).
+    correction_guidance:
   - name: "repo-social-media-platforms"
     id: "SGA-GL-0023"
     result-type: "list"
     sustainability_correlation: 0
     description: >-
       Social media platforms detected within the readme.
+    correction_guidance:
   - name: "repo-social-media-platforms-count"
     id: "SGA-GL-0024"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Count of social media platforms detected within the readme.
+    correction_guidance:
   - name: "repo-doi-valid-format"
     id: "SGA-GL-0025"
     result-type: "bool"
@@ -262,12 +313,16 @@ metrics:
     description: >-
       Whether the DOI found in the CITATION.cff file is of a valid
       format.
+    correction_guidance: >-
+      DOI within the CITATION.cff file is not of a valid format or missing.
   - name: "repo-doi-https-resolvable"
     id: "SGA-GL-0026"
     result-type: "bool"
     sustainability_correlation: 1
     description: >-
       Whether the DOI found in the CITATION.cff file is https resolvable.
+    correction_guidance: >-
+      DOI within the CITATION.cff file is not https resolvable or missing.
   - name: "repo-doi-cited-by-count"
     id: "SGA-GL-0027"
     result-type: "int"
@@ -275,6 +330,7 @@ metrics:
     description: >-
       How many other works cite the DOI for the repository found within
       the CITATION.cff as discovered by the OpenAlex.org API.
+    correction_guidance:
   - name: "repo-days-between-doi-publication-date-and-latest-commit"
     id: "SGA-GL-0028"
     result-type: "int"
@@ -283,6 +339,7 @@ metrics:
       The number of days between the most recent commit and DOI
       for the repository's publication date as discovered by
       the OpenAlex.org API.
+    correction_guidance:
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
@@ -291,6 +348,7 @@ metrics:
       Ratio of succeeding workflow runs out of queried
       workflow runs from GitHub (only applies to GitHub
       hosted repositories which use workflows).
+    correction_guidance:
   - name: "repo-gh-workflow-succeeding-runs"
     id: "SGA-SF-0002"
     result-type: "int"
@@ -299,6 +357,7 @@ metrics:
       Number of succeeding workflow runs out of queried
       workflow runs from GitHub (only applies to GitHub
       hosted repositories which use workflows).
+    correction_guidance:
   - name: "repo-gh-workflow-failing-runs"
     id: "SGA-SF-0003"
     result-type: "int"
@@ -307,6 +366,7 @@ metrics:
       Number of failing workflow runs out of queried
       workflow runs from GitHub (only applies to GitHub
       hosted repositories which use workflows).
+    correction_guidance:
   - name: "repo-gh-workflow-queried-total"
     id: "SGA-SF-0004"
     result-type: "int"
@@ -315,6 +375,7 @@ metrics:
       Total number of workflow runs from GitHub
       (only applies to GitHub hosted repositories
       which use workflows).
+    correction_guidance:
   - name: "repo-code-coverage-percent"
     id: "SGA-SF-0005"
     result-type: "float"
@@ -322,6 +383,7 @@ metrics:
     description: >-
       Percentage of code coverage for repository
       given detected code coverage data.
+    correction_guidance:
   - name: "repo-date-of-last-coverage-run"
     id: "SGA-SF-0006"
     result-type: "str"
@@ -329,12 +391,14 @@ metrics:
     description: >-
       Date of code coverage run for repository
       given detected code coverage data.
+    correction_guidance:
   - name: "repo-days-between-last-coverage-run-latest-commit"
     id: "SGA-SF-0007"
     result-type: "int"
     sustainability_correlation: 0
     description: >-
       Days between last coverage run date and latest commit date.
+    correction_guidance:
   - name: "repo-code-coverage-total-lines"
     id: "SGA-SF-0008"
     result-type: "int"
@@ -342,6 +406,7 @@ metrics:
     description: >-
       Total lines of code used for code coverage within repository
       given detected code coverage data.
+    correction_guidance:
   - name: "repo-code-coverage-executed-lines"
     id: "SGA-SF-0009"
     result-type: "int"
@@ -349,6 +414,7 @@ metrics:
     description: >-
       Total lines covered code within repository
       given detected code coverage data.
+    correction_guidance:
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
@@ -359,6 +425,7 @@ metrics:
       latest commits). Represents value from 0 to 1 where 0 equals
       no information entropy and 1 represents maximum information
       entropy.
+    correction_guidance:
   - name: "repo-file-info-entropy"
     id: "SGA-VS-0002"
     result-type: "dict"
@@ -369,3 +436,4 @@ metrics:
       latest commits). Shows all files and their corresponding
       information entropy measurements relative to the other files
       found within the range of commits.
+    correction_guidance:
