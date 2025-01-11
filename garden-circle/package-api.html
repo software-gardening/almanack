@@ -390,6 +390,23 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_almanack_score"><code class="docutils literal notranslate"><span class="pre">compute_almanack_score()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_pr_data"><code class="docutils literal notranslate"><span class="pre">compute_pr_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_repo_data"><code class="docutils literal notranslate"><span class="pre">compute_repo_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.days_of_development"><code class="docutils literal notranslate"><span class="pre">days_of_development()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.gather_failed_almanack_metric_checks"><code class="docutils literal notranslate"><span class="pre">gather_failed_almanack_metric_checks()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_github_build_metrics"><code class="docutils literal notranslate"><span class="pre">get_github_build_metrics()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.measure_coverage"><code class="docutils literal notranslate"><span class="pre">measure_coverage()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.parse_python_coverage_data"><code class="docutils literal notranslate"><span class="pre">parse_python_coverage_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_analysis"><code class="docutils literal notranslate"><span class="pre">process_repo_for_analysis()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#garden-lattice">Garden Lattice</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.understanding">Understanding</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.understanding.includes_common_docs"><code class="docutils literal notranslate"><span class="pre">includes_common_docs()</span></code></a></li>
@@ -423,6 +440,269 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="almanack-package-api">
 <h1><code class="docutils literal notranslate"><span class="pre">almanack</span></code> Package API<a class="headerlink" href="#almanack-package-api" title="Link to this heading">#</a></h1>
+<section id="metrics">
+<h2>Metrics<a class="headerlink" href="#metrics" title="Link to this heading">#</a></h2>
+<section id="module-almanack.metrics.data">
+<span id="data"></span><h3>Data<a class="headerlink" href="#module-almanack.metrics.data" title="Link to this heading">#</a></h3>
+<p>This module computes data for GitHub Repositories</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_almanack_version">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_almanack_version</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_almanack_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_almanack_version" title="Link to this definition">#</a></dt>
+<dd><p>Seeks the current version of almanack using either pkg_resources
+or dunamai to determine the current version being used.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>str</dt><dd><p>A string representing the version of almanack currently being used.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.compute_almanack_score">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">compute_almanack_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">almanack_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#compute_almanack_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.compute_almanack_score" title="Link to this definition">#</a></dt>
+<dd><p>Computes an Almanack score by counting boolean Almanack
+table metrics to provide a quick summary of software sustainability.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>almanack_table</strong> (<em>List</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Union</em><em>[</em><em>int</em><em>, </em><em>float</em><em>, </em><em>bool</em><em>]</em><em>]</em><em>]</em>) – A list of dictionaries containing metrics.
+Each dictionary must have a “result” key
+with a value that is an int, float, or bool.
+A “sustainability_correlation” key is
+included for values to specify the
+relationship to sustainability:
+- 1 (positive correlation)
+- 0 (no correlation)
+- -1 (negative correlation)</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary of length three, including the following:
+1) number of Almanack boolean metrics that passed
+(numerator), 2) number of total Almanack boolean
+metrics considered (denominator), and 3) a score that
+represents how likely the repository will be maintained
+over time based (numerator / denominator).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Union[int, float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.compute_pr_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">compute_pr_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#compute_pr_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.compute_pr_data" title="Link to this definition">#</a></dt>
+<dd><p>Computes entropy data for a PR compared to the main branch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The local path to the Git repository.</p></li>
+<li><p><strong>pr_branch</strong> (<em>str</em>) – The branch name for the PR.</p></li>
+<li><p><strong>main_branch</strong> (<em>str</em>) – The branch name for the main branch.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A dictionary containing the following key-value pairs:</dt><dd><ul class="simple">
+<li><p>”pr_branch”: The PR branch being analyzed.</p></li>
+<li><p>”main_branch”: The main branch being compared.</p></li>
+<li><p>”total_entropy_introduced”: The total entropy introduced by the PR.</p></li>
+<li><p>”number_of_files_changed”: The number of files changed in the PR.</p></li>
+<li><p>”entropy_per_file”: A dictionary of entropy values for each changed file.</p></li>
+<li><p>”commits”: A tuple containing the most recent commits on the PR and main branches.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.compute_repo_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">compute_repo_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#compute_repo_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.compute_repo_data" title="Link to this definition">#</a></dt>
+<dd><p>Computes comprehensive data for a GitHub repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_path</strong> (<em>str</em>) – The local path to the Git repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing data key-pairs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.days_of_development">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">days_of_development</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#days_of_development"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.days_of_development" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo</strong> (<em>pygit2.Repository</em>) – Path to the git repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The average number of commits per day over the period of time.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.gather_failed_almanack_metric_checks">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">gather_failed_almanack_metric_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#gather_failed_almanack_metric_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.gather_failed_almanack_metric_checks" title="Link to this definition">#</a></dt>
+<dd><p>Gather checks on the repository metrics and returns a list of failed checks
+for use in helping others understand the failed checks and rectify them.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_path</strong> (<em>str</em>) – The file path to the repository which will have metrics
+calculated and includes boolean checks.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dictionaries containing the metrics and
+their associated results. Each dictionary includes the name, id, and</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><p>List[Dict[str, Any]]</p>
+<dl class="simple">
+<dt>guidance on how to fix each failed check. The dictionary also</dt><dd><p>includes data about the almanack score for use in summarizing the results.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.get_github_build_metrics">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">get_github_build_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'main'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_runs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">github_api_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'https://api.github.com/repos'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#get_github_build_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.get_github_build_metrics" title="Link to this definition">#</a></dt>
+<dd><p>Fetches the success ratio of the latest GitHub Actions build runs for a specified branch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_url</strong> (<em>str</em>) – The full URL of the repository
+(e.g., ‘<a class="github reference external" href="https://github.com/software-gardening/almanack">software-gardening/almanack</a>’).</p></li>
+<li><p><strong>branch</strong> (<em>str</em>) – The branch to filter for the workflow runs (default: “main”).</p></li>
+<li><p><strong>max_runs</strong> (<em>int</em>) – The maximum number of latest workflow runs to analyze.</p></li>
+<li><p><strong>github_api_endpoint</strong> (<em>str</em>) – Base API endpoint for GitHub repositories.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The success ratio and details of the analyzed workflow runs.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.get_table">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#get_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.get_table" title="Link to this definition">#</a></dt>
+<dd><p>Gather metrics on a repository and return the results in a structured format.</p>
+<p>This function reads a metrics table from a predefined YAML file, computes relevant
+data from the specified repository, and associates the computed results with
+the metrics defined in the metrics table. If an error occurs during data
+computation, an exception is raised.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The file path to the repository for which metrics are</p></li>
+<li><p><strong>performed.</strong> (<em>to be</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dictionaries containing the metrics and
+their associated results. Each dictionary includes the original metrics data
+along with the computed result under the key “result”.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict[str, Any]]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ReferenceError</strong> – If there is an error encountered while processing the</p></li>
+<li><p><strong>data</strong><strong>, </strong><strong>providing context in the error message.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.measure_coverage">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">measure_coverage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">primary_language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#measure_coverage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.measure_coverage" title="Link to this definition">#</a></dt>
+<dd><p>Measures code coverage for a given repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The pygit2 repository object to analyze.</p></li>
+<li><p><strong>primary_language</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The primary programming language of the repository.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Code coverage data or an empty dictionary if unable
+to find code coverage data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[dict[str,Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.parse_python_coverage_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">parse_python_coverage_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#parse_python_coverage_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.parse_python_coverage_data" title="Link to this definition">#</a></dt>
+<dd><p>Parses coverage.py data from recognized formats such as JSON, XML, or LCOV.
+See here for more information:
+<a class="reference external" href="https://coverage.readthedocs.io/en/latest/cmd.html#cmd-report">https://coverage.readthedocs.io/en/latest/cmd.html#cmd-report</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The pygit2 repository object containing code.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary with standardized code coverage data or an
+empty dict if no data is found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[Dict[str, Any]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.process_repo_for_analysis">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">process_repo_for_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#process_repo_for_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.process_repo_for_analysis" title="Link to this definition">#</a></dt>
+<dd><p>Processes GitHub repository URL’s to calculate entropy and other metadata.
+This is used to prepare data for analysis, particularly for the seedbank notebook
+that process PUBMED repositories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_url</strong> (<em>str</em>) – The URL of the GitHub repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing the normalized total entropy, the date of the first commit,</dt><dd><p>the date of the most recent commit, and the total time of existence in days.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
 <section id="garden-lattice">
 <h2>Garden Lattice<a class="headerlink" href="#garden-lattice" title="Link to this heading">#</a></h2>
 <section id="module-almanack.metrics.garden_lattice.understanding">
@@ -664,6 +944,23 @@ related to the repository.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_almanack_score"><code class="docutils literal notranslate"><span class="pre">compute_almanack_score()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_pr_data"><code class="docutils literal notranslate"><span class="pre">compute_pr_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_repo_data"><code class="docutils literal notranslate"><span class="pre">compute_repo_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.days_of_development"><code class="docutils literal notranslate"><span class="pre">days_of_development()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.gather_failed_almanack_metric_checks"><code class="docutils literal notranslate"><span class="pre">gather_failed_almanack_metric_checks()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_github_build_metrics"><code class="docutils literal notranslate"><span class="pre">get_github_build_metrics()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.measure_coverage"><code class="docutils literal notranslate"><span class="pre">measure_coverage()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.parse_python_coverage_data"><code class="docutils literal notranslate"><span class="pre">parse_python_coverage_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_analysis"><code class="docutils literal notranslate"><span class="pre">process_repo_for_analysis()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#garden-lattice">Garden Lattice</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.understanding">Understanding</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.understanding.includes_common_docs"><code class="docutils literal notranslate"><span class="pre">includes_common_docs()</span></code></a></li>

@@ -1,0 +1,1265 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>almanack.metrics.data &#8212; The Software Gardening Almanack</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/custom.css?v=8a490771" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../../_static/design-tabs.js?v=36754332"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/almanack/metrics/data';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
+    <script>document.write(`<img src="../../../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../../introduction.html">
+                    Welcome
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../garden-lattice/garden-lattice.html">Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../garden-lattice/understanding.html">Understanding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../software-forest/software-forest.html">Software Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../verdant-sundial/verdant-sundial.html">Verdant Sundial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../garden-circle/contributing.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../garden-circle/garden-map.html">Garden Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../garden-circle/package-api.html">Almanack Package API</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack/issues/new?title=Issue%20on%20page%20%2F_modules/almanack/metrics/data.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1></h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for almanack.metrics.data</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module computes data for GitHub Repositories</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="kn">import</span> <span class="nn">defusedxml.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">pygit2</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+
+<span class="kn">from</span> <span class="nn">..git</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">clone_repository</span><span class="p">,</span>
+    <span class="n">count_files</span><span class="p">,</span>
+    <span class="n">file_exists_in_repo</span><span class="p">,</span>
+    <span class="n">find_file</span><span class="p">,</span>
+    <span class="n">get_commits</span><span class="p">,</span>
+    <span class="n">get_edited_files</span><span class="p">,</span>
+    <span class="n">get_remote_url</span><span class="p">,</span>
+    <span class="n">read_file</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.entropy.calculate_entropy</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">calculate_aggregate_entropy</span><span class="p">,</span>
+    <span class="n">calculate_normalized_entropy</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.garden_lattice.connectedness</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">count_unique_contributors</span><span class="p">,</span>
+    <span class="n">default_branch_is_not_master</span><span class="p">,</span>
+    <span class="n">detect_social_media_links</span><span class="p">,</span>
+    <span class="n">find_doi_citation_data</span><span class="p">,</span>
+    <span class="n">is_citable</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.garden_lattice.practicality</span> <span class="kn">import</span> <span class="n">count_repo_tags</span><span class="p">,</span> <span class="n">get_ecosystems_package_metrics</span>
+<span class="kn">from</span> <span class="nn">.garden_lattice.understanding</span> <span class="kn">import</span> <span class="n">includes_common_docs</span>
+<span class="kn">from</span> <span class="nn">.remote</span> <span class="kn">import</span> <span class="n">get_api_data</span>
+
+<span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="n">METRICS_TABLE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="si">!s}</span><span class="s2">/metrics.yml&quot;</span>
+<span class="n">DATETIME_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="get_table">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.get_table">[docs]</a>
+<span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gather metrics on a repository and return the results in a structured format.</span>
+
+<span class="sd">    This function reads a metrics table from a predefined YAML file, computes relevant</span>
+<span class="sd">    data from the specified repository, and associates the computed results with</span>
+<span class="sd">    the metrics defined in the metrics table. If an error occurs during data</span>
+<span class="sd">    computation, an exception is raised.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_path (str): The file path to the repository for which metrics are</span>
+<span class="sd">        to be performed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[Dict[str, Any]]: A list of dictionaries containing the metrics and</span>
+<span class="sd">        their associated results. Each dictionary includes the original metrics data</span>
+<span class="sd">        along with the computed result under the key &quot;result&quot;.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ReferenceError: If there is an error encountered while processing the</span>
+<span class="sd">        data, providing context in the error message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># read the metrics table</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">METRICS_TABLE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">metrics_table</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span>
+
+    <span class="c1"># gather data for use in the metrics table</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ReferenceError</span><span class="p">(</span><span class="s2">&quot;Encountered an error with processing the data.&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># return metrics table (list of dictionaries as records of metrics)</span>
+    <span class="n">data_table</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="o">**</span><span class="n">metric</span><span class="p">,</span>
+            <span class="c1"># add the data results for the metrics to the table</span>
+            <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]],</span>
+        <span class="p">}</span>
+        <span class="c1"># for each metric, gather the related process data and add to a dictionary</span>
+        <span class="c1"># related to that metric along with others in a list.</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics_table</span>
+    <span class="p">]</span>
+
+    <span class="c1"># calculate almanack score (the function modifies the placeholder)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">(</span>
+            <span class="p">{</span><span class="o">**</span><span class="n">entry</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">compute_almanack_score</span><span class="p">(</span><span class="n">almanack_table</span><span class="o">=</span><span class="n">data_table</span><span class="p">)}</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;repo-almanack-score&quot;</span>
+            <span class="k">else</span> <span class="n">entry</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">data_table</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="gather_failed_almanack_metric_checks">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.gather_failed_almanack_metric_checks">[docs]</a>
+<span class="k">def</span> <span class="nf">gather_failed_almanack_metric_checks</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gather checks on the repository metrics and returns a list of failed checks</span>
+<span class="sd">    for use in helping others understand the failed checks and rectify them.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_path (str):</span>
+<span class="sd">            The file path to the repository which will have metrics</span>
+<span class="sd">            calculated and includes boolean checks.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[Dict[str, Any]]: A list of dictionaries containing the metrics and</span>
+<span class="sd">        their associated results. Each dictionary includes the name, id, and</span>
+<span class="sd">       guidance on how to fix each failed check. The dictionary also</span>
+<span class="sd">        includes data about the almanack score for use in summarizing the results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="n">metric_key</span><span class="p">:</span> <span class="n">metric_val</span>
+            <span class="k">for</span> <span class="n">metric_key</span><span class="p">,</span> <span class="n">metric_val</span> <span class="ow">in</span> <span class="n">metric</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="c1"># iterate through the metric keys and only gather the following</span>
+            <span class="c1"># (we need only these for the output)</span>
+            <span class="k">if</span> <span class="n">metric_key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;correction_guidance&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">]</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
+        <span class="k">if</span>
+        <span class="c1"># gathers the almanack score</span>
+        <span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">)</span> <span class="ow">or</span>
+        <span class="c1"># gathers failed checks</span>
+        <span class="p">(</span>
+            <span class="p">(</span>
+                <span class="c1"># bool results with a non-zero sustainability correlation</span>
+                <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;result-type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span>
+                <span class="ow">and</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span>
+            <span class="p">)</span>
+            <span class="ow">and</span> <span class="p">(</span>
+                <span class="c1"># failures for positive sustainability correlation</span>
+                <span class="c1"># (good things missing)</span>
+                <span class="p">(</span>
+                    <span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">False</span> <span class="ow">or</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span>
+                <span class="p">)</span>
+                <span class="c1"># failures for negative sustainability correlation</span>
+                <span class="c1"># (bad things present)</span>
+                <span class="ow">or</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">or</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="days_of_development">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.days_of_development">[docs]</a>
+<span class="k">def</span> <span class="nf">days_of_development</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository): Path to the git repository.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The average number of commits per day over the period of time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Try to get the HEAD commit. If it raises an error, there are no commits.</span>
+        <span class="n">repo</span><span class="o">.</span><span class="n">revparse_single</span><span class="p">(</span><span class="s2">&quot;HEAD&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+        <span class="c1"># If HEAD doesn&#39;t exist (repo is empty), return 0 commits.</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c1"># Traverse the commit history and collect commit dates</span>
+    <span class="n">commit_dates</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GIT_SORT_TIME</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="c1"># If no commits, return 0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">commit_dates</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+
+    <span class="c1"># Calculate the number of days between the first and last commit</span>
+    <span class="c1"># +1 to include the first day</span>
+    <span class="n">total_days</span> <span class="o">=</span> <span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">commit_dates</span><span class="p">)</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">commit_dates</span><span class="p">))</span><span class="o">.</span><span class="n">days</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Return the average commits per day</span>
+    <span class="k">return</span> <span class="n">total_days</span></div>
+
+
+
+<div class="viewcode-block" id="compute_repo_data">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.compute_repo_data">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes comprehensive data for a GitHub repository.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_path (str): The local path to the Git repository.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing data key-pairs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert repo_path to an absolute path and initialize the repository</span>
+    <span class="n">repo_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+
+    <span class="n">remote_url</span> <span class="o">=</span> <span class="n">get_remote_url</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+
+    <span class="c1"># gather data from ecosystems repo api</span>
+    <span class="n">remote_repo_data</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">remote_url</span><span class="p">}</span> <span class="k">if</span> <span class="n">remote_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+
+    <span class="c1"># gather data from github repo workflows api</span>
+    <span class="n">gh_workflows_data</span> <span class="o">=</span> <span class="n">get_github_build_metrics</span><span class="p">(</span>
+        <span class="n">repo_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span> <span class="n">max_runs</span><span class="o">=</span><span class="mi">100</span>
+    <span class="p">)</span>
+
+    <span class="c1"># gather data on code coverage</span>
+    <span class="n">code_coverage</span> <span class="o">=</span> <span class="n">measure_coverage</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">primary_language</span><span class="o">=</span><span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="c1"># gather data from ecosystems packages api</span>
+    <span class="n">packages_data</span> <span class="o">=</span> <span class="n">get_ecosystems_package_metrics</span><span class="p">(</span><span class="n">repo_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">)</span>
+
+    <span class="c1"># Retrieve the list of commits from the repository</span>
+    <span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+    <span class="n">most_recent_commit</span> <span class="o">=</span> <span class="n">commits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">first_commit</span> <span class="o">=</span> <span class="n">commits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Get a list of files that have been edited between the first and most recent commit</span>
+    <span class="n">edited_file_names</span> <span class="o">=</span> <span class="n">get_edited_files</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">first_commit</span><span class="p">,</span> <span class="n">most_recent_commit</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the normalized total entropy for the repository</span>
+    <span class="n">normalized_total_entropy</span> <span class="o">=</span> <span class="n">calculate_aggregate_entropy</span><span class="p">(</span>
+        <span class="n">repo_path</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="n">edited_file_names</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Calculate the normalized entropy for the changes between the first and most recent commits</span>
+    <span class="n">file_entropy</span> <span class="o">=</span> <span class="n">calculate_normalized_entropy</span><span class="p">(</span>
+        <span class="n">repo_path</span><span class="p">,</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+        <span class="n">edited_file_names</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="c1"># Convert commit times to UTC datetime objects, then format as date strings.</span>
+    <span class="n">first_commit_date</span><span class="p">,</span> <span class="n">most_recent_commit_date</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="p">(</span><span class="n">first_commit</span><span class="p">,</span> <span class="n">most_recent_commit</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># date of last code coverage run</span>
+    <span class="n">date_of_last_coverage_run</span> <span class="o">=</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_of_last_coverage_run&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">readme_exists</span> <span class="o">=</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+        <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;readme&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># gather social media metrics</span>
+    <span class="n">social_media_metrics</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">detect_social_media_links</span><span class="p">(</span>
+            <span class="n">content</span><span class="o">=</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;readme.md&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">readme_exists</span>
+        <span class="k">else</span> <span class="p">{}</span>
+    <span class="p">)</span>
+
+    <span class="c1"># gather doi citation data</span>
+    <span class="n">doi_citation_data</span> <span class="o">=</span> <span class="n">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+
+    <span class="c1"># Return the data structure</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;repo-path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">),</span>
+        <span class="s2">&quot;repo-commits&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">commits_count</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">commits</span><span class="p">)),</span>
+        <span class="s2">&quot;repo-file-count&quot;</span><span class="p">:</span> <span class="n">count_files</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">tree</span><span class="p">),</span>
+        <span class="s2">&quot;repo-commit-time-range&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">first_commit_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+            <span class="n">most_recent_commit_date</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-days-of-development&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">days_of_development</span> <span class="o">:=</span> <span class="p">(</span><span class="n">most_recent_commit_date</span> <span class="o">-</span> <span class="n">first_commit_date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+            <span class="o">+</span> <span class="mi">1</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-commits-per-day&quot;</span><span class="p">:</span> <span class="n">commits_count</span> <span class="o">/</span> <span class="n">days_of_development</span><span class="p">,</span>
+        <span class="s2">&quot;almanack-table-datetime&quot;</span><span class="p">:</span> <span class="n">DATETIME_NOW</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;repo-includes-readme&quot;</span><span class="p">:</span> <span class="n">readme_exists</span><span class="p">,</span>
+        <span class="s2">&quot;repo-includes-contributing&quot;</span><span class="p">:</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+            <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;contributing&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-includes-code-of-conduct&quot;</span><span class="p">:</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+            <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;code_of_conduct&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-includes-license&quot;</span><span class="p">:</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+            <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;license&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-is-citable&quot;</span><span class="p">:</span> <span class="n">is_citable</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">),</span>
+        <span class="s2">&quot;repo-default-branch-not-master&quot;</span><span class="p">:</span> <span class="n">default_branch_is_not_master</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">),</span>
+        <span class="s2">&quot;repo-includes-common-docs&quot;</span><span class="p">:</span> <span class="n">includes_common_docs</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">),</span>
+        <span class="s2">&quot;almanack-version&quot;</span><span class="p">:</span> <span class="n">_get_almanack_version</span><span class="p">(),</span>
+        <span class="s2">&quot;repo-primary-language&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-primary-license&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-doi&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-doi-publication-date&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="c1"># placeholders for almanack score metrics</span>
+        <span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;repo-unique-contributors&quot;</span><span class="p">:</span> <span class="n">count_unique_contributors</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">),</span>
+        <span class="s2">&quot;repo-unique-contributors-past-year&quot;</span><span class="p">:</span> <span class="n">count_unique_contributors</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">since</span><span class="o">=</span><span class="p">(</span><span class="n">one_year_ago</span> <span class="o">:=</span> <span class="n">DATETIME_NOW</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">365</span><span class="p">))</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-unique-contributors-past-182-days&quot;</span><span class="p">:</span> <span class="n">count_unique_contributors</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">since</span><span class="o">=</span><span class="p">(</span><span class="n">half_year_ago</span> <span class="o">:=</span> <span class="n">DATETIME_NOW</span> <span class="o">-</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">182</span><span class="p">))</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-tags-count&quot;</span><span class="p">:</span> <span class="n">count_repo_tags</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">),</span>
+        <span class="s2">&quot;repo-tags-count-past-year&quot;</span><span class="p">:</span> <span class="n">count_repo_tags</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">since</span><span class="o">=</span><span class="n">one_year_ago</span><span class="p">),</span>
+        <span class="s2">&quot;repo-tags-count-past-182-days&quot;</span><span class="p">:</span> <span class="n">count_repo_tags</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">since</span><span class="o">=</span><span class="n">half_year_ago</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-stargazers-count&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;stargazers_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-uses-issues&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;has_issues&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-issues-open-count&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;open_issues_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-pull-requests-enabled&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;pull_requests_enabled&quot;</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-forks-count&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;forks_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-subscribers-count&quot;</span><span class="p">:</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;subscribers_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-packages-ecosystems&quot;</span><span class="p">:</span> <span class="n">packages_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ecosystems_names&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-packages-ecosystems-count&quot;</span><span class="p">:</span> <span class="n">packages_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ecosystems_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-packages-versions-count&quot;</span><span class="p">:</span> <span class="n">packages_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;versions_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-social-media-platforms&quot;</span><span class="p">:</span> <span class="n">social_media_metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;social_media_platforms&quot;</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-social-media-platforms-count&quot;</span><span class="p">:</span> <span class="n">social_media_metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="s2">&quot;social_media_platforms_count&quot;</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-doi-valid-format&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;valid_format_doi&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-doi-https-resolvable&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-days-between-doi-publication-date-and-latest-commit&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">most_recent_commit_date</span> <span class="o">-</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">days</span>
+            <span class="k">if</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;publication_date&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-doi-cited-by-count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-gh-workflow-success-ratio&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;success_ratio&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-gh-workflow-succeeding-runs&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_runs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-gh-workflow-failing-runs&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;successful_runs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-gh-workflow-queried-total&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;failing_runs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-code-coverage-percent&quot;</span><span class="p">:</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;code_coverage_percent&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-date-of-last-coverage-run&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">date_of_last_coverage_run</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">date_of_last_coverage_run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-days-between-last-coverage-run-latest-commit&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">(</span><span class="n">most_recent_commit_date</span> <span class="o">-</span> <span class="n">date_of_last_coverage_run</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+            <span class="k">if</span> <span class="n">date_of_last_coverage_run</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-code-coverage-total-lines&quot;</span><span class="p">:</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_lines&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-code-coverage-executed-lines&quot;</span><span class="p">:</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executed_lines&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">:</span> <span class="n">normalized_total_entropy</span><span class="p">,</span>
+        <span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">:</span> <span class="n">file_entropy</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="compute_pr_data">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.compute_pr_data">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_pr_data</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pr_branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">main_branch</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes entropy data for a PR compared to the main branch.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_path (str): The local path to the Git repository.</span>
+<span class="sd">        pr_branch (str): The branch name for the PR.</span>
+<span class="sd">        main_branch (str): The branch name for the main branch.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: A dictionary containing the following key-value pairs:</span>
+<span class="sd">            - &quot;pr_branch&quot;: The PR branch being analyzed.</span>
+<span class="sd">            - &quot;main_branch&quot;: The main branch being compared.</span>
+<span class="sd">            - &quot;total_entropy_introduced&quot;: The total entropy introduced by the PR.</span>
+<span class="sd">            - &quot;number_of_files_changed&quot;: The number of files changed in the PR.</span>
+<span class="sd">            - &quot;entropy_per_file&quot;: A dictionary of entropy values for each changed file.</span>
+<span class="sd">            - &quot;commits&quot;: A tuple containing the most recent commits on the PR and main branches.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Convert repo_path to an absolute path and initialize the repository</span>
+        <span class="n">repo_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+
+        <span class="c1"># Get the PR and main branch references</span>
+        <span class="n">pr_ref</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">branches</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pr_branch</span><span class="p">)</span>
+        <span class="n">main_ref</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">branches</span><span class="o">.</span><span class="n">local</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">main_branch</span><span class="p">)</span>
+
+        <span class="c1"># Get the most recent commits on each branch</span>
+        <span class="n">pr_commit</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pr_ref</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+        <span class="n">main_commit</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">main_ref</span><span class="o">.</span><span class="n">target</span><span class="p">)</span>
+
+        <span class="c1"># Get the list of files that have been edited between the two commits</span>
+        <span class="n">changed_files</span> <span class="o">=</span> <span class="n">get_edited_files</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">main_commit</span><span class="p">,</span> <span class="n">pr_commit</span><span class="p">)</span>
+
+        <span class="c1"># Calculate the total entropy introduced by the PR</span>
+        <span class="n">total_entropy_introduced</span> <span class="o">=</span> <span class="n">calculate_aggregate_entropy</span><span class="p">(</span>
+            <span class="n">repo_path</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">main_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">pr_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="n">changed_files</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Calculate the entropy for each file changed in the PR</span>
+        <span class="n">file_entropy</span> <span class="o">=</span> <span class="n">calculate_normalized_entropy</span><span class="p">(</span>
+            <span class="n">repo_path</span><span class="p">,</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">main_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">pr_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+            <span class="n">changed_files</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Convert commit times to UTC datetime objects, then format as date strings</span>
+        <span class="n">pr_commit_date</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">pr_commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">main_commit_date</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">main_commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="p">)</span>
+
+        <span class="c1"># Return the data structure</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;pr_branch&quot;</span><span class="p">:</span> <span class="n">pr_branch</span><span class="p">,</span>
+            <span class="s2">&quot;main_branch&quot;</span><span class="p">:</span> <span class="n">main_branch</span><span class="p">,</span>
+            <span class="s2">&quot;total_entropy_introduced&quot;</span><span class="p">:</span> <span class="n">total_entropy_introduced</span><span class="p">,</span>
+            <span class="s2">&quot;number_of_files_changed&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">changed_files</span><span class="p">),</span>
+            <span class="s2">&quot;file_level_entropy&quot;</span><span class="p">:</span> <span class="n">file_entropy</span><span class="p">,</span>
+            <span class="s2">&quot;commits&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">main_commit_date</span><span class="p">,</span> <span class="n">pr_commit_date</span><span class="p">),</span>
+        <span class="p">}</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="c1"># If processing fails, return an informative error</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;pr_branch&quot;</span><span class="p">:</span> <span class="n">pr_branch</span><span class="p">,</span> <span class="s2">&quot;main_branch&quot;</span><span class="p">:</span> <span class="n">main_branch</span><span class="p">,</span> <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+
+<div class="viewcode-block" id="process_repo_for_analysis">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.process_repo_for_analysis">[docs]</a>
+<span class="k">def</span> <span class="nf">process_repo_for_analysis</span><span class="p">(</span>
+    <span class="n">repo_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes GitHub repository URL&#39;s to calculate entropy and other metadata.</span>
+<span class="sd">    This is used to prepare data for analysis, particularly for the seedbank notebook</span>
+<span class="sd">    that process PUBMED repositories.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_url (str): The URL of the GitHub repository.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: A tuple containing the normalized total entropy, the date of the first commit,</span>
+<span class="sd">               the date of the most recent commit, and the total time of existence in days.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkdtemp</span><span class="p">()</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">repo_path</span> <span class="o">=</span> <span class="n">clone_repository</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)</span>
+        <span class="c1"># Load the cloned repo</span>
+        <span class="n">repo</span> <span class="o">=</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+
+        <span class="c1"># Retrieve the list of commits from the repo</span>
+        <span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+        <span class="c1"># Select the first and most recent commits from the list</span>
+        <span class="n">first_commit</span> <span class="o">=</span> <span class="n">commits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">most_recent_commit</span> <span class="o">=</span> <span class="n">commits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># Calculate the time span of existence between the first and most recent commits in days</span>
+        <span class="n">time_of_existence</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">most_recent_commit</span><span class="o">.</span><span class="n">commit_time</span> <span class="o">-</span> <span class="n">first_commit</span><span class="o">.</span><span class="n">commit_time</span>
+        <span class="p">)</span> <span class="o">//</span> <span class="p">(</span><span class="mi">24</span> <span class="o">*</span> <span class="mi">3600</span><span class="p">)</span>
+        <span class="c1"># Calculate the time span between commits in days. Using UTC for date conversion ensures uniformity</span>
+        <span class="c1"># and avoids issues related to different time zones and daylight saving changes.</span>
+        <span class="n">first_commit_date</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="n">most_recent_commit_date</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">,</span> <span class="n">tz</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+            <span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="p">)</span>
+        <span class="c1"># Get a list of all files that have been edited between the commits</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="n">get_edited_files</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">commits</span><span class="p">)</span>
+        <span class="c1"># Calculate the normalized entropy for the changes between the first and most recent commits</span>
+        <span class="n">normalized_total_entropy</span> <span class="o">=</span> <span class="n">calculate_aggregate_entropy</span><span class="p">(</span>
+            <span class="n">repo_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span> <span class="n">file_names</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">normalized_total_entropy</span><span class="p">,</span>
+            <span class="n">first_commit_date</span><span class="p">,</span>
+            <span class="n">most_recent_commit_date</span><span class="p">,</span>
+            <span class="n">time_of_existence</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="kc">None</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;An error occurred while processing the repository: </span><span class="si">{</span><span class="n">e</span><span class="si">!s}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">temp_dir</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_get_almanack_version">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_almanack_version">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_almanack_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Seeks the current version of almanack using either pkg_resources</span>
+<span class="sd">    or dunamai to determine the current version being used.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str</span>
+<span class="sd">            A string representing the version of almanack currently being used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># attempt to gather the development version from dunamai</span>
+        <span class="c1"># for scenarios where almanack from source is used.</span>
+        <span class="kn">import</span> <span class="nn">dunamai</span>
+
+        <span class="k">return</span> <span class="n">dunamai</span><span class="o">.</span><span class="n">Version</span><span class="o">.</span><span class="n">from_any_vcs</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
+        <span class="c1"># else grab a static version from __init__.py</span>
+        <span class="c1"># for scenarios where the built/packaged almanack is used.</span>
+        <span class="kn">import</span> <span class="nn">almanack</span>
+
+        <span class="k">return</span> <span class="n">almanack</span><span class="o">.</span><span class="n">__version__</span></div>
+
+
+
+<div class="viewcode-block" id="get_github_build_metrics">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.get_github_build_metrics">[docs]</a>
+<span class="k">def</span> <span class="nf">get_github_build_metrics</span><span class="p">(</span>
+    <span class="n">repo_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">branch</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;main&quot;</span><span class="p">,</span>
+    <span class="n">max_runs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+    <span class="n">github_api_endpoint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;https://api.github.com/repos&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fetches the success ratio of the latest GitHub Actions build runs for a specified branch.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_url (str):</span>
+<span class="sd">            The full URL of the repository</span>
+<span class="sd">            (e.g., &#39;https://github.com/software-gardening/almanack&#39;).</span>
+<span class="sd">        branch (str):</span>
+<span class="sd">            The branch to filter for the workflow runs (default: &quot;main&quot;).</span>
+<span class="sd">        max_runs (int):</span>
+<span class="sd">            The maximum number of latest workflow runs to analyze.</span>
+<span class="sd">        github_api_endpoint (str):</span>
+<span class="sd">            Base API endpoint for GitHub repositories.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict:</span>
+<span class="sd">            The success ratio and details of the analyzed workflow runs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Validate and parse the repository URL</span>
+    <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">repo_url</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span> <span class="o">!=</span> <span class="s2">&quot;github.com&quot;</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># gather the owner and repo name from the parsed url path</span>
+        <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="c1"># Fetch the latest workflow run data using get_api_data</span>
+    <span class="n">github_response</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+        <span class="c1"># Construct the API URL for GitHub Actions runs</span>
+        <span class="n">api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">github_api_endpoint</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/actions/runs&quot;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;event&quot;</span><span class="p">:</span> <span class="s2">&quot;push&quot;</span><span class="p">,</span> <span class="s2">&quot;branch&quot;</span><span class="p">:</span> <span class="n">branch</span><span class="p">,</span> <span class="s2">&quot;per_page&quot;</span><span class="p">:</span> <span class="n">max_runs</span><span class="p">},</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">github_response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;workflow_runs&quot;</span><span class="p">):</span>
+        <span class="n">workflow_runs</span> <span class="o">=</span> <span class="n">github_response</span><span class="p">[</span><span class="s2">&quot;workflow_runs&quot;</span><span class="p">]</span>
+
+        <span class="c1"># Count successes and total runs</span>
+        <span class="n">total_runs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">workflow_runs</span><span class="p">)</span>
+        <span class="n">successful_runs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="mi">1</span> <span class="k">for</span> <span class="n">run</span> <span class="ow">in</span> <span class="n">workflow_runs</span> <span class="k">if</span> <span class="n">run</span><span class="p">[</span><span class="s2">&quot;conclusion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;success&quot;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;success_ratio&quot;</span><span class="p">:</span> <span class="n">successful_runs</span> <span class="o">/</span> <span class="n">total_runs</span><span class="p">,</span>
+            <span class="s2">&quot;total_runs&quot;</span><span class="p">:</span> <span class="n">total_runs</span><span class="p">,</span>
+            <span class="s2">&quot;successful_runs&quot;</span><span class="p">:</span> <span class="n">successful_runs</span><span class="p">,</span>
+            <span class="s2">&quot;failing_runs&quot;</span><span class="p">:</span> <span class="n">total_runs</span> <span class="o">-</span> <span class="n">successful_runs</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="c1"># else we return an empty dictionary</span>
+    <span class="k">return</span> <span class="p">{}</span></div>
+
+
+
+<div class="viewcode-block" id="measure_coverage">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.measure_coverage">[docs]</a>
+<span class="k">def</span> <span class="nf">measure_coverage</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span> <span class="n">primary_language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Measures code coverage for a given repository.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository):</span>
+<span class="sd">            The pygit2 repository object to analyze.</span>
+<span class="sd">        primary_language (Optional[str]):</span>
+<span class="sd">            The primary programming language of the repository.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[dict[str,Any]]:</span>
+<span class="sd">            Code coverage data or an empty dictionary if unable</span>
+<span class="sd">            to find code coverage data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">primary_language</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="n">primary_language</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">parse_python_coverage_data</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{}</span></div>
+
+
+
+<div class="viewcode-block" id="parse_python_coverage_data">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.parse_python_coverage_data">[docs]</a>
+<span class="k">def</span> <span class="nf">parse_python_coverage_data</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses coverage.py data from recognized formats such as JSON, XML, or LCOV.</span>
+<span class="sd">    See here for more information:</span>
+<span class="sd">    https://coverage.readthedocs.io/en/latest/cmd.html#cmd-report</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository):</span>
+<span class="sd">            The pygit2 repository object containing code.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[Dict[str, Any]]:</span>
+<span class="sd">            A dictionary with standardized code coverage data or an</span>
+<span class="sd">            empty dict if no data is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coverage_files</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">&quot;coverage.json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coverage.xml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;coverage.lcov&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+    <span class="k">for</span> <span class="n">coverage_file</span> <span class="ow">in</span> <span class="n">coverage_files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">coverage_object</span> <span class="o">:=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="n">coverage_file</span><span class="p">)</span>
+        <span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo</span><span class="o">.</span><span class="n">workdir</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">coverage_object</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">total_lines</span> <span class="o">=</span> <span class="n">executed_lines</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">coverage_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.json&quot;</span><span class="p">):</span>
+                    <span class="c1"># Parse JSON coverage data</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="n">coverage_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+                    <span class="c1"># Use the `summary` key directly</span>
+                    <span class="n">summary</span> <span class="o">=</span> <span class="n">coverage_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;summary&quot;</span><span class="p">,</span> <span class="p">{})</span>
+                    <span class="n">total_lines</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;num_statements&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">executed_lines</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;covered_lines&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                    <span class="n">coverage_percentage</span> <span class="o">=</span> <span class="n">summary</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;percent_covered&quot;</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+                    <span class="c1"># Retrieve the timestamp</span>
+                    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromisoformat</span><span class="p">(</span>
+                        <span class="n">coverage_data</span><span class="p">[</span><span class="s2">&quot;meta&quot;</span><span class="p">][</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
+                    <span class="p">)</span>
+
+                <span class="k">elif</span> <span class="n">coverage_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.xml&quot;</span><span class="p">):</span>
+                    <span class="c1"># Parse XML coverage data (using defusedxml for safely parsing xml)</span>
+                    <span class="n">tree</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+                    <span class="n">root</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">getroot</span><span class="p">()</span>
+
+                    <span class="c1"># Extract the total lines and executed lines directly from the root element</span>
+                    <span class="n">total_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lines-valid&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+                    <span class="n">executed_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;lines-covered&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+                    <span class="c1"># parse timestamp in XML attributes</span>
+                    <span class="n">timestamp_str</span> <span class="o">=</span> <span class="n">root</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;timestamp&quot;</span><span class="p">)</span>
+                    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span>
+                        <span class="nb">float</span><span class="p">(</span><span class="n">timestamp_str</span><span class="p">)</span>
+                        <span class="o">/</span> <span class="mi">1000</span>  <span class="c1"># Convert from milliseconds to seconds</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># lcov files are one of the report types</span>
+                <span class="c1"># produced by coverage.py</span>
+                <span class="k">elif</span> <span class="n">coverage_file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.lcov&quot;</span><span class="p">):</span>
+                    <span class="c1"># Parse LCOV coverage data</span>
+                    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+                            <span class="n">working_line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                            <span class="k">if</span> <span class="n">working_line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span>
+                                <span class="s2">&quot;DA:&quot;</span>
+                            <span class="p">):</span>  <span class="c1"># DA:&lt;line number&gt;,&lt;execution count&gt;</span>
+                                <span class="n">_</span><span class="p">,</span> <span class="n">execution_count</span> <span class="o">=</span> <span class="n">working_line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+                                    <span class="s2">&quot;,&quot;</span>
+                                <span class="p">)</span>
+                                <span class="n">total_lines</span> <span class="o">+=</span> <span class="mi">1</span>
+                                <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">execution_count</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                                    <span class="n">executed_lines</span> <span class="o">+=</span> <span class="mi">1</span>
+
+                    <span class="c1"># Determine the latest commit date for the LCOV file</span>
+                    <span class="n">timestamp</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+                        <span class="p">(</span>
+                            <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">)</span>
+                            <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">repo</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span>
+                                <span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GIT_SORT_TIME</span>
+                            <span class="p">)</span>
+                            <span class="k">if</span> <span class="n">coverage_object</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">commit</span><span class="o">.</span><span class="n">tree</span>
+                        <span class="p">),</span>
+                        <span class="kc">None</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                <span class="c1"># Calculate coverage percentage</span>
+                <span class="n">coverage_percentage</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="p">(</span><span class="n">executed_lines</span> <span class="o">/</span> <span class="n">total_lines</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="k">if</span> <span class="n">total_lines</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+                <span class="p">)</span>
+
+                <span class="k">return</span> <span class="p">{</span>
+                    <span class="s2">&quot;code_coverage_percent&quot;</span><span class="p">:</span> <span class="n">coverage_percentage</span><span class="p">,</span>
+                    <span class="s2">&quot;date_of_last_coverage_run&quot;</span><span class="p">:</span> <span class="n">timestamp</span><span class="p">,</span>
+                    <span class="s2">&quot;total_lines&quot;</span><span class="p">:</span> <span class="n">total_lines</span><span class="p">,</span>
+                    <span class="s2">&quot;executed_lines&quot;</span><span class="p">:</span> <span class="n">executed_lines</span><span class="p">,</span>
+                <span class="p">}</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading </span><span class="si">{</span><span class="n">coverage_file</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+
+    <span class="c1"># No recognized coverage files found</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No coverage.py data found in the repository.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{}</span></div>
+
+
+
+<div class="viewcode-block" id="compute_almanack_score">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.compute_almanack_score">[docs]</a>
+<span class="k">def</span> <span class="nf">compute_almanack_score</span><span class="p">(</span>
+    <span class="n">almanack_table</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]]]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes an Almanack score by counting boolean Almanack</span>
+<span class="sd">    table metrics to provide a quick summary of software sustainability.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        almanack_table (List[Dict[str, Union[int, float, bool]]]):</span>
+<span class="sd">            A list of dictionaries containing metrics.</span>
+<span class="sd">            Each dictionary must have a &quot;result&quot; key</span>
+<span class="sd">            with a value that is an int, float, or bool.</span>
+<span class="sd">            A &quot;sustainability_correlation&quot; key is</span>
+<span class="sd">            included for values to specify the</span>
+<span class="sd">            relationship to sustainability:</span>
+<span class="sd">            - 1 (positive correlation)</span>
+<span class="sd">            - 0 (no correlation)</span>
+<span class="sd">            - -1 (negative correlation)</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, Union[int, float]]:</span>
+<span class="sd">            Dictionary of length three, including the following:</span>
+<span class="sd">            1) number of Almanack boolean metrics that passed</span>
+<span class="sd">            (numerator), 2) number of total Almanack boolean</span>
+<span class="sd">            metrics considered (denominator), and 3) a score that</span>
+<span class="sd">            represents how likely the repository will be maintained</span>
+<span class="sd">            over time based (numerator / denominator).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">bool_results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Gather boolean Almanack values, contingent on sustainability_correlation</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">almanack_table</span><span class="p">:</span>
+        <span class="c1"># We translate boolean values into numeric values based on the</span>
+        <span class="c1"># sustainability_correlation provided from the metrics.yml file.</span>
+        <span class="c1"># We transform the score based on the following logic:</span>
+        <span class="c1"># - True with sustainability_correlation 1 = 1</span>
+        <span class="c1"># - True with sustainability_correlation -1 = 0</span>
+        <span class="c1"># - False with sustainability_correlation 1 = 0</span>
+        <span class="c1"># - False with sustainability_correlation -1 = 1</span>
+        <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;result-type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span> <span class="ow">and</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># for sustainability_correlation == 1 we treat True as positive sustainability indicator</span>
+            <span class="c1"># and False as a negative sustainability indicator.</span>
+            <span class="c1"># note: bools are a subclass of ints in Python.</span>
+            <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">bool_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="p">)</span>
+            <span class="c1"># for sustainability_correlation == -1 we treat True as negative sustainability indicator.</span>
+            <span class="c1"># and False as a positive sustainability indicator.</span>
+            <span class="c1"># note: bools are a subclass of ints in Python.</span>
+            <span class="k">elif</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                <span class="n">bool_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">])</span> <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="p">)</span>
+
+    <span class="n">almanack_score_values</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="c1"># capture numerator and denominator for use alongside the almanack score data</span>
+        <span class="s2">&quot;almanack-score-numerator&quot;</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">bool_results</span><span class="p">)</span> <span class="k">if</span> <span class="n">bool_results</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;almanack-score-denominator&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">bool_results</span><span class="p">)</span> <span class="k">if</span> <span class="n">bool_results</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="c1"># Calculate almanack score, normalized to between 0 and 1</span>
+        <span class="s2">&quot;almanack-score&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="nb">sum</span><span class="p">(</span><span class="n">bool_results</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">bool_results</span><span class="p">)</span> <span class="k">if</span> <span class="n">bool_results</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">almanack_score_values</span></div>
+
+</pre></div>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Software Gardening Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

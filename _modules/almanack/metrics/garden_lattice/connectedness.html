@@ -563,7 +563,7 @@ document.write(`
 
     <span class="c1"># Find the CITATION.cff file</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">citationcff_file</span> <span class="o">:=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;CITATION.cff&quot;</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No CITATION.cff file discovered.&quot;</span><span class="p">)</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;No CITATION.cff file discovered.&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">try</span><span class="p">:</span>
