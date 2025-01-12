@@ -613,16 +613,12 @@ document.write(`
 
     <span class="c1"># date of last code coverage run</span>
     <span class="n">date_of_last_coverage_run</span> <span class="o">=</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_of_last_coverage_run&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">readme_exists</span> <span class="o">=</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
-        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
-        <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;readme&quot;</span><span class="p">,</span>
-    <span class="p">)</span>
+    <span class="n">readme_file</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;readme&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">readme_exists</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">readme_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
     <span class="c1"># gather social media metrics</span>
     <span class="n">social_media_metrics</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">detect_social_media_links</span><span class="p">(</span>
-            <span class="n">content</span><span class="o">=</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;readme.md&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">detect_social_media_links</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">readme_file</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">readme_exists</span>
         <span class="k">else</span> <span class="p">{}</span>
     <span class="p">)</span>
