@@ -40,7 +40,7 @@ def calculate_normalized_entropy(
 
     References:
         * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.
-            2009 IEEE 31st International Conference on Software Engineering, 78–88.
+            2009 IEEE 31st International Conference on Software Engineering, 78-88.
             https://doi.org/10.1109/ICSE.2009.5070510
     """
     loc_changes = get_loc_changed(repo_path, source_commit, target_commit, file_names)
@@ -89,7 +89,7 @@ def calculate_aggregate_entropy(
 
     References:
         * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.
-            2009 IEEE 31st International Conference on Software Engineering, 78–88.
+            2009 IEEE 31st International Conference on Software Engineering, 78-88.
             https://doi.org/10.1109/ICSE.2009.5070510
     """
     # Get the entropy for each file
