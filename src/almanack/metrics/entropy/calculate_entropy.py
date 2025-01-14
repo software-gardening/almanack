@@ -19,8 +19,15 @@ def calculate_normalized_entropy(
 ) -> dict[str, float]:
     """
     Calculates the entropy of changes in specified files between two commits,
-    inspired by Shannon's entropy formula. Normalized relative to the total lines
-    of code changes across specified files.
+    inspired by Shannon's information theory entropy formula.
+    Normalized relative to the total lines of code changes across specified files.
+    We follow an approach described by Hassan (2009) (see references).
+
+    Application of Entropy Calculation:
+    Entropy measures the uncertainty in a given system. Calculating the entropy
+    of lines of code (LoC) changed reveals the variability and complexity of
+    modifications in each file. Higher entropy values indicate more unpredictable
+    changes, helping identify potentially unstable code areas.
 
     Args:
         repo_path (str): The file path to the git repository.
@@ -31,12 +38,10 @@ def calculate_normalized_entropy(
     Returns:
         dict[str, float]: A dictionary mapping file names to their calculated entropy.
 
-    Application of Entropy Calculation:
-        Entropy measures the uncertainty in a given system. Calculating the entropy
-        of lines of code (LoC) changed reveals the variability and complexity of
-        modifications in each file. Higher entropy values indicate more unpredictable
-        changes, helping identify potentially unstable code areas.
-
+    References:
+        * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.
+            2009 IEEE 31st International Conference on Software Engineering, 78–88.
+            https://doi.org/10.1109/ICSE.2009.5070510
     """
     loc_changes = get_loc_changed(repo_path, source_commit, target_commit, file_names)
     # Calculate total lines of code changes across all specified files
@@ -69,7 +74,9 @@ def calculate_aggregate_entropy(
 ) -> float:
     """
     Computes the aggregated normalized entropy score from the output of
-    calculate_normalized_entropy for specified a Git repository
+    calculate_normalized_entropy for specified a Git repository.
+    Inspired by Shannon's information theory entropy formula.
+    We follow an approach described by Hassan (2009) (see references).
 
     Args:
         repo_path (str): The file path to the git repository.
@@ -79,6 +86,11 @@ def calculate_aggregate_entropy(
 
     Returns:
         float: Normalized entropy calculation.
+
+    References:
+        * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.
+            2009 IEEE 31st International Conference on Software Engineering, 78–88.
+            https://doi.org/10.1109/ICSE.2009.5070510
     """
     # Get the entropy for each file
     entropy_calculation = calculate_normalized_entropy(

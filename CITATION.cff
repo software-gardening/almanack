@@ -66,7 +66,10 @@ references:
     type: article
     url: https://doi.org/10.1109/ICSE.2009.5070510
     notes: |
-      This article is a related resource that serves as inspiration in deriving our entropy calculation.
+      This article is a related resource that serves as inspiration in deriving our
+      Shannon's information theory entropy calculations to software.
+      This appears as output within the Almanack under metrics labeled with "id : name"
+      of "SGA-VS-0001 : repo-agg-info-entropy" and "SGA-VS-0002 : repo-file-info-entropy" (and associated methods).
   - title: 'Ecosyste.ms: Repos'
     type: software
     authors:
