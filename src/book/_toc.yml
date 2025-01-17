@@ -25,5 +25,7 @@ parts:
             file: garden-circle/contributing.md
           - title: Garden Map
             file: garden-circle/garden-map.md
+          - title: Pavilion
+            file: garden-circle/pavilion.md
           - title: Almanack Package API
             file: garden-circle/package-api.md
