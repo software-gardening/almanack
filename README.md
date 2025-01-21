@@ -7,7 +7,7 @@
 The Software Gardening Almanack is an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 The Almanack is available both as a handbook and a Python package.
 
-Please see our [pavilion section of the book](https://software-gardening.github.io/almanack/garden-circle/pavilion.html) for a presentations and other related materials for the Almanack.
+Please see our [pavilion section of the book](https://software-gardening.github.io/almanack/garden-circle/pavilion.html) for presentations and other related materials for the Almanack.
 
 ## Handbook
 

@@ -1,6 +1,6 @@
 # Pavilion
 
-The Software Gardening Almanack sometimes is presented through events which we want to share with you under this pavilion.
+We sometimes present the Software Gardening Almanack at events, which we want to share with you under this pavilion.
 
 ## OSSci Monthly Call Jan 2025
 
