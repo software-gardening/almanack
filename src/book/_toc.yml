@@ -15,6 +15,9 @@ parts:
       - title: Seed Bank
         file: seed-bank/seed-bank.md
         sections:
+          - title: Software Gardening Almanack Package Example Use
+            file: "seed-bank/almanack-example/\
+              almanack-example.ipynb"
           - title: PubMed GitHub Repository Software Information Entropy
             file: "seed-bank/pubmed-github-repositories/\
               visualize-pubmed-repo-sofware-entropy.ipynb"
