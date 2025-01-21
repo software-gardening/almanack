@@ -14,6 +14,8 @@ The Almanack is available both as a handbook and a Python package.
 
 ## Package
 
+### Install
+
 You can install the Almanack with the following:
 
 ```bash
@@ -26,6 +28,22 @@ pip install git+https://github.com/software-gardening/almanack.git
 
 Once installed, the Almanack can be used to analyze repositories for sustainable development practices.
 Output from the Almanack includes metrics which are defined through `metrics.yml` as a Python dictionary (JSON-compatible) record structure.
+
+### Command-line Interface (CLI)
+
+You can use the Almanack package as a command-line interface (CLI):
+
+```bash
+# generate a table of metrics based on a repository
+almanack table path/to/repository
+
+# perform linting-style checks on a repository
+almanack check path/to/repository
+```
+
+### Python API
+
+You can also use the Almanack through a Python API:
 
 For example:
 
@@ -40,15 +58,9 @@ almanack_table = almanack.metrics.data.get_table("path/to/repository")
 pd.DataFrame(almanack_table)
 ```
 
-Alternatively, you can use the Almanack package as a command-line interface (CLI):
+### Example notebook
 
-```bash
-# generate a table of metrics based on a repository
-almanack table path/to/repository
-
-# perform linting-style checks on a repository
-almanack check path/to/repository
-```
+Please see [this example notebook](https://software-gardening.github.io/almanack/seed-bank/almanack-example/almanack-example.html) which demonstrates using the Almanack package.
 
 ## Contributing
 
