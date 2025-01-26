@@ -57,7 +57,9 @@ def test_cli_almanack_table(tmp_path):
 
     # gather output and return code from running a CLI command
     # and ignore one metric
-    stdout, _, returncode = run_cli_command(command=["almanack", "table", repo.path, "--ignore", "'SGA-GL-0002'"])
+    stdout, _, returncode = run_cli_command(
+        command=["almanack", "table", repo.path, "--ignore", "'SGA-GL-0002'"]
+    )
     assert "SGA-GL-0002" not in stdout
 
 
