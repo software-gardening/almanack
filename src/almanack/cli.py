@@ -6,6 +6,7 @@ import json
 import shutil
 import sys
 from datetime import datetime, timezone
+from typing import List, Optional
 
 import fire
 from tabulate import tabulate
@@ -62,7 +63,7 @@ class AlmanackCLI(object):
         # CLI option.)
         sys.exit(0)
 
-    def check(self, repo_path: str) -> None:
+    def check(self, repo_path: str, ignore: Optional[List[str]] = None) -> None:
         """
         Used through CLI to
         check table of metrics for
@@ -76,6 +77,9 @@ class AlmanackCLI(object):
         Args:
             repo_path (str):
                 The path to the repository to analyze.
+            ignore (List[str]):
+                A list of metric IDs to ignore when
+                running the checks. Defaults to None.
         """
 
         # header for CLI output
@@ -89,7 +93,9 @@ class AlmanackCLI(object):
         )
 
         # gather failed metrics
-        failed_metrics = gather_failed_almanack_metric_checks(repo_path=repo_path)
+        failed_metrics = gather_failed_almanack_metric_checks(
+            repo_path=repo_path, ignore=ignore
+        )
 
         # gather almanack score metrics
         almanack_score_metrics = next(

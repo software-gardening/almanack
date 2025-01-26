@@ -46,7 +46,9 @@ METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
 
-def get_table(repo_path: str) -> List[Dict[str, Any]]:
+def get_table(
+    repo_path: str, ignore: Optional[List[str]] = None
+) -> List[Dict[str, Any]]:
     """
     Gather metrics on a repository and return the results in a structured format.
 
@@ -56,8 +58,12 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     computation, an exception is raised.
 
     Args:
-        repo_path (str): The file path to the repository for which metrics are
-        to be performed.
+        repo_path (str):
+            The file path to the repository for which metrics are
+            to be performed.
+        ignore (Optional[List[str]]):
+            A list of metric IDs to ignore when running the checks.
+            Defaults to None.
 
     Returns:
         List[Dict[str, Any]]: A list of dictionaries containing the metrics and
@@ -89,6 +95,7 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
         for metric in metrics_table
+        if ignore is None or metric["id"] not in ignore
     ]
 
     # calculate almanack score (the function modifies the placeholder)
@@ -102,7 +109,9 @@ def get_table(repo_path: str) -> List[Dict[str, Any]]:
     ]
 
 
-def gather_failed_almanack_metric_checks(repo_path: str) -> List[Dict[str, Any]]:
+def gather_failed_almanack_metric_checks(
+    repo_path: str, ignore: Optional[List[str]] = None
+) -> List[Dict[str, Any]]:
     """
     Gather checks on the repository metrics and returns a list of failed checks
     for use in helping others understand the failed checks and rectify them.
@@ -111,6 +120,9 @@ def gather_failed_almanack_metric_checks(repo_path: str) -> List[Dict[str, Any]]
         repo_path (str):
             The file path to the repository which will have metrics
             calculated and includes boolean checks.
+        ignore (Optional[List[str]]):
+            A list of metric IDs to ignore when running the checks.
+            Defaults to None.
 
     Returns:
         List[Dict[str, Any]]: A list of dictionaries containing the metrics and
@@ -127,7 +139,7 @@ def gather_failed_almanack_metric_checks(repo_path: str) -> List[Dict[str, Any]]
             # (we need only these for the output)
             if metric_key in ["name", "id", "correction_guidance", "result"]
         }
-        for metric in get_table(repo_path=repo_path)
+        for metric in get_table(repo_path=repo_path, ignore=ignore)
         if
         # gathers the almanack score
         (metric["name"] == "repo-almanack-score") or

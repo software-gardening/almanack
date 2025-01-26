@@ -83,3 +83,22 @@ def test_cli_almanack_check(tmp_path):
             "Software Gardening Almanack score:",
         ]
     )
+
+    # gather output and return code from running a CLI command
+    stdout, _, returncode = run_cli_command(
+        command=[
+            "almanack",
+            "check",
+            repo.path,
+            "--ignore",
+            "'SGA-GL-0002','SGA-GL-0026'",
+        ]
+    )
+
+    # make sure we return 1 on failures
+    # (the example repo likely has many failures)
+    assert returncode == 1
+
+    # check that we don't see the following id's within the output
+    # (we ignored them)
+    assert all(item not in stdout for item in ["SGA-GL-0002", "SGA-GL-0026"])
