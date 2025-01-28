@@ -397,7 +397,9 @@ document.write(`
 
 <div class="viewcode-block" id="get_table">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.get_table">[docs]</a>
-<span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gather metrics on a repository and return the results in a structured format.</span>
 
@@ -407,8 +409,11 @@ document.write(`
 <span class="sd">    computation, an exception is raised.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_path (str): The file path to the repository for which metrics are</span>
-<span class="sd">        to be performed.</span>
+<span class="sd">        repo_path (str):</span>
+<span class="sd">            The file path to the repository for which the Almanack runs metrics.</span>
+<span class="sd">        ignore (Optional[List[str]]):</span>
+<span class="sd">            A list of metric IDs to ignore when running the checks.</span>
+<span class="sd">            Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List[Dict[str, Any]]: A list of dictionaries containing the metrics and</span>
@@ -424,39 +429,61 @@ document.write(`
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">METRICS_TABLE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">metrics_table</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)[</span><span class="s2">&quot;metrics&quot;</span><span class="p">]</span>
 
-    <span class="c1"># gather data for use in the metrics table</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
+    <span class="c1"># check that our ignore codes exist within the table</span>
+    <span class="k">if</span> <span class="n">ignore</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Raise an error if there are any invalid ignore keys</span>
+        <span class="k">if</span> <span class="n">invalid_ignore_keys</span> <span class="o">:=</span> <span class="p">[</span>
+            <span class="c1"># Collect all ignore keys that do not exist in metrics_data</span>
+            <span class="n">ignore_metric_id</span>
+            <span class="k">for</span> <span class="n">ignore_metric_id</span> <span class="ow">in</span> <span class="n">ignore</span>
+            <span class="k">if</span> <span class="n">ignore_metric_id</span>
+            <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="n">metric_data</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">metric_data</span> <span class="ow">in</span> <span class="n">metrics_table</span><span class="p">}</span>
+        <span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid ignore keys: </span><span class="si">{</span><span class="n">invalid_ignore_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="k">raise</span> <span class="ne">ReferenceError</span><span class="p">(</span><span class="s2">&quot;Encountered an error with processing the data.&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="c1"># gather data for use in the metrics table</span>
+    <span class="n">metrics_data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">metrics_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ReferenceError</span><span class="p">(</span>
+            <span class="s2">&quot;Encountered an error with processing the data.&quot;</span><span class="p">,</span> <span class="n">metrics_data</span>
+        <span class="p">)</span>
 
     <span class="c1"># return metrics table (list of dictionaries as records of metrics)</span>
-    <span class="n">data_table</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">metrics_table_with_data</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="o">**</span><span class="n">metric</span><span class="p">,</span>
             <span class="c1"># add the data results for the metrics to the table</span>
-            <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]],</span>
+            <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">metrics_data</span><span class="p">[</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]],</span>
         <span class="p">}</span>
         <span class="c1"># for each metric, gather the related process data and add to a dictionary</span>
         <span class="c1"># related to that metric along with others in a list.</span>
         <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics_table</span>
+        <span class="k">if</span> <span class="n">ignore</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore</span>
     <span class="p">]</span>
 
     <span class="c1"># calculate almanack score (the function modifies the placeholder)</span>
     <span class="k">return</span> <span class="p">[</span>
         <span class="p">(</span>
-            <span class="p">{</span><span class="o">**</span><span class="n">entry</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">compute_almanack_score</span><span class="p">(</span><span class="n">almanack_table</span><span class="o">=</span><span class="n">data_table</span><span class="p">)}</span>
+            <span class="p">{</span>
+                <span class="o">**</span><span class="n">entry</span><span class="p">,</span>
+                <span class="s2">&quot;result&quot;</span><span class="p">:</span> <span class="n">compute_almanack_score</span><span class="p">(</span>
+                    <span class="n">almanack_table</span><span class="o">=</span><span class="n">metrics_table_with_data</span>
+                <span class="p">),</span>
+            <span class="p">}</span>
             <span class="k">if</span> <span class="n">entry</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;repo-almanack-score&quot;</span>
             <span class="k">else</span> <span class="n">entry</span>
         <span class="p">)</span>
-        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">data_table</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">metrics_table_with_data</span>
     <span class="p">]</span></div>
 
 
 
 <div class="viewcode-block" id="gather_failed_almanack_metric_checks">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.gather_failed_almanack_metric_checks">[docs]</a>
-<span class="k">def</span> <span class="nf">gather_failed_almanack_metric_checks</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="k">def</span> <span class="nf">gather_failed_almanack_metric_checks</span><span class="p">(</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Gather checks on the repository metrics and returns a list of failed checks</span>
 <span class="sd">    for use in helping others understand the failed checks and rectify them.</span>
@@ -465,6 +492,9 @@ document.write(`
 <span class="sd">        repo_path (str):</span>
 <span class="sd">            The file path to the repository which will have metrics</span>
 <span class="sd">            calculated and includes boolean checks.</span>
+<span class="sd">        ignore (Optional[List[str]]):</span>
+<span class="sd">            A list of metric IDs to ignore when running the checks.</span>
+<span class="sd">            Defaults to None.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        List[Dict[str, Any]]: A list of dictionaries containing the metrics and</span>
@@ -481,7 +511,7 @@ document.write(`
             <span class="c1"># (we need only these for the output)</span>
             <span class="k">if</span> <span class="n">metric_key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;correction_guidance&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">]</span>
         <span class="p">}</span>
-        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">)</span>
         <span class="k">if</span>
         <span class="c1"># gathers the almanack score</span>
         <span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">)</span> <span class="ow">or</span>
