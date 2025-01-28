@@ -165,6 +165,14 @@ def test_get_table(repo_files, tmp_path: pathlib.Path) -> None:
 
     assert len(table_with_ignore) == len(table) - 1
 
+    # check erroneous ignores (should raise an exception)
+    with pytest.raises(ValueError) as value_exc:
+        get_table(
+            repo_path=str(repo_path), ignore=["SGA-GL-NONEXISTENT", "SGA-GL-0002"]
+        )
+        assert "SGA-GL-NONEXISTENT" in str(value_exc.value)
+        assert "SGA-GL-0002" not in str(value_exc.value)
+
 
 def test_metrics_yaml():
     """

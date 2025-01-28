@@ -78,18 +78,32 @@ def get_table(
     with open(METRICS_TABLE, "r") as f:
         metrics_table = yaml.safe_load(f)["metrics"]
 
-    # gather data for use in the metrics table
-    data = compute_repo_data(repo_path=repo_path)
+    # check that our ignore codes exist within the table
+    if ignore is not None:
+        # Raise an error if there are any invalid ignore keys
+        if invalid_ignore_keys := [
+            # Collect all ignore keys that do not exist in metrics_data
+            ignore_metric_id
+            for ignore_metric_id in ignore
+            if ignore_metric_id
+            not in {metric_data["id"] for metric_data in metrics_table}
+        ]:
+            raise ValueError(f"Invalid ignore keys: {invalid_ignore_keys}")
 
-    if "error" in data.keys():
-        raise ReferenceError("Encountered an error with processing the data.", data)
+    # gather data for use in the metrics table
+    metrics_data = compute_repo_data(repo_path=repo_path)
+
+    if "error" in metrics_data.keys():
+        raise ReferenceError(
+            "Encountered an error with processing the data.", metrics_data
+        )
 
     # return metrics table (list of dictionaries as records of metrics)
-    data_table = [
+    metrics_table_with_data = [
         {
             **metric,
             # add the data results for the metrics to the table
-            "result": data[metric["name"]],
+            "result": metrics_data[metric["name"]],
         }
         # for each metric, gather the related process data and add to a dictionary
         # related to that metric along with others in a list.
@@ -100,11 +114,16 @@ def get_table(
     # calculate almanack score (the function modifies the placeholder)
     return [
         (
-            {**entry, "result": compute_almanack_score(almanack_table=data_table)}
+            {
+                **entry,
+                "result": compute_almanack_score(
+                    almanack_table=metrics_table_with_data
+                ),
+            }
             if entry["name"] == "repo-almanack-score"
             else entry
         )
-        for entry in data_table
+        for entry in metrics_table_with_data
     ]
 
 
