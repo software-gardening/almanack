@@ -59,8 +59,7 @@ def get_table(
 
     Args:
         repo_path (str):
-            The file path to the repository for which metrics are
-            to be performed.
+            The file path to the repository for which the Almanack runs metrics.
         ignore (Optional[List[str]]):
             A list of metric IDs to ignore when running the checks.
             Defaults to None.
