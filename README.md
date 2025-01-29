@@ -3,6 +3,7 @@
 ![PyPI - Version](https://img.shields.io/pypi/v/almanack)
 [![Build Status](https://github.com/software-gardening/almanack/actions/workflows/pytest-tests.yml/badge.svg?branch=main)](https://github.com/software-gardening/almanack/actions/workflows/pytest-tests.yml?query=branch%3Amain)
 ![Coverage Status](https://raw.githubusercontent.com/software-gardening/almanack/main/media/coverage-badge.svg)
+[![Software DOI badge](https://zenodo.org/badge/DOI/10.5281/zenodo.14765835.svg)](https://doi.org/10.5281/zenodo.14765834)
 
 The Software Gardening Almanack is an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 The Almanack is available both as a handbook and a Python package.

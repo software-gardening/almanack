@@ -40,6 +40,10 @@ keywords:
   - guidance
   - book
 license: BSD-3-Clause
+identifiers:
+  - description: Software DOI
+    type: doi
+    value: "10.5281/zenodo.14765834"
 references:
   - authors:
       - given-names: David
