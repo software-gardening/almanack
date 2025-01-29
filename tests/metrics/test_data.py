@@ -886,7 +886,7 @@ def test_get_ecosystems_package_metrics():
                 "valid_format_doi": True,
                 "https_resolvable_doi": True,
                 "publication_date": None,
-                "cited_by_count": 0,
+                "cited_by_count": None,
             },
         ),
     ],
