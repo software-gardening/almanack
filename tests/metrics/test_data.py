@@ -882,11 +882,11 @@ def test_get_ecosystems_package_metrics():
         (
             None,
             {
-                "doi": None,
-                "valid_format_doi": None,
-                "https_resolvable_doi": None,
+                "doi": "10.5281/zenodo.14765834",
+                "valid_format_doi": True,
+                "https_resolvable_doi": True,
                 "publication_date": None,
-                "cited_by_count": None,
+                "cited_by_count": 0,
             },
         ),
     ],
