@@ -22,3 +22,4 @@ Naur
 inclusivity
 docsite
 OSSci
+Zenodo
