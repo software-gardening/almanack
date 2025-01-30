@@ -165,8 +165,7 @@ We follow [semantic version](https://en.wikipedia.org/wiki/Software_versioning#S
 1. The draft GitHub release will include a version tag based on the GitHub PR label applied and `release-drafter`.
 1. Make modifications as necessary to the draft GitHub release, then publish the release (the draft release does not normally need additional modifications).
 1. On publishing the release, another GitHub Actions workflow defined in `publish-pypi.yml` will automatically build and deploy the Python package to PyPI (utilizing the earlier modified `pyproject.toml` semantic version reference for labeling the release).
-1. Each GitHub release will trigger a [Zenodo GitHub integration](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content#issuing-a-persistent-identifier-for-your-repository-with-zenodo) which creates a new Zenodo record and unique DOI.
-   In addition to the unique DOI per release we also use a special DOI provided from Zenodo to reference the latest record on each new release.
+1. Each GitHub release will trigger a [Zenodo GitHub integration](https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content#issuing-a-persistent-identifier-for-your-repository-with-zenodo) which creates a new Zenodo record and unique DOI. In addition to the unique DOI per release we also use a special DOI provided from Zenodo to reference the latest record on each new release.
 
 ## Attribution
 
