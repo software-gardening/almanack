@@ -410,15 +410,13 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linting">Linting</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-ci-cd-with-github-actions">Automated CI/CD with GitHub Actions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#releases">Releases</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#release-publishing-process">Release Publishing Process</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specifications">Version specifications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#release-process">Release process</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specifications">Version specifications</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specification-process">Version specification process</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
 </ul>
             </nav>
@@ -571,31 +569,38 @@ We suggest the use of <a class="reference external" href="https://github.com/nek
 We publish source code by using <a class="reference external" href="https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases">GitHub Releases</a> available <a class="reference external" href="https://github.com/software-gardening/almanack/releases">here</a>.
 Contents of the book are distributed as both a <a class="reference external" href="https://software-gardening.github.io/almanack/">website</a> and <a class="reference external" href="https://software-gardening.github.io/almanack/software-gardening-almanack.pdf">PDF</a>.
 We distribute a Python package through the <a class="reference external" href="https://pypi.org/">Python Packaging Index (PyPI)</a> available <a class="reference external" href="https://pypi.org/project/almanack/">here</a> which both includes and provides tooling for applying the book’s content.</p>
-<section id="release-publishing-process">
-<h4>Release Publishing Process<a class="headerlink" href="#release-publishing-process" title="Link to this heading">#</a></h4>
 <p>Publishing Software Gardening Almanack releases involves several manual and automated steps.
 See below for an overview of how this works.</p>
-</section>
-</section>
-</section>
 <section id="version-specifications">
-<h2>Version specifications<a class="headerlink" href="#version-specifications" title="Link to this heading">#</a></h2>
+<h4>Version specifications<a class="headerlink" href="#version-specifications" title="Link to this heading">#</a></h4>
 <p>We follow <a class="reference external" href="https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning">semantic version</a> (semver) specifications with this project through the following technologies.</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/mtkennerly/poetry-dynamic-versioning"><code class="docutils literal notranslate"><span class="pre">poetry-dynamic-versioning</span></code></a> leveraging <a class="reference external" href="https://github.com/mtkennerly/dunamai"><code class="docutils literal notranslate"><span class="pre">dunamai</span></code></a> creates version data based on <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and commits.</p></li>
 <li><p><a class="reference external" href="https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases">GitHub Releases</a> automatically create git tags and source code collections available from the GitHub repository.</p></li>
 <li><p><a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> infers and describes changes since last release within automatically drafted GitHub Releases after pull requests are merged (draft releases are published as decided by maintainers).</p></li>
 </ul>
-<section id="version-specification-process">
-<h3>Version specification process<a class="headerlink" href="#version-specification-process" title="Link to this heading">#</a></h3>
+</section>
+<section id="release-process">
+<h4>Release process<a class="headerlink" href="#release-process" title="Link to this heading">#</a></h4>
 <ol class="arabic simple">
 <li><p>Open a pull request and use a repository label for <code class="docutils literal notranslate"><span class="pre">release-&lt;semver</span> <span class="pre">release</span> <span class="pre">type&gt;</span></code> to label the pull request for visibility with <a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> (for example, see <a class="reference external" href="https://github.com/software-gardening/almanack/pull/43">almanack#43</a> as a reference of a semver patch update).</p></li>
 <li><p>On merging the pull request for the release, a <a class="reference external" href="https://docs.github.com/en/actions/using-workflows">GitHub Actions workflow</a> defined in <code class="docutils literal notranslate"><span class="pre">draft-release.yml</span></code> leveraging <a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> will draft a release for maintainers.</p></li>
 <li><p>The draft GitHub release will include a version tag based on the GitHub PR label applied and <code class="docutils literal notranslate"><span class="pre">release-drafter</span></code>.</p></li>
 <li><p>Make modifications as necessary to the draft GitHub release, then publish the release (the draft release does not normally need additional modifications).</p></li>
 <li><p>On publishing the release, another GitHub Actions workflow defined in <code class="docutils literal notranslate"><span class="pre">publish-pypi.yml</span></code> will automatically build and deploy the Python package to PyPI (utilizing the earlier modified <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> semantic version reference for labeling the release).</p></li>
+<li><p>Each GitHub release will trigger a <a class="reference external" href="https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content#issuing-a-persistent-identifier-for-your-repository-with-zenodo">Zenodo GitHub integration</a> which creates a new Zenodo record and unique DOI.</p></li>
 </ol>
 </section>
+</section>
+</section>
+<section id="citations">
+<h2>Citations<a class="headerlink" href="#citations" title="Link to this heading">#</a></h2>
+<p>We create a unique DOI per release through the <a class="reference external" href="https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content#issuing-a-persistent-identifier-for-your-repository-with-zenodo">Zenodo GitHub integration</a>.
+As part of this we also use a special DOI provided from Zenodo to reference the latest record on each new release.
+Zenodo outlines how this works within their <a class="reference external" href="https://zenodo.org/help/versioning">versioning documentation</a>.</p>
+<p>The DOI and other citation metadata are stored within a <a class="reference external" href="https://github.com/citation-file-format/citation-file-format"><code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> file</a>.
+Our <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> is the primary source of citation information in correspondence with this project.
+The <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> file is used within a sidebar <a class="reference external" href="https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-citation-files">integration through the GitHub web interface</a> to enable people to directly cite this project.</p>
 </section>
 <section id="attribution">
 <h2>Attribution<a class="headerlink" href="#attribution" title="Link to this heading">#</a></h2>
@@ -685,15 +690,13 @@ Big thanks go to the developers and contributors of that repository.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linting">Linting</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#automated-ci-cd-with-github-actions">Automated CI/CD with GitHub Actions</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#releases">Releases</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#release-publishing-process">Release Publishing Process</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specifications">Version specifications</a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#release-process">Release process</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specifications">Version specifications</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#version-specification-process">Version specification process</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citations">Citations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attribution">Attribution</a></li>
 </ul>
   </nav></div>
