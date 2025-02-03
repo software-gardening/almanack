@@ -14,7 +14,7 @@ jobs:
       matrix:
         # matrixed execution for parallel gh-action jobs
         python-version: ["3.9", "3.10", "3.11", "3.12"]
-        os: [ubuntu-22.04, macos-13]
+        os: [ubuntu-22.04, macos-14]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
