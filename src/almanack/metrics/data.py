@@ -773,7 +773,7 @@ def parse_python_coverage_data(
 
 
 def compute_almanack_score(
-    almanack_table: List[Dict[str, Union[int, float, bool]]]
+    almanack_table: List[Dict[str, Union[int, float, bool]]],
 ) -> Dict[str, Union[int, float]]:
     """
     Computes an Almanack score by counting boolean Almanack
