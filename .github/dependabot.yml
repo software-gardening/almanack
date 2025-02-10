@@ -23,6 +23,10 @@ updates:
     schedule:
       # Check for updates every week
       interval: "weekly"
+    groups:
+      python-packages:
+        patterns:
+          - "*"
 
   # Perform checks and updates for nodejs environment.
   - package-ecosystem: "npm"
