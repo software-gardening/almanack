@@ -1,0 +1,11 @@
+# hooks for using the Almanack through pre-commit
+# see here for more information:
+# https://pre-commit.com/#creating-new-hooks
+
+- id: almanack-check
+  name: almanack-check
+  description: |
+    Use the Almanack to check for software sustainability best practices.
+  entry: almanack check .
+  pass_filenames: false
+  language: python
