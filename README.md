@@ -44,6 +44,20 @@ almanack table path/to/repository
 almanack check path/to/repository
 ```
 
+### Pre-commit Hook
+
+We provide [pre-commit](https://pre-commit.com/) hooks to enable you to run the Almanack as part of your automated checks for software projects.
+Add the following to your [`pre-commit-config.yaml`](https://pre-commit.com/#2-add-a-pre-commit-configuration) in order to use the Almanack.
+
+For example:
+
+```yaml
+- repo: https://github.com/software-gardening/almanack
+    rev: v0.1.1
+    hooks:
+    - id: almanack-check
+```
+
 ### Python API
 
 You can also use the Almanack through a Python API:
