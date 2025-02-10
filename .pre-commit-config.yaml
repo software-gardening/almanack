@@ -178,8 +178,9 @@ repos:
       # Run almanack checks as defined by `.pre-commit-hooks.yaml`
       - id: almanack-check
         name: almanack-check
-        description: |
-          Use the Software Gardening Almanack to check for software sustainability best practices.
+        description: >-
+          Use the Software Gardening Almanack to check
+          for software sustainability best practices.
         entry: almanack check .
         pass_filenames: false
         language: python
