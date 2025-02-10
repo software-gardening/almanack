@@ -9,3 +9,4 @@
   entry: almanack check .
   pass_filenames: false
   language: python
+  language_version: python3.11
