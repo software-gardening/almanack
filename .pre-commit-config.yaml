@@ -175,6 +175,14 @@ repos:
         entry: poetry run poe code-coverage-report
         pass_filenames: false
         always_run: true
+      # Run almanack checks as defined by `.pre-commit-hooks.yaml`
+      - id: almanack-check
+        name: almanack-check
+        description: |
+          Use the Software Gardening Almanack to check for software sustainability best practices.
+        entry: almanack check .
+        pass_filenames: false
+        language: python
   - repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
     rev: 0.1.1
     hooks:
