@@ -1,6 +1,7 @@
-# Introduction
+<img width="500px" alt="Software Gardening Almanack logo" src="_images/software-gardening-almanack-logo.png">
+<br><br>
 
-![Software Gardening Almanack logo](assets/software-gardening-almanack-logo.png)
+# Introduction
 
 Welcome to the Software Gardening Almanack, an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 
