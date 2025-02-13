@@ -3,14 +3,14 @@ format: jb-book
 root: introduction.md
 parts:
   - chapters:
-      - title: Garden Lattice
+      - title: 1. Garden Lattice
         file: garden-lattice/garden-lattice.md
         sections:
           - title: Understanding
             file: garden-lattice/understanding.md
-      - title: Software Forest
+      - title: 2. Software Forest
         file: software-forest/software-forest.md
-      - title: Verdant Sundial
+      - title: 3. Verdant Sundial
         file: verdant-sundial/verdant-sundial.md
       - title: Seed Bank
         file: seed-bank/seed-bank.md
