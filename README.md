@@ -1,3 +1,5 @@
+<img width="500" src="https://raw.githubusercontent.com/software-gardening/almanack/main/src/book/assets/software-gardening-almanack-logo.png?raw=true">
+
 # The Software Gardening Almanack
 
 ![PyPI - Version](https://img.shields.io/pypi/v/almanack)
