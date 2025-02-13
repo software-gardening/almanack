@@ -302,3 +302,7 @@ dist
 
 # ignore pdf builds
 /src/_pdfbuild
+
+# ignore autosummary content
+/src/book/*/_autosummary
+/src/book/garden-circle/package-api
