@@ -11,7 +11,7 @@ from typing import List, Optional
 import fire
 from tabulate import tabulate
 
-from .metrics.data import (
+from almanack.metrics.data import (
     _get_almanack_version,
     gather_failed_almanack_metric_checks,
     get_table,

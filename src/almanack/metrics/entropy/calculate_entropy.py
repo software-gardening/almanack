@@ -8,7 +8,7 @@ from typing import List
 
 import pygit2
 
-from ...git import get_loc_changed
+from almanack.git import get_loc_changed
 
 
 def calculate_normalized_entropy(

@@ -9,7 +9,7 @@ from typing import Any, Dict, Optional
 
 import pygit2
 
-from ..remote import get_api_data
+from almanack.metrics.remote import get_api_data
 
 LOGGER = logging.getLogger(__name__)
 

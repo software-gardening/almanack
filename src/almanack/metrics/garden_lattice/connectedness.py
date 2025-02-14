@@ -13,8 +13,8 @@ import pygit2
 import requests
 import yaml
 
-from ...git import file_exists_in_repo, find_file, read_file
-from ..remote import get_api_data
+from almanack.git import file_exists_in_repo, find_file, read_file
+from almanack.metrics.remote import get_api_data
 
 LOGGER = logging.getLogger(__name__)
 

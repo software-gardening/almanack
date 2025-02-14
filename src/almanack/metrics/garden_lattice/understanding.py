@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 
 import pygit2
 
-from ...git import find_file
+from almanack.git import find_file
 
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)

@@ -15,7 +15,7 @@ import defusedxml.ElementTree as ET
 import pygit2
 import yaml
 
-from ..git import (
+from almanack.git import (
     clone_repository,
     count_files,
     file_exists_in_repo,
@@ -25,20 +25,20 @@ from ..git import (
     get_remote_url,
     read_file,
 )
-from .entropy.calculate_entropy import (
+from almanack.metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
 )
-from .garden_lattice.connectedness import (
+from almanack.metrics.garden_lattice.connectedness import (
     count_unique_contributors,
     default_branch_is_not_master,
     detect_social_media_links,
     find_doi_citation_data,
     is_citable,
 )
-from .garden_lattice.practicality import count_repo_tags, get_ecosystems_package_metrics
-from .garden_lattice.understanding import includes_common_docs
-from .remote import get_api_data
+from almanack.metrics.garden_lattice.practicality import count_repo_tags, get_ecosystems_package_metrics
+from almanack.metrics.garden_lattice.understanding import includes_common_docs
+from almanack.metrics.remote import get_api_data
 
 LOGGER = logging.getLogger(__name__)
 
