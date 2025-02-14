@@ -1,5 +1,9 @@
-<img width="500px" alt="Software Gardening Almanack logo" src="_images/software-gardening-almanack-logo.png">
-<br><br>
+```{figure} assets/software-gardening-almanack-logo.png
+---
+width: 500px
+alt: Software Gardening Almanack logo.
+---
+```
 
 # Introduction
 
