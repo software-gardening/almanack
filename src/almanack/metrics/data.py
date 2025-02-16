@@ -36,7 +36,10 @@ from almanack.metrics.garden_lattice.connectedness import (
     find_doi_citation_data,
     is_citable,
 )
-from almanack.metrics.garden_lattice.practicality import count_repo_tags, get_ecosystems_package_metrics
+from almanack.metrics.garden_lattice.practicality import (
+    count_repo_tags,
+    get_ecosystems_package_metrics,
+)
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
 from almanack.metrics.remote import get_api_data
 
