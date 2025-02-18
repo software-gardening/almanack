@@ -9,7 +9,8 @@ alt: Software Gardening Almanack logo.
 
 Welcome to the Software Gardening Almanack, an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 
-The Software Gardening Almanack is for anyone who creates, maintains, or nurtures software over time—developers, scientists, engineers, project leads, and beyond.
+The Software Gardening Almanack is for anyone who creates or maintains software.
+The Almanack instructs individuals—software developers, engineers, project leads, scientists, and beyond—on best nurturing practices to build software that stands the tests of time.
 If you've ever wondered why software grows fast only to decay just as quickly, or how to design systems that sustain long-term innovation, this is for you.
 This handbook provides pragmatic guidance and tools to cultivate resilient software practices.
 Whether you're tending legacy code or planting new ideas, ___jump in and start growing___! 🌱
