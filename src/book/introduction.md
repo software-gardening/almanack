@@ -37,7 +37,8 @@ The [Software Gardening Almanack](https://github.com/software-gardening/almanack
 
 ### The `almanack` package
 
-The `almanack` Python package, may be installed using the following, for example:
+Please see our (Seed Bank)[seed-bank-intro] __Software Gardening Almanack Example__ for a quick demonstration of using the `almanack` Python package.
+The package may be installed using the following, for example:
 
 ```bash
 # install from pypi
@@ -66,7 +67,7 @@ Add the following to your [`pre-commit-config.yaml`](https://pre-commit.com/#2-a
 
 For example:
 
-```yaml
+```text
 # include this in your pre-commit-config.yaml
 - repo: https://github.com/software-gardening/almanack
     rev: v0.1.1
