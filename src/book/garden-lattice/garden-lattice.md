@@ -1,3 +1,5 @@
+(garden-lattice-intro)=
+
 # Garden Lattice
 
 ```{figure} ../assets/640px-Rundes_Fenster_mit_Gitter.jpeg

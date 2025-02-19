@@ -302,3 +302,5 @@ dist
 
 # ignore pdf builds
 /src/_pdfbuild
+/src/book/seed-bank/almanack-example/almanack
+/src/book/seed-bank/pubmed-github-repositories/images

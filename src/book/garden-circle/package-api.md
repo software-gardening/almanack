@@ -1,3 +1,5 @@
+(package-api)=
+
 # `almanack` Package API
 
 ## Base
