@@ -8,8 +8,11 @@
 [![Software DOI badge](https://zenodo.org/badge/DOI/10.5281/zenodo.14765835.svg)](https://doi.org/10.5281/zenodo.14765834)
 
 The Software Gardening Almanack is an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
-The Almanack is available both as a handbook and a Python package.
-The Python package may also be used as a [pre-commit hook to check](#pre-commit-hook) repositories for best practices.
+
+The project entails two primary components:
+
+- The __Almanack handbook__: the content found here helps educate, demonstrate, and evolve the concepts of sustainable software development.
+- The __`almanack` package__: is a Python package which implements the concepts of the book to help improve software sustainability by generating organized metrics and running linting checks on repositories. The Python package may also be used as a [pre-commit hook to check](#pre-commit-hook) repositories for best practices.
 
 Please see our [pavilion section of the book](https://software-gardening.github.io/almanack/garden-circle/pavilion.html) for presentations and other related materials for the Almanack.
 
