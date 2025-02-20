@@ -32,8 +32,8 @@ In addition there are also _supplementary chapters_ which help support or demons
 
 The [Software Gardening Almanack](https://github.com/software-gardening/almanack) project provides two primary components:
 
-- The Almanack handbook: the content found here helps educate, demonstrate, and evolve the concepts of sustainable software development.
-- The Almanack package: is a Python package which implements the concepts of the book to help improve software sustainability by generating organized metrics and running linting checks on repositories.
+- The __Almanack handbook__: the content found here helps educate, demonstrate, and evolve the concepts of sustainable software development.
+- The __`almanack` package__: is a Python package which implements the concepts of the book to help improve software sustainability by generating organized metrics and running linting checks on repositories.
 
 ### The `almanack` package
 
