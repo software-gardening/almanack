@@ -1,6 +1,79 @@
-# Welcome
+```{figure} assets/software-gardening-almanack-logo.png
+---
+width: 500px
+alt: Software Gardening Almanack logo.
+---
+```
+
+# Introduction
 
 Welcome to the Software Gardening Almanack, an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
+
+The Software Gardening Almanack is for anyone who creates or maintains software.
+The Almanack instructs individuals - software developers, engineers, project leads, scientists, and beyond - on best nurturing practices to build software that stands the tests of time.
+If you've ever wondered why software grows fast only to decay just as quickly, or how to design systems that sustain long-term innovation, this is for you.
+This handbook provides pragmatic guidance and tools to cultivate resilient software practices.
+Whether you're tending legacy code or planting new ideas, ___jump in and start growing___! 🌱
+
+## Overview
+
+The structure of the book includes the following _core chapters_:
+
+1. The [__Garden Lattice__](garden-lattice-intro): a chapter exploring the human-centric elements of software.
+1. The [__Software Forest__](software-forest-intro): a chapter examining code and its role in shaping software.
+1. The [__Verdant Sundial__](verdant-sundial-intro): a chapter illustrating the evolution of people and code, and their impact on software sustainability.
+
+In addition there are also _supplementary chapters_ which help support or demonstrate the content found within the core chapters:
+
+- The [__Seed Bank__](seed-bank-intro): an applied chapter which illustrates concepts from the Almanack core through Jupyter notebooks.
+- The [__Garden Circle__](garden-circle-intro): a space where we openly document principles for developing and maintaining the book as well as document a related application programming interface (API) for the `almanack` Python package.
+
+## Using the Almanack
+
+The [Software Gardening Almanack](https://github.com/software-gardening/almanack) project provides two primary components:
+
+- The __Almanack handbook__: the content found here helps educate, demonstrate, and evolve the concepts of sustainable software development.
+- The __`almanack` package__: is a Python package which implements the concepts of the book to help improve software sustainability by generating organized metrics and running linting checks on repositories.
+
+### The `almanack` package
+
+Please see our (Seed Bank)[seed-bank-intro] __Software Gardening Almanack Example__ for a quick demonstration of using the `almanack` Python package.
+The package may be installed using the following, for example:
+
+```bash
+# install from pypi
+pip install almanack
+
+# install directly from source
+pip install git+https://github.com/software-gardening/almanack.git
+```
+
+Once installed, the Almanack can be used to analyze repositories for sustainable development practices.
+Output from the Almanack includes metrics which are defined through `metrics.yml` as a Python dictionary (JSON-compatible) record structure.
+Package API documentation may be found within the [package API](package-api) section of the book.
+
+You can use the Almanack package as a command-line interface (CLI):
+
+```bash
+# generate a table of metrics based on a repository
+almanack table path/to/repository
+
+# perform linting-style checks on a repository
+almanack check path/to/repository
+```
+
+We provide [pre-commit](https://pre-commit.com/) hooks to enable you to run the Almanack as part of your automated checks for developing software projects.
+Add the following to your [`pre-commit-config.yaml`](https://pre-commit.com/#2-add-a-pre-commit-configuration) in order to use the Almanack.
+
+For example:
+
+```text
+# include this in your pre-commit-config.yaml
+- repo: https://github.com/software-gardening/almanack
+    rev: v0.1.1
+    hooks:
+    - id: almanack-check
+```
 
 ## Inspiration
 

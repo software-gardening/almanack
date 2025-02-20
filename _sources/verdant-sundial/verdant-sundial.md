@@ -1,3 +1,5 @@
+(verdant-sundial-intro)=
+
 # Verdant Sundial
 
 ```{figure} ../assets/Sundial_2916_HDR.jpeg

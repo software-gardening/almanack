@@ -174,17 +174,17 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="../introduction.html">
-                    Welcome
+                    Introduction
                 </a>
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../garden-lattice/garden-lattice.html">Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../garden-lattice/garden-lattice.html">1. Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../garden-lattice/understanding.html">Understanding</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../software-forest/software-forest.html">Software Forest</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../verdant-sundial/verdant-sundial.html">Verdant Sundial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../software-forest/software-forest.html">2. Software Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../seed-bank/almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
@@ -392,6 +392,32 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.book">Base</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.book.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.check"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.check()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.table"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.table()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.trigger"><code class="docutils literal notranslate"><span class="pre">trigger()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.clone_repository"><code class="docutils literal notranslate"><span class="pre">clone_repository()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.count_files"><code class="docutils literal notranslate"><span class="pre">count_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.detect_encoding"><code class="docutils literal notranslate"><span class="pre">detect_encoding()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.file_exists_in_repo"><code class="docutils literal notranslate"><span class="pre">file_exists_in_repo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.find_file"><code class="docutils literal notranslate"><span class="pre">find_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_commits"><code class="docutils literal notranslate"><span class="pre">get_commits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_edited_files"><code class="docutils literal notranslate"><span class="pre">get_edited_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_loc_changed"><code class="docutils literal notranslate"><span class="pre">get_loc_changed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_most_recent_commits"><code class="docutils literal notranslate"><span class="pre">get_most_recent_commits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_remote_url"><code class="docutils literal notranslate"><span class="pre">get_remote_url()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.reporting.report">Reporting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.reporting.report.pr_report"><code class="docutils literal notranslate"><span class="pre">pr_report()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.reporting.report.repo_report"><code class="docutils literal notranslate"><span class="pre">repo_report()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
@@ -407,24 +433,35 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_analysis"><code class="docutils literal notranslate"><span class="pre">process_repo_for_analysis()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.remote">Remote</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.remote.get_api_data"><code class="docutils literal notranslate"><span class="pre">get_api_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.entropy.calculate_entropy">Entropy</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.calculate_entropy.calculate_aggregate_entropy"><code class="docutils literal notranslate"><span class="pre">calculate_aggregate_entropy()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.calculate_entropy.calculate_normalized_entropy"><code class="docutils literal notranslate"><span class="pre">calculate_normalized_entropy()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.processing_repositories.process_pr_entropy"><code class="docutils literal notranslate"><span class="pre">process_pr_entropy()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.processing_repositories.process_repo_entropy"><code class="docutils literal notranslate"><span class="pre">process_repo_entropy()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#garden-lattice">Garden Lattice</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.understanding">Understanding</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.understanding.includes_common_docs"><code class="docutils literal notranslate"><span class="pre">includes_common_docs()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#garden-lattice">Garden Lattice</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.understanding">Understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.understanding.includes_common_docs"><code class="docutils literal notranslate"><span class="pre">includes_common_docs()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.connectedness">Connectedness</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors"><code class="docutils literal notranslate"><span class="pre">count_unique_contributors()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master"><code class="docutils literal notranslate"><span class="pre">default_branch_is_not_master()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.detect_social_media_links"><code class="docutils literal notranslate"><span class="pre">detect_social_media_links()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data"><code class="docutils literal notranslate"><span class="pre">find_doi_citation_data()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.is_citable"><code class="docutils literal notranslate"><span class="pre">is_citable()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.connectedness">Connectedness</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors"><code class="docutils literal notranslate"><span class="pre">count_unique_contributors()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master"><code class="docutils literal notranslate"><span class="pre">default_branch_is_not_master()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.detect_social_media_links"><code class="docutils literal notranslate"><span class="pre">detect_social_media_links()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data"><code class="docutils literal notranslate"><span class="pre">find_doi_citation_data()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.is_citable"><code class="docutils literal notranslate"><span class="pre">is_citable()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.practicality">Practicality</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.count_repo_tags"><code class="docutils literal notranslate"><span class="pre">count_repo_tags()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.get_ecosystems_package_metrics"><code class="docutils literal notranslate"><span class="pre">get_ecosystems_package_metrics()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.practicality">Practicality</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.count_repo_tags"><code class="docutils literal notranslate"><span class="pre">count_repo_tags()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.get_ecosystems_package_metrics"><code class="docutils literal notranslate"><span class="pre">get_ecosystems_package_metrics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -441,7 +478,372 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="almanack-package-api">
-<h1><code class="docutils literal notranslate"><span class="pre">almanack</span></code> Package API<a class="headerlink" href="#almanack-package-api" title="Link to this heading">#</a></h1>
+<span id="package-api"></span><h1><code class="docutils literal notranslate"><span class="pre">almanack</span></code> Package API<a class="headerlink" href="#almanack-package-api" title="Link to this heading">#</a></h1>
+<section id="module-almanack.book">
+<span id="base"></span><h2>Base<a class="headerlink" href="#module-almanack.book" title="Link to this heading">#</a></h2>
+<p>Module for interacting with Software Gardening
+Almanack book content through a Python package.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.book.read">
+<span class="sig-prename descclassname"><span class="pre">almanack.book.</span></span><span class="sig-name descname"><span class="pre">read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chapter_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/almanack/book.html#read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.book.read" title="Link to this definition">#</a></dt>
+<dd><p>A function for reading almanack content through a package
+interface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>chapter_name</strong> – Optional[str], default None
+A string which indicates the short-hand name of a chapter
+from the book. Short-hand names are lower-case title names
+read from <cite>src/book/_toc.yml</cite>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>None</dt><dd><p>The outcome of this function involves printing the
+content of the selected chapter from the short-hand
+name or showing available chapter names through an exception.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p id="module-almanack.cli">Setup almanack CLI through python-fire</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="almanack.cli.AlmanackCLI">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">almanack.cli.</span></span><span class="sig-name descname"><span class="pre">AlmanackCLI</span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Almanack CLI class for Google Fire</p>
+<p>The following CLI-based commands are available
+(and in alignment with the methods below based
+on their name):</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt><cite>almanack table &lt;repo path&gt;</cite>: Provides a JSON data</dt><dd><p>structure which includes Almanack metric data.
+Always returns a 0 exit.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><cite>almanack check &lt;repo path&gt;</cite>: Provides a report</dt><dd><p>of boolean metrics which include a non-zero
+sustainability direction (“checks”) that are
+failing to inform a user whether they pass.
+Returns non-zero exit (1) if any checks are failing,
+otherwise 0.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="almanack.cli.AlmanackCLI.check">
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.check" title="Link to this definition">#</a></dt>
+<dd><p>Used through CLI to
+check table of metrics for
+boolean values with a non-zero
+sustainability direction
+for failures.</p>
+<p>This enables the use of CLI such as:
+<cite>almanack check &lt;repo path&gt;</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The path to the repository to analyze.</p></li>
+<li><p><strong>ignore</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of metric IDs to ignore when
+running the checks. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="almanack.cli.AlmanackCLI.table">
+<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.table" title="Link to this definition">#</a></dt>
+<dd><p>Used through CLI to
+generate a table of metrics</p>
+<p>This enables the use of CLI such as:
+<cite>almanack table &lt;repo path&gt;</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The path to the repository to analyze.</p></li>
+<li><p><strong>ignore</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of metric IDs to ignore when
+running the checks. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.cli.trigger">
+<span class="sig-prename descclassname"><span class="pre">almanack.cli.</span></span><span class="sig-name descname"><span class="pre">trigger</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/almanack/cli.html#trigger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.trigger" title="Link to this definition">#</a></dt>
+<dd><p>Trigger the CLI to run.</p>
+</dd></dl>
+
+<p id="module-almanack.git">This module performs git operations</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.clone_repository">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">clone_repository</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#clone_repository"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.clone_repository" title="Link to this definition">#</a></dt>
+<dd><p>Clones the GitHub repository to a temporary directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_url</strong> (<em>str</em>) – The URL of the GitHub repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path to the cloned repository.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pathlib.Path</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.count_files">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">count_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tree</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Blob</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#count_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.count_files" title="Link to this definition">#</a></dt>
+<dd><p>Counts all files (Blobs) within a Git tree, including files
+in subdirectories.</p>
+<p>This function recursively traverses the provided <cite>tree</cite>
+object to count each file, represented as a <cite>pygit2.Blob</cite>,
+within the tree and any nested subdirectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tree</strong> (<em>Union</em><em>[</em><em>pygit2.Tree</em><em>, </em><em>pygit2.Blob</em><em>]</em>) – The Git tree object (of type <cite>pygit2.Tree</cite>)
+to traverse and count files. The initial call
+should be made with the root tree of a commit.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total count of files (Blobs) within the tree,
+including nested files in subdirectories.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.detect_encoding">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">detect_encoding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blob_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#detect_encoding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.detect_encoding" title="Link to this definition">#</a></dt>
+<dd><p>Detect the encoding of the given blob data using charset-normalizer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>blob_data</strong> (<em>bytes</em>) – The raw bytes of the blob to analyze.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The best detected encoding of the blob data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If no encoding could be detected.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.file_exists_in_repo">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">file_exists_in_repo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expected_file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">check_extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['.md',</span> <span class="pre">'.txt',</span> <span class="pre">'.rtf',</span> <span class="pre">'']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#file_exists_in_repo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.file_exists_in_repo" title="Link to this definition">#</a></dt>
+<dd><p>Check if a file (case-insensitive and with optional extensions)
+exists in the latest commit of the repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The repository object to search in.</p></li>
+<li><p><strong>expected_file_name</strong> (<em>str</em>) – The base file name to check (e.g., “readme”).</p></li>
+<li><p><strong>check_extension</strong> (<em>bool</em>) – Whether to check the extension of the file or not.</p></li>
+<li><p><strong>extensions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of possible file extensions to check (e.g., [“.md”, “”]).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the file exists, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.find_file">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">find_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_insensitive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extensions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['.md',</span> <span class="pre">'.txt',</span> <span class="pre">'.rtf',</span> <span class="pre">'.rst',</span> <span class="pre">'']</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#find_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.find_file" title="Link to this definition">#</a></dt>
+<dd><p>Locate a file in the repository by its path.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The repository object.</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) – The path to the file within the repository.</p></li>
+<li><p><strong>case_insensitive</strong> (<em>bool</em>) – If True, perform case-insensitive comparison.</p></li>
+<li><p><strong>extensions</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of possible file extensions to check (e.g., [“.md”, “”]).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The entry of the found file,
+or None if no matching file is found.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[pygit2.Object]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.get_commits">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">get_commits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Commit</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/git.html#get_commits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.get_commits" title="Link to this definition">#</a></dt>
+<dd><p>Retrieves the list of commits from the main branch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The Git repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of commits in the repository.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[pygit2.Commit]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.get_edited_files">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">get_edited_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Commit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Commit</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/git.html#get_edited_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.get_edited_files" title="Link to this definition">#</a></dt>
+<dd><p>Finds all files that have been edited, added, or deleted between two specific commits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The Git repository.</p></li>
+<li><p><strong>source_commit</strong> (<em>pygit2.Commit</em>) – The source commit.</p></li>
+<li><p><strong>target_commit</strong> (<em>pygit2.Commit</em>) – The target commit.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of file names that have been edited, added, or deleted between the two commits.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.get_loc_changed">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">get_loc_changed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/git.html#get_loc_changed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.get_loc_changed" title="Link to this definition">#</a></dt>
+<dd><p>Finds the total number of code lines changed for each specified file between two commits.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>pathlib.Path</em>) – The path to the git repository.</p></li>
+<li><p><strong>source</strong> (<em>str</em>) – The source commit hash.</p></li>
+<li><p><strong>target</strong> (<em>str</em>) – The target commit hash.</p></li>
+<li><p><strong>file_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of file names to calculate changes for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary where the key is the filename, and the value is the lines changed (added and removed).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.get_most_recent_commits">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">get_most_recent_commits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/git.html#get_most_recent_commits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.get_most_recent_commits" title="Link to this definition">#</a></dt>
+<dd><p>Retrieves the two most recent commit hashes in the test repositories</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_path</strong> (<em>pathlib.Path</em>) – The path to the git repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tuple containing the source and target commit hashes.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple[str, str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.get_remote_url">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">get_remote_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#get_remote_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.get_remote_url" title="Link to this definition">#</a></dt>
+<dd><p>Determines the remote URL of a git repository, if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The pygit2 repository object.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The remote URL if found, otherwise None.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.read_file">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">read_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_insensitive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#read_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.read_file" title="Link to this definition">#</a></dt>
+<dd><p>Read the content of a file from the repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The repository object.</p></li>
+<li><p><strong>entry</strong> (<em>Optional</em><em>[</em><em>pygit2.Object</em><em>]</em>) – The entry of the file to read. If not provided, filepath must be specified.</p></li>
+<li><p><strong>filepath</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The path to the file within the repository. Used if entry is not provided.</p></li>
+<li><p><strong>case_insensitive</strong> (<em>bool</em>) – If True, perform case-insensitive comparison when using filepath.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The content of the file as a string,
+or None if the file is not found or reading fails.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-almanack.reporting.report">
+<span id="reporting"></span><h2>Reporting<a class="headerlink" href="#module-almanack.reporting.report" title="Link to this heading">#</a></h2>
+<p>This module creates entropy reports</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.reporting.report.pr_report">
+<span class="sig-prename descclassname"><span class="pre">almanack.reporting.report.</span></span><span class="sig-name descname"><span class="pre">pr_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/reporting/report.html#pr_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.reporting.report.pr_report" title="Link to this definition">#</a></dt>
+<dd><p>Returns the formatted PR-specific entropy report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary with the entropy data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted GitHub markdown.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.reporting.report.repo_report">
+<span class="sig-prename descclassname"><span class="pre">almanack.reporting.report.</span></span><span class="sig-name descname"><span class="pre">repo_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/reporting/report.html#repo_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.reporting.report.repo_report" title="Link to this definition">#</a></dt>
+<dd><p>Returns the formatted entropy report as a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – Dictionary with the entropy data.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted entropy report.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="metrics">
 <h2>Metrics<a class="headerlink" href="#metrics" title="Link to this heading">#</a></h2>
 <section id="module-almanack.metrics.data">
@@ -709,11 +1111,159 @@ that process PUBMED repositories.</p>
 </dd></dl>
 
 </section>
+<section id="module-almanack.metrics.remote">
+<span id="remote"></span><h3>Remote<a class="headerlink" href="#module-almanack.metrics.remote" title="Link to this heading">#</a></h3>
+<p>This module focuses on remote API requests
+and related aspects.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.remote.get_api_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.remote.</span></span><span class="sig-name descname"><span class="pre">get_api_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">api_endpoint</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'https://repos.ecosyste.ms/api/v1/repositories/lookup'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/remote.html#get_api_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.remote.get_api_data" title="Link to this definition">#</a></dt>
+<dd><p>Get data from an API based on the remote URL, with retry logic for GitHub rate limiting.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>api_endpoint</strong> (<em>str</em>) – The HTTP API endpoint to use for the request.</p></li>
+<li><p><strong>params</strong> (<em>Optional</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Additional query parameters to include in the GET request.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The JSON response from the API as a dictionary.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>requests.RequestException</strong> – If the API call fails for reasons other than rate limiting.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="module-almanack.metrics.entropy.calculate_entropy">
+<span id="entropy"></span><h4>Entropy<a class="headerlink" href="#module-almanack.metrics.entropy.calculate_entropy" title="Link to this heading">#</a></h4>
+<p>This module calculates the amount of Software information entropy</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.entropy.calculate_entropy.calculate_aggregate_entropy">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.entropy.calculate_entropy.</span></span><span class="sig-name descname"><span class="pre">calculate_aggregate_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Commit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Commit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/entropy/calculate_entropy.html#calculate_aggregate_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.entropy.calculate_entropy.calculate_aggregate_entropy" title="Link to this definition">#</a></dt>
+<dd><p>Computes the aggregated normalized entropy score from the output of
+calculate_normalized_entropy for specified a Git repository.
+Inspired by Shannon’s information theory entropy formula.
+We follow an approach described by Hassan (2009) (see references).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The file path to the git repository.</p></li>
+<li><p><strong>source_commit</strong> (<em>pygit2.Commit</em>) – The git hash of the source commit.</p></li>
+<li><p><strong>target_commit</strong> (<em>pygit2.Commit</em>) – The git hash of the target commit.</p></li>
+<li><p><strong>file_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of file names to calculate entropy for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Normalized entropy calculation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Hassan, A. E. (2009). Predicting faults using the complexity of code changes.</dt><dd><p>2009 IEEE 31st International Conference on Software Engineering, 78-88.
+<a class="reference external" href="https://doi.org/10.1109/ICSE.2009.5070510">https://doi.org/10.1109/ICSE.2009.5070510</a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.entropy.calculate_entropy.calculate_normalized_entropy">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.entropy.calculate_entropy.</span></span><span class="sig-name descname"><span class="pre">calculate_normalized_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Commit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_commit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Commit</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/entropy/calculate_entropy.html#calculate_normalized_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.entropy.calculate_entropy.calculate_normalized_entropy" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the entropy of changes in specified files between two commits,
+inspired by Shannon’s information theory entropy formula.
+Normalized relative to the total lines of code changes across specified files.
+We follow an approach described by Hassan (2009) (see references).</p>
+<p>Application of Entropy Calculation:
+Entropy measures the uncertainty in a given system. Calculating the entropy
+of lines of code (LoC) changed reveals the variability and complexity of
+modifications in each file. Higher entropy values indicate more unpredictable
+changes, helping identify potentially unstable code areas.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The file path to the git repository.</p></li>
+<li><p><strong>source_commit</strong> (<em>pygit2.Commit</em>) – The git hash of the source commit.</p></li>
+<li><p><strong>target_commit</strong> (<em>pygit2.Commit</em>) – The git hash of the target commit.</p></li>
+<li><p><strong>file_names</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – List of file names to calculate entropy for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping file names to their calculated entropy.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, float]</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Hassan, A. E. (2009). Predicting faults using the complexity of code changes.</dt><dd><p>2009 IEEE 31st International Conference on Software Engineering, 78-88.
+<a class="reference external" href="https://doi.org/10.1109/ICSE.2009.5070510">https://doi.org/10.1109/ICSE.2009.5070510</a></p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd></dl>
+
+<p id="module-almanack.metrics.entropy.processing_repositories">This module procesess GitHub data</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.entropy.processing_repositories.process_pr_entropy">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.entropy.processing_repositories.</span></span><span class="sig-name descname"><span class="pre">process_pr_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pr_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_branch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/entropy/processing_repositories.html#process_pr_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.entropy.processing_repositories.process_pr_entropy" title="Link to this definition">#</a></dt>
+<dd><p>Processes GitHub PR data to calculate a report comparing the PR branch to the main branch.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> (<em>str</em>) – The local path to the Git repository.</p></li>
+<li><p><strong>pr_branch</strong> (<em>str</em>) – The branch name of the PR.</p></li>
+<li><p><strong>main_branch</strong> (<em>str</em>) – The branch name for the main branch.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON string containing report data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the specified directory does not contain a valid Git repository.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.entropy.processing_repositories.process_repo_entropy">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.entropy.processing_repositories.</span></span><span class="sig-name descname"><span class="pre">process_repo_entropy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/entropy/processing_repositories.html#process_repo_entropy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.entropy.processing_repositories.process_repo_entropy" title="Link to this definition">#</a></dt>
+<dd><p>Processes GitHub repository data to calculate a report.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_path</strong> (<em>str</em>) – The local path to the Git repository.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A JSON string containing the repository data and entropy metrics.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If the specified directory does not contain a valid Git repository.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="garden-lattice">
-<h2>Garden Lattice<a class="headerlink" href="#garden-lattice" title="Link to this heading">#</a></h2>
+<h4>Garden Lattice<a class="headerlink" href="#garden-lattice" title="Link to this heading">#</a></h4>
 <section id="module-almanack.metrics.garden_lattice.understanding">
-<span id="understanding"></span><h3>Understanding<a class="headerlink" href="#module-almanack.metrics.garden_lattice.understanding" title="Link to this heading">#</a></h3>
+<span id="understanding"></span><h5>Understanding<a class="headerlink" href="#module-almanack.metrics.garden_lattice.understanding" title="Link to this heading">#</a></h5>
 <p>This module focuses on the Almanack’s Garden Lattice materials
 which encompass aspects of human understanding.</p>
 <dl class="py function">
@@ -737,7 +1287,7 @@ are found, False otherwise.</p>
 
 </section>
 <section id="module-almanack.metrics.garden_lattice.connectedness">
-<span id="connectedness"></span><h3>Connectedness<a class="headerlink" href="#module-almanack.metrics.garden_lattice.connectedness" title="Link to this heading">#</a></h3>
+<span id="connectedness"></span><h5>Connectedness<a class="headerlink" href="#module-almanack.metrics.garden_lattice.connectedness" title="Link to this heading">#</a></h5>
 <p>Module for Almanack metrics covering human connection and engagement
 in software projects such as contributor activity, collaboration
 frequency.</p>
@@ -845,7 +1395,7 @@ or “## Citing”.</p>
 
 </section>
 <section id="module-almanack.metrics.garden_lattice.practicality">
-<span id="practicality"></span><h3>Practicality<a class="headerlink" href="#module-almanack.metrics.garden_lattice.practicality" title="Link to this heading">#</a></h3>
+<span id="practicality"></span><h5>Practicality<a class="headerlink" href="#module-almanack.metrics.garden_lattice.practicality" title="Link to this heading">#</a></h5>
 <p>This module focuses on the Almanack’s Garden Lattice materials
 which involve how people can apply software in practice.</p>
 <dl class="py function">
@@ -892,6 +1442,8 @@ related to the repository.</p>
 </dl>
 </dd></dl>
 
+</section>
+</section>
 </section>
 </section>
 </section>
@@ -951,6 +1503,32 @@ related to the repository.</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.book">Base</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.book.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.check"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.check()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.table"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.table()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.trigger"><code class="docutils literal notranslate"><span class="pre">trigger()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.clone_repository"><code class="docutils literal notranslate"><span class="pre">clone_repository()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.count_files"><code class="docutils literal notranslate"><span class="pre">count_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.detect_encoding"><code class="docutils literal notranslate"><span class="pre">detect_encoding()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.file_exists_in_repo"><code class="docutils literal notranslate"><span class="pre">file_exists_in_repo()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.find_file"><code class="docutils literal notranslate"><span class="pre">find_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_commits"><code class="docutils literal notranslate"><span class="pre">get_commits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_edited_files"><code class="docutils literal notranslate"><span class="pre">get_edited_files()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_loc_changed"><code class="docutils literal notranslate"><span class="pre">get_loc_changed()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_most_recent_commits"><code class="docutils literal notranslate"><span class="pre">get_most_recent_commits()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_remote_url"><code class="docutils literal notranslate"><span class="pre">get_remote_url()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.reporting.report">Reporting</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.reporting.report.pr_report"><code class="docutils literal notranslate"><span class="pre">pr_report()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.reporting.report.repo_report"><code class="docutils literal notranslate"><span class="pre">repo_report()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
@@ -966,24 +1544,35 @@ related to the repository.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_analysis"><code class="docutils literal notranslate"><span class="pre">process_repo_for_analysis()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.remote">Remote</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.remote.get_api_data"><code class="docutils literal notranslate"><span class="pre">get_api_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.entropy.calculate_entropy">Entropy</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.calculate_entropy.calculate_aggregate_entropy"><code class="docutils literal notranslate"><span class="pre">calculate_aggregate_entropy()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.calculate_entropy.calculate_normalized_entropy"><code class="docutils literal notranslate"><span class="pre">calculate_normalized_entropy()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.processing_repositories.process_pr_entropy"><code class="docutils literal notranslate"><span class="pre">process_pr_entropy()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.entropy.processing_repositories.process_repo_entropy"><code class="docutils literal notranslate"><span class="pre">process_repo_entropy()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#garden-lattice">Garden Lattice</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.understanding">Understanding</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.understanding.includes_common_docs"><code class="docutils literal notranslate"><span class="pre">includes_common_docs()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#garden-lattice">Garden Lattice</a><ul class="nav section-nav flex-column">
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.understanding">Understanding</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.understanding.includes_common_docs"><code class="docutils literal notranslate"><span class="pre">includes_common_docs()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.connectedness">Connectedness</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors"><code class="docutils literal notranslate"><span class="pre">count_unique_contributors()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master"><code class="docutils literal notranslate"><span class="pre">default_branch_is_not_master()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.detect_social_media_links"><code class="docutils literal notranslate"><span class="pre">detect_social_media_links()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data"><code class="docutils literal notranslate"><span class="pre">find_doi_citation_data()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.is_citable"><code class="docutils literal notranslate"><span class="pre">is_citable()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.connectedness">Connectedness</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors"><code class="docutils literal notranslate"><span class="pre">count_unique_contributors()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master"><code class="docutils literal notranslate"><span class="pre">default_branch_is_not_master()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.detect_social_media_links"><code class="docutils literal notranslate"><span class="pre">detect_social_media_links()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data"><code class="docutils literal notranslate"><span class="pre">find_doi_citation_data()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.is_citable"><code class="docutils literal notranslate"><span class="pre">is_citable()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.practicality">Practicality</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.count_repo_tags"><code class="docutils literal notranslate"><span class="pre">count_repo_tags()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.get_ecosystems_package_metrics"><code class="docutils literal notranslate"><span class="pre">get_ecosystems_package_metrics()</span></code></a></li>
+<li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.practicality">Practicality</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.count_repo_tags"><code class="docutils literal notranslate"><span class="pre">count_repo_tags()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.practicality.get_ecosystems_package_metrics"><code class="docutils literal notranslate"><span class="pre">get_ecosystems_package_metrics()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

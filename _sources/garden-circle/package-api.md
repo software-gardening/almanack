@@ -1,4 +1,42 @@
+(package-api)=
+
 # `almanack` Package API
+
+## Base
+
+```{eval-rst}
+.. automodule:: almanack.book
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+```{eval-rst}
+.. automodule:: almanack.cli
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+```{eval-rst}
+.. automodule:: almanack.git
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+## Reporting
+
+```{eval-rst}
+.. automodule:: almanack.reporting.report
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
 
 ## Metrics
 
@@ -12,9 +50,37 @@
    :show-inheritance:
 ```
 
-## Garden Lattice
+### Remote
 
-### Understanding
+```{eval-rst}
+.. automodule:: almanack.metrics.remote
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+#### Entropy
+
+```{eval-rst}
+.. automodule:: almanack.metrics.entropy.calculate_entropy
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+```{eval-rst}
+.. automodule:: almanack.metrics.entropy.processing_repositories
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
+#### Garden Lattice
+
+##### Understanding
 
 ```{eval-rst}
 .. automodule:: almanack.metrics.garden_lattice.understanding
@@ -24,7 +90,7 @@
    :show-inheritance:
 ```
 
-### Connectedness
+##### Connectedness
 
 ```{eval-rst}
 .. automodule:: almanack.metrics.garden_lattice.connectedness
@@ -34,7 +100,7 @@
    :show-inheritance:
 ```
 
-### Practicality
+##### Practicality
 
 ```{eval-rst}
 .. automodule:: almanack.metrics.garden_lattice.practicality
