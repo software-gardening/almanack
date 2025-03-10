@@ -30,7 +30,7 @@ defusedxml = "^0.7.1"
 
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
-docutils = "0.20.1"
+docutils = "0.21.2"
 sphinxcontrib-bibtex = "^2.6.2"
 pandas = "^2.2.2"
 pyarrow = ">=16,<20"
@@ -38,7 +38,7 @@ jupyterlab = "^4.2.3"
 plotly = ">=5.22,<7.0"
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = ">=0.25,<0.33"
+poethepoet = ">=0.25,<0.34"
 pytest = "^8.1.1"
 linkchecker = "^10.4.0"
 vale = "^3.3.1.0"
