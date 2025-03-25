@@ -72,7 +72,7 @@ repos:
         -   mdformat-gfm
 
 -   repo: https://github.com/adrienverge/yamllint
-    rev: v1.36.2
+    rev: v1.37.0
     hooks:
       # Lints YAML files to enforce consistent formatting, which
       # makes YAML easier to read and reduces syntax errors.
