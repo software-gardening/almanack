@@ -32,7 +32,7 @@ repos:
     -   id: detect-private-key
 
 -   repo: https://github.com/python-poetry/poetry
-    rev: "2.1.1"
+    rev: "2.1.2"
     hooks:
       # Verifies that the `pyproject.toml` file is valid and follows Poetry's
       # expected syntax, which ensures consistent dependency management.
@@ -72,7 +72,7 @@ repos:
         -   mdformat-gfm
 
 -   repo: https://github.com/adrienverge/yamllint
-    rev: v1.35.1
+    rev: v1.37.0
     hooks:
       # Lints YAML files to enforce consistent formatting, which
       # makes YAML easier to read and reduces syntax errors.
@@ -105,7 +105,7 @@ repos:
         -   "--ignore-init-module-imports"
 
 -   repo: https://github.com/PyCQA/isort
-    rev: 6.0.0
+    rev: 6.0.1
     hooks:
       # Sorts imports in Python files, making the code easier to
       # navigate and reducing merge conflicts in import statements.
@@ -121,7 +121,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.9.7"
+    rev: "v0.11.2"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
