@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/design-style.1e8bd061cd6da7fc9cf755528e8ffc24.min.css?v=0a3b3ea7" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=8a490771" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
@@ -53,7 +53,7 @@
     <script>let toggleOpenOnPrint = 'true';</script>
     <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
-    <script src="../_static/design-tabs.js?v=36754332"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
@@ -527,6 +527,7 @@ We use <a class="reference external" href="https://docs.github.com/en/actions">G
 <li><p><a class="reference external" href="https://nodejs.org/en/download">Install Node</a> (suggested: use <a class="reference external" href="https://github.com/nvm-sh/nvm"><code class="docutils literal notranslate"><span class="pre">nvm</span></code></a> for managing Node versions)</p></li>
 <li><p><a class="reference external" href="https://docs.npmjs.com/cli/v9/commands/npm-install">Install Node environment</a>: <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code></p></li>
 <li><p><a class="reference external" href="https://vale.sh/docs/cli">Install Vale dependencies</a>: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">vale</span> <span class="pre">sync</span></code></p></li>
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/advanced/pdf.html">Optional: install book PDF rendering dependencies</a>: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">playwright</span> <span class="pre">install</span> <span class="pre">--with-deps</span> <span class="pre">chromium</span></code></p></li>
 </ol>
 </section>
 <section id="development-tasks">
