@@ -101,6 +101,7 @@ To enable local development, perform the following steps.
 1. [Install Node](https://nodejs.org/en/download) (suggested: use [`nvm`](https://github.com/nvm-sh/nvm) for managing Node versions)
 1. [Install Node environment](https://docs.npmjs.com/cli/v9/commands/npm-install): `npm install`
 1. [Install Vale dependencies](https://vale.sh/docs/cli): `poetry run vale sync`
+1. [Optional: install book PDF rendering dependencies](https://jupyterbook.org/en/stable/advanced/pdf.html): `poetry run playwright install --with-deps chromium`
 
 ### Development Tasks
 

@@ -5,7 +5,7 @@ name: deploy book
 
 on:
   push:
-    branches: [main]
+    branches: [main, fix-pdf-renders]
 
 jobs:
   deploy-book:
@@ -19,6 +19,9 @@ jobs:
           fetch-depth: 0
       - name: Install python env
         uses: ./.github/actions/install-python-env
+      - name: Install playwrite chromium
+        run: |
+          poetry run playwright install --with-deps chromium
       - name: Build the jupyter book content
         run: |
           poetry run poe build-book
