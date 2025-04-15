@@ -5,7 +5,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, fix-pdf-renders]
+    branches: [main]
 
 jobs:
   # tests python package components

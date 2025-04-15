@@ -5,7 +5,7 @@ name: deploy book
 
 on:
   push:
-    branches: [main, fix-pdf-renders]
+    branches: [main]
 
 jobs:
   deploy-book:
