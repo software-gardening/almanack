@@ -33,7 +33,7 @@ jupyter-book = "^1.0.0"
 docutils = "0.21.2"
 sphinxcontrib-bibtex = "^2.6.2"
 pandas = "^2.2.2"
-pyarrow = ">=16,<20"
+pyarrow = ">=16,<21"
 jupyterlab = "^4.2.3"
 plotly = ">=5.22,<7.0"
 
