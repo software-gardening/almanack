@@ -44,6 +44,9 @@ identifiers:
   - description: Software DOI
     type: doi
     value: "10.5281/zenodo.14765834"
+  - description: Introductory Blog Post through BSSw
+    type: doi
+    value: "10.5281/zenodo.15330702"
 references:
   - authors:
       - given-names: David
