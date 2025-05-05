@@ -8,7 +8,7 @@ This blog post through the [Better Scientific Software (BSSw) Blog](https://bssw
 
 Please use the following link to read the article: https://bssw.io/blog_posts/growing-resilient-scientific-software-ecosystems-introducing-the-software-gardening-almanack
 
-We also archived the work for reference here: https://doi.org/10.5281/zenodo.15330702
+We also archived the work for reference here: https://doi.org/10.5281/zenodo.15330727
 
 ## OSSci Monthly Call - January 2025
 
