@@ -759,14 +759,14 @@ files = [
 
 [[package]]
 name = "dunamai"
-version = "1.23.1"
+version = "1.24.1"
 description = "Dynamic version generation"
 optional = false
 python-versions = ">=3.5"
 groups = ["dev"]
 files = [
-    {file = "dunamai-1.23.1-py3-none-any.whl", hash = "sha256:2611b0b9105a5797149ef82f4968a01dd912bdac857d49fc06856a4cfa58cf78"},
-    {file = "dunamai-1.23.1.tar.gz", hash = "sha256:0b5712fc63bfb235263d912bfc5eb84590ba2201bb737268d25a5dbad7085489"},
+    {file = "dunamai-1.24.1-py3-none-any.whl", hash = "sha256:4370e406d8ce195fc4b066b5c326bfa9adb269c4b8719b4e4fd90b63a2144bf7"},
+    {file = "dunamai-1.24.1.tar.gz", hash = "sha256:3aa3348f77242da8628b23f11e89569343440f0f912bcef32a1fa891cf8e7215"},
 ]
 
 [package.dependencies]
@@ -1449,14 +1449,14 @@ test = ["jupyter-server (>=2.0.0)", "pytest (>=7.0)", "pytest-jupyter[server] (>
 
 [[package]]
 name = "jupyterlab"
-version = "4.4.1"
+version = "4.4.2"
 description = "JupyterLab computational environment"
 optional = false
 python-versions = ">=3.9"
 groups = ["book", "dev"]
 files = [
-    {file = "jupyterlab-4.4.1-py3-none-any.whl", hash = "sha256:989bca3f9cf2d04b2022e7e657e2df6d4aca808b364810d31c4865edd968a5f7"},
-    {file = "jupyterlab-4.4.1.tar.gz", hash = "sha256:c75c4f33056fbd84f0b31eb44622a00c7a5f981b85adfeb198a83721f0465808"},
+    {file = "jupyterlab-4.4.2-py3-none-any.whl", hash = "sha256:857111a50bed68542bf55dca784522fe728f9f88b4fe69e8c585db5c50900419"},
+    {file = "jupyterlab-4.4.2.tar.gz", hash = "sha256:afa9caf28c0cb966488be18e5e8daba9f018a1c4273a406b7d5006344cbc6d16"},
 ]
 
 [package.dependencies]
