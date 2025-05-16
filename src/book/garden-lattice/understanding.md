@@ -36,7 +36,7 @@ A repository thrives when its purpose and usage are communicated through a `READ
 
 For further reading on `README` file practices, see the following resources:
 
-- [The Turing Way: Landing Page - README File](https://book.the-turing-way.org/project-design/project-repo/project-repo-readme.html)
+- [The Turing Way: Landing Page - README File](https://book.the-turing-way.org/project-design/pd-design-overview/project-repo/project-repo-readme)
 - [GitHub: About `README`s](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-readmes)
 - [Makeareadme.com](https://www.makeareadme.com/)
 
