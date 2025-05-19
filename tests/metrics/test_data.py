@@ -46,6 +46,12 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
     """
     Testing generate_whole_repo_data produces the expected output for given repositories.
     """
+
+    # add a remote path for the almanack
+    entropy_repository_paths["remote"] = (
+        "https://github.com/software-gardening/almanack"
+    )
+
     for _, repo_path in entropy_repository_paths.items():
         # Call the function
         data = compute_repo_data(str(repo_path))
@@ -65,7 +71,10 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
         )
 
         # Check that repo_path in the output is the same as the input
-        assert data["repo-path"] == str(repo_path)
+        # (so long as we know the path is consistent and not temp,
+        # as it would be for an http link to a repo).
+        if not str(repo_path).startswith("http"):
+            assert data["repo-path"] == str(repo_path)
 
 
 @pytest.mark.parametrize(
