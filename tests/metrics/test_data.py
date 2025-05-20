@@ -47,12 +47,14 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
     Testing generate_whole_repo_data produces the expected output for given repositories.
     """
 
-    # add a remote path for the almanack
-    entropy_repository_paths["remote"] = (
-        "https://github.com/software-gardening/almanack"
-    )
+    # create a copy of the paths to check so we don't mess with the
+    # session-based entropy_repository_paths
+    paths_to_check = entropy_repository_paths.copy()
 
-    for _, repo_path in entropy_repository_paths.items():
+    # add a remote path for the almanack
+    paths_to_check["remote"] = "https://github.com/software-gardening/almanack"
+
+    for _, repo_path in paths_to_check.items():
         # Call the function
         data = compute_repo_data(str(repo_path))
 
