@@ -80,7 +80,7 @@ def test_get_loc_changed(
     for label, repo_path in entropy_repository_paths.items():
 
         # Check that repo_path in the output is the same as the input
-        # (so long as we know the path is consistent and not temp,
+        # (so long as we know the path is consistent and not "temp",
         # as it would be for an http link to a repo).
         if str(repo_path).startswith("http"):
             repo_path = clone_repository(repo_url=str(repo_path))  # noqa: PLW2901
