@@ -594,6 +594,12 @@ document.write(`
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: A dictionary containing data key-pairs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Check if we need to download the repo because it&#39;s a link</span>
+    <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
+        <span class="c1"># Clone the repository to a temporary directory</span>
+        <span class="n">repo_path</span> <span class="o">=</span> <span class="n">clone_repository</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span>
+
     <span class="c1"># Convert repo_path to an absolute path and initialize the repository</span>
     <span class="n">repo_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
     <span class="n">repo</span> <span class="o">=</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
