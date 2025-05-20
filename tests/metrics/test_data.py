@@ -73,7 +73,7 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
         )
 
         # Check that repo_path in the output is the same as the input
-        # (so long as we know the path is consistent and not temp,
+        # (so long as we know the path is consistent and not "temp",
         # as it would be for an http link to a repo).
         if not str(repo_path).startswith("http"):
             assert data["repo-path"] == str(repo_path)
