@@ -151,7 +151,6 @@ def is_citable(repo: pygit2.Repository) -> bool:
         readme_file is not None
         and (file_content := read_file(repo=repo, entry=readme_file)) is not None
     ):
-        print(file_content)
         # Check for an H2 heading indicating a citation section
         if any(
             check_string in file_content
