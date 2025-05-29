@@ -32,6 +32,14 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install python env
         uses: ./.github/actions/install-python-env
+        # required to open # Chrome on Ubuntu 23.10+
+        # without --no-sandbox). See:
+        # https://github.com/pa11y/pa11y/issues/724
+      - name: Disable AppArmor User Namespace Restrictions
+        run: |
+          echo 0 | sudo tee \
+            /proc/sys/kernel/apparmor_restrict_unprivileged_userns
+        if: runner.os == 'Linux'
       - name: Run pytest
         run: |
           poetry run pytest tests/test_build.py -vvv
