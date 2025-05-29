@@ -4,7 +4,7 @@ Testing metrics/data functionality
 
 import builtins
 import pathlib
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from typing import Dict, List, Union
 
 import dunamai
@@ -877,7 +877,7 @@ def test_get_ecosystems_package_metrics():
                 "doi": "10.48550/arXiv.2311.13417",
                 "valid_format_doi": True,
                 "https_resolvable_doi": True,
-                "publication_date": datetime(2023, 1, 1, 0, 0),
+                "publication_date": date(2023, 1, 1),
                 "cited_by_count": 4,
             },
         ),
@@ -897,7 +897,7 @@ def test_get_ecosystems_package_metrics():
                 "doi": "10.1186/s44330-024-00014-3",
                 "valid_format_doi": True,
                 "https_resolvable_doi": True,
-                "publication_date": datetime(2024, 12, 8, 0, 0),
+                "publication_date": date(2024, 12, 8),
                 "cited_by_count": 0,
             },
         ),
