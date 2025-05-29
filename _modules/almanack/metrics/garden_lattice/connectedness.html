@@ -623,7 +623,10 @@ document.write(`
                 <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
                     <span class="p">{</span>
                         <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="p">(</span>
-                            <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">publication_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="c1"># note: we caste to date for consistent use throughout</span>
+                            <span class="c1"># the almanack as a &quot;date&quot; and not &quot;datetime&quot; type</span>
+                            <span class="c1"># (which have differing methods and constraints).</span>
+                            <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">publication_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
                             <span class="k">if</span> <span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                             <span class="k">else</span> <span class="kc">None</span>
                         <span class="p">),</span>
