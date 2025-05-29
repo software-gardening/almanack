@@ -234,6 +234,12 @@ def compute_repo_data(repo_path: str) -> None:
     Returns:
         dict: A dictionary containing data key-pairs.
     """
+
+    # Check if we need to download the repo because it's a link
+    if str(repo_path).startswith("http"):
+        # Clone the repository to a temporary directory
+        repo_path = clone_repository(repo_path)
+
     # Convert repo_path to an absolute path and initialize the repository
     repo_path = pathlib.Path(repo_path).resolve()
     repo = pygit2.Repository(str(repo_path))

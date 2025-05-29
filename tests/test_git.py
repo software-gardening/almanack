@@ -78,6 +78,13 @@ def test_get_loc_changed(
     results = {}
 
     for label, repo_path in entropy_repository_paths.items():
+
+        # Check that repo_path in the output is the same as the input
+        # (so long as we know the path is consistent and not "temp",
+        # as it would be for an http link to a repo).
+        if str(repo_path).startswith("http"):
+            repo_path = clone_repository(repo_url=str(repo_path))  # noqa: PLW2901
+
         # Extract two most recent commits: source and target
         source_commit, target_commit = get_most_recent_commits(repo_path)
         # Call loc_changes function on test repositories

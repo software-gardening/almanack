@@ -23,6 +23,7 @@ jobs:
         run: |
           poetry run vale sync
       - uses: pre-commit/action@v3.0.1
+        id: pre_commit
       # Run the almanack checks on the almanack itself to assess
       # how we meet sustainability best practices and
       # also to test that the hooks from `pre-commit-hooks.yaml`
@@ -32,4 +33,4 @@ jobs:
           pre-commit try-repo . --all
       # run pre-commit ci lite for automated fixes
       - uses: pre-commit-ci/lite-action@v1.1.0
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.pre_commit.outcome == 'failure' }}
