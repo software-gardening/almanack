@@ -381,7 +381,9 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-doi-valid-format": doi_citation_data["valid_format_doi"],
         "repo-doi-https-resolvable": doi_citation_data["https_resolvable_doi"],
         "repo-days-between-doi-publication-date-and-latest-commit": (
-            (most_recent_commit_date - doi_citation_data["publication_date"].date()).days
+            (
+                most_recent_commit_date - doi_citation_data["publication_date"].date()
+            ).days
             if doi_citation_data["publication_date"] is not None
             else None
         ),
