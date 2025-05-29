@@ -76,7 +76,7 @@ import almanack
 import pandas as pd
 
 # gather the almanack table using the almanack repo as a reference
-almanack_table = almanack.metrics.data.get_table("path/to/repository")
+almanack_table = almanack.table("path/to/repository")
 
 # show the almanack table as a Pandas DataFrame
 pd.DataFrame(almanack_table)
