@@ -11,3 +11,8 @@
         display: none;
     }
 }
+
+/* Set background color for .cap rows */
+table.indextable tr.cap{
+    background-color: transparent !important;
+}
