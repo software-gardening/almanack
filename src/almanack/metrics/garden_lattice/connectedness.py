@@ -260,7 +260,10 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                 result.update(
                     {
                         "publication_date": (
-                            datetime.strptime(publication_date, "%Y-%m-%d")
+                            # note: we caste to date for consistent use throughout
+                            # the almanack as a "date" and not "datetime" type
+                            # (which have differing methods and constraints).
+                            datetime.strptime(publication_date, "%Y-%m-%d").date()
                             if publication_date is not None
                             else None
                         ),

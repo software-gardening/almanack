@@ -136,6 +136,17 @@ def test_generate_repo_data(entropy_repository_paths: dict[str, pathlib.Path]) -
                 "tag": "atag",
             },
         ],
+        [
+            {
+                "files": {
+                    "readme.rst": "Read me",
+                    # test example of real DOI from Pycytominer paper
+                    "CITATION.cff": "doi: 10.1038/s41592-025-02611-8",
+                },
+                "commit-date": datetime(2024, 8, 1),
+                "author": {"name": "author", "email": "author@example3.edu"},
+            },
+        ],
     ],
 )
 def test_get_table(repo_files, tmp_path: pathlib.Path) -> None:
@@ -169,7 +180,7 @@ def test_get_table(repo_files, tmp_path: pathlib.Path) -> None:
         assert (
             isinstance(record["result"], getattr(builtins, record["result-type"]))
             or record["result"] is None
-        ), f"Result {record['result']} is not of type {record['result-type']}."
+        ), f"Result from {record['name']} as value {record['result']} is not of type {record['result-type']}."
 
     # check ignores
     table_with_ignore = get_table(repo_path=str(repo_path), ignore=["SGA-GL-0002"])

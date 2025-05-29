@@ -77,7 +77,7 @@ metrics:
     correction_guidance:
   - name: "repo-doi"
     id: "SGA-META-0011"
-    result-type: "int"
+    result-type: "str"
     sustainability_correlation: 0
     description: >-
       Repository DOI value detected from CITATION.cff file.
