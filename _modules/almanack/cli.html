@@ -492,6 +492,11 @@ document.write(`
             <span class="n">max_id_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">failures_output_table</span><span class="p">)</span>
             <span class="n">max_name_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">failures_output_table</span><span class="p">)</span>
 
+            <span class="c1"># calculate the max width for the final column in output</span>
+            <span class="n">max_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">shutil</span><span class="o">.</span><span class="n">get_terminal_size</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
+                <span class="n">max_id_length</span> <span class="o">+</span> <span class="n">max_name_length</span> <span class="o">+</span> <span class="mi">12</span>
+            <span class="p">)</span>
+
             <span class="c1"># show a table of failures</span>
             <span class="nb">print</span><span class="p">(</span>
                 <span class="nb">str</span><span class="p">(</span>
@@ -506,8 +511,7 @@ document.write(`
                         <span class="n">maxcolwidths</span><span class="o">=</span><span class="p">[</span>
                             <span class="kc">None</span><span class="p">,</span>
                             <span class="kc">None</span><span class="p">,</span>
-                            <span class="p">(</span><span class="n">shutil</span><span class="o">.</span><span class="n">get_terminal_size</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-                            <span class="o">-</span> <span class="p">(</span><span class="n">max_id_length</span> <span class="o">+</span> <span class="n">max_name_length</span> <span class="o">+</span> <span class="mi">12</span><span class="p">),</span>
+                            <span class="n">max_width</span> <span class="k">if</span> <span class="n">max_width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">30</span><span class="p">,</span>
                         <span class="p">],</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
@@ -517,7 +521,7 @@ document.write(`
             <span class="nb">print</span><span class="p">(</span><span class="n">almanack_score_output</span><span class="p">)</span>
 
             <span class="c1"># return non-zero exit code for failures</span>
-            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># show the almanack score output</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">almanack_score_output</span><span class="p">)</span>
