@@ -829,7 +829,7 @@ version = "1.24.1"
 description = "Dynamic version generation"
 optional = false
 python-versions = ">=3.5"
-groups = ["main"]
+groups = ["dev"]
 files = [
     {file = "dunamai-1.24.1-py3-none-any.whl", hash = "sha256:4370e406d8ce195fc4b066b5c326bfa9adb269c4b8719b4e4fd90b63a2144bf7"},
     {file = "dunamai-1.24.1.tar.gz", hash = "sha256:3aa3348f77242da8628b23f11e89569343440f0f912bcef32a1fa891cf8e7215"},
@@ -2126,7 +2126,7 @@ version = "24.0"
 description = "Core utilities for Python packages"
 optional = false
 python-versions = ">=3.7"
-groups = ["main", "book", "dev"]
+groups = ["book", "dev"]
 files = [
     {file = "packaging-24.0-py3-none-any.whl", hash = "sha256:2ddfb553fdf02fb784c234c7ba6ccc288296ceabec964ad2eae3777778130bc5"},
     {file = "packaging-24.0.tar.gz", hash = "sha256:eb82c5e3e56209074766e6885bb04b8c38a0c015d0a30036ebe7ece34c9989e9"},
@@ -4138,4 +4138,4 @@ test = ["big-O", "jaraco.functools", "jaraco.itertools", "jaraco.test", "more-it
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.9,<3.13"
-content-hash = "6b7b391d14fa7ef0dd718531b7fabd05236b0e0cbfadc20bb40c398adfe13baa"
+content-hash = "9acad1108173dc8ca68f76ae2ee00acdb729a9af03a39d7d611e5642d53a98ae"
