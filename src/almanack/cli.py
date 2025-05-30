@@ -136,6 +136,11 @@ class AlmanackCLI(object):
             max_id_length = max(len(metric[0]) for metric in failures_output_table)
             max_name_length = max(len(metric[1]) for metric in failures_output_table)
 
+            # calculate the max width for the final column in output
+            max_width = (shutil.get_terminal_size().columns) - (
+                max_id_length + max_name_length + 12
+            )
+
             # show a table of failures
             print(
                 str(
@@ -150,8 +155,7 @@ class AlmanackCLI(object):
                         maxcolwidths=[
                             None,
                             None,
-                            (shutil.get_terminal_size().columns)
-                            - (max_id_length + max_name_length + 12),
+                            max_width if max_width > 0 else 30,
                         ],
                     )
                 )
@@ -161,7 +165,7 @@ class AlmanackCLI(object):
             print(almanack_score_output)
 
             # return non-zero exit code for failures
-            sys.exit(1)
+            sys.exit(2)
 
         # show the almanack score output
         print(almanack_score_output)

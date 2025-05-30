@@ -68,6 +68,8 @@ def test_cli_almanack_check(tmp_path):
     Tests running `almanack check` as a CLI
     """
 
+    almanack_failed_check_exit_code = 2
+
     # create a repo with a single file and commit
     repo = repo_setup(repo_path=tmp_path, files=[{"files": {"example.txt": "example"}}])
 
@@ -76,7 +78,7 @@ def test_cli_almanack_check(tmp_path):
 
     # make sure we return 1 on failures
     # (the example repo likely has many failures)
-    assert returncode == 1
+    assert returncode == almanack_failed_check_exit_code
 
     # check that we see the following strings within the output
     assert all(
@@ -104,8 +106,18 @@ def test_cli_almanack_check(tmp_path):
 
     # make sure we return 1 on failures
     # (the example repo likely has many failures)
-    assert returncode == 1
+    assert returncode == almanack_failed_check_exit_code
 
     # check that we don't see the following id's within the output
     # (we ignored them)
     assert all(item not in stdout for item in ["SGA-GL-0002", "SGA-GL-0026"])
+
+    # check that the CLI functions when the terminal
+    # colwidth is very small.
+    stdout, _, returncode = run_cli_command(
+        command=["env", "COLUMNS=1", "almanack", "check", repo.path]
+    )
+
+    # we assert that the return code is still 2
+    # (return code of 1 would mean exception)
+    assert returncode == almanack_failed_check_exit_code
