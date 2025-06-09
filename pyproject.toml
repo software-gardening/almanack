@@ -38,7 +38,7 @@ jupyterlab = "^4.2.3"
 plotly = ">=5.22,<7.0"
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = ">=0.25,<0.35"
+poethepoet = ">=0.25,<0.36"
 pytest = "^8.1.1"
 linkchecker = "^10.4.0"
 vale = "^3.3.1.0"
