@@ -112,7 +112,7 @@ class AlmanackCLI(object):
 
         # prepare almanack score output
         almanack_score_output = (
-            f"Software Gardening Almanack score: {100 * almanack_score_metrics['almanack-score']:.2f}% "
+            f"Software Gardening Almanack check ratio: {100 * almanack_score_metrics['almanack-score']:.2f}% "
             f"({almanack_score_metrics['almanack-score-numerator']}/"
             f"{almanack_score_metrics['almanack-score-denominator']})"
         )
@@ -123,7 +123,9 @@ class AlmanackCLI(object):
         if almanack_score_metrics["almanack-score"] != 1:
 
             # introduce a table of output in CLI
-            print("The following Software Gardening Almanack metrics have failed:")
+            print(
+                "The following Software Gardening Almanack metrics may be helpful to address:"
+            )
 
             # Format the output
             failures_output_table = [
