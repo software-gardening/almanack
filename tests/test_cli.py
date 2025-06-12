@@ -62,6 +62,20 @@ def test_cli_almanack_table(tmp_path):
     )
     assert "SGA-GL-0002" not in stdout
 
+    # gather file-based data
+    stdout, _, returncode = run_cli_command(
+        command=["almanack", "table", repo.path, str(tmp_path / "example.json")]
+    )
+
+    with open(str(tmp_path / "example.json"), "r") as f:
+        results2 = json.load(f)
+
+    # remove datetime focused results
+    results2 = [val for val in results2 if val["name"] != "almanack-table-datetime"]
+    results = [val for val in results if val["name"] != "almanack-table-datetime"]
+
+    assert results == results2
+
 
 def test_cli_almanack_check(tmp_path):
     """
