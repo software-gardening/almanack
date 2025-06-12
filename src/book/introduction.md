@@ -79,8 +79,8 @@ For example:
 
 ```{figure} assets/software-lifecycle.png
 ---
-alt: A software file shown in sequences with symbols indicating creation, growth,
-  and decay.
+alt: A software file shown in sequences with symbols indicating creation, 
+  growth, and decay.
 ---
 _Software is created, grows, and decays over time._
 ```
