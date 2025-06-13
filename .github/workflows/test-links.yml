@@ -1,0 +1,21 @@
+# used for running tests to check links
+# within almanack content
+# for issues such as 404's, etc.
+name: link tests
+
+on:
+  schedule:
+    # runs every Wednesday at 7 AM UTC
+    - cron: "0 7 * * 3"
+
+jobs:
+  link_tests:
+    runs-on: "ubuntu-24.04"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install python env
+        uses: ./.github/actions/install-python-env
+        if: runner.os == 'Linux'
+      - name: Run pytest on links
+        run: |
+          poetry run pytest tests/test_build.py -m "links" -vvv
