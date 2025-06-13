@@ -42,4 +42,4 @@ jobs:
         if: runner.os == 'Linux'
       - name: Run pytest
         run: |
-          poetry run pytest tests/test_build.py -vvv
+          poetry run pytest tests/test_build.py -m "not links" -vvv

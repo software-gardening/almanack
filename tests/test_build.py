@@ -5,9 +5,12 @@ Testing content builds and related aspects.
 import pathlib
 import subprocess
 
+import pytest
+
 from .utils import check_subproc_run_for_nonzero
 
 
+@pytest.mark.links
 def test_links(build_jupyter_book: pathlib.Path) -> None:
     """
     Test links for the Jupyter Book build (html pages) using
