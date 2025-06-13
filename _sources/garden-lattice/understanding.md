@@ -2,8 +2,8 @@
 
 ```{figure} ../assets/garden-lattice-understanding-transfer.png
 ---
-alt: Image showing two silhouettes with one showing transferrence of software idea
-  to another.
+alt: Image showing two silhouettes with one showing transferrence of software
+  idea to another.
 ---
 _We transfer understanding of software projects in the form of documentation artifacts._
 ```

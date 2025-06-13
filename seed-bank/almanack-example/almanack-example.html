@@ -413,13 +413,13 @@ The Almanack is an open-source handbook of applied guidance and tools for sustai
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: almanack in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (0.0.0.post1.dev0+0c5d046)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: almanack in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (0.0.0.post1.dev0+154f9ea)
 Requirement already satisfied: charset-normalizer&lt;4.0.0,&gt;=3.4.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (3.4.2)
 Requirement already satisfied: defusedxml&lt;0.8.0,&gt;=0.7.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.7.1)
 Requirement already satisfied: fire&lt;0.8,&gt;=0.6 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.7.0)
 Requirement already satisfied: pygit2&lt;2.0.0,&gt;=1.15.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (1.15.1)
 Requirement already satisfied: pyyaml&lt;7.0.0,&gt;=6.0.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (6.0.2)
-Requirement already satisfied: requests&lt;3.0.0,&gt;=2.32.3 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (2.32.3)
+Requirement already satisfied: requests&lt;3.0.0,&gt;=2.32.3 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (2.32.4)
 Requirement already satisfied: tabulate&lt;0.10.0,&gt;=0.9.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.9.0)
 Requirement already satisfied: termcolor in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from fire&lt;0.8,&gt;=0.6-&gt;almanack) (2.4.0)
 Requirement already satisfied: cffi&gt;=1.16.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pygit2&lt;2.0.0,&gt;=1.15.1-&gt;almanack) (1.16.0)
@@ -443,335 +443,518 @@ Requirement already satisfied: pycparser in /home/runner/.cache/pypoetry/virtual
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;almanack&#39;...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 2956, done.
-remote: Counting objects:   0% (1/1172)
-remote: Counting objects:   1% (12/1172)
-remote: Counting objects:   2% (24/1172)
-remote: Counting objects:   3% (36/1172)
-remote: Counting objects:   4% (47/1172)
-remote: Counting objects:   5% (59/1172)
-remote: Counting objects:   6% (71/1172)
-remote: Counting objects:   7% (83/1172)
-remote: Counting objects:   8% (94/1172)
-remote: Counting objects:   9% (106/1172)
-remote: Counting objects:  10% (118/1172)
-remote: Counting objects:  11% (129/1172)
-remote: Counting objects:  12% (141/1172)
-remote: Counting objects:  13% (153/1172)
-remote: Counting objects:  14% (165/1172)
-remote: Counting objects:  15% (176/1172)
-remote: Counting objects:  16% (188/1172)
-remote: Counting objects:  17% (200/1172)
-remote: Counting objects:  18% (211/1172)
-remote: Counting objects:  19% (223/1172)
-remote: Counting objects:  20% (235/1172)
-remote: Counting objects:  21% (247/1172)
-remote: Counting objects:  22% (258/1172)
-remote: Counting objects:  23% (270/1172)
-remote: Counting objects:  24% (282/1172)
-remote: Counting objects:  25% (293/1172)
-remote: Counting objects:  26% (305/1172)
-remote: Counting objects:  27% (317/1172)
-remote: Counting objects:  28% (329/1172)
-remote: Counting objects:  29% (340/1172)
-remote: Counting objects:  30% (352/1172)
-remote: Counting objects:  31% (364/1172)
-remote: Counting objects:  32% (376/1172)
-remote: Counting objects:  33% (387/1172)
-remote: Counting objects:  34% (399/1172)
-remote: Counting objects:  35% (411/1172)
-remote: Counting objects:  36% (422/1172)
-remote: Counting objects:  37% (434/1172)
-remote: Counting objects:  38% (446/1172)
-remote: Counting objects:  39% (458/1172)
-remote: Counting objects:  40% (469/1172)
-remote: Counting objects:  41% (481/1172)
-remote: Counting objects:  42% (493/1172)
-remote: Counting objects:  43% (504/1172)
-remote: Counting objects:  44% (516/1172)
-remote: Counting objects:  45% (528/1172)
-remote: Counting objects:  46% (540/1172)
-remote: Counting objects:  47% (551/1172)
-remote: Counting objects:  48% (563/1172)
-remote: Counting objects:  49% (575/1172)
-remote: Counting objects:  50% (586/1172)
-remote: Counting objects:  51% (598/1172)
-remote: Counting objects:  52% (610/1172)
-remote: Counting objects:  53% (622/1172)
-remote: Counting objects:  54% (633/1172)
-remote: Counting objects:  55% (645/1172)
-remote: Counting objects:  56% (657/1172)
-remote: Counting objects:  57% (669/1172)
-remote: Counting objects:  58% (680/1172)
-remote: Counting objects:  59% (692/1172)
-remote: Counting objects:  60% (704/1172)
-remote: Counting objects:  61% (715/1172)
-remote: Counting objects:  62% (727/1172)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 2999, done.
+remote: Counting objects:   0% (1/1046)
+remote: Counting objects:   1% (11/1046)
+remote: Counting objects:   2% (21/1046)
+remote: Counting objects:   3% (32/1046)
+remote: Counting objects:   4% (42/1046)
+remote: Counting objects:   5% (53/1046)
+remote: Counting objects:   6% (63/1046)
+remote: Counting objects:   7% (74/1046)
+remote: Counting objects:   8% (84/1046)
+remote: Counting objects:   9% (95/1046)
+remote: Counting objects:  10% (105/1046)
+remote: Counting objects:  11% (116/1046)
+remote: Counting objects:  12% (126/1046)
+remote: Counting objects:  13% (136/1046)
+remote: Counting objects:  14% (147/1046)
+remote: Counting objects:  15% (157/1046)
+remote: Counting objects:  16% (168/1046)
+remote: Counting objects:  17% (178/1046)
+remote: Counting objects:  18% (189/1046)
+remote: Counting objects:  19% (199/1046)
+remote: Counting objects:  20% (210/1046)
+remote: Counting objects:  21% (220/1046)
+remote: Counting objects:  22% (231/1046)
+remote: Counting objects:  23% (241/1046)
+remote: Counting objects:  24% (252/1046)
+remote: Counting objects:  25% (262/1046)
+remote: Counting objects:  26% (272/1046)
+remote: Counting objects:  27% (283/1046)
+remote: Counting objects:  28% (293/1046)
+remote: Counting objects:  29% (304/1046)
+remote: Counting objects:  30% (314/1046)
+remote: Counting objects:  31% (325/1046)
+remote: Counting objects:  32% (335/1046)
+remote: Counting objects:  33% (346/1046)
+remote: Counting objects:  34% (356/1046)
+remote: Counting objects:  35% (367/1046)
+remote: Counting objects:  36% (377/1046)
+remote: Counting objects:  37% (388/1046)
+remote: Counting objects:  38% (398/1046)
+remote: Counting objects:  39% (408/1046)
+remote: Counting objects:  40% (419/1046)
+remote: Counting objects:  41% (429/1046)
+remote: Counting objects:  42% (440/1046)
+remote: Counting objects:  43% (450/1046)
+remote: Counting objects:  44% (461/1046)
+remote: Counting objects:  45% (471/1046)
+remote: Counting objects:  46% (482/1046)
+remote: Counting objects:  47% (492/1046)
+remote: Counting objects:  48% (503/1046)
+remote: Counting objects:  49% (513/1046)
+remote: Counting objects:  50% (523/1046)
+remote: Counting objects:  51% (534/1046)
+remote: Counting objects:  52% (544/1046)
+remote: Counting objects:  53% (555/1046)
+remote: Counting objects:  54% (565/1046)
+remote: Counting objects:  55% (576/1046)
+remote: Counting objects:  56% (586/1046)
+remote: Counting objects:  57% (597/1046)
+remote: Counting objects:  58% (607/1046)
+remote: Counting objects:  59% (618/1046)
+remote: Counting objects:  60% (628/1046)
+remote: Counting objects:  61% (639/1046)
+remote: Counting objects:  62% (649/1046)
+remote: Counting objects:  63% (659/1046)
+remote: Counting objects:  64% (670/1046)
+remote: Counting objects:  65% (680/1046)
+remote: Counting objects:  66% (691/1046)
+remote: Counting objects:  67% (701/1046)
+remote: Counting objects:  68% (712/1046)
+remote: Counting objects:  69% (722/1046)
+remote: Counting objects:  70% (733/1046)
+remote: Counting objects:  71% (743/1046)
+remote: Counting objects:  72% (754/1046)
+remote: Counting objects:  73% (764/1046)
+remote: Counting objects:  74% (775/1046)
+remote: Counting objects:  75% (785/1046)
+remote: Counting objects:  76% (795/1046)
+remote: Counting objects:  77% (806/1046)
+remote: Counting objects:  78% (816/1046)
+remote: Counting objects:  79% (827/1046)
+remote: Counting objects:  80% (837/1046)
+remote: Counting objects:  81% (848/1046)
+remote: Counting objects:  82% (858/1046)
+remote: Counting objects:  83% (869/1046)
+remote: Counting objects:  84% (879/1046)
+remote: Counting objects:  85% (890/1046)
+remote: Counting objects:  86% (900/1046)
+remote: Counting objects:  87% (911/1046)
+remote: Counting objects:  88% (921/1046)
+remote: Counting objects:  89% (931/1046)
+remote: Counting objects:  90% (942/1046)
+remote: Counting objects:  91% (952/1046)
+remote: Counting objects:  92% (963/1046)
+remote: Counting objects:  93% (973/1046)
+remote: Counting objects:  94% (984/1046)
+remote: Counting objects:  95% (994/1046)
+remote: Counting objects:  96% (1005/1046)
+remote: Counting objects:  97% (1015/1046)
+remote: Counting objects:  98% (1026/1046)
+remote: Counting objects:  99% (1036/1046)
+remote: Counting objects: 100% (1046/1046)
+remote: Counting objects: 100% (1046/1046), done.
+remote: Compressing objects:   0% (1/591)
+remote: Compressing objects:   1% (6/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Counting objects:  63% (739/1172)
-remote: Counting objects:  64% (751/1172)
-remote: Counting objects:  65% (762/1172)
-remote: Counting objects:  66% (774/1172)
-remote: Counting objects:  67% (786/1172)
-remote: Counting objects:  68% (797/1172)
-remote: Counting objects:  69% (809/1172)
-remote: Counting objects:  70% (821/1172)
-remote: Counting objects:  71% (833/1172)
-remote: Counting objects:  72% (844/1172)
-remote: Counting objects:  73% (856/1172)
-remote: Counting objects:  74% (868/1172)
-remote: Counting objects:  75% (879/1172)
-remote: Counting objects:  76% (891/1172)
-remote: Counting objects:  77% (903/1172)
-remote: Counting objects:  78% (915/1172)
-remote: Counting objects:  79% (926/1172)
-remote: Counting objects:  80% (938/1172)
-remote: Counting objects:  81% (950/1172)
-remote: Counting objects:  82% (962/1172)
-remote: Counting objects:  83% (973/1172)
-remote: Counting objects:  84% (985/1172)
-remote: Counting objects:  85% (997/1172)
-remote: Counting objects:  86% (1008/1172)
-remote: Counting objects:  87% (1020/1172)
-remote: Counting objects:  88% (1032/1172)
-remote: Counting objects:  89% (1044/1172)
-remote: Counting objects:  90% (1055/1172)
-remote: Counting objects:  91% (1067/1172)
-remote: Counting objects:  92% (1079/1172)
-remote: Counting objects:  93% (1090/1172)
-remote: Counting objects:  94% (1102/1172)
-remote: Counting objects:  95% (1114/1172)
-remote: Counting objects:  96% (1126/1172)
-remote: Counting objects:  97% (1137/1172)
-remote: Counting objects:  98% (1149/1172)
-remote: Counting objects:  99% (1161/1172)
-remote: Counting objects: 100% (1172/1172)
-remote: Counting objects: 100% (1172/1172), done.
-remote: Compressing objects:   0% (1/658)
-remote: Compressing objects:   1% (7/658)
-remote: Compressing objects:   2% (14/658)
-remote: Compressing objects:   3% (20/658)
-remote: Compressing objects:   4% (27/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   1% (8/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   4% (31/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   1% (9/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   4% (32/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   2% (12/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   5% (33/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   2% (13/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   5% (35/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   3% (18/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   6% (40/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   4% (24/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   6% (41/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   5% (30/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   7% (47/658)
-remote: Compressing objects:   8% (53/658)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   6% (36/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   9% (60/658)
-remote: Compressing objects:  10% (66/658)
-remote: Compressing objects:  11% (73/658)
-remote: Compressing objects:  12% (79/658)
-remote: Compressing objects:  13% (86/658)
-remote: Compressing objects:  14% (93/658)
-remote: Compressing objects:  15% (99/658)
-remote: Compressing objects:  15% (102/658)
-remote: Compressing objects:  16% (106/658)
-remote: Compressing objects:  17% (112/658)
-remote: Compressing objects:  18% (119/658)
-remote: Compressing objects:  19% (126/658)
-remote: Compressing objects:  20% (132/658)
-remote: Compressing objects:  21% (139/658)
-remote: Compressing objects:  22% (145/658)
-remote: Compressing objects:  23% (152/658)
-remote: Compressing objects:  24% (158/658)
-remote: Compressing objects:  25% (165/658)
-remote: Compressing objects:  26% (172/658)
-remote: Compressing objects:  27% (178/658)
-remote: Compressing objects:  28% (185/658)
-remote: Compressing objects:  29% (191/658)
-remote: Compressing objects:  30% (198/658)
-remote: Compressing objects:  31% (204/658)
-remote: Compressing objects:  32% (211/658)
-remote: Compressing objects:  33% (218/658)
-remote: Compressing objects:  34% (224/658)
-remote: Compressing objects:  35% (231/658)
-remote: Compressing objects:  36% (237/658)
-remote: Compressing objects:  37% (244/658)
-remote: Compressing objects:  38% (251/658)
-remote: Compressing objects:  39% (257/658)
-remote: Compressing objects:  40% (264/658)
-remote: Compressing objects:  41% (270/658)
-remote: Compressing objects:  42% (277/658)
-remote: Compressing objects:  43% (283/658)
-remote: Compressing objects:  44% (290/658)
-remote: Compressing objects:  45% (297/658)
-remote: Compressing objects:  46% (303/658)
-remote: Compressing objects:  47% (310/658)
-remote: Compressing objects:  48% (316/658)
-remote: Compressing objects:  49% (323/658)
-remote: Compressing objects:  50% (329/658)
-remote: Compressing objects:  51% (336/658)
-remote: Compressing objects:  52% (343/658)
-remote: Compressing objects:  53% (349/658)
-remote: Compressing objects:  54% (356/658)
-remote: Compressing objects:  55% (362/658)
-remote: Compressing objects:  56% (369/658)
-remote: Compressing objects:  57% (376/658)
-remote: Compressing objects:  58% (382/658)
-remote: Compressing objects:  59% (389/658)
-remote: Compressing objects:  60% (395/658)
-remote: Compressing objects:  61% (402/658)
-remote: Compressing objects:  62% (408/658)
-remote: Compressing objects:  63% (415/658)
-remote: Compressing objects:  64% (422/658)
-remote: Compressing objects:  65% (428/658)
-remote: Compressing objects:  66% (435/658)
-remote: Compressing objects:  67% (441/658)
-remote: Compressing objects:  68% (448/658)
-remote: Compressing objects:  69% (455/658)
-remote: Compressing objects:  70% (461/658)
-remote: Compressing objects:  71% (468/658)
-remote: Compressing objects:  72% (474/658)
-remote: Compressing objects:  73% (481/658)
-remote: Compressing objects:  74% (487/658)
-remote: Compressing objects:  75% (494/658)
-remote: Compressing objects:  76% (501/658)
-remote: Compressing objects:  77% (507/658)
-remote: Compressing objects:  78% (514/658)
-remote: Compressing objects:  79% (520/658)
-remote: Compressing objects:  80% (527/658)
-remote: Compressing objects:  81% (533/658)
-remote: Compressing objects:  82% (540/658)
-remote: Compressing objects:  83% (547/658)
-remote: Compressing objects:  84% (553/658)
-remote: Compressing objects:  85% (560/658)
-remote: Compressing objects:  86% (566/658)
-remote: Compressing objects:  87% (573/658)
-remote: Compressing objects:  88% (580/658)
-remote: Compressing objects:  89% (586/658)
-remote: Compressing objects:  90% (593/658)
-remote: Compressing objects:  91% (599/658)
-remote: Compressing objects:  92% (606/658)
-remote: Compressing objects:  93% (612/658)
-remote: Compressing objects:  94% (619/658)
-remote: Compressing objects:  95% (626/658)
-remote: Compressing objects:  96% (632/658)
-remote: Compressing objects:  97% (639/658)
-remote: Compressing objects:  98% (645/658)
-remote: Compressing objects:  99% (652/658)
-remote: Compressing objects: 100% (658/658)
-remote: Compressing objects: 100% (658/658), done.
-Receiving objects:   0% (1/2956)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   7% (42/591)
+remote: Compressing objects:   8% (48/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   1% (30/2956)
-Receiving objects:   2% (60/2956)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   9% (54/591)
+remote: Compressing objects:  10% (60/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   3% (89/2956)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  11% (66/591)
+remote: Compressing objects:  12% (71/591)
+remote: Compressing objects:  13% (77/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   4% (119/2956), 2.73 MiB | 5.07 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  14% (83/591)
+remote: Compressing objects:  15% (89/591)
+remote: Compressing objects:  16% (95/591)
+remote: Compressing objects:  17% (101/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   5% (148/2956), 2.73 MiB | 5.07 MiB/s
-Receiving objects:   6% (178/2956), 2.73 MiB | 5.07 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  18% (107/591)
+remote: Compressing objects:  19% (113/591)
+remote: Compressing objects:  20% (119/591)
+remote: Compressing objects:  21% (125/591)
+remote: Compressing objects:  22% (131/591)
+remote: Compressing objects:  23% (136/591)
+remote: Compressing objects:  24% (142/591)
+remote: Compressing objects:  25% (148/591)
+remote: Compressing objects:  26% (154/591)
+remote: Compressing objects:  27% (160/591)
+remote: Compressing objects:  28% (166/591)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   7% (207/2956), 2.73 MiB | 5.07 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  29% (172/591)
+remote: Compressing objects:  30% (178/591)
+remote: Compressing objects:  31% (184/591)
+remote: Compressing objects:  32% (190/591)
+remote: Compressing objects:  33% (196/591)
+remote: Compressing objects:  34% (201/591)
+remote: Compressing objects:  35% (207/591)
+remote: Compressing objects:  36% (213/591)
+remote: Compressing objects:  37% (219/591)
+remote: Compressing objects:  38% (225/591)
+remote: Compressing objects:  39% (231/591)
+remote: Compressing objects:  40% (237/591)
+remote: Compressing objects:  41% (243/591)
+remote: Compressing objects:  42% (249/591)
+remote: Compressing objects:  43% (255/591)
+remote: Compressing objects:  44% (261/591)
+remote: Compressing objects:  45% (266/591)
+remote: Compressing objects:  46% (272/591)
+remote: Compressing objects:  47% (278/591)
+remote: Compressing objects:  48% (284/591)
+remote: Compressing objects:  49% (290/591)
+remote: Compressing objects:  50% (296/591)
+remote: Compressing objects:  51% (302/591)
+remote: Compressing objects:  52% (308/591)
+remote: Compressing objects:  53% (314/591)
+remote: Compressing objects:  54% (320/591)
+remote: Compressing objects:  55% (326/591)
+remote: Compressing objects:  56% (331/591)
+remote: Compressing objects:  57% (337/591)
+remote: Compressing objects:  58% (343/591)
+remote: Compressing objects:  59% (349/591)
+remote: Compressing objects:  60% (355/591)
+remote: Compressing objects:  61% (361/591)
+remote: Compressing objects:  62% (367/591)
+remote: Compressing objects:  63% (373/591)
+remote: Compressing objects:  64% (379/591)
+remote: Compressing objects:  65% (385/591)
+remote: Compressing objects:  66% (391/591)
+remote: Compressing objects:  67% (396/591)
+remote: Compressing objects:  68% (402/591)
+remote: Compressing objects:  69% (408/591)
+remote: Compressing objects:  70% (414/591)
+remote: Compressing objects:  71% (420/591)
+remote: Compressing objects:  72% (426/591)
+remote: Compressing objects:  73% (432/591)
+remote: Compressing objects:  74% (438/591)
+remote: Compressing objects:  75% (444/591)
+remote: Compressing objects:  76% (450/591)
+remote: Compressing objects:  77% (456/591)
+remote: Compressing objects:  78% (461/591)
+remote: Compressing objects:  79% (467/591)
+remote: Compressing objects:  80% (473/591)
+remote: Compressing objects:  81% (479/591)
+remote: Compressing objects:  82% (485/591)
+remote: Compressing objects:  83% (491/591)
+remote: Compressing objects:  84% (497/591)
+remote: Compressing objects:  85% (503/591)
+remote: Compressing objects:  86% (509/591)
+remote: Compressing objects:  87% (515/591)
+remote: Compressing objects:  88% (521/591)
+remote: Compressing objects:  89% (526/591)
+remote: Compressing objects:  90% (532/591)
+remote: Compressing objects:  91% (538/591)
+remote: Compressing objects:  92% (544/591)
+remote: Compressing objects:  93% (550/591)
+remote: Compressing objects:  94% (556/591)
+remote: Compressing objects:  95% (562/591)
+remote: Compressing objects:  96% (568/591)
+remote: Compressing objects:  97% (574/591)
+remote: Compressing objects:  98% (580/591)
+remote: Compressing objects:  99% (586/591)
+remote: Compressing objects: 100% (591/591)
+remote: Compressing objects: 100% (591/591), done.
+Receiving objects:   0% (1/2999)
+Receiving objects:   1% (30/2999)
+Receiving objects:   2% (60/2999)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   8% (237/2956), 2.73 MiB | 5.07 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   3% (90/2999)
+Receiving objects:   4% (120/2999)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (267/2956), 2.73 MiB | 5.07 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   5% (150/2999)
+Receiving objects:   6% (180/2999)
+Receiving objects:   7% (210/2999)
+Receiving objects:   8% (240/2999)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 5.57 MiB | 5.17 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (270/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  10% (300/2999), 43.83 MiB | 87.64 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 11.16 MiB | 5.30 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (330/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  12% (360/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  13% (390/2999), 43.83 MiB | 87.64 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 16.44 MiB | 5.25 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  14% (420/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  15% (450/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  16% (480/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  17% (510/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  18% (540/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  19% (570/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  20% (600/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  21% (630/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  22% (660/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  23% (690/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  24% (720/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  25% (750/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  26% (780/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  27% (810/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  28% (840/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  29% (870/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  30% (900/2999), 43.83 MiB | 87.64 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 21.26 MiB | 5.11 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  31% (930/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  32% (960/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  33% (990/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  34% (1020/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  35% (1050/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  36% (1080/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  37% (1110/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  38% (1140/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  39% (1170/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  40% (1200/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  41% (1230/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  42% (1260/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  43% (1290/2999), 43.83 MiB | 87.64 MiB/s
+Receiving objects:  43% (1294/2999), 78.49 MiB | 78.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 25.32 MiB | 4.88 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  44% (1320/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  45% (1350/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  46% (1380/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  47% (1410/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  48% (1440/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  49% (1470/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  50% (1500/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  51% (1530/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  52% (1560/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  53% (1590/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  54% (1620/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  55% (1650/2999), 78.49 MiB | 78.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 29.54 MiB | 4.59 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  56% (1680/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  57% (1710/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  58% (1740/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  59% (1770/2999), 78.49 MiB | 78.48 MiB/s
+Receiving objects:  60% (1800/2999), 78.49 MiB | 78.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 32.55 MiB | 3.96 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  61% (1830/2999), 78.49 MiB | 78.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 35.05 MiB | 3.51 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  62% (1860/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  63% (1890/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  64% (1920/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  65% (1950/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  66% (1980/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  67% (2010/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  68% (2040/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  69% (2070/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  70% (2100/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  71% (2130/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  72% (2160/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  73% (2190/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  74% (2220/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  75% (2250/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  76% (2280/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  77% (2310/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  78% (2340/2999), 98.30 MiB | 65.53 MiB/s
+Receiving objects:  79% (2370/2999), 98.30 MiB | 65.53 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 37.75 MiB | 3.08 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  79% (2375/2999), 103.08 MiB | 36.46 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 40.68 MiB | 2.87 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  79% (2377/2999), 103.08 MiB | 36.46 MiB/s
+Receiving objects:  80% (2400/2999), 103.08 MiB | 36.46 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 43.73 MiB | 2.69 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  81% (2430/2999), 115.61 MiB | 31.48 MiB/s
+Receiving objects:  82% (2460/2999), 115.61 MiB | 31.48 MiB/s
+Receiving objects:  83% (2490/2999), 115.61 MiB | 31.48 MiB/s
+Receiving objects:  84% (2520/2999), 115.61 MiB | 31.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 46.48 MiB | 2.74 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  85% (2550/2999), 115.61 MiB | 31.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 49.54 MiB | 2.84 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  86% (2580/2999), 115.61 MiB | 31.48 MiB/s
+Receiving objects:  87% (2610/2999), 115.61 MiB | 31.48 MiB/s
+Receiving objects:  88% (2640/2999), 115.61 MiB | 31.48 MiB/s
+Receiving objects:  89% (2670/2999), 115.61 MiB | 31.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 52.79 MiB | 2.93 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  90% (2700/2999), 115.61 MiB | 31.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 56.12 MiB | 2.99 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  90% (2726/2999), 115.61 MiB | 31.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 59.12 MiB | 3.02 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  91% (2730/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  92% (2760/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  93% (2790/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  94% (2820/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  95% (2850/2999), 121.68 MiB | 28.52 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (268/2956), 61.85 MiB | 2.99 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  96% (2880/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  97% (2910/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  98% (2940/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects:  99% (2970/2999), 121.68 MiB | 28.52 MiB/s
+remote: Total 2999 (delta 828), reused 458 (delta 455), pack-reused 1953 (from 2)
+Receiving objects: 100% (2999/2999), 121.68 MiB | 28.52 MiB/s
+Receiving objects: 100% (2999/2999), 123.31 MiB | 28.54 MiB/s, done.
+Resolving deltas:   0% (0/1538)
+Resolving deltas:   1% (16/1538)
+Resolving deltas:   2% (31/1538)
+Resolving deltas:   3% (47/1538)
+Resolving deltas:   4% (62/1538)
+Resolving deltas:   5% (77/1538)
+Resolving deltas:   6% (93/1538)
+Resolving deltas:   7% (108/1538)
+Resolving deltas:   8% (124/1538)
+Resolving deltas:   9% (140/1538)
+Resolving deltas:  10% (154/1538)
+Resolving deltas:  11% (170/1538)
+Resolving deltas:  12% (185/1538)
+Resolving deltas:  13% (200/1538)
+Resolving deltas:  14% (216/1538)
+Resolving deltas:  15% (231/1538)
+Resolving deltas:  16% (247/1538)
+Resolving deltas:  17% (262/1538)
+Resolving deltas:  18% (277/1538)
+Resolving deltas:  19% (293/1538)
+Resolving deltas:  20% (308/1538)
+Resolving deltas:  21% (323/1538)
+Resolving deltas:  22% (339/1538)
+Resolving deltas:  23% (354/1538)
+Resolving deltas:  24% (370/1538)
+Resolving deltas:  25% (385/1538)
+Resolving deltas:  26% (400/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (269/2956), 62.95 MiB | 2.91 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  27% (416/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (269/2956), 64.70 MiB | 2.58 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  28% (431/1538)
+Resolving deltas:  29% (447/1538)
+Resolving deltas:  30% (462/1538)
+Resolving deltas:  31% (477/1538)
+Resolving deltas:  32% (493/1538)
+Resolving deltas:  33% (508/1538)
+Resolving deltas:  34% (523/1538)
+Resolving deltas:  35% (539/1538)
+Resolving deltas:  36% (554/1538)
+Resolving deltas:  37% (570/1538)
+Resolving deltas:  38% (585/1538)
+Resolving deltas:  39% (600/1538)
+Resolving deltas:  40% (616/1538)
+Resolving deltas:  41% (631/1538)
+Resolving deltas:  42% (646/1538)
+Resolving deltas:  43% (662/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (269/2956), 65.82 MiB | 2.10 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  44% (677/1538)
+Resolving deltas:  45% (693/1538)
+Resolving deltas:  46% (708/1538)
+Resolving deltas:  47% (723/1538)
+Resolving deltas:  48% (739/1538)
+Resolving deltas:  49% (754/1538)
+Resolving deltas:  50% (769/1538)
+Resolving deltas:  51% (785/1538)
+Resolving deltas:  52% (800/1538)
+Resolving deltas:  53% (816/1538)
+Resolving deltas:  54% (831/1538)
+Resolving deltas:  55% (846/1538)
+Resolving deltas:  56% (862/1538)
+Resolving deltas:  57% (877/1538)
+Resolving deltas:  58% (893/1538)
+Resolving deltas:  59% (908/1538)
+Resolving deltas:  60% (923/1538)
+Resolving deltas:  61% (939/1538)
+Resolving deltas:  62% (954/1538)
+Resolving deltas:  63% (969/1538)
+Resolving deltas:  64% (985/1538)
+Resolving deltas:  65% (1000/1538)
+Resolving deltas:  66% (1016/1538)
+Resolving deltas:  67% (1031/1538)
+Resolving deltas:  68% (1046/1538)
+Resolving deltas:  69% (1062/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (269/2956), 67.10 MiB | 1.73 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  70% (1077/1538)
+Resolving deltas:  71% (1092/1538)
+Resolving deltas:  72% (1108/1538)
+Resolving deltas:  73% (1123/1538)
+Resolving deltas:  74% (1139/1538)
+Resolving deltas:  75% (1154/1538)
+Resolving deltas:  76% (1169/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   9% (270/2956), 67.84 MiB | 1.58 MiB/s
-Receiving objects:  10% (296/2956), 67.84 MiB | 1.58 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  77% (1185/1538)
+Resolving deltas:  78% (1200/1538)
+Resolving deltas:  79% (1216/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  10% (321/2956), 70.05 MiB | 1.35 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  80% (1231/1538)
+Resolving deltas:  81% (1246/1538)
+Resolving deltas:  82% (1262/1538)
+Resolving deltas:  83% (1277/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  10% (321/2956), 71.62 MiB | 1.38 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  84% (1292/1538)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
-fetch-pack: unexpected disconnect while reading sideband packet
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  85% (1308/1538)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  85% (1315/1538)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  86% (1323/1538)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  87% (1339/1538)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  88% (1354/1538)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  89% (1369/1538)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  90% (1385/1538)
+Resolving deltas:  91% (1400/1538)
+Resolving deltas:  92% (1415/1538)
+Resolving deltas:  93% (1431/1538)
+Resolving deltas:  94% (1446/1538)
+Resolving deltas:  95% (1462/1538)
+Resolving deltas:  96% (1477/1538)
+Resolving deltas:  97% (1492/1538)
+Resolving deltas:  98% (1508/1538)
+Resolving deltas:  99% (1523/1538)
+Resolving deltas: 100% (1538/1538)
+Resolving deltas: 100% (1538/1538), done.
 </pre></div>
 </div>
 </div>
@@ -790,13 +973,11 @@ fetch-pack: unexpected disconnect while reading sideband packet
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.91 s, sys: 222 ms, total: 3.13 s
-Wall time: 6.35 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.44 s, sys: 108 ms, total: 2.55 s
+Wall time: 7.04 s
 </pre></div>
 </div>
-<div class="output text_html">
-  <div id="df-bed88d28-3c31-46e2-aaee-ac5e711778c2" class="colab-df-container">
-    <div>
+<div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
         vertical-align: middle;
@@ -832,7 +1013,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Repository path (local directory).</td>
       <td>None</td>
-      <td>/content/almanack</td>
+      <td>/home/runner/work/almanack/almanack/src/book/s...</td>
     </tr>
     <tr>
       <th>1</th>
@@ -842,7 +1023,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Total number of commits for the repository.</td>
       <td>None</td>
-      <td>156</td>
+      <td>204</td>
     </tr>
     <tr>
       <th>2</th>
@@ -852,7 +1033,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Total number of files tracked within the repos...</td>
       <td>None</td>
-      <td>117</td>
+      <td>124</td>
     </tr>
     <tr>
       <th>3</th>
@@ -862,7 +1043,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Starting commit and most recent commit for the...</td>
       <td>None</td>
-      <td>(2024-03-05, 2025-01-13)</td>
+      <td>(2024-03-05, 2025-06-13)</td>
     </tr>
     <tr>
       <th>4</th>
@@ -872,7 +1053,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Integer representing the number of days of dev...</td>
       <td>None</td>
-      <td>315</td>
+      <td>466</td>
     </tr>
     <tr>
       <th>5</th>
@@ -882,7 +1063,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Floating point number which represents the num...</td>
       <td>None</td>
-      <td>0.495238</td>
+      <td>0.437768</td>
     </tr>
     <tr>
       <th>6</th>
@@ -892,7 +1073,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>String representing the date when this table w...</td>
       <td>None</td>
-      <td>2025-01-13T18:33:41.174159Z</td>
+      <td>2025-06-13T21:03:25.919918Z</td>
     </tr>
     <tr>
       <th>7</th>
@@ -902,7 +1083,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>String representing the version of the almanac...</td>
       <td>None</td>
-      <td>0.0.5</td>
+      <td>0.0.0.post1.dev0+154f9ea</td>
     </tr>
     <tr>
       <th>8</th>
@@ -928,11 +1109,11 @@ Wall time: 6.35 s
       <th>10</th>
       <td>repo-doi</td>
       <td>SGA-META-0011</td>
-      <td>int</td>
+      <td>str</td>
       <td>0</td>
       <td>Repository DOI value detected from CITATION.cf...</td>
       <td>None</td>
-      <td>None</td>
+      <td>10.5281/zenodo.14765834</td>
     </tr>
     <tr>
       <th>11</th>
@@ -952,7 +1133,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Dictionary of length three, including the foll...</td>
       <td>None</td>
-      <td>{'almanack-score-numerator': 9, 'almanack-scor...</td>
+      <td>{'almanack-score-numerator': 11, 'almanack-sco...</td>
     </tr>
     <tr>
       <th>13</th>
@@ -1042,7 +1223,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of unique contributors within the last y...</td>
       <td>None</td>
-      <td>5</td>
+      <td>3</td>
     </tr>
     <tr>
       <th>22</th>
@@ -1052,7 +1233,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of unique contributors within the last 1...</td>
       <td>None</td>
-      <td>3</td>
+      <td>2</td>
     </tr>
     <tr>
       <th>23</th>
@@ -1062,7 +1243,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of the number of tags within the reposit...</td>
       <td>None</td>
-      <td>5</td>
+      <td>9</td>
     </tr>
     <tr>
       <th>24</th>
@@ -1072,7 +1253,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of the number of tags within the reposit...</td>
       <td>None</td>
-      <td>5</td>
+      <td>8</td>
     </tr>
     <tr>
       <th>25</th>
@@ -1082,7 +1263,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of the number of tags within the reposit...</td>
       <td>None</td>
-      <td>4</td>
+      <td>6</td>
     </tr>
     <tr>
       <th>26</th>
@@ -1092,7 +1273,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of the number of stargazers on repositor...</td>
       <td>None</td>
-      <td>3</td>
+      <td>11</td>
     </tr>
     <tr>
       <th>27</th>
@@ -1112,7 +1293,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of open issues for repository.</td>
       <td>None</td>
-      <td>44</td>
+      <td>65</td>
     </tr>
     <tr>
       <th>29</th>
@@ -1172,7 +1353,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Count of package versions on package hosts or ...</td>
       <td>None</td>
-      <td>6</td>
+      <td>10</td>
     </tr>
     <tr>
       <th>35</th>
@@ -1202,7 +1383,7 @@ Wall time: 6.35 s
       <td>1</td>
       <td>Whether the DOI found in the CITATION.cff file...</td>
       <td>DOI within the CITATION.cff file is not of a v...</td>
-      <td>None</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>38</th>
@@ -1212,7 +1393,7 @@ Wall time: 6.35 s
       <td>1</td>
       <td>Whether the DOI found in the CITATION.cff file...</td>
       <td>DOI within the CITATION.cff file is not https ...</td>
-      <td>None</td>
+      <td>True</td>
     </tr>
     <tr>
       <th>39</th>
@@ -1242,7 +1423,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Ratio of succeeding workflow runs out of queri...</td>
       <td>None</td>
-      <td>0.81</td>
+      <td>0.75</td>
     </tr>
     <tr>
       <th>42</th>
@@ -1262,7 +1443,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Number of failing workflow runs out of queried...</td>
       <td>None</td>
-      <td>81</td>
+      <td>75</td>
     </tr>
     <tr>
       <th>44</th>
@@ -1272,7 +1453,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Total number of workflow runs from GitHub (onl...</td>
       <td>None</td>
-      <td>19</td>
+      <td>25</td>
     </tr>
     <tr>
       <th>45</th>
@@ -1332,7 +1513,7 @@ Wall time: 6.35 s
       <td>0</td>
       <td>Aggregated information entropy for all files w...</td>
       <td>None</td>
-      <td>0.00324</td>
+      <td>0.003469</td>
     </tr>
     <tr>
       <th>51</th>
@@ -1342,221 +1523,11 @@ Wall time: 6.35 s
       <td>0</td>
       <td>File-level information entropy for all files w...</td>
       <td>None</td>
-      <td>{'.alexignore': 8.137557051950418e-05, '.githu...</td>
+      <td>{'.alexignore': 8.096641860894824e-05, '.githu...</td>
     </tr>
   </tbody>
 </table>
-</div>
-    <div class="colab-df-buttons">
-
-  <div class="colab-df-container">
-    <button class="colab-df-convert" onclick="convertToInteractive('df-bed88d28-3c31-46e2-aaee-ac5e711778c2')"
-            title="Convert this dataframe to an interactive table."
-            style="display:none;">
-
-  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
-    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
-  </svg>
-    </button>
-
-  <style>
-    .colab-df-container {
-      display:flex;
-      gap: 12px;
-    }
-
-    .colab-df-convert {
-      background-color: #E8F0FE;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      display: none;
-      fill: #1967D2;
-      height: 32px;
-      padding: 0 0 0 0;
-      width: 32px;
-    }
-
-    .colab-df-convert:hover {
-      background-color: #E2EBFA;
-      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
-      fill: #174EA6;
-    }
-
-    .colab-df-buttons div {
-      margin-bottom: 4px;
-    }
-
-    [theme=dark] .colab-df-convert {
-      background-color: #3B4455;
-      fill: #D2E3FC;
-    }
-
-    [theme=dark] .colab-df-convert:hover {
-      background-color: #434B5C;
-      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
-      fill: #FFFFFF;
-    }
-  </style>
-
-    <script>
-      const buttonEl =
-        document.querySelector('#df-bed88d28-3c31-46e2-aaee-ac5e711778c2 button.colab-df-convert');
-      buttonEl.style.display =
-        google.colab.kernel.accessAllowed ? 'block' : 'none';
-
-      async function convertToInteractive(key) {
-        const element = document.querySelector('#df-bed88d28-3c31-46e2-aaee-ac5e711778c2');
-        const dataTable =
-          await google.colab.kernel.invokeFunction('convertToInteractive',
-                                                    [key], {});
-        if (!dataTable) return;
-
-        const docLinkHtml = 'Like what you see? Visit the ' +
-          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
-          + ' to learn more about interactive tables.';
-        element.innerHTML = '';
-        dataTable['output_type'] = 'display_data';
-        await google.colab.output.renderOutput(dataTable, element);
-        const docLink = document.createElement('div');
-        docLink.innerHTML = docLinkHtml;
-        element.appendChild(docLink);
-      }
-    </script>
-  </div>
-
-
-<div id="df-bbeccc86-1620-40c0-98f9-2aa6c52287a5">
-  <button class="colab-df-quickchart" onclick="quickchart('df-bbeccc86-1620-40c0-98f9-2aa6c52287a5')"
-            title="Suggest charts"
-            style="display:none;">
-
-<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
-     width="24px">
-    <g>
-        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
-    </g>
-</svg>
-  </button>
-
-<style>
-  .colab-df-quickchart {
-      --bg-color: #E8F0FE;
-      --fill-color: #1967D2;
-      --hover-bg-color: #E2EBFA;
-      --hover-fill-color: #174EA6;
-      --disabled-fill-color: #AAA;
-      --disabled-bg-color: #DDD;
-  }
-
-  [theme=dark] .colab-df-quickchart {
-      --bg-color: #3B4455;
-      --fill-color: #D2E3FC;
-      --hover-bg-color: #434B5C;
-      --hover-fill-color: #FFFFFF;
-      --disabled-bg-color: #3B4455;
-      --disabled-fill-color: #666;
-  }
-
-  .colab-df-quickchart {
-    background-color: var(--bg-color);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    display: none;
-    fill: var(--fill-color);
-    height: 32px;
-    padding: 0;
-    width: 32px;
-  }
-
-  .colab-df-quickchart:hover {
-    background-color: var(--hover-bg-color);
-    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-    fill: var(--button-hover-fill-color);
-  }
-
-  .colab-df-quickchart-complete:disabled,
-  .colab-df-quickchart-complete:disabled:hover {
-    background-color: var(--disabled-bg-color);
-    fill: var(--disabled-fill-color);
-    box-shadow: none;
-  }
-
-  .colab-df-spinner {
-    border: 2px solid var(--fill-color);
-    border-color: transparent;
-    border-bottom-color: var(--fill-color);
-    animation:
-      spin 1s steps(1) infinite;
-  }
-
-  @keyframes spin {
-    0% {
-      border-color: transparent;
-      border-bottom-color: var(--fill-color);
-      border-left-color: var(--fill-color);
-    }
-    20% {
-      border-color: transparent;
-      border-left-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-    }
-    30% {
-      border-color: transparent;
-      border-left-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-      border-right-color: var(--fill-color);
-    }
-    40% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-      border-top-color: var(--fill-color);
-    }
-    60% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-    }
-    80% {
-      border-color: transparent;
-      border-right-color: var(--fill-color);
-      border-bottom-color: var(--fill-color);
-    }
-    90% {
-      border-color: transparent;
-      border-bottom-color: var(--fill-color);
-    }
-  }
-</style>
-
-  <script>
-    async function quickchart(key) {
-      const quickchartButtonEl =
-        document.querySelector('#' + key + ' button');
-      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
-      quickchartButtonEl.classList.add('colab-df-spinner');
-      try {
-        const charts = await google.colab.kernel.invokeFunction(
-            'suggestCharts', [key], {});
-      } catch (error) {
-        console.error('Error during call to suggestCharts:', error);
-      }
-      quickchartButtonEl.classList.remove('colab-df-spinner');
-      quickchartButtonEl.classList.add('colab-df-quickchart-complete');
-    }
-    (() => {
-      let quickchartButtonEl =
-        document.querySelector('#df-bbeccc86-1620-40c0-98f9-2aa6c52287a5 button');
-      quickchartButtonEl.style.display =
-        google.colab.kernel.accessAllowed ? 'block' : 'none';
-    })();
-  </script>
-</div>
-
-    </div>
-  </div>
-</div></div>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1574,7 +1545,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Repository path (local directory).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: &quot;/content/almanack&quot;
+        &quot;result&quot;: &quot;/home/runner/work/almanack/almanack/src/book/seed-bank/almanack-example/almanack&quot;
     },
     {
         &quot;name&quot;: &quot;repo-commits&quot;,
@@ -1583,7 +1554,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Total number of commits for the repository.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 154
+        &quot;result&quot;: 204
     },
     {
         &quot;name&quot;: &quot;repo-file-count&quot;,
@@ -1592,7 +1563,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Total number of files tracked within the repository.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 117
+        &quot;result&quot;: 124
     },
     {
         &quot;name&quot;: &quot;repo-commit-time-range&quot;,
@@ -1603,7 +1574,7 @@ Wall time: 6.35 s
         &quot;correction_guidance&quot;: null,
         &quot;result&quot;: [
             &quot;2024-03-05&quot;,
-            &quot;2025-01-12&quot;
+            &quot;2025-06-13&quot;
         ]
     },
     {
@@ -1613,7 +1584,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Integer representing the number of days of development between most recent commit and first commit.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 314
+        &quot;result&quot;: 466
     },
     {
         &quot;name&quot;: &quot;repo-commits-per-day&quot;,
@@ -1622,7 +1593,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Floating point number which represents the number of commits per day (using days of development).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 0.49044585987261147
+        &quot;result&quot;: 0.43776824034334766
     },
     {
         &quot;name&quot;: &quot;almanack-table-datetime&quot;,
@@ -1631,7 +1602,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;String representing the date when this table was generated in the format of &#39;%Y-%m-%dT%H:%M:%S.%fZ&#39;, for example: 2024-11-22T18:20:30.123456Z .&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: &quot;2025-01-13T04:51:44.464534Z&quot;
+        &quot;result&quot;: &quot;2025-06-13T21:03:25.919918Z&quot;
     },
     {
         &quot;name&quot;: &quot;almanack-version&quot;,
@@ -1640,7 +1611,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;String representing the version of the almanack which was used to generate this table.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: &quot;0.0.5&quot;
+        &quot;result&quot;: &quot;0.0.0.post1.dev0+154f9ea&quot;
     },
     {
         &quot;name&quot;: &quot;repo-primary-language&quot;,
@@ -1663,11 +1634,11 @@ Wall time: 6.35 s
     {
         &quot;name&quot;: &quot;repo-doi&quot;,
         &quot;id&quot;: &quot;SGA-META-0011&quot;,
-        &quot;result-type&quot;: &quot;int&quot;,
+        &quot;result-type&quot;: &quot;str&quot;,
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Repository DOI value detected from CITATION.cff file.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: null
+        &quot;result&quot;: &quot;10.5281/zenodo.14765834&quot;
     },
     {
         &quot;name&quot;: &quot;repo-doi-publication-date&quot;,
@@ -1686,9 +1657,9 @@ Wall time: 6.35 s
         &quot;description&quot;: &quot;Dictionary of length three, including the following: 1) number of Almanack boolean metrics that passed (numerator), 2) number of total Almanack boolean metrics considered (denominator), and 3) a score that represents how likely the repository will be maintained over time based (numerator / denominator).&quot;,
         &quot;correction_guidance&quot;: null,
         &quot;result&quot;: {
-            &quot;almanack-score-numerator&quot;: 9,
+            &quot;almanack-score-numerator&quot;: 11,
             &quot;almanack-score-denominator&quot;: 11,
-            &quot;almanack-score&quot;: 0.8181818181818182
+            &quot;almanack-score&quot;: 1.0
         }
     },
     {
@@ -1770,7 +1741,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of unique contributors within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 5
+        &quot;result&quot;: 3
     },
     {
         &quot;name&quot;: &quot;repo-unique-contributors-past-182-days&quot;,
@@ -1779,7 +1750,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of unique contributors within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 3
+        &quot;result&quot;: 2
     },
     {
         &quot;name&quot;: &quot;repo-tags-count&quot;,
@@ -1788,7 +1759,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of the number of tags within the repository.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 5
+        &quot;result&quot;: 9
     },
     {
         &quot;name&quot;: &quot;repo-tags-count-past-year&quot;,
@@ -1797,7 +1768,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of the number of tags within the repository within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 5
+        &quot;result&quot;: 8
     },
     {
         &quot;name&quot;: &quot;repo-tags-count-past-182-days&quot;,
@@ -1806,7 +1777,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of the number of tags within the repository within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 4
+        &quot;result&quot;: 6
     },
     {
         &quot;name&quot;: &quot;repo-stargazers-count&quot;,
@@ -1815,7 +1786,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of the number of stargazers on repository remote hosting platform.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 3
+        &quot;result&quot;: 11
     },
     {
         &quot;name&quot;: &quot;repo-uses-issues&quot;,
@@ -1833,7 +1804,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of open issues for repository.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 44
+        &quot;result&quot;: 65
     },
     {
         &quot;name&quot;: &quot;repo-pull-requests-enabled&quot;,
@@ -1889,7 +1860,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Count of package versions on package hosts or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 6
+        &quot;result&quot;: 10
     },
     {
         &quot;name&quot;: &quot;repo-social-media-platforms&quot;,
@@ -1916,7 +1887,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 1,
         &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is of a valid format.&quot;,
         &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not of a valid format or missing.&quot;,
-        &quot;result&quot;: null
+        &quot;result&quot;: true
     },
     {
         &quot;name&quot;: &quot;repo-doi-https-resolvable&quot;,
@@ -1925,7 +1896,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 1,
         &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is https resolvable.&quot;,
         &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not https resolvable or missing.&quot;,
-        &quot;result&quot;: null
+        &quot;result&quot;: true
     },
     {
         &quot;name&quot;: &quot;repo-doi-cited-by-count&quot;,
@@ -1952,7 +1923,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Ratio of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 0.83
+        &quot;result&quot;: 0.75
     },
     {
         &quot;name&quot;: &quot;repo-gh-workflow-succeeding-runs&quot;,
@@ -1970,7 +1941,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Number of failing workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 83
+        &quot;result&quot;: 75
     },
     {
         &quot;name&quot;: &quot;repo-gh-workflow-queried-total&quot;,
@@ -1979,7 +1950,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Total number of workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 17
+        &quot;result&quot;: 25
     },
     {
         &quot;name&quot;: &quot;repo-code-coverage-percent&quot;,
@@ -2033,7 +2004,7 @@ Wall time: 6.35 s
         &quot;sustainability_correlation&quot;: 0,
         &quot;description&quot;: &quot;Aggregated information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Represents value from 0 to 1 where 0 equals no information entropy and 1 represents maximum information entropy.&quot;,
         &quot;correction_guidance&quot;: null,
-        &quot;result&quot;: 0.0032399961236882105
+        &quot;result&quot;: 0.0034691333610329324
     },
     {
         &quot;name&quot;: &quot;repo-file-info-entropy&quot;,
@@ -2043,77 +2014,84 @@ Wall time: 6.35 s
         &quot;description&quot;: &quot;File-level information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Shows all files and their corresponding information entropy measurements relative to the other files found within the range of commits.&quot;,
         &quot;correction_guidance&quot;: null,
         &quot;result&quot;: {
-            &quot;.alexignore&quot;: 8.137557051950418e-05,
-            &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.002303314622555871,
-            &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 8.137557051950418e-05,
-            &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.0020754619576020122,
-            &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.0011757694100385388,
-            &quot;.github/actions/install-node-env/action.yml&quot;: 0.00047945189067534965,
-            &quot;.github/actions/install-python-env/action.yml&quot;: 0.0009517133576552295,
-            &quot;.github/dependabot.yml&quot;: 0.0010083247197419888,
-            &quot;.github/release-drafter.yml&quot;: 0.0006909928228313111,
-            &quot;.github/workflows/deploy-book.yml&quot;: 0.0012033573999027773,
-            &quot;.github/workflows/draft-release.yml&quot;: 0.0007498757030847159,
-            &quot;.github/workflows/entropy-check.yml&quot;: 0.0018438756341057083,
-            &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.0008946603169759946,
-            &quot;.github/workflows/publish-pypi.yml&quot;: 0.0008659584698754822,
-            &quot;.github/workflows/pytest-tests.yml&quot;: 0.0011480943013509966,
-            &quot;.gitignore&quot;: 0.003866925828781817,
-            &quot;.linkcheckerrc.ini&quot;: 0.0003854932634532223,
-            &quot;.pre-commit-config.yaml&quot;: 0.0047100726714637865,
-            &quot;.vale.ini&quot;: 0.00047945189067534965,
-            &quot;CITATION.cff&quot;: 0.00468763564195914,
-            &quot;CODE_OF_CONDUCT.md&quot;: 0.00011803692532472581,
-            &quot;CONTRIBUTING.md&quot;: 0.00011803692532472581,
-            &quot;LICENSE&quot;: 0.0008946603169759946,
-            &quot;LICENSE.txt&quot;: 0.0008946603169759946,
-            &quot;README.md&quot;: 0.0017918539523558929,
-            &quot;coverage.xml&quot;: 0.021715239301768757,
-            &quot;docs/readme.md&quot;: 0.00011803692532472581,
-            &quot;media/coverage-badge.svg&quot;: 4.2982194701705824e-05,
-            &quot;pa11y.json&quot;: 0.00025578681143135096,
-            &quot;package-lock.json&quot;: 0.028516791316587936,
-            &quot;package.json&quot;: 0.00018827370478629308,
-            &quot;poetry.lock&quot;: 0.06214779427081766,
-            &quot;pyproject.toml&quot;: 0.0047100726714637865,
-            &quot;src/almanack/__init__.py&quot;: 0.0007790979227771374,
-            &quot;src/almanack/book.py&quot;: 0.0018698072351989385,
-            &quot;src/almanack/cli.py&quot;: 0.004620215024571,
-            &quot;src/almanack/git.py&quot;: 0.009041119787303037,
-            &quot;src/almanack/metrics/data.py&quot;: 0.01685943704457394,
-            &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.0026758650782534327,
-            &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.0019730242487215003,
-            &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.006686146199632836,
-            &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.0031127411964607323,
-            &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.0016608337052025802,
-            &quot;src/almanack/metrics/metrics.yml&quot;: 0.01002750263588727,
-            &quot;src/almanack/metrics/remote.py&quot;: 0.0025030547588967746,
-            &quot;src/almanack/reporting/report.py&quot;: 0.0032561951645520217,
-            &quot;src/book/_config.yml&quot;: 0.0014211715989295478,
-            &quot;src/book/_static/custom.css&quot;: 0.00044839432134928975,
-            &quot;src/book/_toc.yml&quot;: 0.0009232439198919463,
+            &quot;.alexignore&quot;: 8.096641860894824e-05,
+            &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.0022921742494052513,
+            &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 8.096641860894824e-05,
+            &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.0020654058013390626,
+            &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.0011700221271943863,
+            &quot;.github/actions/install-node-env/action.yml&quot;: 0.00047708126626846455,
+            &quot;.github/actions/install-python-env/action.yml&quot;: 0.0009470475800920196,
+            &quot;.github/dependabot.yml&quot;: 0.001114849669563288,
+            &quot;.github/release-drafter.yml&quot;: 0.0006875911114437148,
+            &quot;.github/workflows/deploy-book.yml&quot;: 0.0012793443258447134,
+            &quot;.github/workflows/draft-release.yml&quot;: 0.0007461879172584012,
+            &quot;.github/workflows/entropy-check.yml&quot;: 0.0018349241248901238,
+            &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.001114849669563288,
+            &quot;.github/workflows/publish-pypi.yml&quot;: 0.0008617077443240927,
+            &quot;.github/workflows/pytest-tests.yml&quot;: 0.0013605053959402107,
+            &quot;.github/workflows/test-links.yml&quot;: 0.0006875911114437148,
+            &quot;.gitignore&quot;: 0.003871459308167185,
+            &quot;.linkcheckerrc.ini&quot;: 0.0005684471515010515,
+            &quot;.pre-commit-config.yaml&quot;: 0.004776755576229588,
+            &quot;.pre-commit-hooks.yaml&quot;: 0.0004150164059384333,
+            &quot;.vale.ini&quot;: 0.00047708126626846455,
+            &quot;CITATION.cff&quot;: 0.00488779809194812,
+            &quot;CODE_OF_CONDUCT.md&quot;: 0.00011744522963356781,
+            &quot;CONTRIBUTING.md&quot;: 0.00011744522963356781,
+            &quot;LICENSE&quot;: 0.0008902706011751182,
+            &quot;LICENSE.txt&quot;: 0.0008902706011751182,
+            &quot;README.md&quot;: 0.0026873871256168865,
+            &quot;coverage.xml&quot;: 0.022026051487323336,
+            &quot;docs/readme.md&quot;: 0.00011744522963356781,
+            &quot;media/coverage-badge.svg&quot;: 4.276506399596737e-05,
+            &quot;pa11y.json&quot;: 0.000254513615974685,
+            &quot;package-lock.json&quot;: 0.02674897130109091,
+            &quot;package.json&quot;: 0.00018733380739669334,
+            &quot;poetry.lock&quot;: 0.0635633093787326,
+            &quot;pyproject.toml&quot;: 0.0047322159872196495,
+            &quot;src/almanack/__init__.py&quot;: 0.0007752682992810287,
+            &quot;src/almanack/book.py&quot;: 0.0018607318942085054,
+            &quot;src/almanack/cli.py&quot;: 0.00488779809194812,
+            &quot;src/almanack/git.py&quot;: 0.008998674315297434,
+            &quot;src/almanack/metrics/data.py&quot;: 0.017458397284208896,
+            &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.0029539503639338296,
+            &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.0019634563679611244,
+            &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.006696474680797786,
+            &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.0030977678121184554,
+            &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.0016527573396266145,
+            &quot;src/almanack/metrics/metrics.yml&quot;: 0.009980562939369273,
+            &quot;src/almanack/metrics/remote.py&quot;: 0.002490965934423477,
+            &quot;src/almanack/reporting/report.py&quot;: 0.0032405451944096993,
+            &quot;src/book/_config.yml&quot;: 0.0014142440701761818,
+            &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.odp&quot;: 0.0,
+            &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf&quot;: 0.0,
+            &quot;src/book/_static/custom.css&quot;: 0.0005984982192285225,
+            &quot;src/book/_toc.yml&quot;: 0.0010593112434913326,
             &quot;src/book/assets/640px-Forgard2-003.gif&quot;: 0.0,
             &quot;src/book/assets/640px-Rundes_Fenster_mit_Gitter.jpeg&quot;: 0.0,
             &quot;src/book/assets/Sundial_2916_HDR.jpeg&quot;: 0.0,
             &quot;src/book/assets/almanack-influencing-software.png&quot;: 0.0,
             &quot;src/book/assets/garden-lattice-understanding-transfer.png&quot;: 0.0,
+            &quot;src/book/assets/software-gardening-almanack-logo.png&quot;: 0.0,
             &quot;src/book/assets/software-gardening-logo.png&quot;: 0.0,
             &quot;src/book/assets/software-lifecycle.png&quot;: 0.0,
             &quot;src/book/assets/xkcd_dependency.png&quot;: 0.0,
             &quot;src/book/favicon.png&quot;: 0.0,
-            &quot;src/book/garden-circle/contributing.md&quot;: 0.004507476067189011,
-            &quot;src/book/garden-circle/garden-circle.md&quot;: 0.00011803692532472581,
-            &quot;src/book/garden-circle/garden-map.md&quot;: 0.0013400650229209604,
-            &quot;src/book/garden-circle/package-api.md&quot;: 0.0013671735796648872,
-            &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.0012308605052558962,
-            &quot;src/book/garden-lattice/understanding.md&quot;: 0.0031845955072730566,
-            &quot;src/book/introduction.md&quot;: 0.002202478777886068,
-            &quot;src/book/references.bib&quot;: 0.007292900480154505,
-            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.0048666308387477234,
-            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.003866925828781817,
+            &quot;src/book/garden-circle/contributing.md&quot;: 0.004709919548362938,
+            &quot;src/book/garden-circle/garden-circle.md&quot;: 0.00018733380739669334,
+            &quot;src/book/garden-circle/garden-map.md&quot;: 0.0013335271111401049,
+            &quot;src/book/garden-circle/package-api.md&quot;: 0.0030259925645672063,
+            &quot;src/book/garden-circle/pavilion.md&quot;: 0.0008617077443240927,
+            &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.0012793443258447134,
+            &quot;src/book/garden-lattice/understanding.md&quot;: 0.0031692831333130075,
+            &quot;src/book/introduction.md&quot;: 0.0039404925229657925,
+            &quot;src/book/references.bib&quot;: 0.007258467647002319,
+            &quot;src/book/seed-bank/almanack-example/almanack-example.ipynb&quot;: 0.03360733287285622,
+            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.004843433157812479,
+            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.003848403647909953,
             &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links.parquet&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb&quot;: 0.0041434443281982815,
+            &quot;src/book/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb&quot;: 0.004123625825556021,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-lines-of-code-and-time.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-forks.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-open-issues.png&quot;: 0.0,
@@ -2141,26 +2119,26 @@ Wall time: 6.35 s
             &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_7.parquet&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_8.parquet&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_9.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.ipynb&quot;: 0.05066124999414861,
-            &quot;src/book/seed-bank/seed-bank.md&quot;: 0.00011803692532472581,
-            &quot;src/book/software-forest/software-forest.md&quot;: 0.0012582808486586293,
-            &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.0012856204491005655,
-            &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.0007498757030847159,
+            &quot;src/book/seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.ipynb&quot;: 0.057975116142410965,
+            &quot;src/book/seed-bank/seed-bank.md&quot;: 0.00018733380739669334,
+            &quot;src/book/software-forest/software-forest.md&quot;: 0.0013064740012511357,
+            &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.0013335271111401049,
+            &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.0008042114740677492,
             &quot;tests/__init__.py&quot;: 0.0,
-            &quot;tests/conftest.py&quot;: 0.004507476067189011,
-            &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 4.2982194701705824e-05,
-            &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.020099797014865625,
-            &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.006601681638426565,
-            &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.0016608337052025802,
-            &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.0005408729109422541,
-            &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.001687151936421729,
-            &quot;tests/metrics/test_data.py&quot;: 0.021929524636905687,
-            &quot;tests/metrics/test_garden_lattice.py&quot;: 0.0022781682551554936,
-            &quot;tests/test_almanack.py&quot;: 0.0010924731761011023,
-            &quot;tests/test_build.py&quot;: 0.0018956871133573793,
-            &quot;tests/test_cli.py&quot;: 0.0024034963477559974,
-            &quot;tests/test_git.py&quot;: 0.009240016120558485,
-            &quot;tests/utils.py&quot;: 0.0010924731761011023
+            &quot;tests/conftest.py&quot;: 0.004485954632291571,
+            &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 4.276506399596737e-05,
+            &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.020007858153118206,
+            &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.006570434997048001,
+            &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.0016527573396266145,
+            &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.0005382023236799102,
+            &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.0016789496234743426,
+            &quot;tests/metrics/test_data.py&quot;: 0.022515438221310347,
+            &quot;tests/metrics/test_garden_lattice.py&quot;: 0.0022671474170692547,
+            &quot;tests/test_almanack.py&quot;: 0.0010871274917914203,
+            &quot;tests/test_build.py&quot;: 0.0019634563679611244,
+            &quot;tests/test_cli.py&quot;: 0.0033115603282474915,
+            &quot;tests/test_git.py&quot;: 0.009334762791469222,
+            &quot;tests/utils.py&quot;: 0.0010871274917914203
         }
     }
 ]
@@ -2178,9 +2156,11 @@ Wall time: 6.35 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&quot;name&quot;: &quot;repo-path&quot;, &quot;id&quot;: &quot;SGA-META-0001&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository path (local directory).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;/content/almanack&quot;}, {&quot;name&quot;: &quot;repo-commits&quot;, &quot;id&quot;: &quot;SGA-META-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of commits for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 156}, {&quot;name&quot;: &quot;repo-file-count&quot;, &quot;id&quot;: &quot;SGA-META-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of files tracked within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 117}, {&quot;name&quot;: &quot;repo-commit-time-range&quot;, &quot;id&quot;: &quot;SGA-META-0004&quot;, &quot;result-type&quot;: &quot;tuple&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Starting commit and most recent commit for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: [&quot;2024-03-05&quot;, &quot;2025-01-13&quot;]}, {&quot;name&quot;: &quot;repo-days-of-development&quot;, &quot;id&quot;: &quot;SGA-META-0005&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Integer representing the number of days of development between most recent commit and first commit.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 315}, {&quot;name&quot;: &quot;repo-commits-per-day&quot;, &quot;id&quot;: &quot;SGA-META-0006&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Floating point number which represents the number of commits per day (using days of development).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0.49523809523809526}, {&quot;name&quot;: &quot;almanack-table-datetime&quot;, &quot;id&quot;: &quot;SGA-META-0007&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the date when this table was generated in the format of &#39;%Y-%m-%dT%H:%M:%S.%fZ&#39;, for example: 2024-11-22T18:20:30.123456Z .&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;2025-01-13T18:35:41.038659Z&quot;}, {&quot;name&quot;: &quot;almanack-version&quot;, &quot;id&quot;: &quot;SGA-META-0008&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the version of the almanack which was used to generate this table.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;0.0.5&quot;}, {&quot;name&quot;: &quot;repo-primary-language&quot;, &quot;id&quot;: &quot;SGA-META-0009&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary programming language of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;Jupyter Notebook&quot;}, {&quot;name&quot;: &quot;repo-primary-license&quot;, &quot;id&quot;: &quot;SGA-META-0010&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary license of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;bsd-3-clause&quot;}, {&quot;name&quot;: &quot;repo-doi&quot;, &quot;id&quot;: &quot;SGA-META-0011&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI value detected from CITATION.cff file.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-doi-publication-date&quot;, &quot;id&quot;: &quot;SGA-META-0012&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI publication date detected from CITATION.cff file and OpenAlex.org.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-almanack-score&quot;, &quot;id&quot;: &quot;SGA-META-0013&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Dictionary of length three, including the following: 1) number of Almanack boolean metrics that passed (numerator), 2) number of total Almanack boolean metrics considered (denominator), and 3) a score that represents how likely the repository will be maintained over time based (numerator / denominator).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: {&quot;almanack-score-numerator&quot;: 9, &quot;almanack-score-denominator&quot;: 11, &quot;almanack-score&quot;: 0.8181818181818182}}, {&quot;name&quot;: &quot;repo-includes-readme&quot;, &quot;id&quot;: &quot;SGA-GL-0001&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a README file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a README file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-contributing&quot;, &quot;id&quot;: &quot;SGA-GL-0002&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CONTRIBUTING file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CONTRIBUTING file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-code-of-conduct&quot;, &quot;id&quot;: &quot;SGA-GL-0003&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CODE_OF_CONDUCT file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CODE_OF_CONDUCT file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-license&quot;, &quot;id&quot;: &quot;SGA-GL-0004&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a LICENSE file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a LICENSE file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-is-citable&quot;, &quot;id&quot;: &quot;SGA-GL-0005&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CITATION file or some other means of indicating how to cite the work.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CITATION file to the repository (e.g. citation.cff, etc.).&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-default-branch-not-master&quot;, &quot;id&quot;: &quot;SGA-GL-0006&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating that the repo uses a default branch name besides &#39;master&#39;.&quot;, &quot;correction_guidance&quot;: &quot;Consider using a default source control branch name other than &#39;master&#39;.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-common-docs&quot;, &quot;id&quot;: &quot;SGA-GL-0007&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating whether the repo includes common documentation directory and files associated with building docsites.&quot;, &quot;correction_guidance&quot;: &quot;Consider including project documentation through the &#39;docs/&#39; directory.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-unique-contributors&quot;, &quot;id&quot;: &quot;SGA-GL-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors since the beginning of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 5}, {&quot;name&quot;: &quot;repo-unique-contributors-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 5}, {&quot;name&quot;: &quot;repo-unique-contributors-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0010&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 3}, {&quot;name&quot;: &quot;repo-tags-count&quot;, &quot;id&quot;: &quot;SGA-GL-0011&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 5}, {&quot;name&quot;: &quot;repo-tags-count-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0012&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 5}, {&quot;name&quot;: &quot;repo-tags-count-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0013&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-stargazers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0014&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of stargazers on repository remote hosting platform.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 3}, {&quot;name&quot;: &quot;repo-uses-issues&quot;, &quot;id&quot;: &quot;SGA-GL-0015&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository uses issues (for example, as a bug and/or feature tracking tool.&quot;, &quot;correction_guidance&quot;: &quot;Consider leveraging issues for tracking bugs and/or features within your repository hosting platform.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-issues-open-count&quot;, &quot;id&quot;: &quot;SGA-GL-0016&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of open issues for repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 44}, {&quot;name&quot;: &quot;repo-pull-requests-enabled&quot;, &quot;id&quot;: &quot;SGA-GL-0017&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository enables pull requests.&quot;, &quot;correction_guidance&quot;: &quot;Consider enabling pull requests for the repository through your repository hosting platform.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-forks-count&quot;, &quot;id&quot;: &quot;SGA-GL-0018&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of forks of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 2}, {&quot;name&quot;: &quot;repo-subscribers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0019&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of subscribers (or watchers) of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-ecosystems&quot;, &quot;id&quot;: &quot;SGA-GL-0020&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;List of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: [&quot;pypi&quot;]}, {&quot;name&quot;: &quot;repo-packages-ecosystems-count&quot;, &quot;id&quot;: &quot;SGA-GL-0021&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-versions-count&quot;, &quot;id&quot;: &quot;SGA-GL-0022&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package versions on package hosts or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 6}, {&quot;name&quot;: &quot;repo-social-media-platforms&quot;, &quot;id&quot;: &quot;SGA-GL-0023&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: []}, {&quot;name&quot;: &quot;repo-social-media-platforms-count&quot;, &quot;id&quot;: &quot;SGA-GL-0024&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0}, {&quot;name&quot;: &quot;repo-doi-valid-format&quot;, &quot;id&quot;: &quot;SGA-GL-0025&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is of a valid format.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not of a valid format or missing.&quot;, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-doi-https-resolvable&quot;, &quot;id&quot;: &quot;SGA-GL-0026&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is https resolvable.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not https resolvable or missing.&quot;, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-doi-cited-by-count&quot;, &quot;id&quot;: &quot;SGA-GL-0027&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;How many other works cite the DOI for the repository found within the CITATION.cff as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-days-between-doi-publication-date-and-latest-commit&quot;, &quot;id&quot;: &quot;SGA-GL-0028&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;The number of days between the most recent commit and DOI for the repository&#39;s publication date as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-gh-workflow-success-ratio&quot;, &quot;id&quot;: &quot;SGA-SF-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Ratio of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0.81}, {&quot;name&quot;: &quot;repo-gh-workflow-succeeding-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 100}, {&quot;name&quot;: &quot;repo-gh-workflow-failing-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of failing workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 81}, {&quot;name&quot;: &quot;repo-gh-workflow-queried-total&quot;, &quot;id&quot;: &quot;SGA-SF-0004&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 19}, {&quot;name&quot;: &quot;repo-code-coverage-percent&quot;, &quot;id&quot;: &quot;SGA-SF-0005&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Percentage of code coverage for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-date-of-last-coverage-run&quot;, &quot;id&quot;: &quot;SGA-SF-0006&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Date of code coverage run for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-days-between-last-coverage-run-latest-commit&quot;, &quot;id&quot;: &quot;SGA-SF-0007&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Days between last coverage run date and latest commit date.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-total-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines of code used for code coverage within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-executed-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines covered code within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-agg-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Aggregated information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Represents value from 0 to 1 where 0 equals no information entropy and 1 represents maximum information entropy.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0.0032399961236882105}, {&quot;name&quot;: &quot;repo-file-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0002&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;File-level information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Shows all files and their corresponding information entropy measurements relative to the other files found within the range of commits.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: {&quot;.alexignore&quot;: 8.137557051950418e-05, &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.002303314622555871, &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 8.137557051950418e-05, &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.0020754619576020122, &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.0011757694100385388, &quot;.github/actions/install-node-env/action.yml&quot;: 0.00047945189067534965, &quot;.github/actions/install-python-env/action.yml&quot;: 0.0009517133576552295, &quot;.github/dependabot.yml&quot;: 0.0010083247197419888, &quot;.github/release-drafter.yml&quot;: 0.0006909928228313111, &quot;.github/workflows/deploy-book.yml&quot;: 0.0012033573999027773, &quot;.github/workflows/draft-release.yml&quot;: 0.0007498757030847159, &quot;.github/workflows/entropy-check.yml&quot;: 0.0018438756341057083, &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.0008946603169759946, &quot;.github/workflows/publish-pypi.yml&quot;: 0.0008659584698754822, &quot;.github/workflows/pytest-tests.yml&quot;: 0.0011480943013509966, &quot;.gitignore&quot;: 0.003866925828781817, &quot;.linkcheckerrc.ini&quot;: 0.0003854932634532223, &quot;.pre-commit-config.yaml&quot;: 0.0047100726714637865, &quot;.vale.ini&quot;: 0.00047945189067534965, &quot;CITATION.cff&quot;: 0.00468763564195914, &quot;CODE_OF_CONDUCT.md&quot;: 0.00011803692532472581, &quot;CONTRIBUTING.md&quot;: 0.00011803692532472581, &quot;LICENSE&quot;: 0.0008946603169759946, &quot;LICENSE.txt&quot;: 0.0008946603169759946, &quot;README.md&quot;: 0.0017918539523558929, &quot;coverage.xml&quot;: 0.021715239301768757, &quot;docs/readme.md&quot;: 0.00011803692532472581, &quot;media/coverage-badge.svg&quot;: 4.2982194701705824e-05, &quot;pa11y.json&quot;: 0.00025578681143135096, &quot;package-lock.json&quot;: 0.028516791316587936, &quot;package.json&quot;: 0.00018827370478629308, &quot;poetry.lock&quot;: 0.06214779427081766, &quot;pyproject.toml&quot;: 0.0047100726714637865, &quot;src/almanack/__init__.py&quot;: 0.0007790979227771374, &quot;src/almanack/book.py&quot;: 0.0018698072351989385, &quot;src/almanack/cli.py&quot;: 0.004620215024571, &quot;src/almanack/git.py&quot;: 0.009041119787303037, &quot;src/almanack/metrics/data.py&quot;: 0.01685943704457394, &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.0026758650782534327, &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.0019730242487215003, &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.006686146199632836, &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.0031127411964607323, &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.0016608337052025802, &quot;src/almanack/metrics/metrics.yml&quot;: 0.01002750263588727, &quot;src/almanack/metrics/remote.py&quot;: 0.0025030547588967746, &quot;src/almanack/reporting/report.py&quot;: 0.0032561951645520217, &quot;src/book/_config.yml&quot;: 0.0014211715989295478, &quot;src/book/_static/custom.css&quot;: 0.00044839432134928975, &quot;src/book/_toc.yml&quot;: 0.0009232439198919463, &quot;src/book/assets/640px-Forgard2-003.gif&quot;: 0.0, &quot;src/book/assets/640px-Rundes_Fenster_mit_Gitter.jpeg&quot;: 0.0, &quot;src/book/assets/Sundial_2916_HDR.jpeg&quot;: 0.0, &quot;src/book/assets/almanack-influencing-software.png&quot;: 0.0, &quot;src/book/assets/garden-lattice-understanding-transfer.png&quot;: 0.0, &quot;src/book/assets/software-gardening-logo.png&quot;: 0.0, &quot;src/book/assets/software-lifecycle.png&quot;: 0.0, &quot;src/book/assets/xkcd_dependency.png&quot;: 0.0, &quot;src/book/favicon.png&quot;: 0.0, &quot;src/book/garden-circle/contributing.md&quot;: 0.004507476067189011, &quot;src/book/garden-circle/garden-circle.md&quot;: 0.00011803692532472581, &quot;src/book/garden-circle/garden-map.md&quot;: 0.0013400650229209604, &quot;src/book/garden-circle/package-api.md&quot;: 0.0013671735796648872, &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.0012308605052558962, &quot;src/book/garden-lattice/understanding.md&quot;: 0.0031845955072730566, &quot;src/book/introduction.md&quot;: 0.002202478777886068, &quot;src/book/references.bib&quot;: 0.007292900480154505, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.0048666308387477234, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.003866925828781817, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb&quot;: 0.0041434443281982815, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-lines-of-code-and-time.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-gh-stars.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-top-5-langs.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_1.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_10.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_11.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_12.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_13.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_14.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_15.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_16.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_17.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_18.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_19.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_2.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_20.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_3.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_4.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_5.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_6.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_7.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_8.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_9.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.ipynb&quot;: 0.05066124999414861, &quot;src/book/seed-bank/seed-bank.md&quot;: 0.00011803692532472581, &quot;src/book/software-forest/software-forest.md&quot;: 0.0012582808486586293, &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.0012856204491005655, &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.0007498757030847159, &quot;tests/__init__.py&quot;: 0.0, &quot;tests/conftest.py&quot;: 0.004507476067189011, &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 4.2982194701705824e-05, &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.020099797014865625, &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.006601681638426565, &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.0016608337052025802, &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.0005408729109422541, &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.001687151936421729, &quot;tests/metrics/test_data.py&quot;: 0.021929524636905687, &quot;tests/metrics/test_garden_lattice.py&quot;: 0.0022781682551554936, &quot;tests/test_almanack.py&quot;: 0.0010924731761011023, &quot;tests/test_build.py&quot;: 0.0018956871133573793, &quot;tests/test_cli.py&quot;: 0.0024034963477559974, &quot;tests/test_git.py&quot;: 0.009240016120558485, &quot;tests/utils.py&quot;: 0.0010924731761011023}}]
-CPU times: user 59.4 ms, sys: 9.72 ms, total: 69.1 ms
-Wall time: 6.14 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&quot;name&quot;: &quot;repo-path&quot;, &quot;id&quot;: &quot;SGA-META-0001&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository path (local directory).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;/home/runner/work/almanack/almanack/src/book/seed-bank/almanack-example/almanack&quot;}, {&quot;name&quot;: &quot;repo-commits&quot;, &quot;id&quot;: &quot;SGA-META-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of commits for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 204}, {&quot;name&quot;: &quot;repo-file-count&quot;, &quot;id&quot;: &quot;SGA-META-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of files tracked within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 124}, {&quot;name&quot;: &quot;repo-commit-time-range&quot;, &quot;id&quot;: &quot;SGA-META-0004&quot;, &quot;result-type&quot;: &quot;tuple&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Starting commit and most recent commit for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: [&quot;2024-03-05&quot;, &quot;2025-06-13&quot;]}, {&quot;name&quot;: &quot;repo-days-of-development&quot;, &quot;id&quot;: &quot;SGA-META-0005&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Integer representing the number of days of development between most recent commit and first commit.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 466}, {&quot;name&quot;: &quot;repo-commits-per-day&quot;, &quot;id&quot;: &quot;SGA-META-0006&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Floating point number which represents the number of commits per day (using days of development).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0.43776824034334766}, {&quot;name&quot;: &quot;almanack-table-datetime&quot;, &quot;id&quot;: &quot;SGA-META-0007&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the date when this table was generated in the format of &#39;%Y-%m-%dT%H:%M:%S.%fZ&#39;, for example: 2024-11-22T18:20:30.123456Z .&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;2025-06-13T21:03:46.335812Z&quot;}, {&quot;name&quot;: &quot;almanack-version&quot;, &quot;id&quot;: &quot;SGA-META-0008&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the version of the almanack which was used to generate this table.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;0.0.0.post1.dev0+154f9ea&quot;}, {&quot;name&quot;: &quot;repo-primary-language&quot;, &quot;id&quot;: &quot;SGA-META-0009&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary programming language of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;Jupyter Notebook&quot;}, {&quot;name&quot;: &quot;repo-primary-license&quot;, &quot;id&quot;: &quot;SGA-META-0010&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary license of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;bsd-3-clause&quot;}, {&quot;name&quot;: &quot;repo-doi&quot;, &quot;id&quot;: &quot;SGA-META-0011&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI value detected from CITATION.cff file.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: &quot;10.5281/zenodo.14765834&quot;}, {&quot;name&quot;: &quot;repo-doi-publication-date&quot;, &quot;id&quot;: &quot;SGA-META-0012&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI publication date detected from CITATION.cff file and OpenAlex.org.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-almanack-score&quot;, &quot;id&quot;: &quot;SGA-META-0013&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Dictionary of length three, including the following: 1) number of Almanack boolean metrics that passed (numerator), 2) number of total Almanack boolean metrics considered (denominator), and 3) a score that represents how likely the repository will be maintained over time based (numerator / denominator).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: {&quot;almanack-score-numerator&quot;: 11, &quot;almanack-score-denominator&quot;: 11, &quot;almanack-score&quot;: 1.0}}, {&quot;name&quot;: &quot;repo-includes-readme&quot;, &quot;id&quot;: &quot;SGA-GL-0001&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a README file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a README file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-contributing&quot;, &quot;id&quot;: &quot;SGA-GL-0002&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CONTRIBUTING file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CONTRIBUTING file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-code-of-conduct&quot;, &quot;id&quot;: &quot;SGA-GL-0003&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CODE_OF_CONDUCT file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CODE_OF_CONDUCT file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-license&quot;, &quot;id&quot;: &quot;SGA-GL-0004&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a LICENSE file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a LICENSE file to the repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-is-citable&quot;, &quot;id&quot;: &quot;SGA-GL-0005&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CITATION file or some other means of indicating how to cite the work.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CITATION file to the repository (e.g. citation.cff, etc.).&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-default-branch-not-master&quot;, &quot;id&quot;: &quot;SGA-GL-0006&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating that the repo uses a default branch name besides &#39;master&#39;.&quot;, &quot;correction_guidance&quot;: &quot;Consider using a default source control branch name other than &#39;master&#39;.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-common-docs&quot;, &quot;id&quot;: &quot;SGA-GL-0007&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating whether the repo includes common documentation directory and files associated with building docsites.&quot;, &quot;correction_guidance&quot;: &quot;Consider including project documentation through the &#39;docs/&#39; directory.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-unique-contributors&quot;, &quot;id&quot;: &quot;SGA-GL-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors since the beginning of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 5}, {&quot;name&quot;: &quot;repo-unique-contributors-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 3}, {&quot;name&quot;: &quot;repo-unique-contributors-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0010&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 2}, {&quot;name&quot;: &quot;repo-tags-count&quot;, &quot;id&quot;: &quot;SGA-GL-0011&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 9}, {&quot;name&quot;: &quot;repo-tags-count-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0012&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 8}, {&quot;name&quot;: &quot;repo-tags-count-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0013&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 6}, {&quot;name&quot;: &quot;repo-stargazers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0014&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of stargazers on repository remote hosting platform.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 11}, {&quot;name&quot;: &quot;repo-uses-issues&quot;, &quot;id&quot;: &quot;SGA-GL-0015&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository uses issues (for example, as a bug and/or feature tracking tool.&quot;, &quot;correction_guidance&quot;: &quot;Consider leveraging issues for tracking bugs and/or features within your repository hosting platform.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-issues-open-count&quot;, &quot;id&quot;: &quot;SGA-GL-0016&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of open issues for repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 65}, {&quot;name&quot;: &quot;repo-pull-requests-enabled&quot;, &quot;id&quot;: &quot;SGA-GL-0017&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository enables pull requests.&quot;, &quot;correction_guidance&quot;: &quot;Consider enabling pull requests for the repository through your repository hosting platform.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-forks-count&quot;, &quot;id&quot;: &quot;SGA-GL-0018&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of forks of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 2}, {&quot;name&quot;: &quot;repo-subscribers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0019&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of subscribers (or watchers) of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-ecosystems&quot;, &quot;id&quot;: &quot;SGA-GL-0020&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;List of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: [&quot;pypi&quot;]}, {&quot;name&quot;: &quot;repo-packages-ecosystems-count&quot;, &quot;id&quot;: &quot;SGA-GL-0021&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-versions-count&quot;, &quot;id&quot;: &quot;SGA-GL-0022&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package versions on package hosts or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 10}, {&quot;name&quot;: &quot;repo-social-media-platforms&quot;, &quot;id&quot;: &quot;SGA-GL-0023&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: []}, {&quot;name&quot;: &quot;repo-social-media-platforms-count&quot;, &quot;id&quot;: &quot;SGA-GL-0024&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0}, {&quot;name&quot;: &quot;repo-doi-valid-format&quot;, &quot;id&quot;: &quot;SGA-GL-0025&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is of a valid format.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not of a valid format or missing.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-https-resolvable&quot;, &quot;id&quot;: &quot;SGA-GL-0026&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is https resolvable.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not https resolvable or missing.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-cited-by-count&quot;, &quot;id&quot;: &quot;SGA-GL-0027&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;How many other works cite the DOI for the repository found within the CITATION.cff as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-days-between-doi-publication-date-and-latest-commit&quot;, &quot;id&quot;: &quot;SGA-GL-0028&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;The number of days between the most recent commit and DOI for the repository&#39;s publication date as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-gh-workflow-success-ratio&quot;, &quot;id&quot;: &quot;SGA-SF-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Ratio of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0.75}, {&quot;name&quot;: &quot;repo-gh-workflow-succeeding-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 100}, {&quot;name&quot;: &quot;repo-gh-workflow-failing-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of failing workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 75}, {&quot;name&quot;: &quot;repo-gh-workflow-queried-total&quot;, &quot;id&quot;: &quot;SGA-SF-0004&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 25}, {&quot;name&quot;: &quot;repo-code-coverage-percent&quot;, &quot;id&quot;: &quot;SGA-SF-0005&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Percentage of code coverage for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-date-of-last-coverage-run&quot;, &quot;id&quot;: &quot;SGA-SF-0006&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Date of code coverage run for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-days-between-last-coverage-run-latest-commit&quot;, &quot;id&quot;: &quot;SGA-SF-0007&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Days between last coverage run date and latest commit date.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-total-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines of code used for code coverage within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-executed-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines covered code within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-agg-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Aggregated information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Represents value from 0 to 1 where 0 equals no information entropy and 1 represents maximum information entropy.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: 0.0034691333610329324}, {&quot;name&quot;: &quot;repo-file-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0002&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;File-level information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Shows all files and their corresponding information entropy measurements relative to the other files found within the range of commits.&quot;, &quot;correction_guidance&quot;: null, &quot;result&quot;: {&quot;.alexignore&quot;: 8.096641860894824e-05, &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.0022921742494052513, &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 8.096641860894824e-05, &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.0020654058013390626, &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.0011700221271943863, &quot;.github/actions/install-node-env/action.yml&quot;: 0.00047708126626846455, &quot;.github/actions/install-python-env/action.yml&quot;: 0.0009470475800920196, &quot;.github/dependabot.yml&quot;: 0.001114849669563288, &quot;.github/release-drafter.yml&quot;: 0.0006875911114437148, &quot;.github/workflows/deploy-book.yml&quot;: 0.0012793443258447134, &quot;.github/workflows/draft-release.yml&quot;: 0.0007461879172584012, &quot;.github/workflows/entropy-check.yml&quot;: 0.0018349241248901238, &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.001114849669563288, &quot;.github/workflows/publish-pypi.yml&quot;: 0.0008617077443240927, &quot;.github/workflows/pytest-tests.yml&quot;: 0.0013605053959402107, &quot;.github/workflows/test-links.yml&quot;: 0.0006875911114437148, &quot;.gitignore&quot;: 0.003871459308167185, &quot;.linkcheckerrc.ini&quot;: 0.0005684471515010515, &quot;.pre-commit-config.yaml&quot;: 0.004776755576229588, &quot;.pre-commit-hooks.yaml&quot;: 0.0004150164059384333, &quot;.vale.ini&quot;: 0.00047708126626846455, &quot;CITATION.cff&quot;: 0.00488779809194812, &quot;CODE_OF_CONDUCT.md&quot;: 0.00011744522963356781, &quot;CONTRIBUTING.md&quot;: 0.00011744522963356781, &quot;LICENSE&quot;: 0.0008902706011751182, &quot;LICENSE.txt&quot;: 0.0008902706011751182, &quot;README.md&quot;: 0.0026873871256168865, &quot;coverage.xml&quot;: 0.022026051487323336, &quot;docs/readme.md&quot;: 0.00011744522963356781, &quot;media/coverage-badge.svg&quot;: 4.276506399596737e-05, &quot;pa11y.json&quot;: 0.000254513615974685, &quot;package-lock.json&quot;: 0.02674897130109091, &quot;package.json&quot;: 0.00018733380739669334, &quot;poetry.lock&quot;: 0.0635633093787326, &quot;pyproject.toml&quot;: 0.0047322159872196495, &quot;src/almanack/__init__.py&quot;: 0.0007752682992810287, &quot;src/almanack/book.py&quot;: 0.0018607318942085054, &quot;src/almanack/cli.py&quot;: 0.00488779809194812, &quot;src/almanack/git.py&quot;: 0.008998674315297434, &quot;src/almanack/metrics/data.py&quot;: 0.017458397284208896, &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.0029539503639338296, &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.0019634563679611244, &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.006696474680797786, &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.0030977678121184554, &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.0016527573396266145, &quot;src/almanack/metrics/metrics.yml&quot;: 0.009980562939369273, &quot;src/almanack/metrics/remote.py&quot;: 0.002490965934423477, &quot;src/almanack/reporting/report.py&quot;: 0.0032405451944096993, &quot;src/book/_config.yml&quot;: 0.0014142440701761818, &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.odp&quot;: 0.0, &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf&quot;: 0.0, &quot;src/book/_static/custom.css&quot;: 0.0005984982192285225, &quot;src/book/_toc.yml&quot;: 0.0010593112434913326, &quot;src/book/assets/640px-Forgard2-003.gif&quot;: 0.0, &quot;src/book/assets/640px-Rundes_Fenster_mit_Gitter.jpeg&quot;: 0.0, &quot;src/book/assets/Sundial_2916_HDR.jpeg&quot;: 0.0, &quot;src/book/assets/almanack-influencing-software.png&quot;: 0.0, &quot;src/book/assets/garden-lattice-understanding-transfer.png&quot;: 0.0, &quot;src/book/assets/software-gardening-almanack-logo.png&quot;: 0.0, &quot;src/book/assets/software-gardening-logo.png&quot;: 0.0, &quot;src/book/assets/software-lifecycle.png&quot;: 0.0, &quot;src/book/assets/xkcd_dependency.png&quot;: 0.0, &quot;src/book/favicon.png&quot;: 0.0, &quot;src/book/garden-circle/contributing.md&quot;: 0.004709919548362938, &quot;src/book/garden-circle/garden-circle.md&quot;: 0.00018733380739669334, &quot;src/book/garden-circle/garden-map.md&quot;: 0.0013335271111401049, &quot;src/book/garden-circle/package-api.md&quot;: 0.0030259925645672063, &quot;src/book/garden-circle/pavilion.md&quot;: 0.0008617077443240927, &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.0012793443258447134, &quot;src/book/garden-lattice/understanding.md&quot;: 0.0031692831333130075, &quot;src/book/introduction.md&quot;: 0.0039404925229657925, &quot;src/book/references.bib&quot;: 0.007258467647002319, &quot;src/book/seed-bank/almanack-example/almanack-example.ipynb&quot;: 0.03360733287285622, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.004843433157812479, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.003848403647909953, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb&quot;: 0.004123625825556021, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-lines-of-code-and-time.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-gh-stars.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-top-5-langs.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_1.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_10.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_11.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_12.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_13.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_14.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_15.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_16.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_17.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_18.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_19.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_2.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_20.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_3.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_4.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_5.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_6.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_7.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_8.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_9.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.ipynb&quot;: 0.057975116142410965, &quot;src/book/seed-bank/seed-bank.md&quot;: 0.00018733380739669334, &quot;src/book/software-forest/software-forest.md&quot;: 0.0013064740012511357, &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.0013335271111401049, &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.0008042114740677492, &quot;tests/__init__.py&quot;: 0.0, &quot;tests/conftest.py&quot;: 0.004485954632291571, &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 4.276506399596737e-05, &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.020007858153118206, &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.006570434997048001, &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.0016527573396266145, &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.0005382023236799102, &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.0016789496234743426, &quot;tests/metrics/test_data.py&quot;: 0.022515438221310347, &quot;tests/metrics/test_garden_lattice.py&quot;: 0.0022671474170692547, &quot;tests/test_almanack.py&quot;: 0.0010871274917914203, &quot;tests/test_build.py&quot;: 0.0019634563679611244, &quot;tests/test_cli.py&quot;: 0.0033115603282474915, &quot;tests/test_git.py&quot;: 0.009334762791469222, &quot;tests/utils.py&quot;: 0.0010871274917914203}}]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 40.4 ms, sys: 12.4 ms, total: 52.8 ms
+Wall time: 3.69 s
 </pre></div>
 </div>
 </div>
@@ -2196,22 +2176,16 @@ Wall time: 6.14 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running Software Gardening Almanack checks.
-Datetime: 2025-01-13T18:36:09.368206Z
-Almanack version: 0.0.5
+Datetime: 2025-06-13T21:03:50.064281Z
+Almanack version: 0.0.0.post1.dev0+154f9ea
 Target repository path: ./almanack
-The following Software Gardening Almanack metrics have failed:
-╭─────────────┬───────────────────────────┬────────────────────────────────────────────────────╮
-│ ID          │ Name                      │ Guidance                                           │
-├─────────────┼───────────────────────────┼────────────────────────────────────────────────────┤
-│ SGA-GL-0025 │ repo-doi-valid-format     │ DOI within the CITATION.cff file is not of a valid │
-│             │                           │ format or missing.                                 │
-├─────────────┼───────────────────────────┼────────────────────────────────────────────────────┤
-│ SGA-GL-0026 │ repo-doi-https-resolvable │ DOI within the CITATION.cff file is not https      │
-│             │                           │ resolvable or missing.                             │
-╰─────────────┴───────────────────────────┴────────────────────────────────────────────────────╯
-Software Gardening Almanack score: 81.82% (9/11)
-CPU times: user 40.3 ms, sys: 10.7 ms, total: 51 ms
-Wall time: 4.83 s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Software Gardening Almanack score: 100.00% (11/11)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 43 ms, sys: 13.5 ms, total: 56.5 ms
+Wall time: 4.1 s
 </pre></div>
 </div>
 </div>
