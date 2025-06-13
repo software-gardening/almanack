@@ -68,7 +68,6 @@ repos:
       # making the documentation easier to read and maintain.
     -   id: mdformat
         additional_dependencies:
-        -   mdformat-myst
         -   mdformat-gfm
 
 -   repo: https://github.com/adrienverge/yamllint
