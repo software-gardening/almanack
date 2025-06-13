@@ -1,4 +1,6 @@
-# used for running tests on links
+# used for running tests to check links
+# within almanack content
+# for issues such as 404's, etc.
 name: link tests
 
 on:
