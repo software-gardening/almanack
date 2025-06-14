@@ -42,6 +42,7 @@ class AlmanackCLI(object):
         repo_path: str,
         dest_path: Optional[str] = None,
         ignore: Optional[List[str]] = None,
+        verbose: bool = False,
     ) -> None:
         """
         Used through CLI to
@@ -58,7 +59,12 @@ class AlmanackCLI(object):
             ignore (List[str]):
                 A list of metric IDs to ignore when
                 running the checks. Defaults to None.
+             verbose (bool):
+                If True, print extra information.
         """
+
+        if verbose:
+            print(f"Gathering table for repo: {repo_path} (ignore={ignore})")
 
         # serialized JSON as a string
         json_output = json.dumps(
@@ -81,7 +87,9 @@ class AlmanackCLI(object):
         # CLI option.)
         sys.exit(0)
 
-    def check(self, repo_path: str, ignore: Optional[List[str]] = None) -> None:
+    def check(
+        self, repo_path: str, ignore: Optional[List[str]] = None, verbose: bool = False
+    ) -> None:
         """
         Used through CLI to
         check table of metrics for
@@ -109,6 +117,9 @@ class AlmanackCLI(object):
             f"Target repository path: {repo_path}",
             sep="\n",
         )
+
+        if verbose:
+            print(f"Running check on repo: {repo_path} (ignore={ignore})")
 
         # gather failed metrics
         failed_metrics = gather_failed_almanack_metric_checks(
