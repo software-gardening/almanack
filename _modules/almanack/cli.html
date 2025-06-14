@@ -391,7 +391,11 @@ document.write(`
 <div class="viewcode-block" id="AlmanackCLI.table">
 <a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.AlmanackCLI.table">[docs]</a>
     <span class="k">def</span> <span class="nf">table</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">dest_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used through CLI to</span>
@@ -403,6 +407,8 @@ document.write(`
 <span class="sd">        Args:</span>
 <span class="sd">            repo_path (str):</span>
 <span class="sd">                The path to the repository to analyze.</span>
+<span class="sd">            dest_path (str):</span>
+<span class="sd">                A path to send the output to.</span>
 <span class="sd">            ignore (List[str]):</span>
 <span class="sd">                A list of metric IDs to ignore when</span>
 <span class="sd">                running the checks. Defaults to None.</span>
@@ -413,13 +419,21 @@ document.write(`
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gathering table for repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
-        <span class="c1"># print serialized JSON as a string</span>
-        <span class="nb">print</span><span class="p">(</span>
-            <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
-                <span class="c1"># gather table data from Almanack</span>
-                <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">),</span>
-            <span class="p">)</span>
+        <span class="c1"># serialized JSON as a string</span>
+        <span class="n">json_output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
+            <span class="c1"># gather table data from Almanack</span>
+            <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">),</span>
         <span class="p">)</span>
+
+        <span class="c1"># if we have a dest_path, send data to file</span>
+        <span class="k">if</span> <span class="n">dest_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_output</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrote data to file: </span><span class="si">{</span><span class="n">dest_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># otherwise use stdout</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json_output</span><span class="p">)</span>
 
         <span class="c1"># exit with zero status for no errors</span>
         <span class="c1"># (we don&#39;t check for failures with this</span>
