@@ -390,7 +390,9 @@ document.write(`
 
 <div class="viewcode-block" id="AlmanackCLI.table">
 <a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.AlmanackCLI.table">[docs]</a>
-    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used through CLI to</span>
 <span class="sd">        generate a table of metrics</span>
@@ -404,7 +406,12 @@ document.write(`
 <span class="sd">            ignore (List[str]):</span>
 <span class="sd">                A list of metric IDs to ignore when</span>
 <span class="sd">                running the checks. Defaults to None.</span>
+<span class="sd">             verbose (bool):</span>
+<span class="sd">                If True, print extra information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gathering table for repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
         <span class="c1"># print serialized JSON as a string</span>
         <span class="nb">print</span><span class="p">(</span>
@@ -422,7 +429,9 @@ document.write(`
 
 <div class="viewcode-block" id="AlmanackCLI.check">
 <a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.AlmanackCLI.check">[docs]</a>
-    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Used through CLI to</span>
 <span class="sd">        check table of metrics for</span>
@@ -450,6 +459,9 @@ document.write(`
             <span class="sa">f</span><span class="s2">&quot;Target repository path: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running check on repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
 
         <span class="c1"># gather failed metrics</span>
         <span class="n">failed_metrics</span> <span class="o">=</span> <span class="n">gather_failed_almanack_metric_checks</span><span class="p">(</span>
