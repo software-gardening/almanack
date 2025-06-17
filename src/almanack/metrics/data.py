@@ -568,13 +568,13 @@ def _get_almanack_version() -> str:
     try:
         # attempt to gather the development version from dunamai
         # for scenarios where almanack from source is used.
-        import dunamai
+        import dunamai  # noqa: PLC0415
 
         return dunamai.Version.from_any_vcs().serialize()
     except (RuntimeError, ModuleNotFoundError):
         # else grab a static version from __init__.py
         # for scenarios where the built/packaged almanack is used.
-        import almanack
+        import almanack  # noqa: PLC0415
 
         return almanack.__version__
 
