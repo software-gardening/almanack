@@ -150,7 +150,7 @@ class AlmanackCLI(object):
 
             # introduce a table of output in CLI
             print(
-                "The following Software Gardening Almanack metrics may be helpful to improve upon your repository:"
+                "The following Software Gardening Almanack metrics may be helpful to improve your repository:"
             )
 
             # Format the output
