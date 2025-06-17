@@ -494,7 +494,7 @@ document.write(`
 
         <span class="c1"># prepare almanack score output</span>
         <span class="n">almanack_score_output</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Software Gardening Almanack score: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">almanack_score_metrics</span><span class="p">[</span><span class="s1">&#39;almanack-score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;Software Gardening Almanack summary: </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">almanack_score_metrics</span><span class="p">[</span><span class="s1">&#39;almanack-score&#39;</span><span class="p">]</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">% &quot;</span>
             <span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="n">almanack_score_metrics</span><span class="p">[</span><span class="s1">&#39;almanack-score-numerator&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">/&quot;</span>
             <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">almanack_score_metrics</span><span class="p">[</span><span class="s1">&#39;almanack-score-denominator&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span>
         <span class="p">)</span>
@@ -505,7 +505,9 @@ document.write(`
         <span class="k">if</span> <span class="n">almanack_score_metrics</span><span class="p">[</span><span class="s2">&quot;almanack-score&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 
             <span class="c1"># introduce a table of output in CLI</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The following Software Gardening Almanack metrics have failed:&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="s2">&quot;The following Software Gardening Almanack metrics may be helpful to improve your repository:&quot;</span>
+            <span class="p">)</span>
 
             <span class="c1"># Format the output</span>
             <span class="n">failures_output_table</span> <span class="o">=</span> <span class="p">[</span>
