@@ -108,7 +108,7 @@ def test_cli_almanack_check(tmp_path):
             "Almanack version:",
             "Target repository path:",
             "The following Software Gardening Almanack metrics",
-            "Software Gardening Almanack check ratio:",
+            "Software Gardening Almanack summary:",
         ]
     )
 
