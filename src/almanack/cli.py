@@ -138,7 +138,7 @@ class AlmanackCLI(object):
 
         # prepare almanack score output
         almanack_score_output = (
-            f"Software Gardening Almanack check ratio: {100 * almanack_score_metrics['almanack-score']:.2f}% "
+            f"Software Gardening Almanack summary: {100 * almanack_score_metrics['almanack-score']:.2f}% "
             f"({almanack_score_metrics['almanack-score-numerator']}/"
             f"{almanack_score_metrics['almanack-score-denominator']})"
         )
