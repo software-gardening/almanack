@@ -937,13 +937,13 @@ document.write(`
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># attempt to gather the development version from dunamai</span>
         <span class="c1"># for scenarios where almanack from source is used.</span>
-        <span class="kn">import</span> <span class="nn">dunamai</span>
+        <span class="kn">import</span> <span class="nn">dunamai</span>  <span class="c1"># noqa: PLC0415</span>
 
         <span class="k">return</span> <span class="n">dunamai</span><span class="o">.</span><span class="n">Version</span><span class="o">.</span><span class="n">from_any_vcs</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
         <span class="c1"># else grab a static version from __init__.py</span>
         <span class="c1"># for scenarios where the built/packaged almanack is used.</span>
-        <span class="kn">import</span> <span class="nn">almanack</span>
+        <span class="kn">import</span> <span class="nn">almanack</span>  <span class="c1"># noqa: PLC0415</span>
 
         <span class="k">return</span> <span class="n">almanack</span><span class="o">.</span><span class="n">__version__</span></div>
 
