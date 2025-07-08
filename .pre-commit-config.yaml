@@ -111,7 +111,7 @@ repos:
     -   id: isort
 
 -   repo: https://github.com/PyCQA/bandit
-    rev: 1.8.5
+    rev: 1.8.6
     hooks:
       # Scans Python code for common security issues, helping to identify
       # and fix potential vulnerabilities in the codebase.
@@ -120,7 +120,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.12.1"
+    rev: "v0.12.2"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
