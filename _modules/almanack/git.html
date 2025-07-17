@@ -682,6 +682,10 @@ document.write(`
 <span class="k">def</span> <span class="nf">get_remote_url</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determines the remote URL of a git repository, if available.</span>
+<span class="sd">    We use the `upstream` remote first, then `origin`,</span>
+<span class="sd">    and finally any other remote.</span>
+<span class="sd">    The upstream remote is preferred because it will be used</span>
+<span class="sd">    for referential data lookups (such as GitHub issues, stars, etc.).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        repo (pygit2.Repository): The pygit2 repository object.</span>
@@ -689,21 +693,20 @@ document.write(`
 <span class="sd">    Returns:</span>
 <span class="sd">        Optional[str]: The remote URL if found, otherwise None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Get the &#39;origin&#39; remote URL (common convention)</span>
-        <span class="n">remote</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span>
-        <span class="n">remote_url</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">url</span>
+    <span class="c1"># use upstream and then origin to try and find the correct remote URL</span>
+    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;upstream&quot;</span><span class="p">,</span> <span class="s2">&quot;origin&quot;</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Get the &#39;origin&#39; remote URL (common convention)</span>
+            <span class="n">remote</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">remotes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">remote_url</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Validate the URL structure using urlparse</span>
-        <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span> <span class="s2">&quot;ssh&quot;</span><span class="p">}</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">remote_url</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-        <span class="c1"># &#39;origin&#39; remote does not exist</span>
-        <span class="k">pass</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="c1"># Remote URL is not accessible</span>
-        <span class="k">pass</span>
+            <span class="c1"># Validate the URL structure using urlparse</span>
+            <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span> <span class="s2">&quot;ssh&quot;</span><span class="p">}</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">remote_url</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
+            <span class="c1"># &#39;origin&#39; remote does not exist or URL is not accessible</span>
+            <span class="k">pass</span>
 
     <span class="c1"># Fallback: Try to get any remote URL if &#39;origin&#39; does not exist</span>
     <span class="k">try</span><span class="p">:</span>

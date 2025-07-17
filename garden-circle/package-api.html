@@ -774,7 +774,11 @@ or None if no matching file is found.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="almanack.git.get_remote_url">
 <span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">get_remote_url</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#get_remote_url"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.get_remote_url" title="Link to this definition">#</a></dt>
-<dd><p>Determines the remote URL of a git repository, if available.</p>
+<dd><p>Determines the remote URL of a git repository, if available.
+We use the <cite>upstream</cite> remote first, then <cite>origin</cite>,
+and finally any other remote.
+The upstream remote is preferred because it will be used
+for referential data lookups (such as GitHub issues, stars, etc.).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The pygit2 repository object.</p>
