@@ -304,6 +304,10 @@ def read_file(
 def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
     """
     Determines the remote URL of a git repository, if available.
+    We use the `upstream` remote first, then `origin`,
+    and finally any other remote.
+    The upstream remote is preferred because it will be used
+    for referential data lookups (such as GitHub issues, stars, etc.).
 
     Args:
         repo (pygit2.Repository): The pygit2 repository object.
@@ -311,21 +315,20 @@ def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
     Returns:
         Optional[str]: The remote URL if found, otherwise None.
     """
-    try:
-        # Get the 'origin' remote URL (common convention)
-        remote = repo.remotes["origin"]
-        remote_url = remote.url
+    # use upstream and then origin to try and find the correct remote URL
+    for name in ("upstream", "origin"):
+        try:
+            # Get the 'origin' remote URL (common convention)
+            remote = repo.remotes[name]
+            remote_url = remote.url.removesuffix(".git")
 
-        # Validate the URL structure using urlparse
-        parsed_url = urlparse(remote_url)
-        if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
-            return remote_url.removesuffix(".git")
-    except KeyError:
-        # 'origin' remote does not exist
-        pass
-    except AttributeError:
-        # Remote URL is not accessible
-        pass
+            # Validate the URL structure using urlparse
+            parsed_url = urlparse(remote_url)
+            if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
+                return remote_url
+        except (KeyError, AttributeError):
+            # 'origin' remote does not exist or URL is not accessible
+            pass
 
     # Fallback: Try to get any remote URL if 'origin' does not exist
     try:

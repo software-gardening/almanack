@@ -240,7 +240,7 @@ def test_count_files(
     ), f"Expected {expected_count} files, got {count_files(most_recent_tree)}"
 
 
-def test_get_remote_url_with_current_repo(current_repo):
+def test_get_remote_url(tmp_path: pathlib.Path, current_repo: str):
     """
     Test get_remote_url using the repository containing this test.
     """
@@ -262,6 +262,21 @@ def test_get_remote_url_with_current_repo(current_repo):
 
     # Optionally, print the remote URL for debugging
     print(f"Remote URL: {remote_url}")
+
+    # create a repo and check that the origin is captured (instead of upstream)
+    pathlib.Path(repo_path := (tmp_path / "test_remote_repo")).mkdir(
+        parents=True, exist_ok=True
+    )
+    origin_repo = pygit2.init_repository(str(repo_path), bare=False)
+    origin_url = "https://github.com/org/repo.git"
+    origin_repo.remotes.create("origin", origin_url)
+
+    remote_url = get_remote_url(origin_repo)
+
+    # we check that we have the modified url without the git suffix
+    assert remote_url == origin_url.replace(
+        ".git", ""
+    ), f"Expected remote URL {origin_url}, but got {remote_url}"
 
 
 @pytest.mark.parametrize(
