@@ -21,7 +21,7 @@ exclude = [ "src/book/_build" ]
 [tool.poetry.dependencies]
 python = ">=3.9.2,<3.14"
 pyyaml = "^6.0.1"
-pygit2 = "^1.15.1"
+pygit2 = ">=1.15.1"
 fire = ">=0.6,<0.8"
 tabulate = "^0.9.0"
 charset-normalizer = "^3.4.0"
