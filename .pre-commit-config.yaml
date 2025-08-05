@@ -62,7 +62,7 @@ repos:
         -   tomli
 
 -   repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.21
+    rev: 0.7.22
     hooks:
       # Formats Markdown files to ensure a consistent style,
       # making the documentation easier to read and maintain.
@@ -158,8 +158,13 @@ repos:
       # cells for consistency.
     -   id: nbqa-isort
         args: ["--float-to-top"]
+-   repo: https://github.com/aristanetworks/j2lint
+    rev: v1.2.0
+    hooks:
+    # Lints Jinja2 templates, ensuring they follow best practices
+    -   id: j2lint
 -   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
-    rev: v0.6.0
+    rev: v0.8.0
     hooks:
     -   id: pre-commit-update
         args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert"]
