@@ -170,7 +170,8 @@ metrics:
       Create a CONTRIBUTING file in the root directory of your repository.
       Include guidelines for contributing, such as coding standards,
       pull request instructions, and any other relevant information.
-      You can use Markdown to format the CONTRIBUTING file for better readability.
+      You can use Markdown to format the CONTRIBUTING file for better
+      readability.
       For example, you can start with a simple text editor or use an online
       Markdown editor to create your CONTRIBUTING file.
       Save it as `CONTRIBUTING.md` in the root of your repository.
@@ -194,7 +195,8 @@ metrics:
       Create a CODE_OF_CONDUCT file in the root directory of your repository.
       Include guidelines for acceptable behavior, reporting procedures,
       and any other relevant information.
-      You can use Markdown to format the CODE_OF_CONDUCT file for better readability.
+      You can use Markdown to format the CODE_OF_CONDUCT file for better
+      readability.
       For example, you can start with a simple text editor or use an online
       Markdown editor to create your CODE_OF_CONDUCT file.
       Save it as `CODE_OF_CONDUCT.md` in the root of your repository.
