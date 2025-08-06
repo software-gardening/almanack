@@ -36,6 +36,7 @@ def generate_check_pages(app: Sphinx, config: Any) -> None:
     # locate your YAML
     project_root = confdir.parents[1]
     yaml_path = project_root / "src" / "almanack" / "metrics" / "metrics.yml"
+
     logger.warning(f"[DEBUG] loading YAML from {yaml_path}")
     raw = yaml.safe_load(yaml_path.read_text(encoding="utf-8"))
 

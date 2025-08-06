@@ -20,19 +20,7 @@ from .utils import check_subproc_run_for_nonzero
 
 
 @pytest.fixture()
-def jupyter_book_source() -> pathlib.Path:
-    """
-    Fixture for Jupyter Book content.
-    """
-
-    # return the location of the almanack content
-    return pathlib.Path("src/book")
-
-
-@pytest.fixture()
-def build_jupyter_book(
-    jupyter_book_source: str, tmp_path: pathlib.Path
-) -> pathlib.Path:
+def build_jupyter_book(tmp_path: pathlib.Path) -> pathlib.Path:
     """
     Fixture to build Jupyter Book content.
 
@@ -47,9 +35,12 @@ def build_jupyter_book(
     jupyter_book_test_target.mkdir()
 
     # copy the source and add development-only files for testing
-    shutil.copytree(jupyter_book_source, jupyter_book_test_source)
-    shutil.copy("tests/data/jupyter-book/sandbox.md", jupyter_book_test_source)
-    with open(jupyter_book_test_source / "_toc.yml", "a") as tocfile:
+    shutil.copytree(".", jupyter_book_test_source)
+    shutil.copy(
+        "tests/data/jupyter-book/sandbox.md",
+        jupyter_book_test_source / "src" / "book" / "sandbox.md",
+    )
+    with open(jupyter_book_test_source / "src" / "book" / "_toc.yml", "a") as tocfile:
         tocfile.write("      - file: sandbox.md")
 
     # build jupyter book content
@@ -57,7 +48,7 @@ def build_jupyter_book(
         [
             "jupyter-book",
             "build",
-            jupyter_book_test_source,
+            jupyter_book_test_source / "src" / "book",
             "--path-output",
             jupyter_book_test_target,
         ],
