@@ -190,7 +190,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
 </li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/contributing.html">Contributing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/garden-map.html">Garden Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/pavilion.html">Pavilion</a></li>
@@ -397,8 +400,12 @@ document.write(`
         <span class="c1"># Check if there are sections within the chapter</span>
         <span class="k">if</span> <span class="s2">&quot;sections&quot;</span> <span class="ow">in</span> <span class="n">chapter</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">chapter</span><span class="p">[</span><span class="s2">&quot;sections&quot;</span><span class="p">]:</span>
-                <span class="n">section_title_key</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-                <span class="n">chapter_paths</span><span class="p">[</span><span class="n">section_title_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
+                <span class="c1"># we pass the glob sections as it is not a direct file.</span>
+                <span class="k">if</span> <span class="s2">&quot;glob&quot;</span> <span class="ow">in</span> <span class="n">section</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">elif</span> <span class="s2">&quot;title&quot;</span> <span class="ow">in</span> <span class="n">section</span> <span class="ow">and</span> <span class="s2">&quot;file&quot;</span> <span class="ow">in</span> <span class="n">section</span><span class="p">:</span>
+                    <span class="n">section_title_key</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="n">chapter_paths</span><span class="p">[</span><span class="n">section_title_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">section</span><span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">]</span>
 
     <span class="c1"># if we don&#39;t find the chapter, raise a helpful exception message</span>
     <span class="k">if</span> <span class="n">chapter_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">chapter_paths</span><span class="p">:</span>
