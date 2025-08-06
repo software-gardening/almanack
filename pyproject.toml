@@ -104,18 +104,18 @@ ignore-words = "styles/config/vocabularies/almanack/accept.txt"
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex = ".{1024}|.*codespell-ignore.*"
 
+[tool.pytest.ini_options]
+testpaths = "tests"
+markers = [
+  "links: tests which involve checking for hyperlink rot.",
+]
+
 [tool.vulture]
 min_confidence = 90
 paths = [ "src/almanack", "tests" ]
 
 [tool.bandit]
 exclude_dirs = [ "tests" ]
-
-[tool.pytest.ini_options]
-testpaths = "tests"
-markers = [
-  "links: tests which involve checking for hyperlink rot.",
-]
 
 [tool.poe.tasks]
 # builds the jupyter book related to this project
