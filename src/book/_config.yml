@@ -29,11 +29,15 @@ repository:
 #######################################################################################
 # Sphinx configuration
 sphinx:
+  local_extensions:
+      gen_check_pages: '_ext'
   extra_extensions:
     # enable sphinx autodoc for package api documentation
     - 'sphinx.ext.autodoc'
     - 'sphinx.ext.napoleon'
     - 'sphinx.ext.viewcode'
+    - 'gen_check_pages'
+  
   config:
     bibtex_reference_style: super
     # added to help render plotly plots within jupyter-book builds

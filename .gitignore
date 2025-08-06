@@ -294,8 +294,8 @@ dist
 .pnp.*
 
 # almanack-specific ignores
-
 /src/book/_build
+/src/book/checks
 
 # for ignoring vale package installs
 /styles
