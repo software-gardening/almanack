@@ -18,7 +18,7 @@ from almanack.metrics.data import (
 )
 
 
-def link(uri: str, label: str=None, parameters: str = ''):
+def cli_link(uri: str, label: str = None, parameters: str = ""):
     """
     Create a CLI-based link for a given URI.
 
@@ -36,12 +36,13 @@ def link(uri: str, label: str=None, parameters: str = ''):
             An OSC 8 escape sequence for the link.
     """
     # if we have no label, use the URI as the label
-    if label is None: 
+    if label is None:
         label = uri
-    
+
     # formatted string with order:
-    # OSC 8 ; params ; URI ST <name> OSC 8 ;; ST 
-    return f'\033]8;{parameters};{uri}\033\\{label}\033]8;;\033\\'
+    # OSC 8 ; params ; URI ST <name> OSC 8 ;; ST
+    return f"\033]8;{parameters};{uri}\033\\{label}\033]8;;\033\\"
+
 
 class AlmanackCLI(object):
     """
@@ -180,7 +181,15 @@ class AlmanackCLI(object):
 
             # Format the output
             failures_output_table = [
-                [metric["id"], metric["name"], metric["correction_guidance"]]
+                [
+                    metric["id"],
+                    metric["name"],
+                    metric["correction_guidance"],
+                    cli_link(
+                        uri=f"https://software-gardening.github.io/almanack/checks/{metric['id']}.html",
+                        label="link",
+                    ),
+                ]
                 for metric in failed_metrics
                 if metric["name"] != "repo-almanack-score"
             ]
@@ -189,17 +198,19 @@ class AlmanackCLI(object):
             max_id_length = max(len(metric[0]) for metric in failures_output_table)
             max_name_length = max(len(metric[1]) for metric in failures_output_table)
 
-            # calculate the max width for the final column in output
+            # calculate the max width for the guidance column in output
             max_width = (shutil.get_terminal_size().columns) - (
-                max_id_length + max_name_length + 12
+                max_id_length + max_name_length + 25
             )
+
+            print("Max width for guidance column:", max_width)
 
             # show a table of failures
             print(
                 str(
                     tabulate(
-                        failures_output_table,
-                        ["ID", "Name", "Guidance"],
+                        tabular_data=failures_output_table,
+                        headers=["ID", "Name", "Guidance", "More Info"],
                         tablefmt="rounded_grid",
                         # set a dynamic width for each column in the table
                         # where the None is no max width and the final column
@@ -209,6 +220,7 @@ class AlmanackCLI(object):
                             None,
                             None,
                             max_width if max_width > 0 else 30,
+                            None,
                         ],
                     )
                 )
