@@ -18,6 +18,31 @@ from almanack.metrics.data import (
 )
 
 
+def link(uri: str, label: str=None, parameters: str = ''):
+    """
+    Create a CLI-based link for a given URI.
+
+    Referenced with modifications from:
+    https://stackoverflow.com/a/71309268
+
+    Args:
+        uri (str):
+            The URI to link to.
+        label (str, optional):
+            The label for the link. Defaults to None.
+
+    Returns:
+        str:
+            An OSC 8 escape sequence for the link.
+    """
+    # if we have no label, use the URI as the label
+    if label is None: 
+        label = uri
+    
+    # formatted string with order:
+    # OSC 8 ; params ; URI ST <name> OSC 8 ;; ST 
+    return f'\033]8;{parameters};{uri}\033\\{label}\033]8;;\033\\'
+
 class AlmanackCLI(object):
     """
     Almanack CLI class for Google Fire
