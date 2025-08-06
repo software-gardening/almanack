@@ -7,8 +7,8 @@ metrics:
     description: >-
       Repository path (local directory).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-commits"
     id: "SGA-META-0002"
     result-type: "int"
@@ -16,8 +16,8 @@ metrics:
     description: >-
       Total number of commits for the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-file-count"
     id: "SGA-META-0003"
     result-type: "int"
@@ -25,8 +25,8 @@ metrics:
     description: >-
       Total number of files tracked within the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-commit-time-range"
     id: "SGA-META-0004"
     result-type: "tuple"
@@ -34,8 +34,8 @@ metrics:
     description: >-
       Starting commit and most recent commit for the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-days-of-development"
     id: "SGA-META-0005"
     result-type: "int"
@@ -44,8 +44,8 @@ metrics:
       Integer representing the number of days of development
       between most recent commit and first commit.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-commits-per-day"
     id: "SGA-META-0006"
     result-type: "float"
@@ -54,8 +54,8 @@ metrics:
       Floating point number which represents the number of commits
       per day (using days of development).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "almanack-table-datetime"
     id: "SGA-META-0007"
     result-type: "str"
@@ -65,8 +65,8 @@ metrics:
       in the format of '%Y-%m-%dT%H:%M:%S.%fZ', for example:
       2024-11-22T18:20:30.123456Z .
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "almanack-version"
     id: "SGA-META-0008"
     result-type: "str"
@@ -75,8 +75,8 @@ metrics:
       String representing the version of the almanack which was used
       to generate this table.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-primary-language"
     id: "SGA-META-0009"
     result-type: "str"
@@ -84,8 +84,8 @@ metrics:
     description: >-
       Detected primary programming language of the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
@@ -93,8 +93,8 @@ metrics:
     description: >-
       Detected primary license of the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-doi"
     id: "SGA-META-0011"
     result-type: "str"
@@ -102,8 +102,8 @@ metrics:
     description: >-
       Repository DOI value detected from CITATION.cff file.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-doi-publication-date"
     id: "SGA-META-0012"
     result-type: "str"
@@ -112,8 +112,8 @@ metrics:
       Repository DOI publication date detected from CITATION.cff file
       and OpenAlex.org.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-almanack-score"
     id: "SGA-META-0013"
     result-type: "dict"
@@ -125,8 +125,8 @@ metrics:
       score that represents how likely the repository will be maintained
       over time based (numerator / denominator).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-includes-readme"
     id: "SGA-GL-0001"
     result-type: "bool"
@@ -136,12 +136,12 @@ metrics:
       in the repository.
     correction_guidance: >-
       Consider adding a README file to the repository.
-    fix-why: >-
+    fix_why: >-
       A README file is essential for providing an overview of the project,
       its purpose, and how to use it.
       Many platforms like GitHub, GitLab, and Bitbucket use the README
       file to display project information prominently.
-    fix-how: >-
+    fix_how: >-
       Create a README file in the root directory of your repository.
       Include sections such as project description, installation instructions,
       usage examples, and contribution guidelines.
@@ -160,13 +160,13 @@ metrics:
       in the repository.
     correction_guidance: >-
       Consider adding a CONTRIBUTING file to the repository.
-    fix-why: >-
+    fix_why: >-
       A CONTRIBUTING file is important for guiding potential contributors
       on how to contribute to the project, including coding standards,
       pull request guidelines, and other relevant information.
       It helps maintain a consistent contribution process and encourages
       community involvement.
-    fix-how: >-
+    fix_how: >-
       Create a CONTRIBUTING file in the root directory of your repository.
       Include guidelines for contributing, such as coding standards,
       pull request instructions, and any other relevant information.
@@ -186,12 +186,12 @@ metrics:
       in the repository.
     correction_guidance: >-
       Consider adding a CODE_OF_CONDUCT file to the repository.
-    fix-why: >-
+    fix_why: >-
       A CODE_OF_CONDUCT file is essential for establishing a respectful
       and inclusive community within the project. It sets expectations
       for behavior, helps prevent harassment, and provides a framework
       for resolving conflicts.
-    fix-how: >-
+    fix_how: >-
       Create a CODE_OF_CONDUCT file in the root directory of your repository.
       Include guidelines for acceptable behavior, reporting procedures,
       and any other relevant information.
@@ -211,12 +211,12 @@ metrics:
       in the repository.
     correction_guidance: >-
       Consider adding a LICENSE file to the repository.
-    fix-why: >-
+    fix_why: >-
       A LICENSE file is crucial for defining the terms under which
       the code can be used, modified, and distributed. It helps
       protect both the authors and users of the code by clarifying
       legal rights and responsibilities.
-    fix-how: >-
+    fix_how: >-
       Create a LICENSE file in the root directory of your repository.
       Include the text of the license you wish to apply to your code.
       You can choose from existing open-source licenses, such as MIT,
@@ -236,13 +236,13 @@ metrics:
     correction_guidance: >-
       Consider adding a CITATION file to the repository
       (e.g. citation.cff, etc.).
-    fix-why: >-
+    fix_why: >-
       A CITATION file is important for providing a standardized way
       to cite the work, making it easier for others to reference and
       acknowledge the project in their own work. It helps promote
       the visibility and impact of the project within the academic
       and research communities.
-    fix-how: >-
+    fix_how: >-
       Create a CITATION file in the root directory of your repository.
       Include information on how to cite the work, such as the authors,
       title, publication date, and any relevant identifiers (e.g., DOI).
@@ -263,12 +263,12 @@ metrics:
     correction_guidance: >-
       Consider using a default source control
       branch name other than 'master'.
-    fix-why: >-
+    fix_why: >-
       Using a default branch name other than 'master'
       is more collaborative and avoids possible
       negative historical connotations associated
       with the term.
-    fix-how: >-
+    fix_how: >-
       Change the default branch name in your
       source control platform (e.g., GitHub, GitLab,
       Bitbucket) to a more inclusive term like 'main',
@@ -287,12 +287,12 @@ metrics:
     correction_guidance: >-
       Consider including project documentation through the
       'docs/' directory.
-    fix-why: >-
+    fix_why: >-
       Including a 'docs/' directory with common documentation files
       helps in maintaining a clear structure for project documentation,
       making it easier for contributors and users to find relevant information.
       It also promotes better collaboration and understanding of the project.
-    fix-how: >-
+    fix_how: >-
       Create a 'docs/' directory in the root of your repository.
       Inside this directory, include common documentation files such as
       'index.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md', and any other
@@ -309,8 +309,8 @@ metrics:
       Count of unique contributors since the beginning
       of the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-unique-contributors-past-year"
     id: "SGA-GL-0009"
     result-type: "int"
@@ -320,8 +320,8 @@ metrics:
       from now (where now is a reference to table value
       of almanack-table-datetime).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-unique-contributors-past-182-days"
     id: "SGA-GL-0010"
     result-type: "int"
@@ -331,8 +331,8 @@ metrics:
       from now (where now is a reference to table value
       of almanack-table-datetime).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-tags-count"
     id: "SGA-GL-0011"
     result-type: "int"
@@ -340,8 +340,8 @@ metrics:
     description: >-
       Count of the number of tags within the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-tags-count-past-year"
     id: "SGA-GL-0012"
     result-type: "int"
@@ -351,8 +351,8 @@ metrics:
       within the last year from now (where now is a
       reference to table value of almanack-table-datetime).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-tags-count-past-182-days"
     id: "SGA-GL-0013"
     result-type: "int"
@@ -362,8 +362,8 @@ metrics:
       within the last 182 days from now (where now is a
       reference to table value of almanack-table-datetime).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-stargazers-count"
     id: "SGA-GL-0014"
     result-type: "int"
@@ -372,8 +372,8 @@ metrics:
       Count of the number of stargazers on repository
       remote hosting platform.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-uses-issues"
     id: "SGA-GL-0015"
     result-type: "bool"
@@ -384,11 +384,11 @@ metrics:
     correction_guidance: >-
       Consider leveraging issues for tracking bugs and/or features
       within your repository hosting platform.
-    fix-why: >-
+    fix_why: >-
       Using issues for tracking bugs and features helps in maintaining
       a clear record of project development, facilitates collaboration,
       and allows for better prioritization of tasks.
-    fix-how: >-
+    fix_how: >-
       Enable issues on your repository hosting platform (e.g., GitHub,
       GitLab, Bitbucket) if not already enabled. This can usually be done
       through the repository settings or by creating an issue template.
@@ -401,8 +401,8 @@ metrics:
     description: >-
       Count of open issues for repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-pull-requests-enabled"
     id: "SGA-GL-0017"
     result-type: "bool"
@@ -412,8 +412,8 @@ metrics:
     correction_guidance: >-
       Consider enabling pull requests for the repository
       through your repository hosting platform.
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-forks-count"
     id: "SGA-GL-0018"
     result-type: "int"
@@ -421,8 +421,8 @@ metrics:
     description: >-
       Count of forks of the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-subscribers-count"
     id: "SGA-GL-0019"
     result-type: "int"
@@ -430,8 +430,8 @@ metrics:
     description: >-
       Count of subscribers (or watchers) of the repository.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-packages-ecosystems"
     id: "SGA-GL-0020"
     result-type: "list"
@@ -440,8 +440,8 @@ metrics:
       List of package platforms or services where the repository
       was detected (leveraging the ecosyste.ms packages API).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-packages-ecosystems-count"
     id: "SGA-GL-0021"
     result-type: "int"
@@ -450,8 +450,8 @@ metrics:
       Count of package platforms or services where the repository
       was detected (leveraging the ecosyste.ms packages API).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-packages-versions-count"
     id: "SGA-GL-0022"
     result-type: "int"
@@ -461,8 +461,8 @@ metrics:
       where the repository was detected (leveraging the
       ecosyste.ms packages API).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-social-media-platforms"
     id: "SGA-GL-0023"
     result-type: "list"
@@ -470,8 +470,8 @@ metrics:
     description: >-
       Social media platforms detected within the readme.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-social-media-platforms-count"
     id: "SGA-GL-0024"
     result-type: "int"
@@ -479,8 +479,8 @@ metrics:
     description: >-
       Count of social media platforms detected within the readme.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-doi-valid-format"
     id: "SGA-GL-0025"
     result-type: "bool"
@@ -490,10 +490,10 @@ metrics:
       format.
     correction_guidance: >-
       DOI within the CITATION.cff file is not of a valid format or missing.
-    fix-why: >-
+    fix_why: >-
       A valid DOI format is essential for ensuring that the DOI can be
       resolved and used to reference the work correctly.
-    fix-how: >-
+    fix_how: >-
       Ensure that the DOI in the CITATION.cff file follows the standard
       DOI format, which typically includes a prefix (e.g., 10.1234) and a
       suffix (e.g., 56789/abcde). The DOI should be in the format:
@@ -507,11 +507,11 @@ metrics:
       Whether the DOI found in the CITATION.cff file is HTTPS resolvable.
     correction_guidance: >-
       DOI within the CITATION.cff file is not HTTPS resolvable or missing.
-    fix-why: >-
+    fix_why: >-
       An HTTPS resolvable DOI is crucial for ensuring that the DOI can be
       accessed securely and reliably, allowing users to retrieve the work
       associated with the DOI.
-    fix-how: >-
+    fix_how: >-
       Verify that the DOI in the CITATION.cff file can be resolved using
       an HTTPS URL. The DOI should be formatted as:
       `https://doi.org/10.<prefix>/<suffix>`. If the DOI is not resolvable
@@ -525,8 +525,8 @@ metrics:
       How many other works cite the DOI for the repository found within
       the CITATION.cff as discovered by the OpenAlex.org API.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-days-between-doi-publication-date-and-latest-commit"
     id: "SGA-GL-0028"
     result-type: "int"
@@ -536,8 +536,8 @@ metrics:
       for the repository's publication date as discovered by
       the OpenAlex.org API.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
@@ -547,8 +547,8 @@ metrics:
       workflow runs from GitHub (only applies to GitHub
       hosted repositories which use workflows).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-succeeding-runs"
     id: "SGA-SF-0002"
     result-type: "int"
@@ -558,8 +558,8 @@ metrics:
       workflow runs from GitHub (only applies to GitHub
       hosted repositories which use workflows).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-failing-runs"
     id: "SGA-SF-0003"
     result-type: "int"
@@ -569,8 +569,8 @@ metrics:
       workflow runs from GitHub (only applies to GitHub
       hosted repositories which use workflows).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-queried-total"
     id: "SGA-SF-0004"
     result-type: "int"
@@ -580,8 +580,8 @@ metrics:
       (only applies to GitHub hosted repositories
       which use workflows).
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-code-coverage-percent"
     id: "SGA-SF-0005"
     result-type: "float"
@@ -590,8 +590,8 @@ metrics:
       Percentage of code coverage for repository
       given detected code coverage data.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-date-of-last-coverage-run"
     id: "SGA-SF-0006"
     result-type: "str"
@@ -600,8 +600,8 @@ metrics:
       Date of code coverage run for repository
       given detected code coverage data.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-days-between-last-coverage-run-latest-commit"
     id: "SGA-SF-0007"
     result-type: "int"
@@ -609,8 +609,8 @@ metrics:
     description: >-
       Days between last coverage run date and latest commit date.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-code-coverage-total-lines"
     id: "SGA-SF-0008"
     result-type: "int"
@@ -619,8 +619,8 @@ metrics:
       Total lines of code used for code coverage within repository
       given detected code coverage data.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-code-coverage-executed-lines"
     id: "SGA-SF-0009"
     result-type: "int"
@@ -629,8 +629,8 @@ metrics:
       Total lines covered code within repository
       given detected code coverage data.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-agg-info-entropy"
     id: "SGA-VS-0001"
     result-type: "float"
@@ -642,8 +642,8 @@ metrics:
       no information entropy and 1 represents maximum information
       entropy.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:
   - name: "repo-file-info-entropy"
     id: "SGA-VS-0002"
     result-type: "dict"
@@ -655,5 +655,5 @@ metrics:
       information entropy measurements relative to the other files
       found within the range of commits.
     correction_guidance:
-    fix-why:
-    fix-how:
+    fix_why:
+    fix_how:

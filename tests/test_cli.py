@@ -6,10 +6,35 @@ import json
 
 import yaml
 
+from almanack.cli import cli_link
 from almanack.metrics.data import METRICS_TABLE
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
 from .utils import run_cli_command
+
+
+def test_cli_link():
+    """
+    Test the cli_link function to ensure
+    it generates the correct link format.
+    """
+
+    link = cli_link(
+        uri="https://example.com",
+        label="Example Link",
+    )
+
+    assert isinstance(link, str)
+    assert "Example Link" in link
+    assert "https://example.com" in link
+
+    link = cli_link(
+        uri="https://example.com",
+    )
+
+    assert isinstance(link, str)
+    assert "https://example.com" in link
+    assert link.count("https://example.com") == 2  # noqa: PLR2004
 
 
 def test_cli_util():

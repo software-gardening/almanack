@@ -46,8 +46,12 @@ def read(chapter_name: Optional[str] = None):
         # Check if there are sections within the chapter
         if "sections" in chapter:
             for section in chapter["sections"]:
-                section_title_key = section["title"].replace(" ", "_").lower()
-                chapter_paths[section_title_key] = section["file"]
+                # we pass the glob sections as it is not a direct file.
+                if "glob" in section:
+                    pass
+                elif "title" in section and "file" in section:
+                    section_title_key = section["title"].replace(" ", "_").lower()
+                    chapter_paths[section_title_key] = section["file"]
 
     # if we don't find the chapter, raise a helpful exception message
     if chapter_name not in chapter_paths:

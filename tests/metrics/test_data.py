@@ -172,6 +172,8 @@ def test_get_table(repo_files, tmp_path: pathlib.Path) -> None:
         "sustainability_correlation",
         "description",
         "correction_guidance",
+        "fix_why",
+        "fix_how",
         "result",
     ]
 
@@ -221,6 +223,8 @@ def test_metrics_yaml():
                         "correction_guidance": {
                             "anyOf": [{"type": "string"}, {"type": "null"}]
                         },
+                        "fix_why": {"anyOf": [{"type": "string"}, {"type": "null"}]},
+                        "fix_how": {"anyOf": [{"type": "string"}, {"type": "null"}]},
                     },
                     "required": [
                         "name",
@@ -229,6 +233,8 @@ def test_metrics_yaml():
                         "sustainability_correlation",
                         "description",
                         "correction_guidance",
+                        "fix_why",
+                        "fix_how",
                     ],
                 },
             }

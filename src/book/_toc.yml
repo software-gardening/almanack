@@ -21,7 +21,8 @@ parts:
           - title: PubMed GitHub Repository Software Information Entropy
             file: "seed-bank/pubmed-github-repositories/\
               visualize-pubmed-repo-sofware-entropy.ipynb"
-      - file: checks/index
+      - title: Checks Index
+        file: checks/index
         sections:
           - glob: checks/*.md
       - title: Garden Circle

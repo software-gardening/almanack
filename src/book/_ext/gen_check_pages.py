@@ -55,8 +55,8 @@ def generate_check_pages(app: Sphinx, config: Any) -> None:
                 "id": cid,
                 "name": entry.get("name", cid),
                 "description": (entry.get("description") or "").strip(),
-                "how": (entry.get("fix-how") or "").strip(),
-                "why": (entry.get("fix-why") or "").strip(),
+                "how": (entry.get("fix_how") or "").strip(),
+                "why": (entry.get("fix_why") or "").strip(),
                 "sustainability_correlation": entry.get(
                     "sustainability_correlation", 0
                 ),
