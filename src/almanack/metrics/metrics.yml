@@ -146,7 +146,7 @@ metrics:
       Include sections such as project description, installation instructions,
       usage examples, and contribution guidelines.
       You can use Markdown to format the README for better readability.
-      For example, you can start with a simple text editor or use an online
+      For example, you can start with a text editor or use an online
       Markdown editor to create your README file.
       Save it as `README.md` in the root of your repository.
       If you're using GitHub, you can also use their web interface to create
@@ -172,7 +172,7 @@ metrics:
       pull request instructions, and any other relevant information.
       You can use Markdown to format the CONTRIBUTING file for better
       readability.
-      For example, you can start with a simple text editor or use an online
+      For example, you can start with a text editor or use an online
       Markdown editor to create your CONTRIBUTING file.
       Save it as `CONTRIBUTING.md` in the root of your repository.
       If you're using GitHub, you can also use their web interface to create
@@ -197,7 +197,7 @@ metrics:
       and any other relevant information.
       You can use Markdown to format the CODE_OF_CONDUCT file for better
       readability.
-      For example, you can start with a simple text editor or use an online
+      For example, you can start with a text editor or use an online
       Markdown editor to create your CODE_OF_CONDUCT file.
       Save it as `CODE_OF_CONDUCT.md` in the root of your repository.
       If you're using GitHub, you can also use their web interface to create
@@ -219,9 +219,9 @@ metrics:
     fix-how: >-
       Create a LICENSE file in the root directory of your repository.
       Include the text of the license you wish to apply to your code.
-      You can choose from various open-source licenses, such as MIT,
+      You can choose from existing open-source licenses, such as MIT,
       Apache 2.0, or GPL, depending on your project's needs.
-      For example, you can start with a simple text editor or use an online
+      For example, you can start with a text editor or use an online
       license generator to create your LICENSE file.
       Save it as `LICENSE` or `LICENSE.txt` in the root of your repository.
       If you're using GitHub, you can also use their web interface to create
@@ -248,7 +248,7 @@ metrics:
       title, publication date, and any relevant identifiers (e.g., DOI).
       You can use the Citation File Format (CFF) standard to structure
       the CITATION file for better compatibility with citation tools.
-      For example, you can start with a simple text editor or use an online
+      For example, you can start with a text editor or use an online
       CFF editor to create your CITATION file.
       Save it as `CITATION.cff` in the root of your repository.
       If you're using GitHub, you can also use their web interface to create
@@ -504,18 +504,18 @@ metrics:
     result-type: "bool"
     sustainability_correlation: 1
     description: >-
-      Whether the DOI found in the CITATION.cff file is https resolvable.
+      Whether the DOI found in the CITATION.cff file is HTTPS resolvable.
     correction_guidance: >-
-      DOI within the CITATION.cff file is not https resolvable or missing.
+      DOI within the CITATION.cff file is not HTTPS resolvable or missing.
     fix-why: >-
-      An https resolvable DOI is crucial for ensuring that the DOI can be
+      An HTTPS resolvable DOI is crucial for ensuring that the DOI can be
       accessed securely and reliably, allowing users to retrieve the work
       associated with the DOI.
     fix-how: >-
       Verify that the DOI in the CITATION.cff file can be resolved using
-      an https URL. The DOI should be formatted as:
+      an HTTPS URL. The DOI should be formatted as:
       `https://doi.org/10.<prefix>/<suffix>`. If the DOI is not resolvable
-      or does not use https, update it to ensure it points to a valid and
+      or does not use HTTPS, update it to ensure it points to a valid and
       secure URL.
   - name: "repo-doi-cited-by-count"
     id: "SGA-GL-0027"

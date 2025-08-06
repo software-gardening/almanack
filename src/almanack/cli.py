@@ -18,7 +18,7 @@ from almanack.metrics.data import (
 )
 
 
-def cli_link(uri: str, label: str = None, parameters: str = ""):
+def cli_link(uri: str, label: Optional[str] = None, parameters: str = ""):
     """
     Create a CLI-based link for a given URI.
 
