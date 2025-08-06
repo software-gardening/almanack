@@ -111,6 +111,12 @@ paths = [ "src/almanack", "tests" ]
 [tool.bandit]
 exclude_dirs = [ "tests" ]
 
+[tool.pytest.ini_options]
+testpaths = "tests"
+markers = [
+  "links: tests which involve checking for hyperlink rot.",
+]
+
 [tool.poe.tasks]
 # builds the jupyter book related to this project
 # note: we include the pythonpath var to properly build sphinx autodocs
