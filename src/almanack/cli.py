@@ -203,8 +203,6 @@ class AlmanackCLI(object):
                 max_id_length + max_name_length + 25
             )
 
-            print("Max width for guidance column:", max_width)
-
             # show a table of failures
             print(
                 str(
