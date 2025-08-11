@@ -259,7 +259,9 @@ def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
     elif isinstance(tree, pygit2.Tree):
         # Recursively count files for Tree
         return sum(count_files(entry) for entry in tree)
-
+    else:
+        # If neither, return 0
+        return 0
 
 def read_file(
     repo: pygit2.Repository,
