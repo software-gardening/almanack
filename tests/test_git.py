@@ -260,9 +260,6 @@ def test_get_remote_url(tmp_path: pathlib.Path, current_repo: str):
     }, f"Unexpected scheme in URL: {parsed_url.scheme}"
     assert parsed_url.netloc, f"Invalid net location in URL: {remote_url}"
 
-    # Optionally, print the remote URL for debugging
-    print(f"Remote URL: {remote_url}")
-
     # create a repo and check that the origin is captured (instead of upstream)
     pathlib.Path(repo_path := (tmp_path / "test_remote_repo")).mkdir(
         parents=True, exist_ok=True

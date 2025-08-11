@@ -90,10 +90,13 @@ lint.select = [
   "PL",
   # ruff
   "RUF",
+  # flake8-print
+  "T20",
 ]
 # defines poe the poet tasks
 # Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
 lint.per-file-ignores."__init__.py" = [ "F401" ]
+lint.per-file-ignores."src/book/seed-bank/*" = [ "T201" ]
 
 [tool.isort]
 profile = "black"

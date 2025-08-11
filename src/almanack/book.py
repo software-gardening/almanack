@@ -65,4 +65,4 @@ def read(chapter_name: Optional[str] = None):
 
     # else we read the content
     with open(str(book_base_path / chapter_paths[chapter_name])) as file:
-        print(file.read())
+        print(file.read())  # noqa: T201

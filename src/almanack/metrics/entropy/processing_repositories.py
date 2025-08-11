@@ -34,7 +34,7 @@ def process_repo_entropy(repo_path: str) -> str:
     # Generate and print the report from the dictionary
     report_content = repo_report(entropy_data)
 
-    print(report_content)
+    print(report_content)  # noqa: T201
 
 
 def process_pr_entropy(repo_path: str, pr_branch: str, main_branch: str) -> str:
@@ -65,4 +65,4 @@ def process_pr_entropy(repo_path: str, pr_branch: str, main_branch: str) -> str:
     # Generate and print the report
     report_content = pr_report(pr_data)
 
-    print(report_content)
+    print(report_content)  # noqa: T201

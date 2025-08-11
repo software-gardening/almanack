@@ -90,7 +90,9 @@ class AlmanackCLI(object):
         """
 
         if verbose:
-            print(f"Gathering table for repo: {repo_path} (ignore={ignore})")
+            print(  # noqa: T201
+                f"Gathering table for repo: {repo_path} (ignore={ignore})"
+            )
 
         # serialized JSON as a string
         json_output = json.dumps(
@@ -102,11 +104,11 @@ class AlmanackCLI(object):
         if dest_path is not None:
             with open(dest_path, "w") as f:
                 f.write(json_output)
-            print(f"Wrote data to file: {dest_path}")
+            print(f"Wrote data to file: {dest_path}")  # noqa: T201
 
         # otherwise use stdout
         else:
-            print(json_output)
+            print(json_output)  # noqa: T201
 
         # exit with zero status for no errors
         # (we don't check for failures with this
@@ -136,7 +138,7 @@ class AlmanackCLI(object):
 
         # header for CLI output
         datetime_now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
-        print(
+        print(  # noqa: T201
             "Running Software Gardening Almanack checks.",
             f"Datetime: {datetime_now}",
             f"Almanack version: {_get_almanack_version()}",
@@ -145,7 +147,7 @@ class AlmanackCLI(object):
         )
 
         if verbose:
-            print(f"Running check on repo: {repo_path} (ignore={ignore})")
+            print(f"Running check on repo: {repo_path} (ignore={ignore})")  # noqa: T201
 
         # gather failed metrics
         failed_metrics = gather_failed_almanack_metric_checks(
@@ -175,7 +177,7 @@ class AlmanackCLI(object):
         if almanack_score_metrics["almanack-score"] != 1:
 
             # introduce a table of output in CLI
-            print(
+            print(  # noqa: T201
                 "The following Software Gardening Almanack metrics may be helpful to improve your repository:"
             )
 
@@ -204,7 +206,7 @@ class AlmanackCLI(object):
             )
 
             # show a table of failures
-            print(
+            print(  # noqa: T201
                 str(
                     tabulate(
                         tabular_data=failures_output_table,
@@ -225,13 +227,13 @@ class AlmanackCLI(object):
             )
 
             # show the almanack score output
-            print(almanack_score_output)
+            print(almanack_score_output)  # noqa: T201
 
             # return non-zero exit code for failures
             sys.exit(2)
 
         # show the almanack score output
-        print(almanack_score_output)
+        print(almanack_score_output)  # noqa: T201
 
         # exit with zero (no failures)
         sys.exit(0)
