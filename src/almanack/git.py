@@ -263,6 +263,7 @@ def count_files(tree: Union[pygit2.Tree, pygit2.Blob]) -> int:
         # If neither, return 0
         return 0
 
+
 def read_file(
     repo: pygit2.Repository,
     entry: Optional[pygit2.Object] = None,
