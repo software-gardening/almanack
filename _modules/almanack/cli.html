@@ -449,7 +449,9 @@ document.write(`
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Gathering table for repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
+                <span class="sa">f</span><span class="s2">&quot;Gathering table for repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># serialized JSON as a string</span>
         <span class="n">json_output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
@@ -461,11 +463,11 @@ document.write(`
         <span class="k">if</span> <span class="n">dest_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dest_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
                 <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_output</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrote data to file: </span><span class="si">{</span><span class="n">dest_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wrote data to file: </span><span class="si">{</span><span class="n">dest_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># noqa: T201</span>
 
         <span class="c1"># otherwise use stdout</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">json_output</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">json_output</span><span class="p">)</span>  <span class="c1"># noqa: T201</span>
 
         <span class="c1"># exit with zero status for no errors</span>
         <span class="c1"># (we don&#39;t check for failures with this</span>
@@ -498,7 +500,7 @@ document.write(`
 
         <span class="c1"># header for CLI output</span>
         <span class="n">datetime_now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span>
+        <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
             <span class="s2">&quot;Running Software Gardening Almanack checks.&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;Datetime: </span><span class="si">{</span><span class="n">datetime_now</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
             <span class="sa">f</span><span class="s2">&quot;Almanack version: </span><span class="si">{</span><span class="n">_get_almanack_version</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -507,7 +509,7 @@ document.write(`
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running check on repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running check on repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>  <span class="c1"># noqa: T201</span>
 
         <span class="c1"># gather failed metrics</span>
         <span class="n">failed_metrics</span> <span class="o">=</span> <span class="n">gather_failed_almanack_metric_checks</span><span class="p">(</span>
@@ -537,7 +539,7 @@ document.write(`
         <span class="k">if</span> <span class="n">almanack_score_metrics</span><span class="p">[</span><span class="s2">&quot;almanack-score&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
 
             <span class="c1"># introduce a table of output in CLI</span>
-            <span class="nb">print</span><span class="p">(</span>
+            <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
                 <span class="s2">&quot;The following Software Gardening Almanack metrics may be helpful to improve your repository:&quot;</span>
             <span class="p">)</span>
 
@@ -565,10 +567,8 @@ document.write(`
                 <span class="n">max_id_length</span> <span class="o">+</span> <span class="n">max_name_length</span> <span class="o">+</span> <span class="mi">25</span>
             <span class="p">)</span>
 
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Max width for guidance column:&quot;</span><span class="p">,</span> <span class="n">max_width</span><span class="p">)</span>
-
             <span class="c1"># show a table of failures</span>
-            <span class="nb">print</span><span class="p">(</span>
+            <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
                 <span class="nb">str</span><span class="p">(</span>
                     <span class="n">tabulate</span><span class="p">(</span>
                         <span class="n">tabular_data</span><span class="o">=</span><span class="n">failures_output_table</span><span class="p">,</span>
@@ -589,13 +589,13 @@ document.write(`
             <span class="p">)</span>
 
             <span class="c1"># show the almanack score output</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">almanack_score_output</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">almanack_score_output</span><span class="p">)</span>  <span class="c1"># noqa: T201</span>
 
             <span class="c1"># return non-zero exit code for failures</span>
             <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 
         <span class="c1"># show the almanack score output</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">almanack_score_output</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">almanack_score_output</span><span class="p">)</span>  <span class="c1"># noqa: T201</span>
 
         <span class="c1"># exit with zero (no failures)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>

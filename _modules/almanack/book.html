@@ -419,7 +419,7 @@ document.write(`
 
     <span class="c1"># else we read the content</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">book_base_path</span> <span class="o">/</span> <span class="n">chapter_paths</span><span class="p">[</span><span class="n">chapter_name</span><span class="p">]))</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>  <span class="c1"># noqa: T201</span></div>
 
 </pre></div>
 
