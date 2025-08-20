@@ -196,3 +196,15 @@ else
     rm "new_cov.xml"
 fi
 """
+# note: quarto commands below expect quarto installed on the local system.
+# see here for more information: https://quarto.org/docs/download/
+poster-preview.shell = """
+quarto preview \
+  src/book/_posters/2025/poster.qmd
+"""
+poster-render.shell = """
+  quarto render \
+  src/book/_posters/2025/poster.qmd
+  mv src/book/_posters/2025/2026-poster.pdf \
+  src/book/_static/2026-poster.pdf
+"""

@@ -1,0 +1,138 @@
+---
+title: The Software Gardening Almanack
+format:
+  poster-typst:
+    size: "48x36"
+    poster-authors: "Dave Bunten¹, Will Davidson¹, Faisal Alquaddoomi¹, Vincent Rubinetti¹, Gregory P. Way¹"
+    departments: "¹Department of Biomedical Informatics, University of Colorado Anschutz Medical Campus"
+    institution-logo: "./images/header-combined-images.png"
+    footer-text: "Software Gardening Almanack"
+    footer-url: "https://software-gardening.github.io/almanack"
+    footer-emails: "https://github.com/software-gardening/almanack"
+    footer-color: "9BE7A6"
+output-file: "almanack-2025-poster.pdf"
+citation:
+  doi: 10.5281/zenodo.14847244
+---
+
+## Fragile code & sustainability debt
+
+<!-- [_“Software grows and decays.” Repositories accumulate complexity, missing docs, and other issues that erode maintainability over time. The Almanack treats software like a living ecosystem and provides measurements + checks to slow decay and guide care._](./images/almanack_problem.png){width=100%} -->
+
+Scientific software often becomes brittle: documentation gaps, weak tests, and ad‑hoc practices combine with time to create **sustainability debt**. This debt hides defects, slows research, and undermines reproducibility.
+Existing guidance is scattered and qualitative. Teams need **measurable signals** and **actionable checks** that map to better long‑term outcomes.
+
+## Handbook + Python package
+
+<!-- ![_Two parts: a public **handbook** (education, examples, and rationale) and a **Python package** that generates metrics and runs checks on any repo. Integrate as CLI, pre‑commit hook, or Python API to surface sustainability risks early._](./images/almanack_overview.png){width=85% fig-align="center"} -->
+
+We present **The Software Gardening Almanack**, an open‑source project with two complementary components:
+
+- **Handbook (Jupyter Book):** teaching the “why” and “how”—concepts, examples, and tutorials.
+- **`almanack` Python package:** the “do”—compute metrics (including software information entropy), build reports, and run lint‑style **sustainability checks** that you can gate in CI.
+
+Together, they help labs quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
+
+## Getting started with `almanack`
+
+### Installation
+
+```shell
+# install from PyPI
+pip install almanack
+
+# or install directly from source
+pip install git+https://github.com/software-gardening/almanack.git
+```
+
+### Use the CLI
+
+```shell
+# generate a JSON table of sustainability metrics for a repository
+almanack table path/to/repository
+
+# run lint-style sustainability checks (nonzero exit if failing)
+almanack check path/to/repository
+```
+
+**Pre-commit integration**
+
+```yaml
+# .pre-commit-config.yaml
+- repo: https://github.com/software-gardening/almanack
+  rev: v0.1.1
+  hooks:
+    - id: almanack-check
+```
+
+### Python API
+
+```python
+import almanack
+import pandas as pd
+
+# Build a table of repository metrics
+table = almanack.table("path/to/repository")
+pd.DataFrame(table).head()
+```
+
+**Compute a quick sustainability score**
+
+```python
+from almanack.metrics.data import compute_almanack_score
+
+score = compute_almanack_score(table)
+print(score)  # {'passed': 18, 'total': 24, 'score': 0.75}
+```
+
+**List failed checks for fast triage**
+
+```python
+from almanack.metrics.data import gather_failed_almanack_metric_checks
+
+failed = gather_failed_almanack_metric_checks("path/to/repository")
+for item in failed:
+    print(f"{item['id']}: {item['description']} (why it matters: {item['rationale']})")
+```
+
+## What the metrics capture
+
+<!-- ![_The **metrics table** combines repository metadata with computed signals (e.g., README present, license present, tests, coverage, CI status, release cadence, contributors, and **software information entropy** over time). These metrics power both human‑readable reports and automated checks._](./images/almanack_metrics_table.png){width=100%} -->
+
+- **Repository hygiene:** README, license, citation, contribution guide, code of conduct, docs location.
+- **Process health:** CI configuration, build status, test presence, coverage parsing (e.g., Python).
+- **Community signals:** contributors, tags/releases, issue tracker availability.
+- **Evolution/complexity:** **information entropy** at file and repo levels to highlight hotspots and decay risk.
+- **Scoring & gating:** boolean checks mapped to maintenance direction (positive/negative) plus an overall **Almanack score**.
+
+## Visual analytics & examples
+
+<!-- ![_**Entropy at scale** — notebooks in the Almanack’s “Seed Bank” show analyses of ~10,000 PubMed‑linked GitHub repos. Lower entropy and healthy collaboration correlate with longer‑lived, more stable projects—useful for planning maintenance and review._](./images/almanack_entropy_examples.png){width=100%} -->
+
+The **Seed Bank** demonstrates how to reproduce and explore measures (e.g., normalized Shannon entropy) across thousands of research repositories, relating **time**, **complexity**, and **engagement**.
+
+## Typical workflows in a lab
+
+<!-- ![_Common adoption points. 1) **Local assessment:** run `almanack table` to see where a repo stands. 2) **CI guardrails:** add `almanack check` to pre‑commit/CI. 3) **Periodic review:** track scores/failed checks over time to plan refactors and docs._](./images/almanack_flow.png){width=85% fig-align="center"} -->
+
+1. **Survey repositories** to establish a baseline metrics table and identify immediate fixes (missing license, broken badge, etc.).  
+2. **Add guardrails** with pre‑commit/CI so regressions are caught early (e.g., missing citation file).  
+3. **Plan maintenance** using entropy hotspots and failed‑check rationales to guide refactoring and documentation.
+
+## Real‑world value for scientists
+
+<!-- ![_Adding measurable sustainability checks to research software reduces collapse risk, improves onboarding, and clarifies expectations for collaboration and review. Labs can surface problems before publication and keep tools usable long after._](./images/almanack_value.png){width=100%} -->
+
+- **Reproducibility & trust:** standard checks and reports make expectations visible for collaborators and reviewers.
+- **Onboarding faster:** new team members see structure (docs/tests/CI) and can contribute earlier.
+- **Longevity:** entropy and process signals help choose where to invest limited maintenance time.
+- **Automation‑ready:** outputs integrate cleanly with dashboards, CI logs, and PR comments.
+
+## Acknowledgements
+
+We thank contributors and supporters of the Almanack effort, including the **Better Scientific Software (BSSw) Fellowship Program**, **U.S. Department of Energy (DOE)**, **National Nuclear Security Administration (NNSA)**, and the **National Science Foundation (NSF, award 2327079)**; and collaborators across the University of Colorado Anschutz Medical Campus.
+
+- Project: https://github.com/software-gardening/almanack  
+- Handbook: https://software-gardening.github.io/almanack  
+- PyPI package: https://pypi.org/project/almanack/
+
