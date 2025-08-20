@@ -21,41 +21,27 @@ poetry run poe poster-preview
 poetry run poe poster-render
 ```
 
-## Additional notes
+## References
 
 - Fonts were sourced locally for rendering within Quarto and Typst:
   - [Vollkorn](https://fonts.google.com/specimen/Vollkorn)
   - [Lato](https://fonts.google.com/specimen/Lato)
-- QR codes with images were generated and saved manually via [https://github.com/kciter/qart.js](https://github.com/kciter/qart.js)
+- QR codes with images were generated and saved manually via [https://github.com/lyqht/mini-qr](https://github.com/lyqht/mini-qr)
 - [ImageMagick](http://www.imagemagick.org/) was used to form the bottom logos together as one and render the poster pdf as png using the following commands:
 
 ```shell
 # append text to qr codes
-magick images/cosmicqc-qr.png -gravity South -background transparent -splice 0x15 -pointsize 40 -font Arial -weight Bold -annotate 0x15 'Scan for coSMicQC!' images/cosmicqc-qr-text.png
-
-# adjust single cell images from Durbin Lab collaboration
-magick images/normal_phenotype_cosmicqc.png -resize 904x904 -gravity center -background black -extent 904x904 images/normal_phenotype_cosmicqc_resized.png
-magick images/weird_phenotype_cosmicqc.png -resize 904x904 -gravity center -background black -extent 904x904 images/weird_phenotype_cosmicqc_resized.png
-magick images/normal_phenotype_cosmicqc_resized.png images/weird_phenotype_cosmicqc_resized.png +append images/durbin_phenotypes_combined.png
-
-# adjust roc plot for sizing
-magick images/bootstrap_plot.png -density 300 -resize 8000x8000 images/bootstrap_plot_resized.png
+magick images/sga-qr.png -gravity South -background transparent -splice 0x15 -pointsize 40 -font Arial -weight Bold -annotate 0x15 'Scan for GitHub!' images/sga-qr-text.png
 
 # create a transparent spacer
 magick -size 100x460 xc:transparent images/spacer.png
 
+magick images/sga-qr-text.png -resize x460 images/sga-qr-text.png
+magick images/bssw-logo-w-background.png -resize x460 images/bssw-logo-w-background.png
+magick images/sustainable-horizons-institute-logo.png -resize x460 images/sustainable-horizons-institute-logo.png
+magick images/cu-anschutz-short.png -resize x460 images/cu-anschutz-short.png
 # combine the images together as one using the spacer for separation
-magick -background none images/cosmicqc-qr-text.png images/spacer.png images/waylab.png images/spacer.png images/dbmi.png +append images/header_combined_images.png
-
-# add circles to highlight umap clusters for jump analysis
-magick ../../src/examples/images/umap_comparison_with_and_without_erroneous_outliers_BR00117012.png -fill none -stroke purple -strokewidth 2 \
--draw "circle 634,317 684,317" \
--draw "circle 665,64 695,64" \
--draw "circle 612,465 662,465" \
-images/jump_umap_comparison_with_highlights.png
-
-# combine jump umaps together
-magick +append ../../src/examples/images/umap_erroneous_outliers_BR00117012.png ./images/jump_umap_comparison_with_highlights.png images/jump_umap_analyses.png
+magick -background none images/sga-qr-text.png images/spacer.png images/bssw-logo-w-background.png images/spacer.png images/sustainable-horizons-institute-logo.png images/spacer.png images/cu-anschutz-short.png +append images/header-combined-images.png
 
 # convert the poster pdf to png and jpg with 150 dpi and a white background
 magick -antialias -density 300 -background white -flatten poster.pdf poster.png

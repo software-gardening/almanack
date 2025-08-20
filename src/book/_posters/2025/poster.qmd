@@ -12,50 +12,56 @@ format:
     footer-color: "9BE7A6"
 output-file: "almanack-2025-poster.pdf"
 citation:
-  doi: 10.5281/zenodo.14847244
+  doi: placeholder
 ---
 
 ## Fragile code & sustainability debt
 
-<!-- [_“Software grows and decays.” Repositories accumulate complexity, missing docs, and other issues that erode maintainability over time. The Almanack treats software like a living ecosystem and provides measurements + checks to slow decay and guide care._](./images/almanack_problem.png){width=100%} -->
+![_"Software grows and decays." Repositories accumulate complexity, missing docs, and other issues that erode maintainability over time. The Almanack treats software like a living ecosystem and provides measurements + checks to slow decay and guide care._](./images/software-lifecycle.png){width=100%}
 
-Scientific software often becomes brittle: documentation gaps, weak tests, and ad‑hoc practices combine with time to create **sustainability debt**. This debt hides defects, slows research, and undermines reproducibility.
-Existing guidance is scattered and qualitative. Teams need **measurable signals** and **actionable checks** that map to better long‑term outcomes.
+Scientific software often becomes brittle: documentation gaps, weak tests, and ad‑hoc practices combine with time to create **sustainability debt**.
+This debt hides defects, slows research, and undermines reproducibility.
+Existing guidance is scattered and qualitative.
+Teams need **measurable signals** and **actionable checks** that map to better long‑term outcomes.
 
 ## Handbook + Python package
 
-<!-- ![_Two parts: a public **handbook** (education, examples, and rationale) and a **Python package** that generates metrics and runs checks on any repo. Integrate as CLI, pre‑commit hook, or Python API to surface sustainability risks early._](./images/almanack_overview.png){width=85% fig-align="center"} -->
+![_Two parts: a public **handbook** (education, examples, and rationale) and a **Python package** that generates metrics and runs checks on any repo. Integrate as CLI, pre‑commit hook, or Python API to surface sustainability risks early._](./images/almanack-package-and-handbook.png){width=100% fig-align="center"}
 
 We present **The Software Gardening Almanack**, an open‑source project with two complementary components:
 
-- **Handbook (Jupyter Book):** teaching the “why” and “how”—concepts, examples, and tutorials.
-- **`almanack` Python package:** the “do”—compute metrics (including software information entropy), build reports, and run lint‑style **sustainability checks** that you can gate in CI.
+- 📗 **Handbook (Jupyter Book):** teaching the "why" and "how"—concepts, examples, and tutorials. The handbook provides a portable foundation for learning sustainable practices.
+- 🪏 **`almanack` Python package:** the "do"—compute metrics (including software information entropy), build reports, and run lint‑style **sustainability checks** through Python API, CLI, or pre-commit CI.
 
-Together, they help labs quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
+Together, they help scientific developers quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
+**The Almanack fills an educational technology gap** which endemic in scientific software development today.
 
 ## Getting started with `almanack`
 
+![_The Almanack package allows you to gather raw metrics for deep analysis or perform a lint-style check on repositories._](./images/almanack-package.png){width=100% fig-align="center"}
+
 ### Installation
 
-```shell
+```bash
 # install from PyPI
 pip install almanack
-
-# or install directly from source
-pip install git+https://github.com/software-gardening/almanack.git
 ```
+
+The `almanack` package is `pip` installable directly from PyPI.
 
 ### Use the CLI
 
-```shell
-# generate a JSON table of sustainability metrics for a repository
-almanack table path/to/repository
+```bash
+# run lint-style sustainability checks
+almanack check https://github.com/an-org/your-repo
 
-# run lint-style sustainability checks (nonzero exit if failing)
-almanack check path/to/repository
+# gather all metrics about a project
+almanack table path/to/repository
 ```
 
-**Pre-commit integration**
+You can run the `almanack` using a CLI to gather metrics or perform checks on a repository.
+
+### Pre-commit integration
 
 ```yaml
 # .pre-commit-config.yaml
@@ -64,6 +70,8 @@ almanack check path/to/repository
   hooks:
     - id: almanack-check
 ```
+
+The `almanack` includes a ready-to-use pre-commit hook which can check repositories as part of their continuous integration (CI).
 
 ### Python API
 
@@ -74,25 +82,6 @@ import pandas as pd
 # Build a table of repository metrics
 table = almanack.table("path/to/repository")
 pd.DataFrame(table).head()
-```
-
-**Compute a quick sustainability score**
-
-```python
-from almanack.metrics.data import compute_almanack_score
-
-score = compute_almanack_score(table)
-print(score)  # {'passed': 18, 'total': 24, 'score': 0.75}
-```
-
-**List failed checks for fast triage**
-
-```python
-from almanack.metrics.data import gather_failed_almanack_metric_checks
-
-failed = gather_failed_almanack_metric_checks("path/to/repository")
-for item in failed:
-    print(f"{item['id']}: {item['description']} (why it matters: {item['rationale']})")
 ```
 
 ## What the metrics capture

@@ -12,9 +12,9 @@
   footer_color: "Hex Color Code",
   keywords: (),
   num_columns: "4",
-  univ_logo_scale: "140",
-  univ_logo_column_size: "15",
-  title_column_size: "25",
+  univ_logo_scale: "185",
+  univ_logo_column_size: "13",
+  title_column_size: "22",
   title_font_size: "48",
   authors_font_size: "36",
   footer_url_font_size: "40",
@@ -108,9 +108,9 @@
 
     // all other headers
     ] else [
-      #set text({ 36pt }, weight: 600, font: "Vollkorn", fill: rgb("#1e4b5c"))
+      #set text({ 36pt }, weight: 600, font: "Vollkorn", fill: rgb("#1e4b5c"), style: "italic")
       #if it.level == 3 {
-        numbering("☆ 1)", deepest)
+        numbering("1)", deepest)
         [ ]
       }
       #it.body
@@ -130,7 +130,9 @@
       //text(font: "Vollkorn", weight: 700, size: 72pt, title),
       image("./images/title-text.png", width: 80%),
       grid.cell(
-        image(univ_logo, width: univ_logo_scale),
+        pad(top: 20pt,
+          image(univ_logo, width: univ_logo_scale),
+        ),
         rowspan: 3,
         align: left,
       ),
