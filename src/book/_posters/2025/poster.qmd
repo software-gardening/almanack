@@ -36,20 +36,25 @@ We present **The Software Gardening Almanack**, an open‑source project with tw
 Together, they help scientific developers quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
 **The Almanack fills an educational technology gap** which endemic in scientific software development today.
 
-## Getting started with `almanack`
+## Learning with the Almanack Handbook
 
-![_The Almanack package allows you to gather raw metrics for deep analysis or perform a lint-style check on repositories._](./images/almanack-package.png){width=100% fig-align="center"}
+![_The Almanack handbook provides a learning avenue and reference manual for sustainable software development._](./images/almanack-handbook.png){width=100% fig-align="center"}
 
-### Installation
+Educational material is provided for reference and general training through a Jupyter Book for the Almanack.
+This content covers the philosophical foundations and references to specific guidance for various checks.
+
+## Using the `almanack` package
+
+![_The Almanack package allows you to gather raw metrics for deep analysis or perform a lint-style check on repositories._](./images/almanack-notebook.png){width=100% fig-align="center"}
+
+### Install with `pip`
 
 ```bash
 # install from PyPI
 pip install almanack
 ```
 
-The `almanack` package is `pip` installable directly from PyPI.
-
-### Use the CLI
+### Use as a shell CLI
 
 ```bash
 # run lint-style sustainability checks
@@ -59,29 +64,15 @@ almanack check https://github.com/an-org/your-repo
 almanack table path/to/repository
 ```
 
-You can run the `almanack` using a CLI to gather metrics or perform checks on a repository.
-
 ### Pre-commit integration
 
 ```yaml
 # .pre-commit-config.yaml
+# use the almanack directly through pre-commit
 - repo: https://github.com/software-gardening/almanack
   rev: v0.1.1
   hooks:
     - id: almanack-check
-```
-
-The `almanack` includes a ready-to-use pre-commit hook which can check repositories as part of their continuous integration (CI).
-
-### Python API
-
-```python
-import almanack
-import pandas as pd
-
-# Build a table of repository metrics
-table = almanack.table("path/to/repository")
-pd.DataFrame(table).head()
 ```
 
 ## What the metrics capture
