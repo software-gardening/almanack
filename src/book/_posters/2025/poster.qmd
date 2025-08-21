@@ -2,12 +2,12 @@
 title: The Software Gardening Almanack
 format:
   poster-typst:
-    size: "48x36"
+    size: "48x32"
     poster-authors: "Dave Bunten¹, Will Davidson¹, Faisal Alquaddoomi¹, Vincent Rubinetti¹, Gregory P. Way¹"
     departments: "¹Department of Biomedical Informatics, University of Colorado Anschutz Medical Campus"
     institution-logo: "./images/header-combined-images.png"
-    footer-text: "Software Gardening Almanack"
-    footer-url: "https://software-gardening.github.io/almanack"
+    footer-text: " "
+    footer-url: "Software Gardening Almanack"
     footer-emails: "https://github.com/software-gardening/almanack"
     footer-color: "9BE7A6"
 output-file: "almanack-2025-poster.pdf"
@@ -26,7 +26,7 @@ Teams need **measurable signals** and **actionable checks** that map to better l
 
 ## Handbook + Python package
 
-![_Two parts: a public **handbook** (education, examples, and rationale) and a **Python package** that generates metrics and runs checks on any repo. Integrate as CLI, pre‑commit hook, or Python API to surface sustainability risks early._](./images/almanack-package-and-handbook.png){width=100% fig-align="center"}
+![_The Almanack is formed of two parts: a public **handbook** (education, examples, and rationale) and a **Python package** that generates metrics and runs checks on any repo. Integrate through CLI, pre‑commit hook, or Python API to surface sustainability risks early. The package integrates the knowledge from the handbook through references to checks. _](./images/almanack-package-and-handbook.png){width=100% fig-align="center"}
 
 We present **The Software Gardening Almanack**, an open‑source project with two complementary components:
 
@@ -35,13 +35,13 @@ We present **The Software Gardening Almanack**, an open‑source project with tw
 
 Together, they help scientific developers quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
 **The Almanack fills an educational technology gap** which endemic in scientific software development today.
+Our goal is to address this gap using the handbook content and practical tools found within the package.<br><br>
 
 ## Learning with the Handbook
 
 ![_The Almanack handbook provides a learning avenue and reference manual for sustainable software development._](./images/almanack-handbook.png){width=100% fig-align="center"}
 
 Educational material is provided for reference and general training through a Jupyter Book for the Almanack.
-This content covers the philosophical foundations and references to specific guidance for various checks.
 
 ## Using the `almanack` package
 
@@ -100,7 +100,7 @@ Entropy is calculated at the file level across commits and normalize by lines of
 Analyzing ~10,000 PubMed-linked GitHub repositories (since 2011), we paired normalized, file-level entropy with repository metadata.
 An Almanack Seed Bank notebook shows how spotting entropy hotspots guides targeted refactoring to curb decay and extend longevity.
 
-## Pathways in the Garden
+## Pathways in the garden
 
 ![_The Software Gardening Almanack will expand sustainability scores, add a GitHub Action, integrate with openRxiv, and open MCP endpoints to find growth through connection._](./images/roadmap.png){width=100%}
 
@@ -122,3 +122,7 @@ We thank contributors and supporters of the Almanack effort including the follow
 - [Better Scientific Software (BSSw)](https://bssw.io)
 - [Sustainable Horizons Institute](https://shinstitute.org)
 - [Department of Biomedical Informatics](https://medschool.cuanschutz.edu/dbmi) within the School of Medicine at the University of Colorado Anschutz Medical Campus
+
+Title clip image provided from cropped version of image:
+
+- [Dietmar Rabich, "Dülmen, Naturschutzgebiet -Am Enteborn- -- 2014 -- 0202"](https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Naturschutzgebiet_-Am_Enteborn-_--_2014_--_0202.jpg)

@@ -6,7 +6,7 @@
   authors: "Author Names (separated by commas)",
   departments: "Department Name",
   univ_logo: "Logo Path",
-  footer_text: "Footer Text",
+  footer_text: " ",
   footer_url: "Footer URL",
   footer_email_ids: "Email IDs (separated by commas)",
   footer_color: "Hex Color Code",
@@ -22,7 +22,7 @@
   body
 ) = {
   // initialize template display formatting
-  set text(font: "Lato", size: 32pt)
+  set text(font: "Lato", size: 26pt)
   let sizes = size.split("x")
   let width = int(sizes.at(0)) * 1in
   let height = int(sizes.at(1)) * 1in

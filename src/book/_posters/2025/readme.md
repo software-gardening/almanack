@@ -4,7 +4,7 @@ The content here is for creating a poster for 2025 conference poster.
 
 ## Poster Details
 
-Poster dimensions will be within (but may not exactly match) SBI2 2023's maximum specifications: `91" wide x 44.75” high`.
+The poster boards provided will be 32”Hx54”W.
 
 ## Poster development
 
@@ -23,6 +23,7 @@ poetry run poe poster-render
 
 ## References
 
+- Image clipping for poster title provided from a photograph by [Dietmar Rabich titled "Dülmen, Naturschutzgebiet -Am Enteborn- -- 2014 -- 0202"](https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Naturschutzgebiet_-Am_Enteborn-_--_2014_--_0202.jpg)
 - Fonts were sourced locally for rendering within Quarto and Typst:
   - [Vollkorn](https://fonts.google.com/specimen/Vollkorn)
   - [Lato](https://fonts.google.com/specimen/Lato)
