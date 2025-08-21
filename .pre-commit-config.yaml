@@ -120,7 +120,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.12.9"
+    rev: "v0.12.10"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
