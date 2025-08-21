@@ -26,3 +26,6 @@ Zenodo
 Typst
 Lato
 Vollkorn
+Dietmar
+Rabich
+Naturschutzgebiet
