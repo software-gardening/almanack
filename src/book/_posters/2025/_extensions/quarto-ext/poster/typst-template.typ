@@ -137,9 +137,9 @@
         align: left,
       ),
       // author display
-      text(size: 38pt, authors),
+      text(size: 28pt, authors),
       // department and notes display
-      text(size: 29pt, emph(departments)),
+      text(size: 25pt, emph(departments)),
     )
   )
 
