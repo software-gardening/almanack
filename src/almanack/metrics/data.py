@@ -41,6 +41,11 @@ from almanack.metrics.garden_lattice.practicality import (
     get_ecosystems_package_metrics,
 )
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
+from almanack.metrics.notebooks import (
+    check_nb_code_exec_order,
+    get_nb_contents,
+    notebook_dir_exists,
+)
 from almanack.metrics.remote import get_api_data
 
 LOGGER = logging.getLogger(__name__)
@@ -307,6 +312,9 @@ def compute_repo_data(repo_path: str) -> None:
     # gather doi citation data
     doi_citation_data = find_doi_citation_data(repo=repo)
 
+    # collect notebook cell data
+    notebook_cells = get_nb_contents(repo_path=repo_path)
+
     # Return the data structure
     return {
         "repo-path": str(repo_path),
@@ -405,6 +413,10 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
+        "repo-notebook-dir-exists": notebook_dir_exists(repo_path=repo_path),
+        "repo-check-notebook-exec-order": check_nb_code_exec_order(
+            nb_cells=notebook_cells
+        ),
     }
 
 

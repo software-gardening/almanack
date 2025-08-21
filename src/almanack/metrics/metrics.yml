@@ -538,6 +538,40 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-check-notebook-dir"
+    id: "SGA-GL-0029"
+    result-type: "bool"
+    sustainability_correlation: 1
+    description: >-
+      Checks whether there is a dedicated `notebooks/` directory.
+    correction_guidance: 1
+    fix_why: >-
+      Having a `notebooks/` directory is required as it provides a clear and
+      intuitive structure for your project. By placing all Jupyter notebooks in
+      a dedicated notebooks directory, collaborators and future users can easily
+      locate and understand the project's interactive analyses and explorations.
+    fix_how: >-
+      Create a `notebooks/` directory in the root of your project and move all
+      Jupyter notebook files into this directory. Update any references to the
+      notebook files in your code or documentation to reflect the new location.
+  - name: "repo-check-notebook-exec-order"
+    id: "SGA-GL-0030"
+    result-type: "bool"
+    sustainability_correlation: 1
+    description: >-
+      Checks whether the notebooks cells are executed in sequential order.
+    correction_guidance: 1
+    fix_why: >-
+      Ensuring that notebook cells are executed in order improves readability
+      and maintains reproducibility. Out-of-order execution can cause unexpected
+      results, make it difficult to follow the workflow, and lead to errors when
+      running or sharing the notebook with others.
+    fix_how: >-
+      Open your notebook and use the "Run All" or "Restart & Run All" option in
+      your notebook interface (such as Jupyter Notebook or JupyterLab) to
+      execute all cells sequentially from top to bottom. This ensures that all
+      variables and outputs are generated in the correct order, making the
+      notebook reproducible and easier to understand for others.
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
