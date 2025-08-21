@@ -127,8 +127,7 @@
       column-gutter: 5pt,
       row-gutter: 30pt,
       // main title
-      //text(font: "Vollkorn", weight: 700, size: 72pt, title),
-      image("./images/title-text.png", width: 80%),
+      image("./images/title-text.png", width: 65%),
       grid.cell(
         pad(top: 20pt,
           image(univ_logo, width: univ_logo_scale),

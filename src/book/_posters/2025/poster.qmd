@@ -3,7 +3,7 @@ title: The Software Gardening Almanack
 format:
   poster-typst:
     size: "48x32"
-    poster-authors: "Dave Bunten¹, Will Davidson², Jenna Tomkinson¹, Cameron Mattson¹, Vincent Rubinetti¹, Faisal Alquaddoomi¹, Gregory P. Way¹"
+    poster-authors: "Dave Bunten¹, Will Davidson², Erik Serrano¹, Jenna Tomkinson¹, Cameron Mattson¹,\n\n Vincent Rubinetti¹, Faisal Alquaddoomi¹, Gregory P. Way¹"
     departments: "¹Department of Biomedical Informatics, University of Colorado Anschutz Medical Campus\n\n²The Capital Group Companies, Inc."
     institution-logo: "./images/header-combined-images.png"
     footer-text: " "
