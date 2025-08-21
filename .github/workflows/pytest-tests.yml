@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-24.04, macos-14]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install python env
         uses: ./.github/actions/install-python-env
         with:
@@ -29,7 +29,7 @@ jobs:
   build_tests:
     runs-on: "ubuntu-24.04"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install python env
         uses: ./.github/actions/install-python-env
         # required to open # Chrome on Ubuntu 23.10+

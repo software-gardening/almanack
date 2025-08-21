@@ -21,7 +21,10 @@ exclude = [ "src/book/_build" ]
 [tool.poetry.dependencies]
 python = ">=3.9.2,<3.14"
 pyyaml = "^6.0.1"
-pygit2 = ">=1.15.1"
+pygit2 = [
+  { version = ">=1.15.1", python = "<=3.12" },
+  { version = ">=1.18.2", python = ">3.12" },
+]
 fire = ">=0.6,<0.8"
 tabulate = "^0.9.0"
 charset-normalizer = "^3.4.0"
@@ -39,7 +42,7 @@ plotly = ">=5.22,<7.0"
 jinja2 = "^3.1.6"
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = ">=0.25,<0.37"
+poethepoet = ">=0.25,<0.38"
 pytest = "^8.1.1"
 linkchecker = "^10.4.0"
 vale = "^3.3.1.0"
