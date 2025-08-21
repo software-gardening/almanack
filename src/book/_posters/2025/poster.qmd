@@ -36,7 +36,7 @@ We present **The Software Gardening Almanack**, an open‑source project with tw
 Together, they help scientific developers quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
 **The Almanack fills an educational technology gap** which endemic in scientific software development today.
 
-## Learning with the Almanack Handbook
+## Learning with the Handbook
 
 ![_The Almanack handbook provides a learning avenue and reference manual for sustainable software development._](./images/almanack-handbook.png){width=100% fig-align="center"}
 
@@ -79,40 +79,46 @@ almanack table path/to/repository
 
 <!-- ![_The **metrics table** combines repository metadata with computed signals (e.g., README present, license present, tests, coverage, CI status, release cadence, contributors, and **software information entropy** over time). These metrics power both human‑readable reports and automated checks._](./images/almanack_metrics_table.png){width=100%} -->
 
+The `almanack` package gathers, for example, the following metrics:
+
 - **Repository hygiene:** README, license, citation, contribution guide, code of conduct, docs location.
 - **Process health:** CI configuration, build status, test presence, coverage parsing (e.g., Python).
 - **Community signals:** contributors, tags/releases, issue tracker availability.
 - **Evolution/complexity:** **information entropy** at file and repo levels to highlight hotspots and decay risk.
-- **Scoring & gating:** boolean checks mapped to maintenance direction (positive/negative) plus an overall **Almanack score**.
 
-## Visual analytics & examples
+### Entropy as a sustainability signal
 
-<!-- ![_**Entropy at scale** — notebooks in the Almanack’s “Seed Bank” show analyses of ~10,000 PubMed‑linked GitHub repos. Lower entropy and healthy collaboration correlate with longer‑lived, more stable projects—useful for planning maintenance and review._](./images/almanack_entropy_examples.png){width=100%} -->
+![_High entropy reflects irregular, unpredictable modification patterns—raising maintenance cost and failure risk. Low entropy suggests consistent, structured development and fewer surprises._](./images/entropy-for-repos.png){width=100%}
 
-The **Seed Bank** demonstrates how to reproduce and explore measures (e.g., normalized Shannon entropy) across thousands of research repositories, relating **time**, **complexity**, and **engagement**.
+We investigated Shannon entropy as a metric computed on code changes across a project’s history (originally proposed in _Predicting faults using the complexity of code changes_, Hassan, 2009).
+Entropy is calculated at the file level across commits and normalize by lines of code to compare projects of different sizes.
 
-## Typical workflows in a lab
+## PubMed GitHub repository patterns
 
-<!-- ![_Common adoption points. 1) **Local assessment:** run `almanack table` to see where a repo stands. 2) **CI guardrails:** add `almanack check` to pre‑commit/CI. 3) **Periodic review:** track scores/failed checks over time to plan refactors and docs._](./images/almanack_flow.png){width=85% fig-align="center"} -->
+![_Higher entropy correlated with shorter lifespans and instability, while lower entropy with stronger community engagement aligned with more sustainable projects._](./images/seed-bank-entropy-pubmed.png){width=100%}
 
-1. **Survey repositories** to establish a baseline metrics table and identify immediate fixes (missing license, broken badge, etc.).  
-2. **Add guardrails** with pre‑commit/CI so regressions are caught early (e.g., missing citation file).  
-3. **Plan maintenance** using entropy hotspots and failed‑check rationales to guide refactoring and documentation.
+Analyzing ~10,000 PubMed-linked GitHub repositories (since 2011), we paired normalized, file-level entropy with repository metadata.
+An Almanack Seed Bank notebook shows how spotting entropy hotspots guides targeted refactoring to curb decay and extend longevity.
 
-## Real‑world value for scientists
+## Pathways in the Garden
 
-<!-- ![_Adding measurable sustainability checks to research software reduces collapse risk, improves onboarding, and clarifies expectations for collaboration and review. Labs can surface problems before publication and keep tools usable long after._](./images/almanack_value.png){width=100%} -->
+![_The Software Gardening Almanack will expand sustainability scores, add a GitHub Action, integrate with openRxiv, and open MCP endpoints to find growth through connection._](./images/roadmap.png){width=100%}
 
-- **Reproducibility & trust:** standard checks and reports make expectations visible for collaborators and reviewers.
-- **Onboarding faster:** new team members see structure (docs/tests/CI) and can contribute earlier.
-- **Longevity:** entropy and process signals help choose where to invest limited maintenance time.
-- **Automation‑ready:** outputs integrate cleanly with dashboards, CI logs, and PR comments.
+Looking ahead, the Almanack is poised to broaden its impact (Figure 7).
+We plan to introduce new metrics, including a **sustainability score**, alongside technical features such as a **GitHub Action** and integration tools for embedding with scientific communication platforms like **openRxiv**.
+In parallel, we are exploring an **MCP (Model Context Protocol) set of endpoints** designed to bring the Almanack’s toolset into large language models and agentic workflows, expanding its reach into next-generation research software ecosystems.
+Together, these innovations will place the Almanack directly in the hands of researchers, developers, and educators shaping the future of scientific software.
 
 ## Acknowledgements
 
-We thank contributors and supporters of the Almanack effort, including the **Better Scientific Software (BSSw) Fellowship Program**, **U.S. Department of Energy (DOE)**, **National Nuclear Security Administration (NNSA)**, and the **National Science Foundation (NSF, award 2327079)**; and collaborators across the University of Colorado Anschutz Medical Campus.
+This work was supported by the Better Scientific Software Fellowship Program, a collaborative effort of the U.S. Department of Energy (DOE), Office of Advanced Scientific Research via ANL under Contract DE-AC02-06CH11357 and the National Nuclear Security Administration Advanced Simulation and Computing Program via LLNL under Contract DE-AC52-07NA27344; and by the National Science Foundation (NSF) via SHI under Grant No. 2327079.
 
-- Project: https://github.com/software-gardening/almanack  
-- Handbook: https://software-gardening.github.io/almanack  
-- PyPI package: https://pypi.org/project/almanack/
+We thank contributors and supporters of the Almanack effort including the following:
 
+- Milton Pividori and members of the [Pividori Lab](https://pivlab.org/)
+- Members of the [Way Lab](https://www.waysciencelab.com/) at the University of Colorado Anschutz Medical Campus
+- Aditi Gopalan, Jineta Banerjee and [The Multi-Consortia Coordinating (MC²) Center](https://sagebionetworks.org/community/mc2-center) for Cancer Biology managed by Sage Bionetworks
+- Jonathan Starr and collaborators of The Map of Open Source Science (MOSS) managed by NumFocus (https://www.opensource.science/moss)
+- [Better Scientific Software (BSSw)](https://bssw.io)
+- [Sustainable Horizons Institute](https://shinstitute.org)
+- [Department of Biomedical Informatics](https://medschool.cuanschutz.edu/dbmi) within the School of Medicine at the University of Colorado Anschutz Medical Campus

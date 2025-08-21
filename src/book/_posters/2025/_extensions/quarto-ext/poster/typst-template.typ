@@ -109,8 +109,8 @@
     // all other headers
     ] else [
       #set text({ 36pt }, weight: 600, font: "Vollkorn", fill: rgb("#1e4b5c"), style: "italic")
-      #if it.level == 3 {
-        numbering("1)", deepest)
+      #if it.level == 2 {
+        numbering("❀  a)", deepest)
         [ ]
       }
       #it.body

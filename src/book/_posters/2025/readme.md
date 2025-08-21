@@ -27,7 +27,7 @@ poetry run poe poster-render
   - [Vollkorn](https://fonts.google.com/specimen/Vollkorn)
   - [Lato](https://fonts.google.com/specimen/Lato)
 - QR codes with images were generated and saved manually via [https://github.com/lyqht/mini-qr](https://github.com/lyqht/mini-qr)
-- [ImageMagick](http://www.imagemagick.org/) was used to form the bottom logos together as one and render the poster pdf as png using the following commands:
+- [ImageMagick](http://www.imagemagick.org/) was, for example, used to form the bottom logos together as one and render the poster PDF as PNG (among other tasks) using the following commands:
 
 ```shell
 # append text to qr codes
