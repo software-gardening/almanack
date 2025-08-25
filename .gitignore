@@ -303,3 +303,6 @@ dist
 # ignore pdf builds
 /src/_pdfbuild
 /src/book/seed-bank/almanack-example/almanack
+
+# ignore prototyping files
+_*

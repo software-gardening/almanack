@@ -30,6 +30,7 @@ tabulate = "^0.9.0"
 charset-normalizer = "^3.4.0"
 requests = "^2.32.3"
 defusedxml = "^0.7.1"
+nbformat = "^5.10.4"
 
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
@@ -195,16 +196,4 @@ else
     echo "No differences found (ignoring timestamps)."
     rm "new_cov.xml"
 fi
-"""
-# note: quarto commands below expect quarto installed on the local system.
-# see here for more information: https://quarto.org/docs/download/
-poster-preview.shell = """
-quarto preview \
-  src/book/_posters/2025/poster.qmd
-"""
-poster-render.shell = """
-  quarto render \
-  src/book/_posters/2025/poster.qmd
-  mv src/book/_posters/2025/2026-poster.pdf \
-  src/book/_static/2026-poster.pdf
 """
