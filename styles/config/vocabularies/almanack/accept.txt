@@ -23,3 +23,9 @@ inclusivity
 docsite
 OSSci
 Zenodo
+Typst
+Lato
+Vollkorn
+Dietmar
+Rabich
+Naturschutzgebiet

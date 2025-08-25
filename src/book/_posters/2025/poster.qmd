@@ -1,0 +1,125 @@
+---
+title: The Software Gardening Almanack
+format:
+  poster-typst:
+    size: "48x32"
+    poster-authors: "Dave Bunten¹, Will Davidson², Erik Serrano¹, Jenna Tomkinson¹, Cameron Mattson¹,\n\n Vincent Rubinetti¹, Faisal Alquaddoomi¹, Gregory P. Way¹"
+    departments: "¹Department of Biomedical Informatics, University of Colorado Anschutz Medical Campus\n\n²The Capital Group Companies, Inc."
+    institution-logo: "./images/header-combined-images.png"
+    footer-text: " "
+    footer-url: "Software Gardening Almanack"
+    footer-emails: "https://github.com/software-gardening/almanack"
+    footer-color: "9BE7A6"
+output-file: "almanack-2025-poster.pdf"
+citation:
+  doi: placeholder
+---
+
+## Fragile code & sustainability debt
+
+![_"Software grows and decays." Repositories accumulate complexity, missing docs, and other issues that erode maintainability over time. The Almanack treats software like a living ecosystem and provides measurements + checks to slow decay and guide care._](./images/software-lifecycle.png){width=100%}
+
+Scientific software often becomes brittle: documentation gaps, weak tests, and ad‑hoc practices combine with time to create **sustainability debt**.
+This debt hides defects, slows research, and undermines reproducibility.
+Existing guidance is scattered and qualitative.
+Teams need **measurable signals** and **actionable checks** that map to better long‑term outcomes.
+
+## Handbook + Python package
+
+![_The Almanack is formed of two parts: a public **handbook** (education, examples, and rationale) and a **Python package** that generates metrics and runs checks on any repo. Integrate through CLI, pre‑commit hook, or Python API to surface sustainability risks early. The package integrates the knowledge from the handbook through references to checks. _](./images/almanack-package-and-handbook.png){width=100% fig-align="center"}
+
+We present **The Software Gardening Almanack**, an open‑source project with two complementary components:
+
+- 📗 **Handbook (Jupyter Book):** teaching the "why" and "how"—concepts, examples, and tutorials. The handbook provides a portable foundation for learning sustainable practices.
+- 🪏 **`almanack` Python package:** the "do"—compute metrics (including software information entropy), build reports, and run lint‑style **sustainability checks** through Python API, CLI, or pre-commit CI.
+
+Together, they help scientific developers quantify maintenance risk, prioritize fixes, and cultivate code that lasts.
+**The Almanack fills an educational technology gap** which endemic in scientific software development today.
+Our goal is to address this gap using the handbook content and practical tools found within the package.<br><br>
+
+## Learning with the Handbook
+
+![_The Almanack handbook provides a learning avenue and reference manual for sustainable software development._](./images/almanack-handbook.png){width=100% fig-align="center"}
+
+Educational material is provided for reference and general training through a Jupyter Book for the Almanack.
+
+## Using the `almanack` package
+
+![_The Almanack package allows you to gather raw metrics for deep analysis or perform a lint-style check on repositories._](./images/almanack-notebook.png){width=100% fig-align="center"}
+
+### Install with `pip`
+
+```bash
+# install from PyPI
+pip install almanack
+```
+
+### Use as a shell CLI
+
+```bash
+# run lint-style sustainability checks
+almanack check https://github.com/an-org/your-repo
+
+# gather all metrics about a project
+almanack table path/to/repository
+```
+
+### Pre-commit integration
+
+```yaml
+# .pre-commit-config.yaml
+# use the almanack directly through pre-commit
+- repo: https://github.com/software-gardening/almanack
+  rev: v0.1.1
+  hooks:
+    - id: almanack-check
+```
+
+## What the metrics capture
+
+<!-- ![_The **metrics table** combines repository metadata with computed signals (e.g., README present, license present, tests, coverage, CI status, release cadence, contributors, and **software information entropy** over time). These metrics power both human‑readable reports and automated checks._](./images/almanack_metrics_table.png){width=100%} -->
+
+The `almanack` package gathers, for example, the following metrics:
+
+- **Repository hygiene:** README, license, citation, contribution guide, code of conduct, docs location.
+- **Process health:** CI configuration, build status, test presence, coverage parsing (e.g., Python).
+- **Community signals:** contributors, tags/releases, issue tracker availability.
+- **Evolution/complexity:** **information entropy** at file and repo levels to highlight hotspots and decay risk.
+
+### Entropy as a sustainability signal
+
+![_High entropy reflects irregular, unpredictable modification patterns—raising maintenance cost and failure risk. Low entropy suggests consistent, structured development and fewer surprises._](./images/entropy-for-repos.png){width=100%}
+
+We investigated Shannon entropy as a metric computed on code changes across a project’s history (originally proposed in _Predicting faults using the complexity of code changes_, Hassan, 2009).
+Entropy is calculated at the file level across commits and normalize by lines of code to compare projects of different sizes.
+
+## PubMed GitHub repository patterns
+
+![_Higher entropy correlated with shorter lifespans and instability, while lower entropy with stronger community engagement aligned with more sustainable projects._](./images/seed-bank-entropy-pubmed.png){width=100%}
+
+Analyzing ~10,000 PubMed-linked GitHub repositories (since 2011), we paired normalized, file-level entropy with repository metadata.
+An Almanack Seed Bank notebook shows how spotting entropy hotspots guides targeted refactoring to curb decay and extend longevity.
+
+## Pathways in the garden
+
+![_The Software Gardening Almanack will expand sustainability scores, add a GitHub Action, integrate with openRxiv, and open MCP endpoints to find growth through connection._](./images/roadmap.png){width=100%}
+
+Looking ahead, the Almanack is poised to broaden its impact (Figure 7).
+We plan to introduce new metrics, including a **sustainability score**, alongside technical features such as a **GitHub Action** and integration tools for embedding with scientific communication platforms like **openRxiv**.
+In parallel, we are exploring an **MCP (Model Context Protocol) set of endpoints** designed to bring the Almanack’s toolset into large language models and agentic workflows, expanding its reach into next-generation research software ecosystems.
+Together, these innovations will place the Almanack directly in the hands of researchers, developers, and educators shaping the future of scientific software.
+
+## Acknowledgements
+
+This work was supported by the Better Scientific Software Fellowship Program, a collaborative effort of the U.S. Department of Energy (DOE), Office of Advanced Scientific Research via ANL under Contract DE-AC02-06CH11357 and the National Nuclear Security Administration Advanced Simulation and Computing Program via LLNL under Contract DE-AC52-07NA27344; and by the National Science Foundation (NSF) via SHI under Grant No. 2327079.
+
+We thank contributors and supporters of the Almanack:
+
+- Milton Pividori and members of the [Pividori Lab](https://pivlab.org/)
+- Members of the [Way Lab](https://www.waysciencelab.com/) at the University of Colorado Anschutz Medical Campus
+- Aditi Gopalan, Jineta Banerjee and [The Multi-Consortia Coordinating (MC²) Center](https://sagebionetworks.org/community/mc2-center) for Cancer Biology managed by Sage Bionetworks
+- Jonathan Starr and collaborators of The Map of Open Source Science (MOSS) managed by NumFocus (https://www.opensource.science/moss)
+- [Better Scientific Software (BSSw)](https://bssw.io)
+- [Sustainable Horizons Institute](https://shinstitute.org)
+- [Department of Biomedical Informatics](https://medschool.cuanschutz.edu/dbmi) within the School of Medicine at the University of Colorado Anschutz Medical Campus
+- Title clip image provided from cropped version of image: [Dietmar Rabich, "Dülmen, Naturschutzgebiet -Am Enteborn- -- 2014 -- 0202"](https://commons.wikimedia.org/wiki/File:D%C3%BClmen,_Naturschutzgebiet_-Am_Enteborn-_--_2014_--_0202.jpg)
