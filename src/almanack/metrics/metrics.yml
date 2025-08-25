@@ -544,7 +544,9 @@ metrics:
     sustainability_correlation: 1
     description: >-
       Checks whether there is a dedicated `notebooks/` directory.
-    correction_guidance: 1
+    correction_guidance: >-
+      Consider creating a dedicated `notebooks/` directory to organize your
+      Jupyter notebooks.
     fix_why: >-
       Having a `notebooks/` directory is required as it provides a clear and
       intuitive structure for your project. By placing all Jupyter notebooks in
@@ -560,7 +562,9 @@ metrics:
     sustainability_correlation: 1
     description: >-
       Checks whether the notebooks cells are executed in sequential order.
-    correction_guidance: 1
+    correction_guidance: >-
+      Consider executing notebook cells in sequential order to improve
+      reproducibility.
     fix_why: >-
       Ensuring that notebook cells are executed in order improves readability
       and maintains reproducibility. Out-of-order execution can cause unexpected
