@@ -413,9 +413,14 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
-        "repo-notebook-dir-exists": notebook_dir_exists(repo_path=repo_path),
-        "repo-check-notebook-exec-order": check_nb_code_exec_order(
-            nb_cells=notebook_cells
+        "repo-check-notebook-dir": notebook_dir_exists(repo_path=repo_path),
+        "repo-check-notebook-exec-order": (
+            all(
+                check_nb_code_exec_order(nb_cells=cells)
+                for cells in notebook_cells.values()
+            )
+            if notebook_cells
+            else True
         ),
     }
 

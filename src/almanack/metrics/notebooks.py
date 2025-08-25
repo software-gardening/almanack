@@ -1,6 +1,7 @@
 import logging
 import pathlib
 from dataclasses import dataclass
+from typing import Dict, List, Union
 
 import nbformat
 
@@ -14,13 +15,13 @@ class JupyterCell:
     ----------
     cell_type : str
         The type of the Jupyter notebook cell (e.g., 'code', 'markdown').
-    execution_count : int | None
+    execution_count : Union[int, None]
         The execution count of the cell, indicating the order in which
         the code cells were run.
     """
 
     cell_type: str
-    execution_count: int | None
+    execution_count: Union[int, None]
 
 
 def _create_jupyter_cell(cell: dict) -> JupyterCell:
@@ -44,21 +45,21 @@ def _create_jupyter_cell(cell: dict) -> JupyterCell:
 
 
 def get_nb_contents(
-    repo_path: str | pathlib.Path,
-) -> dict[pathlib.Path, list[JupyterCell]]:
+    repo_path: Union[str, pathlib.Path],
+) -> Dict[pathlib.Path, List[JupyterCell]]:
     """
     Loads the contents of all Jupyter notebooks in a repository and extracts cell information.
 
     Parameters
     ----------
-    repo_path : str | pathlib.Path
+    repo_path : Union[str, pathlib.Path]
         Path to the repository directory. Can be either a string or a pathlib.Path object.
     ignore_md : bool, optional
         Whether to ignore markdown cells. Default is True.
 
     Returns
     -------
-    dict[pathlib.Path, list[JupyterCell]]
+    Dict[pathlib.Path, List[JupyterCell]]
         A dictionary mapping notebook file paths to lists of JupyterCell objects,
         each representing a cell in the notebook with its type and execution count.
         For markdown cells, the execution count is set to None.
@@ -103,7 +104,7 @@ def get_nb_contents(
     return notebook_contents
 
 
-def check_nb_code_exec_order(nb_cells: list[JupyterCell]) -> bool:
+def check_nb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     """
     Checks if code cells in a Jupyter notebook were executed in sequential order.
 
@@ -113,7 +114,7 @@ def check_nb_code_exec_order(nb_cells: list[JupyterCell]) -> bool:
 
     Parameters
     ----------
-    nb_cells : list[JupyterCell]
+    nb_cells : List[JupyterCell]
         List of JupyterCell objects representing cells in the notebook.
 
     Returns
@@ -138,13 +139,13 @@ def check_nb_code_exec_order(nb_cells: list[JupyterCell]) -> bool:
     return execution_counts == expected_sequence
 
 
-def notebook_dir_exists(repo_path: str | pathlib.Path) -> bool:
+def notebook_dir_exists(repo_path: Union[str, pathlib.Path]) -> bool:
     """
     Check if the specified path exists and is a directory.
 
     Parameters
     ----------
-    repo_path : str | pathlib.Path
+    repo_path : Union[str, pathlib.Path]
         Path to check. Can be either a string or a pathlib.Path object.
 
     Returns
