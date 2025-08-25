@@ -54,8 +54,6 @@ def get_nb_contents(
     ----------
     repo_path : Union[str, pathlib.Path]
         Path to the repository directory. Can be either a string or a pathlib.Path object.
-    ignore_md : bool, optional
-        Whether to ignore markdown cells. Default is True.
 
     Returns
     -------
@@ -87,6 +85,10 @@ def get_nb_contents(
     notebook_contents = {}
 
     for notebook_file in resolved_repo_path.rglob("*.ipynb"):
+        # Skip notebooks in test directories (including nested ones)
+        if "almanack" in notebook_file.parts and "tests" in notebook_file.parts:
+            continue
+
         try:
             # Read notebook and extract cell metadata
             notebook = nbformat.read(notebook_file, as_version=4)
@@ -96,6 +98,7 @@ def get_nb_contents(
             notebook_contents[notebook_file] = [
                 _create_jupyter_cell(cell) for cell in cells
             ]
+
         except Exception as e:
             # Log error but continue processing other notebooks
             logging.warning(f"Failed to read notebook {notebook_file}: {e}")
