@@ -47,6 +47,9 @@ identifiers:
   - description: Introductory Blog Post through BSSw
     type: doi
     value: "10.5281/zenodo.15330702"
+  - description: Poster for CU Anschutz DBMI Retreat - August 2025
+    type: doi
+    value: "10.5281/zenodo.16943577"
 references:
   - authors:
       - given-names: David
