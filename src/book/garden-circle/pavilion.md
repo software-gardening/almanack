@@ -4,7 +4,7 @@ We sometimes share the Software Gardening Almanack through events, blog posts, o
 
 ## Poster for CU Anschutz DBMI Retreat - August 2025
 
-This poster was created to help share the Almanack with audiences attending the [CU Anschutz DBMI](https://medschool.cuanschutz.edu/dbmi) 2025 retreat.
+We created this poster to share the Almanack with audiences attending the [CU Anschutz DBMI](https://medschool.cuanschutz.edu/dbmi) 2025 retreat.
 
 We also archived the work for reference here: https://doi.org/10.5281/zenodo.16943577
 
