@@ -12,7 +12,7 @@ format:
     footer-color: "9BE7A6"
 output-file: "almanack-2025-poster.pdf"
 citation:
-  doi: placeholder
+  doi: 10.5281/zenodo.16943577
 ---
 
 ## Fragile code & sustainability debt
