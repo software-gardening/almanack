@@ -129,7 +129,8 @@ metrics:
     result-type: bool
     sustainability_correlation: 0
     description: >-
-      If the work referenced by the repository DOI has been retracted.
+      If the work referenced by the repository DOI has been retracted
+      as reported by OpenAlex.
     correction_guidance:
     fix_why:
     fix_how:
@@ -138,7 +139,8 @@ metrics:
     result-type: int
     sustainability_correlation: 0
     description: >-
-      Count of grant records attached to the DOI's work.
+      Count of grant records attached to the DOI's
+      work (from OpenAlex via Crossref).
     correction_guidance:
     fix_why:
     fix_how:
@@ -147,7 +149,8 @@ metrics:
     result-type: list
     sustainability_correlation: 0
     description: >-
-      List of grant records for the DOI's work
+      List of grant records for the DOI's
+      work (from OpenAlex via Crossref).
     correction_guidance:
     fix_why:
     fix_how:
