@@ -114,8 +114,48 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
-  - name: "repo-almanack-score"
+  - name: repo-doi-fwci
     id: "SGA-META-0013"
+    result-type: float
+    sustainability_correlation: 0
+    description: >-
+      Field-Weighted Citation Impact (FWCI) from OpenAlex for the work
+      referenced by the repository DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: repo-doi-is-not-retracted
+    id: "SGA-META-0014"
+    result-type: bool
+    sustainability_correlation: 0
+    description: >-
+      If the work referenced by the repository DOI has been retracted
+      as reported by OpenAlex.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: repo-doi-grants-count
+    id: "SGA-META-0015"
+    result-type: int
+    sustainability_correlation: 0
+    description: >-
+      Count of grant records attached to the DOI's
+      work (from OpenAlex via Crossref).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: repo-doi-grants
+    id: "SGA-META-0016"
+    result-type: list
+    sustainability_correlation: 0
+    description: >-
+      List of grant records for the DOI's
+      work (from OpenAlex via Crossref).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-almanack-score"
+    id: "SGA-META-0017"
     result-type: "dict"
     sustainability_correlation: 0
     description: >-
