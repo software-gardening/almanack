@@ -564,6 +564,10 @@ document.write(`
         <span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;grants&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;grants_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="c1"># Find the CITATION.cff file</span>
@@ -634,6 +638,18 @@ document.write(`
                             <span class="k">else</span> <span class="kc">None</span>
                         <span class="p">),</span>
                         <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwci&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="kc">None</span>
+                            <span class="k">if</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_retracted&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+                            <span class="k">else</span> <span class="ow">not</span> <span class="n">openalex_result</span><span class="p">[</span><span class="s2">&quot;is_retracted&quot;</span><span class="p">]</span>
+                        <span class="p">),</span>
+                        <span class="s2">&quot;grants&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grants&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                        <span class="s2">&quot;grants_count&quot;</span><span class="p">:</span> <span class="p">(</span>
+                            <span class="nb">len</span><span class="p">(</span><span class="n">openalex_result</span><span class="p">[</span><span class="s2">&quot;grants&quot;</span><span class="p">])</span>
+                            <span class="k">if</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grants&quot;</span><span class="p">)</span>
+                            <span class="k">else</span> <span class="mi">0</span>
+                        <span class="p">),</span>
                     <span class="p">}</span>
                 <span class="p">)</span>
             <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
