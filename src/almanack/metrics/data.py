@@ -554,6 +554,90 @@ def process_repo_for_analysis(
     finally:
         shutil.rmtree(temp_dir)
 
+import pandas as pd
+
+def _table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
+    """
+    Transpose Almanack table (name->result), compute checks summary, flatten nested.
+    File-level entropy is completely ignored.
+    """
+    if not table_rows:
+        return {
+            "checks_total": 0,
+            "checks_passed": 0, 
+            "checks_pct": None
+        }
+
+    df = pd.DataFrame(table_rows)
+
+    # Dynamic sustainability checks: bool + positive correlation
+    mask = (df["result-type"] == "bool") & (df["sustainability_correlation"] == 1)
+    checks_total  = int(mask.sum())
+    checks_passed = int((df.loc[mask, "result"] == True).sum())  # noqa: E712
+    checks_pct    = (100.0 * checks_passed / checks_total) if checks_total else None
+
+    # name->result (wide format)
+    wide: Dict[str, Any] = (
+        df[["name", "result"]]
+        .set_index("name")
+        .T
+        .reset_index(drop=True)
+        .iloc[0]
+        .to_dict()
+    )
+
+    # Remove file-level entropy completely - we don't want it
+    if "repo-file-info-entropy" in wide:
+        del wide["repo-file-info-entropy"]
+
+    # Flatten repo-almanack-score if present (avoid nested dict in parquet)
+    score = wide.get("repo-almanack-score")
+    if isinstance(score, dict):
+        wide["almanack-score"]             = score.get("almanack-score")
+        wide["almanack-score-numerator"]   = score.get("almanack-score-numerator")
+        wide["almanack-score-denominator"] = score.get("almanack-score-denominator")
+        wide["repo-almanack-score_json"]   = json.dumps(score)
+        del wide["repo-almanack-score"]  # Remove nested dict
+
+    # JSON-encode any other nested structures for parquet compatibility
+    for key, value in list(wide.items()):
+        if isinstance(value, (dict, list)) and not key.endswith('_json'):
+            wide[f"{key}_json"] = json.dumps(value)
+            wide[key] = None  # Replace with None to avoid parquet issues
+
+    # Attach computed check summaries
+    wide["checks_total"]  = checks_total
+    wide["checks_passed"] = checks_passed
+    wide["checks_pct"]    = checks_pct
+
+    return wide
+
+
+def process_repo_for_almanack(repo_url: str) -> Dict[str, Any]:
+    """
+    Return a single flat dict of all Almanack metrics for one repo URL:
+    - includes every table metric (flattened) and the computed checks_* fields
+    - does NOT compute entropy/temporal metadata (you said not needed right now)
+    """
+    result_dict: Dict[str, Any] = {
+        "Repository URL": repo_url,
+    }
+
+    try:
+        # Pull the Almanack table for the repo
+        table = get_table(repo_path=repo_url)  # if it needs a path, pass the local path instead
+
+        # Convert the table to wide format and compute checks summary
+        wide_metrics = _table_to_wide(table)
+
+        result_dict.update(wide_metrics)
+
+        return result_dict
+
+    except Exception as e:
+        result_dict["almanack_error"] = str(e)
+        print(f"ERROR processing {repo_url}: {e}")
+        return result_dict
 
 def _get_almanack_version() -> str:
     """

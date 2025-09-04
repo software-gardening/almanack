@@ -13,7 +13,7 @@ Foundation (NSF) via SHI under Grant No. 2327079.
 
 from .book import read
 from .metrics.data import get_table as table
-from .metrics.data import process_repo_for_analysis
+from .metrics.data import process_repo_for_analysis, process_repo_for_almanack
 from .metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,
