@@ -32,7 +32,7 @@ repos:
     -   id: detect-private-key
 
 -   repo: https://github.com/python-poetry/poetry
-    rev: "2.2.0"
+    rev: "2.2.1"
     hooks:
       # Verifies that the `pyproject.toml` file is valid and follows Poetry's
       # expected syntax, which ensures consistent dependency management.
@@ -79,7 +79,7 @@ repos:
         exclude: pre-commit-config.yaml
 
 -   repo: https://github.com/psf/black
-    rev: 25.1.0
+    rev: 25.9.0
     hooks:
       # Formats Python code to follow the Black code style,
       # promoting consistency and readability across the codebase.
@@ -120,7 +120,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.13.0"
+    rev: "v0.13.1"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
