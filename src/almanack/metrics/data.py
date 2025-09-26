@@ -10,6 +10,8 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
+import awkward as ak
+import pandas as pd
 
 import defusedxml.ElementTree as ET
 import pygit2
@@ -555,9 +557,6 @@ def process_repo_for_analysis(
         shutil.rmtree(temp_dir)
 
 
-import awkward as ak
-import pandas as pd
-
 
 def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     """
@@ -603,9 +602,6 @@ def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     # Flatten repo-almanack-score if present (avoid nested dict in parquet)
     score = wide.get("repo-almanack-score")
     if isinstance(score, dict):
-        wide["almanack-score"] = score.get("almanack-score")
-        wide["almanack-score-numerator"] = score.get("almanack-score-numerator")
-        wide["almanack-score-denominator"] = score.get("almanack-score-denominator")
         wide["repo-almanack-score_nested"] = ak.Array([score])
         del wide["repo-almanack-score"]
 
