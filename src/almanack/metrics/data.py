@@ -10,10 +10,10 @@ import tempfile
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
-import awkward as ak
-import pandas as pd
 
+import awkward as ak
 import defusedxml.ElementTree as ET
+import pandas as pd
 import pygit2
 import yaml
 
@@ -557,7 +557,6 @@ def process_repo_for_analysis(
         shutil.rmtree(temp_dir)
 
 
-
 def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     """
     Transpose Almanack table (name->result), compute checks summary, flatten nested.
@@ -621,9 +620,14 @@ def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
 
 def process_repo_for_almanack(repo_url: str) -> Dict[str, Any]:
     """
-    Return a single flat dict of all Almanack metrics for one repo URL:
-    - includes every table metric (flattened) and the computed checks_* fields
-    - does NOT compute entropy/temporal metadata (you said not needed right now)
+    Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.
+
+    Args:
+        repo_url (str): The GitHub repository URL.
+
+    Returns:
+        dict: Flattened metrics for the repository, including sustainability checks.
+              If the processing fails, returns an error entry with the repository URL.
     """
     try:
         # Merge the base repo identifier with flattened metrics in one dictionary
