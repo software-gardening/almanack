@@ -370,35 +370,6 @@ document.write(`
 <span class="p">)</span>
 
 
-<div class="viewcode-block" id="cli_link">
-<a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.cli_link">[docs]</a>
-<span class="k">def</span> <span class="nf">cli_link</span><span class="p">(</span><span class="n">uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Create a CLI-based link for a given URI.</span>
-
-<span class="sd">    Referenced with modifications from:</span>
-<span class="sd">    https://stackoverflow.com/a/71309268</span>
-
-<span class="sd">    Args:</span>
-<span class="sd">        uri (str):</span>
-<span class="sd">            The URI to link to.</span>
-<span class="sd">        label (str, optional):</span>
-<span class="sd">            The label for the link. Defaults to None.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        str:</span>
-<span class="sd">            An OSC 8 escape sequence for the link.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># if we have no label, use the URI as the label</span>
-    <span class="k">if</span> <span class="n">label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">uri</span>
-
-    <span class="c1"># formatted string with order:</span>
-    <span class="c1"># OSC 8 ; params ; URI ST &lt;name&gt; OSC 8 ;; ST</span>
-    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">]8;</span><span class="si">{</span><span class="n">parameters</span><span class="si">}</span><span class="s2">;</span><span class="si">{</span><span class="n">uri</span><span class="si">}</span><span class="se">\033\\</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="se">\033</span><span class="s2">]8;;</span><span class="se">\033\\</span><span class="s2">&quot;</span></div>
-
-
-
 <div class="viewcode-block" id="AlmanackCLI">
 <a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.AlmanackCLI">[docs]</a>
 <span class="k">class</span> <span class="nc">AlmanackCLI</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -549,10 +520,6 @@ document.write(`
                     <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
                     <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span>
                     <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;correction_guidance&quot;</span><span class="p">],</span>
-                    <span class="n">cli_link</span><span class="p">(</span>
-                        <span class="n">uri</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://software-gardening.github.io/almanack/checks/</span><span class="si">{</span><span class="n">metric</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">.html&quot;</span><span class="p">,</span>
-                        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;link&quot;</span><span class="p">,</span>
-                    <span class="p">),</span>
                 <span class="p">]</span>
                 <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">failed_metrics</span>
                 <span class="k">if</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;repo-almanack-score&quot;</span>
@@ -562,9 +529,9 @@ document.write(`
             <span class="n">max_id_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">failures_output_table</span><span class="p">)</span>
             <span class="n">max_name_length</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">failures_output_table</span><span class="p">)</span>
 
-            <span class="c1"># calculate the max width for the guidance column in output</span>
+            <span class="c1"># calculate the max width for the final column in output</span>
             <span class="n">max_width</span> <span class="o">=</span> <span class="p">(</span><span class="n">shutil</span><span class="o">.</span><span class="n">get_terminal_size</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span>
-                <span class="n">max_id_length</span> <span class="o">+</span> <span class="n">max_name_length</span> <span class="o">+</span> <span class="mi">25</span>
+                <span class="n">max_id_length</span> <span class="o">+</span> <span class="n">max_name_length</span> <span class="o">+</span> <span class="mi">12</span>
             <span class="p">)</span>
 
             <span class="c1"># show a table of failures</span>
@@ -572,7 +539,7 @@ document.write(`
                 <span class="nb">str</span><span class="p">(</span>
                     <span class="n">tabulate</span><span class="p">(</span>
                         <span class="n">tabular_data</span><span class="o">=</span><span class="n">failures_output_table</span><span class="p">,</span>
-                        <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Guidance&quot;</span><span class="p">,</span> <span class="s2">&quot;More Info&quot;</span><span class="p">],</span>
+                        <span class="n">headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;ID&quot;</span><span class="p">,</span> <span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="s2">&quot;Guidance&quot;</span><span class="p">],</span>
                         <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;rounded_grid&quot;</span><span class="p">,</span>
                         <span class="c1"># set a dynamic width for each column in the table</span>
                         <span class="c1"># where the None is no max width and the final column</span>
@@ -582,7 +549,6 @@ document.write(`
                             <span class="kc">None</span><span class="p">,</span>
                             <span class="kc">None</span><span class="p">,</span>
                             <span class="n">max_width</span> <span class="k">if</span> <span class="n">max_width</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">30</span><span class="p">,</span>
-                            <span class="kc">None</span><span class="p">,</span>
                         <span class="p">],</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
