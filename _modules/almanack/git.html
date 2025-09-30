@@ -360,6 +360,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
 <span class="kn">import</span> <span class="nn">pygit2</span>
+<span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">from</span> <span class="nn">charset_normalizer</span> <span class="kn">import</span> <span class="n">from_bytes</span>
 
 
@@ -683,6 +684,35 @@ document.write(`
 
 
 
+<div class="viewcode-block" id="resolve_redirects">
+<a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.git.resolve_redirects">[docs]</a>
+<span class="k">def</span> <span class="nf">resolve_redirects</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Follow HTTP redirects until the final URL is reached.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    url : str</span>
+<span class="sd">        The starting URL to check.</span>
+<span class="sd">    timeout : int, optional</span>
+<span class="sd">        Timeout (in seconds) for each request, by default 10.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        The last non-redirect URL.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Use allow_redirects=True so requests will follow automatically</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">)</span>
+        <span class="n">final_url</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">url</span>
+        <span class="k">return</span> <span class="n">final_url</span>
+    <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span><span class="p">:</span>
+        <span class="c1"># return the original URL if any error in redirection occurs</span>
+        <span class="k">return</span> <span class="n">url</span></div>
+
+
+
 <div class="viewcode-block" id="get_remote_url">
 <a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.git.get_remote_url">[docs]</a>
 <span class="k">def</span> <span class="nf">get_remote_url</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
@@ -709,7 +739,7 @@ document.write(`
             <span class="c1"># Validate the URL structure using urlparse</span>
             <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span> <span class="s2">&quot;ssh&quot;</span><span class="p">}</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">remote_url</span>
+                <span class="k">return</span> <span class="n">resolve_redirects</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
             <span class="c1"># &#39;origin&#39; remote does not exist or URL is not accessible</span>
             <span class="k">pass</span>
@@ -720,7 +750,7 @@ document.write(`
             <span class="n">remote_url</span> <span class="o">=</span> <span class="n">remote</span><span class="o">.</span><span class="n">url</span>
             <span class="n">parsed_url</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;http&quot;</span><span class="p">,</span> <span class="s2">&quot;https&quot;</span><span class="p">,</span> <span class="s2">&quot;ssh&quot;</span><span class="p">}</span> <span class="ow">and</span> <span class="n">parsed_url</span><span class="o">.</span><span class="n">netloc</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">remote_url</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">resolve_redirects</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="n">remote_url</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">))</span>
     <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
         <span class="k">pass</span>
 
