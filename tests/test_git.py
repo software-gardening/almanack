@@ -22,6 +22,7 @@ from almanack.git import (
     get_most_recent_commits,
     get_remote_url,
     read_file,
+    resolve_redirects,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
@@ -416,3 +417,19 @@ def test_find_file(  # noqa: PLR0913
     assert (
         file_entry.name == expected_filename
     ), f"Expected {expected_filename}, but found {file_entry.name}."
+
+
+def test_resolve_redirects():
+    """
+    Test the resolve_redirects function with various URL scenarios.
+    """
+
+    # URL with no redirects
+    url_no_redirect = "https://github.com/"  # A URL that does not redirect
+    assert resolve_redirects(url_no_redirect) == url_no_redirect
+
+    # URL with a single redirect
+    url_single_redirect = "https://github.com/wayscience/cosmicqc"
+    assert resolve_redirects(
+        url_single_redirect
+    ).lower() == url_single_redirect.lower().replace("wayscience", "cytomining")
