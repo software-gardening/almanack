@@ -435,6 +435,7 @@ We merge the data to form a table which includes PubMed, GitHub, and Almanack so
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
 <span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
 
 <span class="c1"># set plotly default theme</span>
 <span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
@@ -448,6 +449,8 @@ We merge the data to form a table which includes PubMed, GitHub, and Almanack so
     <span class="n">left_on</span><span class="o">=</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">,</span>
     <span class="n">right_on</span><span class="o">=</span><span class="s2">&quot;github_link&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="c1"># fix errors with 0 time of existence and normalized entropy</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Time of Existence (days)&quot;</span><span class="p">,</span> <span class="s2">&quot;Normalized Total Entropy&quot;</span><span class="p">])</span>
 <span class="n">df</span>
 </pre></div>
 </div>
@@ -761,7 +764,7 @@ We merge the data to form a table which includes PubMed, GitHub, and Almanack so
     </tr>
   </tbody>
 </table>
-<p>11158 rows × 33 columns</p>
+<p>10939 rows × 33 columns</p>
 </div></div></div>
 </div>
 </section>
@@ -824,12 +827,13 @@ Primary language is determined as the language which has the most lines of code 
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;images/software-information-entropy-top-5-langs.png&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-top-5-langs.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../../_images/85f5b9bf2a1a8f1462771954826c8a00d1089f35f1cea8c9360c6c37d5838d66.png" src="../../_images/85f5b9bf2a1a8f1462771954826c8a00d1089f35f1cea8c9360c6c37d5838d66.png" />
 </div>
 </div>
 </section>
@@ -857,12 +861,13 @@ Primary language is determined as the language which has the most lines of code 
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Stars&quot;</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Forks&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;images/pubmed-stars-and-forks.png&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/pubmed-stars-and-forks.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../../_images/7a0230bc701f0a6a2734f45aefcb9263b3893d3821200bd45d0562dd92be3f1e.png" src="../../_images/7a0230bc701f0a6a2734f45aefcb9263b3893d3821200bd45d0562dd92be3f1e.png" />
 </div>
 </div>
 </section>
@@ -898,12 +903,13 @@ Primary language is determined as the language which has the most lines of code 
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;images/software-information-entropy-gh-stars.png&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-gh-stars.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../../_images/87e6bc8654f0e1a5ee3636d92bcdd47cbca2adb3bdf25bf2e2d5d7013960e127.png" src="../../_images/87e6bc8654f0e1a5ee3636d92bcdd47cbca2adb3bdf25bf2e2d5d7013960e127.png" />
 </div>
 </div>
 </section>
@@ -940,12 +946,13 @@ Primary language is determined as the language which has the most lines of code 
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;images/software-information-entropy-forks.png&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-forks.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../../_images/35d71375a9d3860edaa9a55a76ee21dcfe40f2c71794f4e83e2d47c4e21288b1.png" src="../../_images/35d71375a9d3860edaa9a55a76ee21dcfe40f2c71794f4e83e2d47c4e21288b1.png" />
 </div>
 </div>
 </section>
@@ -960,6 +967,7 @@ Primary language is determined as the language which has the most lines of code 
         <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
     <span class="p">)</span>
 <span class="p">)</span>
+
 <span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
     <span class="n">df</span><span class="p">,</span>
     <span class="n">x</span><span class="o">=</span><span class="s2">&quot;GitHub Stars&quot;</span><span class="p">,</span>
@@ -979,12 +987,13 @@ Primary language is determined as the language which has the most lines of code 
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Stars (log)&quot;</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Open Issues (log)&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;images/pubmed-stars-and-open-issues.png&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/pubmed-stars-and-open-issues.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../../_images/be7f41e9f8c03ec2f26d1098efa508769c3d9a51358d7b0ec6817d67d9a099c3.png" src="../../_images/be7f41e9f8c03ec2f26d1098efa508769c3d9a51358d7b0ec6817d67d9a099c3.png" />
 </div>
 </div>
 </section>
@@ -1023,12 +1032,13 @@ Primary language is determined as the language which has the most lines of code 
     <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
     <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="s2">&quot;images/software-information-entropy-open-issues.png&quot;</span><span class="p">)</span>
-<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-open-issues.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<img alt="../../_images/bd604fc1fbe7439b261ee08df66e9ea38738f47bf4dea2432d18ac3df338ce27.png" src="../../_images/bd604fc1fbe7439b261ee08df66e9ea38738f47bf4dea2432d18ac3df338ce27.png" />
 </div>
 </div>
 <div class="docutils container" id="id2">
