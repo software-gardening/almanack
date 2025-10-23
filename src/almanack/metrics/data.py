@@ -323,9 +323,16 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-commits-per-day": commits_count / days_of_development,
         "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         "repo-includes-readme": readme_exists,
-        "repo-includes-contributing": file_exists_in_repo(
-            repo=repo,
-            expected_file_name="contributing",
+        "repo-includes-contributing": any(
+            [
+                file_exists_in_repo(
+                    repo=repo,
+                    expected_file_name="contributing",
+                ),
+                file_exists_in_repo(
+                    repo=repo, expected_file_name="contributing", subdir=".github"
+                ),
+            ]
         ),
         "repo-includes-code-of-conduct": file_exists_in_repo(
             repo=repo,
