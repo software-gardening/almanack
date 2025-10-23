@@ -325,6 +325,37 @@ def test_file_exists_in_repo(
 
 
 @pytest.mark.parametrize(
+    "expected_file_name, check_extension, subdir, expected_result",
+    [
+        ("contributing", False, ".github", True),
+        ("contributing", True, ".github", True),
+        ("contributing", False, "src", False),
+        ("contributing", True, "src", False),
+        ("contributing", True, "not_a_dir", False),
+    ],
+)
+def test_file_exists_in_repo_subdir(
+    community_health_repository_path: pygit2.Repository,
+    expected_file_name: str,
+    check_extension: bool,
+    subdir: str,
+    expected_result: bool,
+):
+    """
+    Combined test for file_exists_in_repo function using optional subdir arg.
+    """
+
+    result = file_exists_in_repo(
+        repo=community_health_repository_path,
+        expected_file_name=expected_file_name,
+        check_extension=check_extension,
+        subdir=subdir,
+    )
+
+    assert result == expected_result
+
+
+@pytest.mark.parametrize(
     # test various scenarios of repositories
     # and the expected filename returned
     # when using the find_file function.

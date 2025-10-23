@@ -379,6 +379,7 @@ def file_exists_in_repo(
     expected_file_name: str,
     check_extension: bool = False,
     extensions: list[str] = [".md", ".txt", ".rtf", ""],
+    subdir: str | None = None,
 ) -> bool:
     """
     Check if a file (case-insensitive and with optional extensions)
@@ -393,6 +394,8 @@ def file_exists_in_repo(
             Whether to check the extension of the file or not.
         extensions (list[str]):
             List of possible file extensions to check (e.g., [".md", ""]).
+        subdir (str, optional):
+            Subdirectory to check within the repository tree.
 
     Returns:
         bool:
@@ -404,6 +407,13 @@ def file_exists_in_repo(
 
     # Normalize expected file name to lowercase for case-insensitive comparison
     expected_file_name = expected_file_name.lower()
+
+    # If a subdirectory is specified and exists, navigate there
+    if subdir:
+        if subdir in tree:
+            tree = tree / subdir
+        else:
+            return False
 
     for entry in tree:
         # Normalize entry name to lowercase

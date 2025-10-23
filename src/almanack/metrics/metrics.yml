@@ -207,14 +207,15 @@ metrics:
       It helps maintain a consistent contribution process and encourages
       community involvement.
     fix_how: >-
-      Create a CONTRIBUTING file in the root directory of your repository.
+      Create a CONTRIBUTING file in your repository.
       Include guidelines for contributing, such as coding standards,
       pull request instructions, and any other relevant information.
       You can use Markdown to format the CONTRIBUTING file for better
       readability.
       For example, you can start with a text editor or use an online
       Markdown editor to create your CONTRIBUTING file.
-      Save it as `CONTRIBUTING.md` in the root of your repository.
+      Save it as `CONTRIBUTING.md` in the root or `.github/` directory of your
+      repository.
       If you're using GitHub, you can also use their web interface to create
       and edit the CONTRIBUTING file directly.
   - name: "repo-includes-code-of-conduct"
