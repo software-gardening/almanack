@@ -19,7 +19,7 @@ include = [
 exclude = [ "src/book/_build" ]
 
 [tool.poetry.dependencies]
-python = ">=3.9.2,<3.14"
+python = ">=3.10,<3.14"
 pyyaml = "^6.0.1"
 pygit2 = [
   { version = ">=1.15.1", python = "<=3.12" },
