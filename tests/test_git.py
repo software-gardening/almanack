@@ -331,7 +331,11 @@ def test_file_exists_in_repo(
         ("contributing", True, ".github", True),
         ("contributing", False, "src", False),
         ("contributing", True, "src", False),
+        ("contributing", True, "SRC", False),
         ("contributing", True, "not_a_dir", False),
+        ("build", False, ".github/workflows", True),
+        ("build", True, ".github/workflows", False),
+        ("build", True, "workflows", False),
     ],
 )
 def test_file_exists_in_repo_subdir(

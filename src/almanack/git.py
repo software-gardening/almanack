@@ -395,7 +395,7 @@ def file_exists_in_repo(
         extensions (list[str]):
             List of possible file extensions to check (e.g., [".md", ""]).
         subdir (str, optional):
-            Subdirectory to check within the repository tree.
+            Subdirectory to check within the repository tree (case-sensitive).
 
     Returns:
         bool:
