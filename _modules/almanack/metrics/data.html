@@ -686,9 +686,16 @@ document.write(`
         <span class="s2">&quot;repo-commits-per-day&quot;</span><span class="p">:</span> <span class="n">commits_count</span> <span class="o">/</span> <span class="n">days_of_development</span><span class="p">,</span>
         <span class="s2">&quot;almanack-table-datetime&quot;</span><span class="p">:</span> <span class="n">DATETIME_NOW</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">),</span>
         <span class="s2">&quot;repo-includes-readme&quot;</span><span class="p">:</span> <span class="n">readme_exists</span><span class="p">,</span>
-        <span class="s2">&quot;repo-includes-contributing&quot;</span><span class="p">:</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
-            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
-            <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;contributing&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-includes-contributing&quot;</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="n">file_exists_in_repo</span><span class="p">(</span>
+                    <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+                    <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;contributing&quot;</span><span class="p">,</span>
+                <span class="p">),</span>
+                <span class="n">file_exists_in_repo</span><span class="p">(</span>
+                    <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">expected_file_name</span><span class="o">=</span><span class="s2">&quot;contributing&quot;</span><span class="p">,</span> <span class="n">subdir</span><span class="o">=</span><span class="s2">&quot;.github&quot;</span>
+                <span class="p">),</span>
+            <span class="p">]</span>
         <span class="p">),</span>
         <span class="s2">&quot;repo-includes-code-of-conduct&quot;</span><span class="p">:</span> <span class="n">file_exists_in_repo</span><span class="p">(</span>
             <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
