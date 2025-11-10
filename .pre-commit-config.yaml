@@ -39,7 +39,7 @@ repos:
     -   id: poetry-check
 
 -   repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.11.0"
+    rev: "v2.11.1"
     hooks:
       # Formats the `pyproject.toml` file to follow a consistent structure
       # and style, making it easier to read and maintain.
@@ -79,7 +79,7 @@ repos:
         exclude: pre-commit-config.yaml
 
 -   repo: https://github.com/psf/black
-    rev: 25.9.0
+    rev: 25.11.0
     hooks:
       # Formats Python code to follow the Black code style,
       # promoting consistency and readability across the codebase.
@@ -120,7 +120,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.14.3"
+    rev: "v0.14.4"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
