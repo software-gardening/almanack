@@ -4,6 +4,7 @@ and related aspects.
 """
 
 import logging
+import os
 import pathlib
 import time
 from datetime import datetime, timezone
@@ -39,6 +40,16 @@ def get_api_data(
     if params is None:
         params = {}
 
+    # If available, use GitHub token for authenticated requests to increase rate limits
+    github_token = os.environ.get("GITHUB_TOKEN")
+    headers = {"accept": "application/json"}
+    if github_token and (
+        "github.com" in api_endpoint or "api.github.com" in api_endpoint
+    ):
+        headers["Authorization"] = f"Bearer {github_token}"
+    else:
+        headers = {"accept": "application/json"}
+
     max_retries = 100  # Number of attempts for rate limit errors
     base_backoff = 5  # Base backoff time in seconds
 
@@ -47,7 +58,7 @@ def get_api_data(
             # Perform the GET request with query parameters
             response = requests.get(
                 api_endpoint,
-                headers={"accept": "application/json"},
+                headers=headers,
                 params=params,
                 timeout=300,
             )
