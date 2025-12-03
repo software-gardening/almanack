@@ -4,6 +4,7 @@ Tests CLI functionality.
 
 import json
 
+import pandas as pd
 import yaml
 
 from almanack.metrics.data import METRICS_TABLE
@@ -140,3 +141,43 @@ def test_cli_almanack_check(tmp_path):
     # we assert that the return code is still 2
     # (return code of 1 would mean exception)
     assert returncode == almanack_failed_check_exit_code
+
+
+def test_cli_almanack_batch(tmp_path):
+    """
+    Tests running `almanack batch` as a CLI
+    """
+
+    repo = repo_setup(
+        repo_path=tmp_path / "repo", files=[{"files": {"example.txt": "example"}}]
+    )
+
+    parquet_path = tmp_path / "links.parquet"
+    output_path = tmp_path / "results.parquet"
+    pd.DataFrame({"github_link": [repo.path]}).to_parquet(parquet_path)
+
+    _, stderr, returncode = run_cli_command(
+        command=[
+            "almanack",
+            "batch",
+            str(parquet_path),
+            str(output_path),
+            "--column",
+            "github_link",
+            "--batch_size",
+            "1",
+            "--max_workers",
+            "1",
+            "--show_progress",
+            "False",
+            "--executor",
+            "thread",
+        ]
+    )
+
+    assert returncode == 0, stderr
+    assert output_path.exists()
+
+    df = pd.read_parquet(output_path)
+    assert len(df) == 1
+    assert "Repository URL" in df.columns

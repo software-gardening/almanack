@@ -2,6 +2,7 @@
 Setup almanack CLI through python-fire
 """
 
+import importlib
 import json
 import shutil
 import sys
@@ -11,10 +12,12 @@ from typing import List, Optional
 import fire
 from tabulate import tabulate
 
+from almanack.batch import load_repo_urls_from_parquet, process_repositories_batch
 from almanack.metrics.data import (
     _get_almanack_version,
     gather_failed_almanack_metric_checks,
     get_table,
+    process_repo_for_almanack,
 )
 
 
@@ -206,6 +209,79 @@ class AlmanackCLI(object):
 
         # exit with zero (no failures)
         sys.exit(0)
+
+    def batch(  # noqa: PLR0913
+        self,
+        parquet_path: str,
+        output_path: str,
+        column: str = "github_link",
+        batch_size: int = 500,
+        max_workers: int = 16,
+        limit: Optional[int] = None,
+        compression: str = "zstd",
+        show_progress: bool = True,
+        processor: Optional[str] = None,
+        executor: str = "process",
+    ) -> None:
+        """
+        Run Almanack across many repositories defined in a parquet file.
+
+        Example:
+            almanack batch links.parquet results.parquet --column github_link --batch_size 1000 --max_workers 8
+
+        Args:
+            parquet_path: Parquet file containing repository URLs.
+            output_path: Destination parquet for aggregated results.
+            column: Column name holding repository URLs.
+            batch_size: Repositories per batch.
+            max_workers: Parallel workers per batch.
+            limit: Optional maximum repositories to process.
+            compression: Parquet compression codec (default zstd).
+            show_progress: Print progress to stdout.
+            processor: Optional import path to a processor function (e.g., module:function). Defaults to Almanack processor.
+            executor: Parallelism backend: "process" (default) or "thread".
+        """
+
+        repo_urls = load_repo_urls_from_parquet(
+            parquet_file=parquet_path, column=column, limit=limit
+        )
+
+        if executor.lower() == "thread":
+            from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415
+
+            executor_cls = ThreadPoolExecutor
+        else:
+            from concurrent.futures import ProcessPoolExecutor  # noqa: PLC0415
+
+            executor_cls = ProcessPoolExecutor
+
+        processor_fn = process_repo_for_almanack
+        if processor:
+            try:
+                module_path, func_name = processor.split(":")
+            except ValueError as exc:
+                raise ValueError(
+                    "processor must be provided as 'module:function'"
+                ) from exc
+            module = importlib.import_module(module_path)
+            processor_fn = getattr(module, func_name)
+
+        df = process_repositories_batch(
+            repo_urls=repo_urls,
+            output_path=output_path,
+            batch_size=batch_size,
+            max_workers=max_workers,
+            limit=limit,
+            compression=compression,
+            processor=processor_fn,
+            executor_cls=executor_cls,
+            show_progress=show_progress,
+        )
+
+        print(  # noqa: T201
+            f"Wrote {len(df)} records to {output_path} "
+            f"(input {len(repo_urls)} repos, batch_size={batch_size}, max_workers={max_workers})"
+        )
 
 
 def trigger():

@@ -11,7 +11,6 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
-import awkward as ak
 import defusedxml.ElementTree as ET
 import pandas as pd
 import pygit2
@@ -612,13 +611,13 @@ def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     # Flatten repo-almanack-score if present (avoid nested dict in parquet)
     score = wide.get("repo-almanack-score")
     if isinstance(score, dict):
-        wide["repo-almanack-score_nested"] = ak.Array([score])
+        wide["repo-almanack-score_json"] = json.dumps(score, default=str)
         del wide["repo-almanack-score"]
 
-    # Preserve nested with awkward arrays
+    # Preserve nested types by JSON-encoding them for parquet safety
     for key, value in list(wide.items()):
         if isinstance(value, (dict, list)) and not key.endswith("_json"):
-            wide[f"{key}_nested"] = ak.Array([value])
+            wide[f"{key}_json"] = json.dumps(value, default=str)
             del wide[key]
 
     # Attach computed check summaries
