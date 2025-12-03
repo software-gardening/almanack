@@ -19,7 +19,7 @@ include = [
 exclude = [ "src/book/_build" ]
 
 [tool.poetry.dependencies]
-python = ">=3.9.2,<3.14"
+python = ">=3.10,<3.14"
 pyyaml = "^6.0.1"
 pygit2 = [
   { version = ">=1.15.1", python = "<=3.12" },
@@ -36,22 +36,22 @@ jupyter-book = "^1.0.0"
 docutils = "0.21.2"
 sphinxcontrib-bibtex = "^2.6.2"
 pandas = "^2.2.2"
-pyarrow = ">=16,<22"
+pyarrow = ">=16,<23"
 jupyterlab = "^4.2.3"
 plotly = ">=5.22,<7.0"
 jinja2 = "^3.1.6"
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = ">=0.25,<0.38"
-pytest = "^8.1.1"
+poethepoet = ">=0.25,<0.39"
+pytest = ">=8.1.1,<10.0.0"
 linkchecker = "^10.4.0"
 vale = "^3.3.1.0"
 coverage = "^7.5.3"
 black = ">=24.4.2,<26.0.0"
-isort = ">=5.13.2,<7.0.0"
+isort = ">=5.13.2,<8.0.0"
 jupyterlab-code-formatter = ">=2.2.1,<4.0.0"
 requests = "^2.32.3"
-kaleido = "1.0.0"
+kaleido = "1.2.0"
 pygithub = "^2.3.0"
 jupyterlab-spellchecker = "^0.8.4"
 jsonschema = "^4.23.0"

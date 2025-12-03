@@ -8,6 +8,7 @@ from typing import Dict, List, Optional, Union
 from urllib.parse import urlparse
 
 import pygit2
+import requests
 from charset_normalizer import from_bytes
 
 
@@ -304,6 +305,32 @@ def read_file(
         return None
 
 
+def resolve_redirects(url: str, timeout: int = 10) -> str:
+    """
+    Follow HTTP redirects until the final URL is reached.
+
+    Parameters
+    ----------
+    url : str
+        The starting URL to check.
+    timeout : int, optional
+        Timeout (in seconds) for each request, by default 10.
+
+    Returns
+    -------
+    str
+        The last non-redirect URL.
+    """
+    try:
+        # Use allow_redirects=True so requests will follow automatically
+        response = requests.get(url, allow_redirects=True, timeout=timeout)
+        final_url = response.url
+        return final_url
+    except requests.RequestException:
+        # return the original URL if any error in redirection occurs
+        return url
+
+
 def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
     """
     Determines the remote URL of a git repository, if available.
@@ -328,7 +355,7 @@ def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
             # Validate the URL structure using urlparse
             parsed_url = urlparse(remote_url)
             if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
-                return remote_url
+                return resolve_redirects(url=remote_url)
         except (KeyError, AttributeError):
             # 'origin' remote does not exist or URL is not accessible
             pass
@@ -339,7 +366,7 @@ def get_remote_url(repo: pygit2.Repository) -> Optional[str]:
             remote_url = remote.url
             parsed_url = urlparse(remote_url)
             if parsed_url.scheme in {"http", "https", "ssh"} and parsed_url.netloc:
-                return remote_url.removesuffix(".git")
+                return resolve_redirects(url=remote_url.removesuffix(".git"))
     except AttributeError:
         pass
 
@@ -352,6 +379,7 @@ def file_exists_in_repo(
     expected_file_name: str,
     check_extension: bool = False,
     extensions: list[str] = [".md", ".txt", ".rtf", ""],
+    subdir: str | None = None,
 ) -> bool:
     """
     Check if a file (case-insensitive and with optional extensions)
@@ -366,6 +394,8 @@ def file_exists_in_repo(
             Whether to check the extension of the file or not.
         extensions (list[str]):
             List of possible file extensions to check (e.g., [".md", ""]).
+        subdir (str, optional):
+            Subdirectory to check within the repository tree (case-sensitive).
 
     Returns:
         bool:
@@ -377,6 +407,13 @@ def file_exists_in_repo(
 
     # Normalize expected file name to lowercase for case-insensitive comparison
     expected_file_name = expected_file_name.lower()
+
+    # If a subdirectory is specified and exists, navigate there
+    if subdir:
+        if subdir in tree:
+            tree = tree / subdir
+        else:
+            return False
 
     for entry in tree:
         # Normalize entry name to lowercase

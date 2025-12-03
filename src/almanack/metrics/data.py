@@ -325,9 +325,16 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-commits-per-day": commits_count / days_of_development,
         "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         "repo-includes-readme": readme_exists,
-        "repo-includes-contributing": file_exists_in_repo(
-            repo=repo,
-            expected_file_name="contributing",
+        "repo-includes-contributing": any(
+            [
+                file_exists_in_repo(
+                    repo=repo,
+                    expected_file_name="contributing",
+                ),
+                file_exists_in_repo(
+                    repo=repo, expected_file_name="contributing", subdir=".github"
+                ),
+            ]
         ),
         "repo-includes-code-of-conduct": file_exists_in_repo(
             repo=repo,
@@ -388,6 +395,10 @@ def compute_repo_data(repo_path: str) -> None:
             else None
         ),
         "repo-doi-cited-by-count": doi_citation_data["cited_by_count"],
+        "repo-doi-fwci": doi_citation_data["fwci"],
+        "repo-doi-is-not-retracted": doi_citation_data["is_not_retracted"],
+        "repo-doi-grants-count": doi_citation_data["grants_count"],
+        "repo-doi-grants": doi_citation_data["grants"],
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),

@@ -114,8 +114,48 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
-  - name: "repo-almanack-score"
+  - name: repo-doi-fwci
     id: "SGA-META-0013"
+    result-type: float
+    sustainability_correlation: 0
+    description: >-
+      Field-Weighted Citation Impact (FWCI) from OpenAlex for the work
+      referenced by the repository DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: repo-doi-is-not-retracted
+    id: "SGA-META-0014"
+    result-type: bool
+    sustainability_correlation: 0
+    description: >-
+      If the work referenced by the repository DOI has been retracted
+      as reported by OpenAlex.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: repo-doi-grants-count
+    id: "SGA-META-0015"
+    result-type: int
+    sustainability_correlation: 0
+    description: >-
+      Count of grant records attached to the DOI's
+      work (from OpenAlex via Crossref).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: repo-doi-grants
+    id: "SGA-META-0016"
+    result-type: list
+    sustainability_correlation: 0
+    description: >-
+      List of grant records for the DOI's
+      work (from OpenAlex via Crossref).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-almanack-score"
+    id: "SGA-META-0017"
     result-type: "dict"
     sustainability_correlation: 0
     description: >-
@@ -167,14 +207,15 @@ metrics:
       It helps maintain a consistent contribution process and encourages
       community involvement.
     fix_how: >-
-      Create a CONTRIBUTING file in the root directory of your repository.
+      Create a CONTRIBUTING file in your repository.
       Include guidelines for contributing, such as coding standards,
       pull request instructions, and any other relevant information.
       You can use Markdown to format the CONTRIBUTING file for better
       readability.
       For example, you can start with a text editor or use an online
       Markdown editor to create your CONTRIBUTING file.
-      Save it as `CONTRIBUTING.md` in the root of your repository.
+      Save it as `CONTRIBUTING.md` in the root or `.github/` directory of your
+      repository.
       If you're using GitHub, you can also use their web interface to create
       and edit the CONTRIBUTING file directly.
   - name: "repo-includes-code-of-conduct"
