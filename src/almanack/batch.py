@@ -38,7 +38,9 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
             df = df.drop(columns=[col]).join(nested)
         # Check if column contains lists
         elif df[col].apply(lambda x: isinstance(x, list)).any():
-            df[col] = df[col].apply(lambda x: json.dumps(x) if isinstance(x, list) else x)
+            df[col] = df[col].apply(
+                lambda x: json.dumps(x) if isinstance(x, list) else x
+            )
         # Fallback for generic objects
         elif df[col].dtype == "object":
             df[col] = df[col].astype(str)
@@ -67,7 +69,9 @@ def load_repo_urls_from_parquet(
 
     df = pd.read_parquet(parquet_path)
     if column not in df.columns:
-        raise ValueError(f"'{column}' column not found. Available columns: {list(df.columns)}")
+        raise ValueError(
+            f"'{column}' column not found. Available columns: {list(df.columns)}"
+        )
 
     repo_urls = df[column].drop_duplicates().dropna().tolist()
     if limit:
@@ -105,7 +109,9 @@ def process_repositories_batch(
         A DataFrame containing all processed results.
     """
     filtered_urls = [url for url in repo_urls if url]
-    repo_list: List[str] = list(dict.fromkeys(filtered_urls))  # de-duplicate while preserving order
+    repo_list: List[str] = list(
+        dict.fromkeys(filtered_urls)
+    )  # de-duplicate while preserving order
     if limit is not None:
         repo_list = repo_list[:limit]
 

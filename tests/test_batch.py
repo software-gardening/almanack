@@ -39,13 +39,21 @@ def test_sanitize_for_parquet_handles_nested_types():
 
     sanitized = sanitize_for_parquet(df)
 
-    assert set(sanitized.columns) == {"dict_col_a", "dict_col_b", "list_col", "object_col"}
+    assert set(sanitized.columns) == {
+        "dict_col_a",
+        "dict_col_b",
+        "list_col",
+        "object_col",
+    }
     assert sanitized["list_col"].iloc[0] == "[1, 2]"
     assert sanitized["object_col"].iloc[0] == "/tmp/example"
 
 
 def test_process_repositories_batch_writes_single_parquet(tmp_path):
-    repo_urls = ["https://github.com/example/success", "https://github.com/example/fail"]
+    repo_urls = [
+        "https://github.com/example/success",
+        "https://github.com/example/fail",
+    ]
     output_file = tmp_path / "results" / "almanack.parquet"
 
     df = process_repositories_batch(
@@ -62,7 +70,13 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     assert len(df) == 2
     assert "Repository URL" in df.columns
     assert "metadata_foo" in df.columns
-    assert df.loc[df["Repository URL"] == "https://github.com/example/fail", "almanack_error"].notna().all()
+    assert (
+        df.loc[
+            df["Repository URL"] == "https://github.com/example/fail", "almanack_error"
+        ]
+        .notna()
+        .all()
+    )
 
     from_file = pd.read_parquet(output_file)
     assert len(from_file) == 2
@@ -71,7 +85,9 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
 
 def test_load_repo_urls_from_parquet(tmp_path):
     parquet_path = tmp_path / "links.parquet"
-    pd.DataFrame({"github_link": ["a", "b", "a"], "other": [1, 2, 3]}).to_parquet(parquet_path)
+    pd.DataFrame({"github_link": ["a", "b", "a"], "other": [1, 2, 3]}).to_parquet(
+        parquet_path
+    )
 
     loaded = load_repo_urls_from_parquet(parquet_path, column="github_link", limit=2)
 
