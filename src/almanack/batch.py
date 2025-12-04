@@ -59,9 +59,9 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
                 df[col] = series.apply(lambda x: x if x is None else str(x))
     return df
 
-def process_repositories_batch(
+
+def process_repositories_batch(  # noqa: C901, PLR0913, PLR0912, PLR0915
     repo_urls: Sequence[str],
-    *,
     output_path: Optional[Union[str, Path]] = None,
     split_batches: bool = False,
     collect_dataframe: bool = True,
@@ -153,9 +153,7 @@ def process_repositories_batch(
                             "checks_pct": None,
                         }
                         if show_errors:
-                            print(  # noqa: T201
-                                f"[error] {repo_url}: {exc}"
-                            )
+                            print(f"[error] {repo_url}: {exc}")  # noqa: T201
                     if show_repo_progress:
                         print(f"[{repo_count}/{total_repos}]")  # noqa: T201
                     batch_results.append(result_dict)
@@ -167,7 +165,9 @@ def process_repositories_batch(
             if output_path is not None and not df_batch.empty:
                 if split_batches:
                     batch_file = output_path / f"batch_{batch_number}.parquet"
-                    df_batch.to_parquet(batch_file, compression=compression, index=False)
+                    df_batch.to_parquet(
+                        batch_file, compression=compression, index=False
+                    )
                 else:
                     table = pa.Table.from_pandas(df_batch, preserve_index=False)
                     if writer is None:

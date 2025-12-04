@@ -310,11 +310,10 @@ class AlmanackCLI(object):
                 f"Wrote {count} records to {output_path} "
                 f"(input {len(repo_urls)} repos, batch_size={batch_size}, max_workers={max_workers})"
             )
+        elif df is not None:
+            print(df.to_json(orient="records"))  # noqa: T201
         else:
-            if df is not None:
-                print(df.to_json(orient="records"))  # noqa: T201
-            else:
-                print("[]")  # noqa: T201
+            print("[]")  # noqa: T201
 
 
 def trigger():

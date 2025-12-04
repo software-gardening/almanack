@@ -100,6 +100,7 @@ lint.select = [
 # Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
 lint.per-file-ignores."__init__.py" = [ "F401" ]
 lint.per-file-ignores."src/book/seed-bank/*" = [ "T201" ]
+lint.per-file-ignores."tests/*" = [ "PLR2004" ]
 
 [tool.isort]
 profile = "black"
