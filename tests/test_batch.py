@@ -82,6 +82,33 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     assert "metadata_foo" in from_file.columns
 
 
+def test_process_repositories_batch_split_batches(tmp_path):
+    repo_urls = [
+        "https://github.com/example/one",
+        "https://github.com/example/two",
+    ]
+    output_dir = tmp_path / "results"
+
+    df = process_repositories_batch(
+        repo_urls,
+        output_path=output_dir,
+        split_batches=True,
+        batch_size=1,
+        max_workers=1,
+        processor=_sample_processor,
+        executor_cls=ThreadPoolExecutor,
+        show_progress=False,
+    )
+
+    # Two repos, batch_size=1 => two files
+    batch_files = sorted(output_dir.glob("batch_*.parquet"))
+    assert len(batch_files) == 2
+
+    assert len(df) == 2
+    from_file = pd.read_parquet(batch_files[0])
+    assert "Repository URL" in from_file.columns
+
+
 def test_process_repositories_batch_without_output_path():
     repo_urls = ["https://github.com/example/success"]
 

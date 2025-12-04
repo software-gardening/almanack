@@ -224,6 +224,7 @@ class AlmanackCLI(object):
         show_progress: bool = True,
         processor: Optional[str] = None,
         executor: str = "process",
+        split_batches: bool = False,
     ) -> None:
         """
         Run Almanack across many repositories defined in a parquet file or a provided list.
@@ -244,6 +245,7 @@ class AlmanackCLI(object):
             show_progress: Print progress to stdout.
             processor: Optional import path to a processor function (e.g., module:function). Defaults to Almanack processor.
             executor: Parallelism backend: "process" (default) or "thread".
+            split_batches: If True, write one parquet file per batch inside output_path (must be a directory).
         """
 
         if repo_urls:
@@ -290,6 +292,7 @@ class AlmanackCLI(object):
             processor=processor_fn,
             executor_cls=executor_cls,
             show_progress=show_progress,
+            split_batches=split_batches,
         )
 
         if output_path:

@@ -50,6 +50,7 @@ def process_repositories_batch(
     repo_urls: Sequence[str],
     *,
     output_path: Optional[Union[str, Path]] = None,
+    split_batches: bool = False,
     batch_size: int = 500,
     max_workers: int = 16,
     limit: Optional[int] = None,
@@ -64,6 +65,8 @@ def process_repositories_batch(
     Args:
         repo_urls: Iterable of repository URLs to process.
         output_path: Optional destination parquet path for all results.
+        split_batches: If True, write one parquet file per batch to the directory at output_path.
+                       If False (default), append all batches into a single parquet file.
         batch_size: Number of repositories per batch.
         max_workers: Maximum parallel workers for each batch.
         limit: Optional maximum number of repositories to process.
@@ -89,12 +92,17 @@ def process_repositories_batch(
     writer: Optional[pq.ParquetWriter] = None
     if output_path is not None:
         output_path = Path(output_path)
-        output_path.parent.mkdir(parents=True, exist_ok=True)
+        if split_batches:
+            output_path.mkdir(parents=True, exist_ok=True)
+        else:
+            output_path.parent.mkdir(parents=True, exist_ok=True)
 
     batches: List[pd.DataFrame] = []
     repo_count = 0
+    batch_number = 0
     try:
         for start in range(0, total_repos, batch_size):
+            batch_number += 1
             end = min(start + batch_size, total_repos)
             batch_urls = repo_list[start:end]
 
@@ -127,14 +135,18 @@ def process_repositories_batch(
             batches.append(df_batch)
 
             if output_path is not None and not df_batch.empty:
-                table = pa.Table.from_pandas(df_batch, preserve_index=False)
-                if writer is None:
-                    writer = pq.ParquetWriter(
-                        where=output_path,
-                        schema=table.schema,
-                        compression=compression,
-                    )
-                writer.write_table(table)
+                if split_batches:
+                    batch_file = output_path / f"batch_{batch_number}.parquet"
+                    df_batch.to_parquet(batch_file, compression=compression, index=False)
+                else:
+                    table = pa.Table.from_pandas(df_batch, preserve_index=False)
+                    if writer is None:
+                        writer = pq.ParquetWriter(
+                            where=output_path,
+                            schema=table.schema,
+                            compression=compression,
+                        )
+                    writer.write_table(table)
     finally:
         if writer is not None:
             writer.close()
