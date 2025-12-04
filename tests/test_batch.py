@@ -62,7 +62,8 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
         max_workers=2,
         processor=_sample_processor,
         executor_cls=ThreadPoolExecutor,
-        show_progress=False,
+        show_repo_progress=False,
+        show_errors=False,
     )
 
     assert output_file.exists()
@@ -80,6 +81,7 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     from_file = pd.read_parquet(output_file)
     assert len(from_file) == 2
     assert "metadata_foo" in from_file.columns
+    assert from_file["checks_total"].dtype.kind in ("i", "f")
 
 
 def test_process_repositories_batch_split_batches(tmp_path):
@@ -97,7 +99,8 @@ def test_process_repositories_batch_split_batches(tmp_path):
         max_workers=1,
         processor=_sample_processor,
         executor_cls=ThreadPoolExecutor,
-        show_progress=False,
+        show_repo_progress=False,
+        show_errors=False,
     )
 
     # Two repos, batch_size=1 => two files
@@ -115,12 +118,33 @@ def test_process_repositories_batch_without_output_path():
     df = process_repositories_batch(
         repo_urls,
         output_path=None,
+        collect_dataframe=True,
         batch_size=1,
         max_workers=1,
         processor=_sample_processor,
         executor_cls=ThreadPoolExecutor,
-        show_progress=False,
+        show_repo_progress=False,
+        show_errors=False,
     )
 
     assert not df.empty
     assert "Repository URL" in df.columns
+    assert df["checks_total"].dtype.kind in ("i", "f")
+
+
+def test_process_repositories_batch_without_collecting():
+    repo_urls = ["https://github.com/example/success"]
+
+    df = process_repositories_batch(
+        repo_urls,
+        output_path=None,
+        collect_dataframe=False,
+        batch_size=1,
+        max_workers=1,
+        processor=_sample_processor,
+        executor_cls=ThreadPoolExecutor,
+        show_repo_progress=False,
+        show_errors=False,
+    )
+
+    assert df is None

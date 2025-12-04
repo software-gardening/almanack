@@ -7,6 +7,7 @@ from concurrent.futures import Executor, ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, Callable, List, Optional, Sequence, Type, Union
 
+import numpy as np
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -31,19 +32,31 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
         df: Sanitized DataFrame safe for parquet storage.
     """
     for col in df.columns:
+        series = df[col]
         # Check if column contains dicts
-        if df[col].apply(lambda x: isinstance(x, dict)).any():
-            nested = pd.json_normalize(df[col])
+        if series.apply(lambda x: isinstance(x, dict)).any():
+            nested = pd.json_normalize(series)
             nested.columns = [f"{col}_{c}" for c in nested.columns]
             df = df.drop(columns=[col]).join(nested)
         # Check if column contains lists
-        elif df[col].apply(lambda x: isinstance(x, list)).any():
-            df[col] = df[col].apply(
+        elif series.apply(lambda x: isinstance(x, list)).any():
+            df[col] = series.apply(
                 lambda x: json.dumps(x) if isinstance(x, list) else x
             )
         # Fallback for generic objects
-        elif df[col].dtype == "object":
-            df[col] = df[col].astype(str)
+        elif series.dtype == "object":
+            non_null = series.dropna()
+            is_numeric_like = (
+                not non_null.empty
+                and non_null.map(
+                    lambda x: isinstance(x, (int, float, bool, np.number))
+                ).all()
+            )
+            if is_numeric_like:
+                df[col] = pd.to_numeric(series, errors="coerce")
+            else:
+                # Preserve None as None; stringify only real values
+                df[col] = series.apply(lambda x: x if x is None else str(x))
     return df
 
 def process_repositories_batch(
@@ -51,14 +64,17 @@ def process_repositories_batch(
     *,
     output_path: Optional[Union[str, Path]] = None,
     split_batches: bool = False,
+    collect_dataframe: bool = True,
     batch_size: int = 500,
     max_workers: int = 16,
     limit: Optional[int] = None,
     compression: str = "zstd",
     processor: RepositoryProcessor = process_repo_for_almanack,
     executor_cls: Type[Executor] = ProcessPoolExecutor,
-    show_progress: bool = True,
-) -> pd.DataFrame:
+    show_repo_progress: bool = True,
+    show_batch_progress: bool = False,
+    show_errors: bool = True,
+) -> Optional[pd.DataFrame]:
     """
     Processes repositories in batches and writes results to a single parquet file.
 
@@ -67,13 +83,16 @@ def process_repositories_batch(
         output_path: Optional destination parquet path for all results.
         split_batches: If True, write one parquet file per batch to the directory at output_path.
                        If False (default), append all batches into a single parquet file.
+        collect_dataframe: If False, skip retaining per-batch DataFrames and return None to reduce memory.
         batch_size: Number of repositories per batch.
         max_workers: Maximum parallel workers for each batch.
         limit: Optional maximum number of repositories to process.
         compression: Parquet compression codec (default: zstd).
         processor: Callable used to process a repository (default: process_repo_for_almanack).
         executor_cls: Executor class used for parallelism (default: ProcessPoolExecutor).
-        show_progress: Whether to print progress to stdout.
+        show_repo_progress: Whether to print per-repository progress to stdout.
+        show_batch_progress: Whether to print per-batch progress to stdout.
+        show_errors: Whether to print repository-level errors to stdout.
 
     Returns:
         A DataFrame containing all processed results.
@@ -106,6 +125,12 @@ def process_repositories_batch(
             end = min(start + batch_size, total_repos)
             batch_urls = repo_list[start:end]
 
+            if show_batch_progress:
+                print(  # noqa: T201
+                    f"[batch {batch_number}] processing {len(batch_urls)} repos "
+                    f"({start + 1}-{end}/{total_repos})"
+                )
+
             with executor_cls(max_workers=max_workers) as executor:
                 futures = {
                     executor.submit(processor, repo_url): repo_url
@@ -127,12 +152,17 @@ def process_repositories_batch(
                             "checks_passed": None,
                             "checks_pct": None,
                         }
-                    if show_progress:
+                        if show_errors:
+                            print(  # noqa: T201
+                                f"[error] {repo_url}: {exc}"
+                            )
+                    if show_repo_progress:
                         print(f"[{repo_count}/{total_repos}]")  # noqa: T201
                     batch_results.append(result_dict)
 
             df_batch = sanitize_for_parquet(pd.DataFrame(batch_results))
-            batches.append(df_batch)
+            if collect_dataframe:
+                batches.append(df_batch)
 
             if output_path is not None and not df_batch.empty:
                 if split_batches:
@@ -150,6 +180,9 @@ def process_repositories_batch(
     finally:
         if writer is not None:
             writer.close()
+
+    if not collect_dataframe:
+        return None
 
     if not batches:
         return pd.DataFrame()

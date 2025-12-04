@@ -221,10 +221,13 @@ class AlmanackCLI(object):
         max_workers: int = 16,
         limit: Optional[int] = None,
         compression: str = "zstd",
-        show_progress: bool = True,
+        show_repo_progress: bool = True,
         processor: Optional[str] = None,
         executor: str = "process",
         split_batches: bool = False,
+        collect_dataframe: bool = True,
+        show_batch_progress: bool = False,
+        show_errors: bool = True,
     ) -> None:
         """
         Run Almanack across many repositories defined in a parquet file or a provided list.
@@ -242,10 +245,13 @@ class AlmanackCLI(object):
             max_workers: Parallel workers per batch.
             limit: Optional maximum repositories to process.
             compression: Parquet compression codec (default zstd).
-            show_progress: Print progress to stdout.
+            show_repo_progress: Print per-repository progress to stdout.
+            show_batch_progress: Print per-batch progress to stdout.
+            show_errors: Print repository-level errors to stdout.
             processor: Optional import path to a processor function (e.g., module:function). Defaults to Almanack processor.
             executor: Parallelism backend: "process" (default) or "thread".
             split_batches: If True, write one parquet file per batch inside output_path (must be a directory).
+            collect_dataframe: If False, skip retaining the combined DataFrame (avoids large in-memory data).
         """
 
         if repo_urls:
@@ -291,17 +297,24 @@ class AlmanackCLI(object):
             compression=compression,
             processor=processor_fn,
             executor_cls=executor_cls,
-            show_progress=show_progress,
+            show_repo_progress=show_repo_progress,
             split_batches=split_batches,
+            collect_dataframe=collect_dataframe,
+            show_batch_progress=show_batch_progress,
+            show_errors=show_errors,
         )
 
         if output_path:
+            count = len(df) if df is not None else "unknown"
             print(  # noqa: T201
-                f"Wrote {len(df)} records to {output_path} "
+                f"Wrote {count} records to {output_path} "
                 f"(input {len(repo_urls)} repos, batch_size={batch_size}, max_workers={max_workers})"
             )
         else:
-            print(df.to_json(orient="records"))  # noqa: T201
+            if df is not None:
+                print(df.to_json(orient="records"))  # noqa: T201
+            else:
+                print("[]")  # noqa: T201
 
 
 def trigger():
