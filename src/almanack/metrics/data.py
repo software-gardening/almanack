@@ -873,7 +873,7 @@ def parse_python_coverage_data(
                 continue
 
     # No recognized coverage files found
-    LOGGER.warning("No coverage.py data found in the repository.")
+    LOGGER.debug("No coverage.py data found in the repository.")
     return {}
 
 
