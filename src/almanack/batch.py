@@ -49,7 +49,7 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
 def process_repositories_batch(
     repo_urls: Sequence[str],
     *,
-    output_path: Union[str, Path],
+    output_path: Optional[Union[str, Path]] = None,
     batch_size: int = 500,
     max_workers: int = 16,
     limit: Optional[int] = None,
@@ -63,7 +63,7 @@ def process_repositories_batch(
 
     Args:
         repo_urls: Iterable of repository URLs to process.
-        output_path: Destination parquet path for all results.
+        output_path: Optional destination parquet path for all results.
         batch_size: Number of repositories per batch.
         max_workers: Maximum parallel workers for each batch.
         limit: Optional maximum number of repositories to process.
@@ -86,13 +86,13 @@ def process_repositories_batch(
     if total_repos == 0:
         return pd.DataFrame()
 
-    output_path = Path(output_path)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+    writer: Optional[pq.ParquetWriter] = None
+    if output_path is not None:
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
 
     batches: List[pd.DataFrame] = []
     repo_count = 0
-    writer: Optional[pq.ParquetWriter] = None
-
     try:
         for start in range(0, total_repos, batch_size):
             end = min(start + batch_size, total_repos)
@@ -126,7 +126,7 @@ def process_repositories_batch(
             df_batch = sanitize_for_parquet(pd.DataFrame(batch_results))
             batches.append(df_batch)
 
-            if not df_batch.empty:
+            if output_path is not None and not df_batch.empty:
                 table = pa.Table.from_pandas(df_batch, preserve_index=False)
                 if writer is None:
                     writer = pq.ParquetWriter(

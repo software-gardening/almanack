@@ -81,3 +81,19 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     assert len(from_file) == 2
     assert "metadata_foo" in from_file.columns
 
+
+def test_process_repositories_batch_without_output_path():
+    repo_urls = ["https://github.com/example/success"]
+
+    df = process_repositories_batch(
+        repo_urls,
+        output_path=None,
+        batch_size=1,
+        max_workers=1,
+        processor=_sample_processor,
+        executor_cls=ThreadPoolExecutor,
+        show_progress=False,
+    )
+
+    assert not df.empty
+    assert "Repository URL" in df.columns

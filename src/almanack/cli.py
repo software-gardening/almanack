@@ -213,7 +213,7 @@ class AlmanackCLI(object):
 
     def batch(  # noqa: PLR0913
         self,
-        output_path: str,
+        output_path: Optional[str] = None,
         parquet_path: Optional[str] = None,
         repo_urls: Optional[List[str]] = None,
         column: str = "github_link",
@@ -232,7 +232,7 @@ class AlmanackCLI(object):
             almanack batch links.parquet results.parquet --column github_link --batch_size 1000 --max_workers 8
 
         Args:
-            output_path: Destination parquet for aggregated results.
+            output_path: Optional destination parquet for aggregated results. If omitted, results are printed as JSON.
             parquet_path: Parquet file containing repository URLs.
             repo_urls: Optional list of repository URLs to process.
             output_path: Destination parquet for aggregated results.
@@ -292,10 +292,13 @@ class AlmanackCLI(object):
             show_progress=show_progress,
         )
 
-        print(  # noqa: T201
-            f"Wrote {len(df)} records to {output_path} "
-            f"(input {len(repo_urls)} repos, batch_size={batch_size}, max_workers={max_workers})"
-        )
+        if output_path:
+            print(  # noqa: T201
+                f"Wrote {len(df)} records to {output_path} "
+                f"(input {len(repo_urls)} repos, batch_size={batch_size}, max_workers={max_workers})"
+            )
+        else:
+            print(df.to_json(orient="records"))  # noqa: T201
 
 
 def trigger():
