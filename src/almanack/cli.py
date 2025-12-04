@@ -10,9 +10,10 @@ from datetime import datetime, timezone
 from typing import List, Optional
 
 import fire
+import pandas as pd
 from tabulate import tabulate
 
-from almanack.batch import load_repo_urls_from_parquet, process_repositories_batch
+from almanack.batch import process_repositories_batch
 from almanack.metrics.data import (
     _get_almanack_version,
     gather_failed_almanack_metric_checks,
@@ -212,8 +213,9 @@ class AlmanackCLI(object):
 
     def batch(  # noqa: PLR0913
         self,
-        parquet_path: str,
         output_path: str,
+        parquet_path: Optional[str] = None,
+        repo_urls: Optional[List[str]] = None,
         column: str = "github_link",
         batch_size: int = 500,
         max_workers: int = 16,
@@ -224,13 +226,15 @@ class AlmanackCLI(object):
         executor: str = "process",
     ) -> None:
         """
-        Run Almanack across many repositories defined in a parquet file.
+        Run Almanack across many repositories defined in a parquet file or a provided list.
 
         Example:
             almanack batch links.parquet results.parquet --column github_link --batch_size 1000 --max_workers 8
 
         Args:
+            output_path: Destination parquet for aggregated results.
             parquet_path: Parquet file containing repository URLs.
+            repo_urls: Optional list of repository URLs to process.
             output_path: Destination parquet for aggregated results.
             column: Column name holding repository URLs.
             batch_size: Repositories per batch.
@@ -242,9 +246,19 @@ class AlmanackCLI(object):
             executor: Parallelism backend: "process" (default) or "thread".
         """
 
-        repo_urls = load_repo_urls_from_parquet(
-            parquet_file=parquet_path, column=column, limit=limit
-        )
+        if repo_urls:
+            if isinstance(repo_urls, str):
+                repo_urls = [url.strip() for url in repo_urls.split(",") if url.strip()]
+            repo_urls = [url for url in repo_urls if url]
+        elif parquet_path:
+            df_links = pd.read_parquet(parquet_path)
+            if column not in df_links.columns:
+                raise ValueError(
+                    f"'{column}' column not found. Available columns: {list(df_links.columns)}"
+                )
+            repo_urls = df_links[column].dropna().drop_duplicates().tolist()
+        else:
+            raise ValueError("Provide either repo_urls or parquet_path.")
 
         if executor.lower() == "thread":
             from concurrent.futures import ThreadPoolExecutor  # noqa: PLC0415

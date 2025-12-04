@@ -152,18 +152,16 @@ def test_cli_almanack_batch(tmp_path):
         repo_path=tmp_path / "repo", files=[{"files": {"example.txt": "example"}}]
     )
 
-    parquet_path = tmp_path / "links.parquet"
     output_path = tmp_path / "results.parquet"
-    pd.DataFrame({"github_link": [repo.path]}).to_parquet(parquet_path)
+    repo_arg = repo.path
 
     _, stderr, returncode = run_cli_command(
         command=[
             "almanack",
             "batch",
-            str(parquet_path),
             str(output_path),
-            "--column",
-            "github_link",
+            "--repo_urls",
+            repo_arg,
             "--batch_size",
             "1",
             "--max_workers",

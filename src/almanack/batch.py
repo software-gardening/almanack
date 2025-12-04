@@ -44,37 +44,6 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
             df[col] = df[col].astype(str)
     return df
 
-
-def load_repo_urls_from_parquet(
-    parquet_file: Union[str, Path],
-    column: str = "github_link",
-    limit: Optional[int] = None,
-) -> List[str]:
-    """
-    Load and de-duplicate repository URLs from a parquet file.
-
-    Args:
-        parquet_file: Path to the parquet file containing repository URLs.
-        column: Name of the column with repository links.
-        limit: Optional limit on the number of repositories to return.
-
-    Returns:
-        A list of unique repository URLs.
-    """
-    parquet_path = Path(parquet_file)
-    if not parquet_path.exists():
-        raise FileNotFoundError(f"Parquet file not found: {parquet_path}")
-
-    df = pd.read_parquet(parquet_path)
-    if column not in df.columns:
-        raise ValueError(f"'{column}' column not found. Available columns: {list(df.columns)}")
-
-    repo_urls = df[column].drop_duplicates().dropna().tolist()
-    if limit:
-        return repo_urls[:limit]
-    return repo_urls
-
-
 def process_repositories_batch(
     repo_urls: Sequence[str],
     *,

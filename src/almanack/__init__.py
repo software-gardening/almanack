@@ -12,7 +12,6 @@ Foundation (NSF) via SHI under Grant No. 2327079.
 """
 
 from .batch import (
-    load_repo_urls_from_parquet,
     process_repositories_batch,
     sanitize_for_parquet,
 )

@@ -8,7 +8,6 @@ from pathlib import Path
 import pandas as pd
 
 from almanack.batch import (
-    load_repo_urls_from_parquet,
     process_repositories_batch,
     sanitize_for_parquet,
 )
@@ -68,11 +67,3 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     assert len(from_file) == 2
     assert "metadata_foo" in from_file.columns
 
-
-def test_load_repo_urls_from_parquet(tmp_path):
-    parquet_path = tmp_path / "links.parquet"
-    pd.DataFrame({"github_link": ["a", "b", "a"], "other": [1, 2, 3]}).to_parquet(parquet_path)
-
-    loaded = load_repo_urls_from_parquet(parquet_path, column="github_link", limit=2)
-
-    assert loaded == ["a", "b"]
