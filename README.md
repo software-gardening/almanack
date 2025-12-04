@@ -50,6 +50,57 @@ almanack table path/to/repository
 almanack check path/to/repository
 ```
 
+#### Batch processing many repositories
+
+The batch command runs Almanack across many repositories in parallel and writes one parquet (or one per batch) while optionally streaming progress to stdout.
+
+```bash
+# Run from a list (comma-separated) and write a single parquet
+almanack batch results.parquet --repo_urls https://github.com/org/repo1,https://github.com/org/repo2 --max_workers 8
+
+# Use threads (good for I/O-bound workloads) and split outputs per batch
+almanack batch out_dir --repo_urls https://github.com/org/repo1,https://github.com/org/repo2 --executor thread --split_batches --batch_size 100
+
+# Read repo URLs from a parquet column
+almanack batch results.parquet --parquet_path links.parquet --column github_link
+```
+
+Key options:
+
+- `--executor`: `process` (default) or `thread`
+- `--batch_size`: repos per batch (a small multiple of `max_workers` works well)
+- `--split_batches`: write one parquet file per batch into `output_path` (treated as a directory)
+- `--collect_dataframe`: set to `False` to avoid keeping results in memory (when only writing parquet)
+- `--show_repo_progress` / `--show_batch_progress`: progress verbosity controls
+- `--show_errors`: emit repo-level failures with URLs
+
+Python API example:
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+from almanack import process_repositories_batch
+
+repos = ["https://github.com/org/repo1", "https://github.com/org/repo2"]
+
+# Single parquet
+df = process_repositories_batch(
+    repos,
+    output_path="almanack_results.parquet",
+    max_workers=8,
+    executor_cls=ThreadPoolExecutor,  # threads are notebook-friendly / I/O-friendly
+)
+
+# Per-batch files, no in-memory DataFrame
+process_repositories_batch(
+    repos,
+    output_path="batch_outputs",
+    split_batches=True,
+    collect_dataframe=False,
+    batch_size=100,
+    max_workers=16,
+)
+```
+
 ### Pre-commit Hook
 
 We provide [pre-commit](https://pre-commit.com/) hooks to enable you to run the Almanack as part of your automated checks for developing software projects.
