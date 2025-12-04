@@ -38,7 +38,9 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
             df = df.drop(columns=[col]).join(nested)
         # Check if column contains lists
         elif df[col].apply(lambda x: isinstance(x, list)).any():
-            df[col] = df[col].apply(lambda x: json.dumps(x) if isinstance(x, list) else x)
+            df[col] = df[col].apply(
+                lambda x: json.dumps(x) if isinstance(x, list) else x
+            )
         # Fallback for generic objects
         elif df[col].dtype == "object":
             df[col] = df[col].astype(str)
@@ -74,7 +76,9 @@ def process_repositories_batch(
         A DataFrame containing all processed results.
     """
     filtered_urls = [url for url in repo_urls if url]
-    repo_list: List[str] = list(dict.fromkeys(filtered_urls))  # de-duplicate while preserving order
+    repo_list: List[str] = list(
+        dict.fromkeys(filtered_urls)
+    )  # de-duplicate while preserving order
     if limit is not None:
         repo_list = repo_list[:limit]
 
