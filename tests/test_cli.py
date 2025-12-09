@@ -166,7 +166,7 @@ def test_cli_almanack_batch(tmp_path):
             "1",
             "--max_workers",
             "1",
-            "--show_progress",
+            "--show_repo_progress",
             "False",
             "--executor",
             "thread",

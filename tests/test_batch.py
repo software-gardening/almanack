@@ -70,6 +70,7 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     assert len(df) == 2
     assert "Repository URL" in df.columns
     assert "metadata_foo" in df.columns
+    assert "almanack_error" in df.columns
     assert (
         df.loc[
             df["Repository URL"] == "https://github.com/example/fail", "almanack_error"
@@ -82,6 +83,8 @@ def test_process_repositories_batch_writes_single_parquet(tmp_path):
     assert len(from_file) == 2
     assert "metadata_foo" in from_file.columns
     assert from_file["checks_total"].dtype.kind in ("i", "f")
+    # Error column should persist even when only one repo fails
+    assert "almanack_error" in from_file.columns
 
 
 def test_process_repositories_batch_split_batches(tmp_path):
@@ -110,6 +113,7 @@ def test_process_repositories_batch_split_batches(tmp_path):
     assert len(df) == 2
     from_file = pd.read_parquet(batch_files[0])
     assert "Repository URL" in from_file.columns
+    assert "almanack_error" in from_file.columns
 
 
 def test_process_repositories_batch_without_output_path():

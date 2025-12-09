@@ -3,6 +3,7 @@ Batch processing utilities for running Almanack across many repositories.
 """
 
 import json
+import logging
 from concurrent.futures import Executor, ProcessPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any, Callable, List, Optional, Sequence, Type, Union
@@ -15,6 +16,7 @@ import pyarrow.parquet as pq
 from almanack.metrics.data import process_repo_for_almanack
 
 RepositoryProcessor = Callable[[str], dict[str, Any]]
+LOGGER = logging.getLogger(__name__)
 
 
 def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
@@ -58,6 +60,17 @@ def sanitize_for_parquet(df: pd.DataFrame) -> pd.DataFrame:
                 # Preserve None as None; stringify only real values
                 df[col] = series.apply(lambda x: x if x is None else str(x))
     return df
+
+
+def _nullable_dtype(dtype: Any) -> Any:
+    """Map to nullable pandas dtypes so missing values keep schema."""
+    if pd.api.types.is_integer_dtype(dtype):
+        return "Int64"
+    if pd.api.types.is_bool_dtype(dtype):
+        return "boolean"
+    if pd.api.types.is_object_dtype(dtype):
+        return "string"
+    return dtype
 
 
 def process_repositories_batch(  # noqa: C901, PLR0913, PLR0912, PLR0915
@@ -119,6 +132,9 @@ def process_repositories_batch(  # noqa: C901, PLR0913, PLR0912, PLR0915
     batches: List[pd.DataFrame] = []
     repo_count = 0
     batch_number = 0
+    # Track the initial schema so later batches conform to it
+    schema_columns: Optional[List[str]] = None
+    schema_dtypes: dict[str, Any] = {}
     try:
         for start in range(0, total_repos, batch_size):
             batch_number += 1
@@ -154,11 +170,40 @@ def process_repositories_batch(  # noqa: C901, PLR0913, PLR0912, PLR0915
                         }
                         if show_errors:
                             print(f"[error] {repo_url}: {exc}")  # noqa: T201
+                    # Normalize presence of error field for schema stability
+                    result_dict.setdefault("almanack_error", None)
                     if show_repo_progress:
                         print(f"[{repo_count}/{total_repos}]")  # noqa: T201
                     batch_results.append(result_dict)
 
             df_batch = sanitize_for_parquet(pd.DataFrame(batch_results))
+            if df_batch.empty:
+                continue
+
+            if schema_columns is None:
+                # Lock schema on first non-empty batch
+                schema_columns = list(df_batch.columns)
+                schema_dtypes = {
+                    col: _nullable_dtype(df_batch[col].dtype) for col in schema_columns
+                }
+                df_batch = df_batch.astype(schema_dtypes)
+            else:
+                extra_cols = [c for c in df_batch.columns if c not in schema_columns]
+                if extra_cols:
+                    df_batch = df_batch.drop(columns=extra_cols)
+                for col in schema_columns:
+                    if col not in df_batch.columns:
+                        # Add missing columns with the expected dtype
+                        df_batch[col] = pd.Series(
+                            [pd.NA] * len(df_batch), dtype=schema_dtypes[col]
+                        )
+                df_batch = df_batch[schema_columns]
+                for col, dtype in schema_dtypes.items():
+                    try:
+                        df_batch[col] = df_batch[col].astype(dtype)
+                    except Exception as exc:
+                        # Avoid hard failures on cast; log and continue
+                        LOGGER.debug("Skipping cast for column %s: %s", col, exc)
             if collect_dataframe:
                 batches.append(df_batch)
 
