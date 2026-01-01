@@ -13,7 +13,7 @@ import fire
 import pandas as pd
 from tabulate import tabulate
 
-from almanack.batch import process_repositories_batch
+from almanack.batch_processing import process_repositories_batch
 from almanack.metrics.data import (
     _get_almanack_version,
     gather_failed_almanack_metric_checks,

@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from almanack.batch import (
+from almanack.batch_processing import (
     process_repositories_batch,
     sanitize_for_parquet,
 )
