@@ -88,7 +88,7 @@ Please see [this example notebook](https://software-gardening.github.io/almanack
 
 ### Batch processing many repositories
 
-The batch command runs Almanack across many repositories in parallel and writes one parquet (or one per batch) while optionally streaming progress to stdout.
+The `almanack batch` command runs the almanack check across many repositories in parallel and writes one parquet file (or one per batch) while optionally streaming progress to stdout.
 
 ```bash
 # Run from a list (comma-separated) and write a single parquet
@@ -104,8 +104,8 @@ almanack batch results.parquet --parquet_path links.parquet --column github_link
 Key options:
 
 - `--executor`: `process` (default) or `thread`
-- `--batch_size`: repos per batch (a small multiple of `max_workers` works well)
-- `--split_batches`: write one parquet file per batch into `output_path` (treated as a directory)
+- `--batch_size`: how many repos per batch (a small multiple of `max_workers` works well)
+- `--split_batches`: an option to write one parquet file per batch into `output_path` (treated as a directory)
 - `--collect_dataframe`: set to `False` to avoid returning a dataframe (only write to file)
 - `--show_repo_progress`: shows progress per repository
 - `--show_batch_progress`: shows progress per batch (sets of repos)
