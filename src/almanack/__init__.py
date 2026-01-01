@@ -11,7 +11,7 @@ Program via LLNL under Contract DE-AC52-07NA27344; and by the National Science
 Foundation (NSF) via SHI under Grant No. 2327079.
 """
 
-from .batch import (
+from .batch_processing import (
     process_repositories_batch,
     sanitize_for_parquet,
 )
