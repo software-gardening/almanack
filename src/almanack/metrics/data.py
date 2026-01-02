@@ -12,6 +12,7 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 import defusedxml.ElementTree as ET
+import pandas as pd
 import pygit2
 import yaml
 
@@ -566,6 +567,90 @@ def process_repo_for_analysis(
         shutil.rmtree(temp_dir)
 
 
+def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
+    """
+    Transpose Almanack table (name->result), compute checks summary, flatten nested.
+    `repo-file-info-entropy` is ignored due to scope and increased runtime for analysis.
+
+    Args:
+        table_rows (list[dict]):
+            The Almanack metrics table as a list of dictionaries,
+            each containing metric metadata and a "result" field.
+
+    Returns:
+        dict:
+            A flattened dictionary mapping metric names to their results,
+            including computed summary fields:
+              - "checks_total": total number of sustainability-related checks
+              - "checks_passed": number of checks passed
+              - "checks_pct": percentage of checks passed
+
+    """
+    if not table_rows:
+        return {"checks_total": 0, "checks_passed": 0, "checks_pct": None}
+
+    df = pd.DataFrame(table_rows)
+
+    # Dynamic sustainability checks: bool + positive correlation
+    mask = (df["result-type"] == "bool") & (df["sustainability_correlation"] == 1)
+    checks_total = int(mask.sum())
+    checks_passed = int((df.loc[mask, "result"] == True).sum())
+    checks_pct = (100.0 * checks_passed / checks_total) if checks_total else None
+
+    # name->result (wide format)
+    wide: Dict[str, Any] = (
+        df[["name", "result"]]
+        .set_index("name")
+        .T.reset_index(drop=True)
+        .iloc[0]
+        .to_dict()
+    )
+
+    wide.pop("repo-file-info-entropy", None)
+
+    # Flatten repo-almanack-score if present (avoid nested dict in parquet)
+    score = wide.get("repo-almanack-score")
+    if isinstance(score, dict):
+        wide["repo-almanack-score_json"] = json.dumps(score, default=str)
+        del wide["repo-almanack-score"]
+
+    # Preserve nested types by JSON-encoding them for parquet safety
+    for key, value in list(wide.items()):
+        if isinstance(value, (dict, list)) and not key.endswith("_json"):
+            wide[f"{key}_json"] = json.dumps(value, default=str)
+            del wide[key]
+
+    # Attach computed check summaries
+    wide["checks_total"] = checks_total
+    wide["checks_passed"] = checks_passed
+    wide["checks_pct"] = checks_pct
+
+    return wide
+
+
+def process_repo_for_almanack(repo_url: str) -> Dict[str, Any]:
+    """
+    Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.
+
+    Args:
+        repo_url (str): The GitHub repository URL.
+
+    Returns:
+        dict: Flattened metrics for the repository, including sustainability checks.
+              If the processing fails, returns an error entry with the repository URL.
+    """
+    try:
+        # Merge the base repo identifier with flattened metrics in one dictionary
+        return {
+            **{"Repository URL": repo_url},
+            **table_to_wide(get_table(repo_path=repo_url)),
+        }
+
+    except Exception as e:
+        LOGGER.error(f"ERROR processing {repo_url}: {e}")
+        return {"Repository URL": repo_url, "almanack_error": str(e)}
+
+
 def _get_almanack_version() -> str:
     """
     Seeks the current version of almanack using either pkg_resources
@@ -788,7 +873,7 @@ def parse_python_coverage_data(
                 continue
 
     # No recognized coverage files found
-    LOGGER.warning("No coverage.py data found in the repository.")
+    LOGGER.debug("No coverage.py data found in the repository.")
     return {}
 
 

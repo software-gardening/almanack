@@ -86,6 +86,70 @@ pd.DataFrame(almanack_table)
 
 Please see [this example notebook](https://software-gardening.github.io/almanack/seed-bank/almanack-example/almanack-example.html) which demonstrates using the Almanack package.
 
+### Batch processing many repositories
+
+The `almanack batch` command runs the almanack check across many repositories in parallel and writes one parquet file (or one per batch) while optionally streaming progress to stdout.
+
+```bash
+# Run from a list (comma-separated) and write a single parquet
+almanack batch results.parquet --repo_urls https://github.com/org/repo1,https://github.com/org/repo2 --max_workers 8
+
+# Use threads (good for I/O-bound workloads) and split outputs per batch
+almanack batch out_dir --repo_urls https://github.com/org/repo1,https://github.com/org/repo2 --executor thread --split_batches --batch_size 100
+
+# Read repo URLs from a column in a provided parquet file
+almanack batch results.parquet --parquet_path links.parquet --column github_link
+```
+
+Key options:
+
+- `--executor`: `process` (default) or `thread`
+- `--batch_size`: how many repos per batch (a small multiple of `max_workers` works well)
+- `--split_batches`: an option to write one parquet file per batch into `output_path` (treated as a directory)
+- `--collect_dataframe`: set to `False` to avoid returning a dataframe (only write to file)
+- `--show_repo_progress`: shows progress per repository
+- `--show_batch_progress`: shows progress per batch (sets of repos)
+- `--show_errors`: emit any errors from the almanack processing
+
+Python API example:
+
+```python
+from concurrent.futures import ThreadPoolExecutor
+from almanack import process_repositories_batch
+
+repos = ["https://github.com/org/repo1", "https://github.com/org/repo2"]
+
+# Single parquet
+df = process_repositories_batch(
+    repos,
+    output_path="almanack_results.parquet",
+    max_workers=8,
+    executor_cls=ThreadPoolExecutor,  # threads are notebook-friendly / I/O-friendly
+)
+
+# Per-batch files, no in-memory DataFrame
+process_repositories_batch(
+    repos,
+    output_path="batch_outputs",
+    split_batches=True,
+    collect_dataframe=False,
+    batch_size=100,
+    max_workers=16,
+)
+```
+
+### GitHub API performance
+
+The Almanack uses GitHub’s API to gather certain metrics.
+Anonymous API requests have extremely low rate limits—once hit, requests are throttled and batch jobs slow down.
+Export a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) as `GITHUB_TOKEN` before running any CLI or Python workflows to raise the per-hour quota:
+
+```bash
+export GITHUB_TOKEN=ghp_yourtokenhere
+```
+
+Commands launched from the same shell automatically reuse the token, so your GitHub requests complete faster and more reliably.
+
 ## Contributing
 
 Please see our [`CONTRIBUTING.md`](CONTRIBUTING.md) document for more information on how to contribute to this project.
