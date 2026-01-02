@@ -187,7 +187,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../seed-bank/almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
@@ -364,6 +363,7 @@ document.write(`
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
 <span class="kn">import</span> <span class="nn">defusedxml.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pygit2</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 
@@ -936,6 +936,96 @@ document.write(`
 
 
 
+<div class="viewcode-block" id="table_to_wide">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.table_to_wide">[docs]</a>
+<span class="k">def</span> <span class="nf">table_to_wide</span><span class="p">(</span><span class="n">table_rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Transpose Almanack table (name-&gt;result), compute checks summary, flatten nested.</span>
+<span class="sd">    `repo-file-info-entropy` is ignored due to scope and increased runtime for analysis.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        table_rows (list[dict]):</span>
+<span class="sd">            The Almanack metrics table as a list of dictionaries,</span>
+<span class="sd">            each containing metric metadata and a &quot;result&quot; field.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict:</span>
+<span class="sd">            A flattened dictionary mapping metric names to their results,</span>
+<span class="sd">            including computed summary fields:</span>
+<span class="sd">              - &quot;checks_total&quot;: total number of sustainability-related checks</span>
+<span class="sd">              - &quot;checks_passed&quot;: number of checks passed</span>
+<span class="sd">              - &quot;checks_pct&quot;: percentage of checks passed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">table_rows</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;checks_total&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;checks_passed&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;checks_pct&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">table_rows</span><span class="p">)</span>
+
+    <span class="c1"># Dynamic sustainability checks: bool + positive correlation</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;result-type&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;bool&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;sustainability_correlation&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">checks_total</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">checks_passed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="n">checks_pct</span> <span class="o">=</span> <span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="n">checks_passed</span> <span class="o">/</span> <span class="n">checks_total</span><span class="p">)</span> <span class="k">if</span> <span class="n">checks_total</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="c1"># name-&gt;result (wide format)</span>
+    <span class="n">wide</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">]]</span>
+        <span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="p">)</span>
+
+    <span class="n">wide</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># Flatten repo-almanack-score if present (avoid nested dict in parquet)</span>
+    <span class="n">score</span> <span class="o">=</span> <span class="n">wide</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">wide</span><span class="p">[</span><span class="s2">&quot;repo-almanack-score_json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">score</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">del</span> <span class="n">wide</span><span class="p">[</span><span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Preserve nested types by JSON-encoding them for parquet safety</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">wide</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">key</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;_json&quot;</span><span class="p">):</span>
+            <span class="n">wide</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">_json&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+            <span class="k">del</span> <span class="n">wide</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="c1"># Attach computed check summaries</span>
+    <span class="n">wide</span><span class="p">[</span><span class="s2">&quot;checks_total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">checks_total</span>
+    <span class="n">wide</span><span class="p">[</span><span class="s2">&quot;checks_passed&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">checks_passed</span>
+    <span class="n">wide</span><span class="p">[</span><span class="s2">&quot;checks_pct&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">checks_pct</span>
+
+    <span class="k">return</span> <span class="n">wide</span></div>
+
+
+
+<div class="viewcode-block" id="process_repo_for_almanack">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.process_repo_for_almanack">[docs]</a>
+<span class="k">def</span> <span class="nf">process_repo_for_almanack</span><span class="p">(</span><span class="n">repo_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_url (str): The GitHub repository URL.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Flattened metrics for the repository, including sustainability checks.</span>
+<span class="sd">              If the processing fails, returns an error entry with the repository URL.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Merge the base repo identifier with flattened metrics in one dictionary</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="o">**</span><span class="p">{</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">:</span> <span class="n">repo_url</span><span class="p">},</span>
+            <span class="o">**</span><span class="n">table_to_wide</span><span class="p">(</span><span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_url</span><span class="p">)),</span>
+        <span class="p">}</span>
+
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ERROR processing </span><span class="si">{</span><span class="n">repo_url</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">:</span> <span class="n">repo_url</span><span class="p">,</span> <span class="s2">&quot;almanack_error&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span></div>
+
+
+
 <div class="viewcode-block" id="_get_almanack_version">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_almanack_version">[docs]</a>
 <span class="k">def</span> <span class="nf">_get_almanack_version</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -1169,7 +1259,7 @@ document.write(`
                 <span class="k">continue</span>
 
     <span class="c1"># No recognized coverage files found</span>
-    <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No coverage.py data found in the repository.&quot;</span><span class="p">)</span>
+    <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;No coverage.py data found in the repository.&quot;</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">{}</span></div>
 
 

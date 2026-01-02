@@ -187,7 +187,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../seed-bank/almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
@@ -398,6 +397,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.book">Base</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.book.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.batch"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.batch()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.check"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.check()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.table"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.table()</span></code></a></li>
 </ul>
@@ -415,6 +415,9 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_remote_url"><code class="docutils literal notranslate"><span class="pre">get_remote_url()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.resolve_redirects"><code class="docutils literal notranslate"><span class="pre">resolve_redirects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing._nullable_dtype"><code class="docutils literal notranslate"><span class="pre">_nullable_dtype()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing.process_repositories_batch"><code class="docutils literal notranslate"><span class="pre">process_repositories_batch()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing.sanitize_for_parquet"><code class="docutils literal notranslate"><span class="pre">sanitize_for_parquet()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.reporting.report">Reporting</a><ul class="nav section-nav flex-column">
@@ -434,7 +437,9 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.measure_coverage"><code class="docutils literal notranslate"><span class="pre">measure_coverage()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.parse_python_coverage_data"><code class="docutils literal notranslate"><span class="pre">parse_python_coverage_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_almanack"><code class="docutils literal notranslate"><span class="pre">process_repo_for_almanack()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_analysis"><code class="docutils literal notranslate"><span class="pre">process_repo_for_analysis()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.table_to_wide"><code class="docutils literal notranslate"><span class="pre">table_to_wide()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.remote">Remote</a><ul class="nav section-nav flex-column">
@@ -537,6 +542,36 @@ otherwise 0.</p>
 </dl>
 </li>
 </ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="almanack.cli.AlmanackCLI.batch">
+<span class="sig-name descname"><span class="pre">batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parquet_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo_urls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'github_link'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_workers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compression</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'zstd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_repo_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">processor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">executor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'process'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">split_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collect_dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_batch_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_errors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.batch" title="Link to this definition">#</a></dt>
+<dd><p>Run Almanack across many repositories defined in a parquet file or a provided list.</p>
+<p class="rubric">Example</p>
+<p>almanack batch links.parquet results.parquet –column github_link –batch_size 1000 –max_workers 8</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_path</strong> – Optional destination parquet for aggregated results. If omitted, results are printed as JSON.</p></li>
+<li><p><strong>parquet_path</strong> – Parquet file containing repository URLs.</p></li>
+<li><p><strong>repo_urls</strong> – Optional list of repository URLs to process.</p></li>
+<li><p><strong>output_path</strong> – Destination parquet for aggregated results.</p></li>
+<li><p><strong>column</strong> – Column name holding repository URLs.</p></li>
+<li><p><strong>batch_size</strong> – Repositories per batch.</p></li>
+<li><p><strong>max_workers</strong> – Parallel workers per batch.</p></li>
+<li><p><strong>limit</strong> – Optional maximum repositories to process.</p></li>
+<li><p><strong>compression</strong> – Parquet compression codec (default zstd).</p></li>
+<li><p><strong>show_repo_progress</strong> – Print per-repository progress to stdout.</p></li>
+<li><p><strong>show_batch_progress</strong> – Print per-batch progress to stdout.</p></li>
+<li><p><strong>show_errors</strong> – Print repository-level errors to stdout.</p></li>
+<li><p><strong>processor</strong> – Optional import path to a processor function (e.g., module:function). Defaults to Almanack processor.</p></li>
+<li><p><strong>executor</strong> – Parallelism backend: “process” (default) or “thread”.</p></li>
+<li><p><strong>split_batches</strong> – If True, write one parquet file per batch inside output_path (must be a directory).</p></li>
+<li><p><strong>collect_dataframe</strong> – If False, skip retaining the combined DataFrame (avoids large in-memory data).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="almanack.cli.AlmanackCLI.check">
 <span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.check" title="Link to this definition">#</a></dt>
@@ -840,6 +875,64 @@ or None if the file is not found or reading fails.</p>
 </dl>
 </dd></dl>
 
+<p id="module-almanack.batch_processing">Batch processing utilities for running Almanack across many repositories.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.batch_processing._nullable_dtype">
+<span class="sig-prename descclassname"><span class="pre">almanack.batch_processing.</span></span><span class="sig-name descname"><span class="pre">_nullable_dtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/almanack/batch_processing.html#_nullable_dtype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.batch_processing._nullable_dtype" title="Link to this definition">#</a></dt>
+<dd><p>Map to nullable pandas dtypes so missing values keep schema.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.batch_processing.process_repositories_batch">
+<span class="sig-prename descclassname"><span class="pre">almanack.batch_processing.</span></span><span class="sig-name descname"><span class="pre">process_repositories_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">repo_urls:</span> <span class="pre">~typing.Sequence[str],</span> <span class="pre">output_path:</span> <span class="pre">str</span> <span class="pre">|</span> <span class="pre">~pathlib.Path</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">split_batches:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">collect_dataframe:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">batch_size:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">500,</span> <span class="pre">max_workers:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">16,</span> <span class="pre">limit:</span> <span class="pre">int</span> <span class="pre">|</span> <span class="pre">None</span> <span class="pre">=</span> <span class="pre">None,</span> <span class="pre">compression:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'zstd',</span> <span class="pre">processor:</span> <span class="pre">~typing.Callable[[str],</span> <span class="pre">dict[str,</span> <span class="pre">~typing.Any]]</span> <span class="pre">=</span> <span class="pre">&lt;function</span> <span class="pre">process_repo_for_almanack&gt;,</span> <span class="pre">executor_cls:</span> <span class="pre">~typing.Type[~concurrent.futures._base.Executor]</span> <span class="pre">=</span> <span class="pre">&lt;class</span> <span class="pre">'concurrent.futures.process.ProcessPoolExecutor'&gt;,</span> <span class="pre">show_repo_progress:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True,</span> <span class="pre">show_batch_progress:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">False,</span> <span class="pre">show_errors:</span> <span class="pre">bool</span> <span class="pre">=</span> <span class="pre">True</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/batch_processing.html#process_repositories_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.batch_processing.process_repositories_batch" title="Link to this definition">#</a></dt>
+<dd><p>Processes repositories in batches and writes results to a single parquet file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_urls</strong> – Iterable of repository URLs to process.</p></li>
+<li><p><strong>output_path</strong> – Optional destination parquet path for all results.</p></li>
+<li><p><strong>split_batches</strong> – If True, write one parquet file per batch to the directory at output_path.
+If False (default), append all batches into a single parquet file.</p></li>
+<li><p><strong>collect_dataframe</strong> – If False, skip retaining per-batch DataFrames and return None to reduce memory.</p></li>
+<li><p><strong>batch_size</strong> – Number of repositories per batch.</p></li>
+<li><p><strong>max_workers</strong> – Maximum parallel workers for each batch.</p></li>
+<li><p><strong>limit</strong> – Optional maximum number of repositories to process.</p></li>
+<li><p><strong>compression</strong> – Parquet compression codec (default: zstd).</p></li>
+<li><p><strong>processor</strong> – Callable used to process a repository (default: process_repo_for_almanack).</p></li>
+<li><p><strong>executor_cls</strong> – Executor class used for parallelism (default: ProcessPoolExecutor).</p></li>
+<li><p><strong>show_repo_progress</strong> – Whether to print per-repository progress to stdout.</p></li>
+<li><p><strong>show_batch_progress</strong> – Whether to print per-batch progress to stdout.</p></li>
+<li><p><strong>show_errors</strong> – Whether to print repository-level errors to stdout.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A DataFrame containing all processed results.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.batch_processing.sanitize_for_parquet">
+<span class="sig-prename descclassname"><span class="pre">almanack.batch_processing.</span></span><span class="sig-name descname"><span class="pre">sanitize_for_parquet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="reference internal" href="../_modules/almanack/batch_processing.html#sanitize_for_parquet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.batch_processing.sanitize_for_parquet" title="Link to this definition">#</a></dt>
+<dd><p>Cleans a DataFrame so all columns are parquet-safe.</p>
+<ul class="simple">
+<li><p>Expands dict columns into multiple fields.</p></li>
+<li><p>Converts lists into JSON strings.</p></li>
+<li><p>Casts generic object types into strings.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>df</strong> – Input DataFrame with raw metrics.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Sanitized DataFrame safe for parquet storage.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>df</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-almanack.reporting.report">
 <span id="reporting"></span><h2>Reporting<a class="headerlink" href="#module-almanack.reporting.report" title="Link to this heading">#</a></h2>
@@ -1123,6 +1216,27 @@ empty dict if no data is found.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.process_repo_for_almanack">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">process_repo_for_almanack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#process_repo_for_almanack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.process_repo_for_almanack" title="Link to this definition">#</a></dt>
+<dd><p>Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo_url</strong> (<em>str</em>) – The GitHub repository URL.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>Flattened metrics for the repository, including sustainability checks.</dt><dd><p>If the processing fails, returns an error entry with the repository URL.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data.process_repo_for_analysis">
 <span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">process_repo_for_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#process_repo_for_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.process_repo_for_analysis" title="Link to this definition">#</a></dt>
 <dd><p>Processes GitHub repository URL’s to calculate entropy and other metadata.
@@ -1141,6 +1255,34 @@ that process PUBMED repositories.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.table_to_wide">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">table_to_wide</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">table_rows</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#table_to_wide"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.table_to_wide" title="Link to this definition">#</a></dt>
+<dd><p>Transpose Almanack table (name-&gt;result), compute checks summary, flatten nested.
+<cite>repo-file-info-entropy</cite> is ignored due to scope and increased runtime for analysis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>table_rows</strong> (<em>list</em><em>[</em><em>dict</em><em>]</em>) – The Almanack metrics table as a list of dictionaries,
+each containing metric metadata and a “result” field.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p>A flattened dictionary mapping metric names to their results,
+including computed summary fields:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>”checks_total”: total number of sustainability-related checks</p></li>
+<li><p>”checks_passed”: number of checks passed</p></li>
+<li><p>”checks_pct”: percentage of checks passed</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1541,6 +1683,7 @@ related to the repository.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.book">Base</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.book.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.batch"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.batch()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.check"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.check()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.cli.AlmanackCLI.table"><code class="docutils literal notranslate"><span class="pre">AlmanackCLI.table()</span></code></a></li>
 </ul>
@@ -1558,6 +1701,9 @@ related to the repository.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_remote_url"><code class="docutils literal notranslate"><span class="pre">get_remote_url()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.resolve_redirects"><code class="docutils literal notranslate"><span class="pre">resolve_redirects()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing._nullable_dtype"><code class="docutils literal notranslate"><span class="pre">_nullable_dtype()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing.process_repositories_batch"><code class="docutils literal notranslate"><span class="pre">process_repositories_batch()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing.sanitize_for_parquet"><code class="docutils literal notranslate"><span class="pre">sanitize_for_parquet()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.reporting.report">Reporting</a><ul class="nav section-nav flex-column">
@@ -1577,7 +1723,9 @@ related to the repository.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.measure_coverage"><code class="docutils literal notranslate"><span class="pre">measure_coverage()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.parse_python_coverage_data"><code class="docutils literal notranslate"><span class="pre">parse_python_coverage_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_almanack"><code class="docutils literal notranslate"><span class="pre">process_repo_for_almanack()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_analysis"><code class="docutils literal notranslate"><span class="pre">process_repo_for_analysis()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.table_to_wide"><code class="docutils literal notranslate"><span class="pre">table_to_wide()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.remote">Remote</a><ul class="nav section-nav flex-column">

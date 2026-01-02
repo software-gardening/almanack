@@ -63,7 +63,7 @@
     <link rel="icon" href="../../_static/favicon.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Visualizing PubMed article GitHub repository software information entropy" href="../pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html" />
+    <link rel="next" title="Checks index" href="../../checks/index.html" />
     <link rel="prev" title="Seed Bank" href="../seed-bank.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -188,7 +188,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../seed-bank.html">Seed Bank</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Software Gardening Almanack Package Example Use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
@@ -416,10 +415,12 @@ The Almanack is an open-source handbook of applied guidance and tools for sustai
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: almanack in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (0.0.0.post1.dev0+e6ee0c2)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: almanack in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (0.0.0.post1.dev0+58e6383)
 Requirement already satisfied: charset-normalizer&lt;4.0.0,&gt;=3.4.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (3.4.4)
 Requirement already satisfied: defusedxml&lt;0.8.0,&gt;=0.7.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.7.1)
 Requirement already satisfied: fire&lt;0.8,&gt;=0.6 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.7.1)
+Requirement already satisfied: pandas&gt;=2.2.2 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (2.3.3)
+Requirement already satisfied: pyarrow&gt;=16 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (22.0.0)
 Requirement already satisfied: pygit2&gt;=1.15.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (1.18.2)
 Requirement already satisfied: pyyaml&lt;7.0.0,&gt;=6.0.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (6.0.3)
 Requirement already satisfied: requests&lt;3.0.0,&gt;=2.32.3 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (2.32.5)
@@ -428,8 +429,15 @@ Requirement already satisfied: termcolor in /home/runner/.cache/pypoetry/virtual
 Requirement already satisfied: idna&lt;4,&gt;=2.5 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from requests&lt;3.0.0,&gt;=2.32.3-&gt;almanack) (3.7)
 Requirement already satisfied: urllib3&lt;3,&gt;=1.21.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from requests&lt;3.0.0,&gt;=2.32.3-&gt;almanack) (2.6.0)
 Requirement already satisfied: certifi&gt;=2017.4.17 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from requests&lt;3.0.0,&gt;=2.32.3-&gt;almanack) (2024.7.4)
-Requirement already satisfied: cffi&gt;=1.17.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pygit2&gt;=1.15.1-&gt;almanack) (1.17.1)
+Requirement already satisfied: numpy&gt;=1.23.2 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pandas&gt;=2.2.2-&gt;almanack) (2.3.1)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pandas&gt;=2.2.2-&gt;almanack) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pandas&gt;=2.2.2-&gt;almanack) (2024.1)
+Requirement already satisfied: tzdata&gt;=2022.7 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pandas&gt;=2.2.2-&gt;almanack) (2024.1)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: cffi&gt;=1.17.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from pygit2&gt;=1.15.1-&gt;almanack) (1.17.1)
 Requirement already satisfied: pycparser in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from cffi&gt;=1.17.0-&gt;pygit2&gt;=1.15.1-&gt;almanack) (2.21)
+Requirement already satisfied: six&gt;=1.5 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=2.2.2-&gt;almanack) (1.16.0)
 </pre></div>
 </div>
 </div>
@@ -446,494 +454,513 @@ Requirement already satisfied: pycparser in /home/runner/.cache/pypoetry/virtual
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;almanack&#39;...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 3766, done.
-remote: Counting objects:   0% (1/152)
-remote: Counting objects:   1% (2/152)
-remote: Counting objects:   2% (4/152)
-remote: Counting objects:   3% (5/152)
-remote: Counting objects:   4% (7/152)
-remote: Counting objects:   5% (8/152)
-remote: Counting objects:   6% (10/152)
-remote: Counting objects:   7% (11/152)
-remote: Counting objects:   8% (13/152)
-remote: Counting objects:   9% (14/152)
-remote: Counting objects:  10% (16/152)
-remote: Counting objects:  11% (17/152)
-remote: Counting objects:  12% (19/152)
-remote: Counting objects:  13% (20/152)
-remote: Counting objects:  14% (22/152)
-remote: Counting objects:  15% (23/152)
-remote: Counting objects:  16% (25/152)
-remote: Counting objects:  17% (26/152)
-remote: Counting objects:  18% (28/152)
-remote: Counting objects:  19% (29/152)
-remote: Counting objects:  20% (31/152)
-remote: Counting objects:  21% (32/152)
-remote: Counting objects:  22% (34/152)
-remote: Counting objects:  23% (35/152)
-remote: Counting objects:  24% (37/152)
-remote: Counting objects:  25% (38/152)
-remote: Counting objects:  26% (40/152)
-remote: Counting objects:  27% (42/152)
-remote: Counting objects:  28% (43/152)
-remote: Counting objects:  29% (45/152)
-remote: Counting objects:  30% (46/152)
-remote: Counting objects:  31% (48/152)
-remote: Counting objects:  32% (49/152)
-remote: Counting objects:  33% (51/152)
-remote: Counting objects:  34% (52/152)
-remote: Counting objects:  35% (54/152)
-remote: Counting objects:  36% (55/152)
-remote: Counting objects:  37% (57/152)
-remote: Counting objects:  38% (58/152)
-remote: Counting objects:  39% (60/152)
-remote: Counting objects:  40% (61/152)
-remote: Counting objects:  41% (63/152)
-remote: Counting objects:  42% (64/152)
-remote: Counting objects:  43% (66/152)
-remote: Counting objects:  44% (67/152)
-remote: Counting objects:  45% (69/152)
-remote: Counting objects:  46% (70/152)
-remote: Counting objects:  47% (72/152)
-remote: Counting objects:  48% (73/152)
-remote: Counting objects:  49% (75/152)
-remote: Counting objects:  50% (76/152)
-remote: Counting objects:  51% (78/152)
-remote: Counting objects:  52% (80/152)
-remote: Counting objects:  53% (81/152)
-remote: Counting objects:  54% (83/152)
-remote: Counting objects:  55% (84/152)
-remote: Counting objects:  56% (86/152)
-remote: Counting objects:  57% (87/152)
-remote: Counting objects:  58% (89/152)
-remote: Counting objects:  59% (90/152)
-remote: Counting objects:  60% (92/152)
-remote: Counting objects:  61% (93/152)
-remote: Counting objects:  62% (95/152)
-remote: Counting objects:  63% (96/152)
-remote: Counting objects:  64% (98/152)
-remote: Counting objects:  65% (99/152)
-remote: Counting objects:  66% (101/152)
-remote: Counting objects:  67% (102/152)
-remote: Counting objects:  68% (104/152)
-remote: Counting objects:  69% (105/152)
-remote: Counting objects:  70% (107/152)
-remote: Counting objects:  71% (108/152)
-remote: Counting objects:  72% (110/152)
-remote: Counting objects:  73% (111/152)
-remote: Counting objects:  74% (113/152)
-remote: Counting objects:  75% (114/152)
-remote: Counting objects:  76% (116/152)
-remote: Counting objects:  77% (118/152)
-remote: Counting objects:  78% (119/152)
-remote: Counting objects:  79% (121/152)
-remote: Counting objects:  80% (122/152)
-remote: Counting objects:  81% (124/152)
-remote: Counting objects:  82% (125/152)
-remote: Counting objects:  83% (127/152)
-remote: Counting objects:  84% (128/152)
-remote: Counting objects:  85% (130/152)
-remote: Counting objects:  86% (131/152)
-remote: Counting objects:  87% (133/152)
-remote: Counting objects:  88% (134/152)
-remote: Counting objects:  89% (136/152)
-remote: Counting objects:  90% (137/152)
-remote: Counting objects:  91% (139/152)
-remote: Counting objects:  92% (140/152)
-remote: Counting objects:  93% (142/152)
-remote: Counting objects:  94% (143/152)
-remote: Counting objects:  95% (145/152)
-remote: Counting objects:  96% (146/152)
-remote: Counting objects:  97% (148/152)
-remote: Counting objects:  98% (149/152)
-remote: Counting objects:  99% (151/152)
-remote: Counting objects: 100% (152/152)
-remote: Counting objects: 100% (152/152), done.
-remote: Compressing objects:   0% (1/104)
-remote: Compressing objects:   1% (2/104)
-remote: Compressing objects:   2% (3/104)
-remote: Compressing objects:   3% (4/104)
-remote: Compressing objects:   4% (5/104)
-remote: Compressing objects:   5% (6/104)
-remote: Compressing objects:   6% (7/104)
-remote: Compressing objects:   7% (8/104)
-remote: Compressing objects:   8% (9/104)
-remote: Compressing objects:   9% (10/104)
-remote: Compressing objects:  10% (11/104)
-remote: Compressing objects:  11% (12/104)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 3864, done.
+remote: Counting objects:   0% (1/249)
+remote: Counting objects:   1% (3/249)
+remote: Counting objects:   2% (5/249)
+remote: Counting objects:   3% (8/249)
+remote: Counting objects:   4% (10/249)
+remote: Counting objects:   5% (13/249)
+remote: Counting objects:   6% (15/249)
+remote: Counting objects:   7% (18/249)
+remote: Counting objects:   8% (20/249)
+remote: Counting objects:   9% (23/249)
+remote: Counting objects:  10% (25/249)
+remote: Counting objects:  11% (28/249)
+remote: Counting objects:  12% (30/249)
+remote: Counting objects:  13% (33/249)
+remote: Counting objects:  14% (35/249)
+remote: Counting objects:  15% (38/249)
+remote: Counting objects:  16% (40/249)
+remote: Counting objects:  17% (43/249)
+remote: Counting objects:  18% (45/249)
+remote: Counting objects:  19% (48/249)
+remote: Counting objects:  20% (50/249)
+remote: Counting objects:  21% (53/249)
+remote: Counting objects:  22% (55/249)
+remote: Counting objects:  23% (58/249)
+remote: Counting objects:  24% (60/249)
+remote: Counting objects:  25% (63/249)
+remote: Counting objects:  26% (65/249)
+remote: Counting objects:  27% (68/249)
+remote: Counting objects:  28% (70/249)
+remote: Counting objects:  29% (73/249)
+remote: Counting objects:  30% (75/249)
+remote: Counting objects:  31% (78/249)
+remote: Counting objects:  32% (80/249)
+remote: Counting objects:  33% (83/249)
+remote: Counting objects:  34% (85/249)
+remote: Counting objects:  35% (88/249)
+remote: Counting objects:  36% (90/249)
+remote: Counting objects:  37% (93/249)
+remote: Counting objects:  38% (95/249)
+remote: Counting objects:  39% (98/249)
+remote: Counting objects:  40% (100/249)
+remote: Counting objects:  41% (103/249)
+remote: Counting objects:  42% (105/249)
+remote: Counting objects:  43% (108/249)
+remote: Counting objects:  44% (110/249)
+remote: Counting objects:  45% (113/249)
+remote: Counting objects:  46% (115/249)
+remote: Counting objects:  47% (118/249)
+remote: Counting objects:  48% (120/249)
+remote: Counting objects:  49% (123/249)
+remote: Counting objects:  50% (125/249)
+remote: Counting objects:  51% (127/249)
+remote: Counting objects:  52% (130/249)
+remote: Counting objects:  53% (132/249)
+remote: Counting objects:  54% (135/249)
+remote: Counting objects:  55% (137/249)
+remote: Counting objects:  56% (140/249)
+remote: Counting objects:  57% (142/249)
+remote: Counting objects:  58% (145/249)
+remote: Counting objects:  59% (147/249)
+remote: Counting objects:  60% (150/249)
+remote: Counting objects:  61% (152/249)
+remote: Counting objects:  62% (155/249)
+remote: Counting objects:  63% (157/249)
+remote: Counting objects:  64% (160/249)
+remote: Counting objects:  65% (162/249)
+remote: Counting objects:  66% (165/249)
+remote: Counting objects:  67% (167/249)
+remote: Counting objects:  68% (170/249)
+remote: Counting objects:  69% (172/249)
+remote: Counting objects:  70% (175/249)
+remote: Counting objects:  71% (177/249)
+remote: Counting objects:  72% (180/249)
+remote: Counting objects:  73% (182/249)
+remote: Counting objects:  74% (185/249)
+remote: Counting objects:  75% (187/249)
+remote: Counting objects:  76% (190/249)
+remote: Counting objects:  77% (192/249)
+remote: Counting objects:  78% (195/249)
+remote: Counting objects:  79% (197/249)
+remote: Counting objects:  80% (200/249)
+remote: Counting objects:  81% (202/249)
+remote: Counting objects:  82% (205/249)
+remote: Counting objects:  83% (207/249)
+remote: Counting objects:  84% (210/249)
+remote: Counting objects:  85% (212/249)
+remote: Counting objects:  86% (215/249)
+remote: Counting objects:  87% (217/249)
+remote: Counting objects:  88% (220/249)
+remote: Counting objects:  89% (222/249)
+remote: Counting objects:  90% (225/249)
+remote: Counting objects:  91% (227/249)
+remote: Counting objects:  92% (230/249)
+remote: Counting objects:  93% (232/249)
+remote: Counting objects:  94% (235/249)
+remote: Counting objects:  95% (237/249)
+remote: Counting objects:  96% (240/249)
+remote: Counting objects:  97% (242/249)
+remote: Counting objects:  98% (245/249)
+remote: Counting objects:  99% (247/249)
+remote: Counting objects: 100% (249/249)
+remote: Counting objects: 100% (249/249), done.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  12% (13/104)
-remote: Compressing objects:  13% (14/104)
-remote: Compressing objects:  14% (15/104)
-remote: Compressing objects:  15% (16/104)
-remote: Compressing objects:  16% (17/104)
-remote: Compressing objects:  17% (18/104)
-remote: Compressing objects:  18% (19/104)
-remote: Compressing objects:  19% (20/104)
-remote: Compressing objects:  20% (21/104)
-remote: Compressing objects:  21% (22/104)
-remote: Compressing objects:  22% (23/104)
-remote: Compressing objects:  23% (24/104)
-remote: Compressing objects:  24% (25/104)
-remote: Compressing objects:  25% (26/104)
-remote: Compressing objects:  26% (28/104)
-remote: Compressing objects:  27% (29/104)
-remote: Compressing objects:  28% (30/104)
-remote: Compressing objects:  29% (31/104)
-remote: Compressing objects:  30% (32/104)
-remote: Compressing objects:  31% (33/104)
-remote: Compressing objects:  32% (34/104)
-remote: Compressing objects:  33% (35/104)
-remote: Compressing objects:  34% (36/104)
-remote: Compressing objects:  35% (37/104)
-remote: Compressing objects:  36% (38/104)
-remote: Compressing objects:  37% (39/104)
-remote: Compressing objects:  38% (40/104)
-remote: Compressing objects:  39% (41/104)
-remote: Compressing objects:  40% (42/104)
-remote: Compressing objects:  41% (43/104)
-remote: Compressing objects:  42% (44/104)
-remote: Compressing objects:  43% (45/104)
-remote: Compressing objects:  44% (46/104)
-remote: Compressing objects:  45% (47/104)
-remote: Compressing objects:  46% (48/104)
-remote: Compressing objects:  47% (49/104)
-remote: Compressing objects:  48% (50/104)
-remote: Compressing objects:  49% (51/104)
-remote: Compressing objects:  50% (52/104)
-remote: Compressing objects:  51% (54/104)
-remote: Compressing objects:  52% (55/104)
-remote: Compressing objects:  53% (56/104)
-remote: Compressing objects:  54% (57/104)
-remote: Compressing objects:  55% (58/104)
-remote: Compressing objects:  56% (59/104)
-remote: Compressing objects:  57% (60/104)
-remote: Compressing objects:  58% (61/104)
-remote: Compressing objects:  59% (62/104)
-remote: Compressing objects:  60% (63/104)
-remote: Compressing objects:  61% (64/104)
-remote: Compressing objects:  62% (65/104)
-remote: Compressing objects:  63% (66/104)
-remote: Compressing objects:  64% (67/104)
-remote: Compressing objects:  65% (68/104)
-remote: Compressing objects:  66% (69/104)
-remote: Compressing objects:  67% (70/104)
-remote: Compressing objects:  68% (71/104)
-remote: Compressing objects:  69% (72/104)
-remote: Compressing objects:  70% (73/104)
-remote: Compressing objects:  71% (74/104)
-remote: Compressing objects:  72% (75/104)
-remote: Compressing objects:  73% (76/104)
-remote: Compressing objects:  74% (77/104)
-remote: Compressing objects:  75% (78/104)
-remote: Compressing objects:  76% (80/104)
-remote: Compressing objects:  77% (81/104)
-remote: Compressing objects:  78% (82/104)
-remote: Compressing objects:  79% (83/104)
-remote: Compressing objects:  80% (84/104)
-remote: Compressing objects:  81% (85/104)
-remote: Compressing objects:  82% (86/104)
-remote: Compressing objects:  83% (87/104)
-remote: Compressing objects:  84% (88/104)
-remote: Compressing objects:  85% (89/104)
-remote: Compressing objects:  86% (90/104)
-remote: Compressing objects:  87% (91/104)
-remote: Compressing objects:  88% (92/104)
-remote: Compressing objects:  89% (93/104)
-remote: Compressing objects:  90% (94/104)
-remote: Compressing objects:  91% (95/104)
-remote: Compressing objects:  92% (96/104)
-remote: Compressing objects:  93% (97/104)
-remote: Compressing objects:  94% (98/104)
-remote: Compressing objects:  95% (99/104)
-remote: Compressing objects:  96% (100/104)
-remote: Compressing objects:  97% (101/104)
-remote: Compressing objects:  98% (102/104)
-remote: Compressing objects:  99% (103/104)
-remote: Compressing objects: 100% (104/104)
-remote: Compressing objects: 100% (104/104), done.
-Receiving objects:   0% (1/3766)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:   0% (1/145)
+remote: Compressing objects:   1% (2/145)
+remote: Compressing objects:   2% (3/145)
+remote: Compressing objects:   3% (5/145)
+remote: Compressing objects:   4% (6/145)
+remote: Compressing objects:   5% (8/145)
+remote: Compressing objects:   6% (9/145)
+remote: Compressing objects:   7% (11/145)
+remote: Compressing objects:   8% (12/145)
+remote: Compressing objects:   9% (14/145)
+remote: Compressing objects:  10% (15/145)
+remote: Compressing objects:  11% (16/145)
+remote: Compressing objects:  12% (18/145)
+remote: Compressing objects:  13% (19/145)
+remote: Compressing objects:  14% (21/145)
+remote: Compressing objects:  15% (22/145)
+remote: Compressing objects:  16% (24/145)
+remote: Compressing objects:  17% (25/145)
+remote: Compressing objects:  18% (27/145)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   1% (38/3766)
-Receiving objects:   2% (76/3766)
-Receiving objects:   3% (113/3766)
-Receiving objects:   4% (151/3766)
-Receiving objects:   5% (189/3766)
-Receiving objects:   6% (226/3766)
-Receiving objects:   7% (264/3766)
-Receiving objects:   8% (302/3766)
-Receiving objects:   9% (339/3766)
-Receiving objects:  10% (377/3766)
-Receiving objects:  11% (415/3766)
-Receiving objects:  12% (452/3766)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  19% (28/145)
+remote: Compressing objects:  20% (29/145)
+remote: Compressing objects:  21% (31/145)
+remote: Compressing objects:  22% (32/145)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  13% (490/3766), 38.95 MiB | 77.89 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  23% (34/145)
+remote: Compressing objects:  24% (35/145)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  14% (528/3766), 38.95 MiB | 77.89 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  25% (37/145)
+remote: Compressing objects:  26% (38/145)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  14% (536/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  15% (565/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  16% (603/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  17% (641/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  18% (678/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  19% (716/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  20% (754/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  21% (791/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  22% (829/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  23% (867/3766), 71.68 MiB | 71.75 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  27% (40/145)
+remote: Compressing objects:  28% (41/145)
+remote: Compressing objects:  29% (43/145)
+remote: Compressing objects:  30% (44/145)
+remote: Compressing objects:  31% (45/145)
+remote: Compressing objects:  32% (47/145)
+remote: Compressing objects:  33% (48/145)
+remote: Compressing objects:  34% (50/145)
+remote: Compressing objects:  35% (51/145)
+remote: Compressing objects:  36% (53/145)
+remote: Compressing objects:  37% (54/145)
+remote: Compressing objects:  38% (56/145)
+remote: Compressing objects:  39% (57/145)
+remote: Compressing objects:  40% (58/145)
+remote: Compressing objects:  41% (60/145)
+remote: Compressing objects:  42% (61/145)
+remote: Compressing objects:  43% (63/145)
+remote: Compressing objects:  44% (64/145)
+remote: Compressing objects:  45% (66/145)
+remote: Compressing objects:  46% (67/145)
+remote: Compressing objects:  47% (69/145)
+remote: Compressing objects:  48% (70/145)
+remote: Compressing objects:  49% (72/145)
+remote: Compressing objects:  50% (73/145)
+remote: Compressing objects:  51% (74/145)
+remote: Compressing objects:  52% (76/145)
+remote: Compressing objects:  53% (77/145)
+remote: Compressing objects:  54% (79/145)
+remote: Compressing objects:  55% (80/145)
+remote: Compressing objects:  56% (82/145)
+remote: Compressing objects:  57% (83/145)
+remote: Compressing objects:  58% (85/145)
+remote: Compressing objects:  59% (86/145)
+remote: Compressing objects:  60% (87/145)
+remote: Compressing objects:  61% (89/145)
+remote: Compressing objects:  62% (90/145)
+remote: Compressing objects:  63% (92/145)
+remote: Compressing objects:  64% (93/145)
+remote: Compressing objects:  65% (95/145)
+remote: Compressing objects:  66% (96/145)
+remote: Compressing objects:  67% (98/145)
+remote: Compressing objects:  68% (99/145)
+remote: Compressing objects:  69% (101/145)
+remote: Compressing objects:  70% (102/145)
+remote: Compressing objects:  71% (103/145)
+remote: Compressing objects:  72% (105/145)
+remote: Compressing objects:  73% (106/145)
+remote: Compressing objects:  74% (108/145)
+remote: Compressing objects:  75% (109/145)
+remote: Compressing objects:  76% (111/145)
+remote: Compressing objects:  77% (112/145)
+remote: Compressing objects:  78% (114/145)
+remote: Compressing objects:  79% (115/145)
+remote: Compressing objects:  80% (116/145)
+remote: Compressing objects:  81% (118/145)
+remote: Compressing objects:  82% (119/145)
+remote: Compressing objects:  83% (121/145)
+remote: Compressing objects:  84% (122/145)
+remote: Compressing objects:  85% (124/145)
+remote: Compressing objects:  86% (125/145)
+remote: Compressing objects:  87% (127/145)
+remote: Compressing objects:  88% (128/145)
+remote: Compressing objects:  89% (130/145)
+remote: Compressing objects:  90% (131/145)
+remote: Compressing objects:  91% (132/145)
+remote: Compressing objects:  92% (134/145)
+remote: Compressing objects:  93% (135/145)
+remote: Compressing objects:  94% (137/145)
+remote: Compressing objects:  95% (138/145)
+remote: Compressing objects:  96% (140/145)
+remote: Compressing objects:  97% (141/145)
+remote: Compressing objects:  98% (143/145)
+remote: Compressing objects:  99% (144/145)
+remote: Compressing objects: 100% (145/145)
+remote: Compressing objects: 100% (145/145), done.
+Receiving objects:   0% (1/3864)
+Receiving objects:   1% (39/3864)
+Receiving objects:   2% (78/3864)
+Receiving objects:   3% (116/3864)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  24% (904/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  25% (942/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  26% (980/3766), 71.68 MiB | 71.75 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   4% (155/3864)
+Receiving objects:   5% (194/3864)
+Receiving objects:   6% (232/3864)
+Receiving objects:   7% (271/3864)
+Receiving objects:   8% (310/3864)
+Receiving objects:   9% (348/3864)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  27% (1017/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  28% (1055/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  29% (1093/3766), 71.68 MiB | 71.75 MiB/s
-Receiving objects:  30% (1130/3766), 71.68 MiB | 71.75 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  10% (387/3864)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  31% (1168/3766), 71.68 MiB | 71.75 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (426/3864)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  32% (1206/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  33% (1243/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (459/3864), 26.46 MiB | 26.45 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  34% (1281/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  35% (1319/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  12% (464/3864), 26.46 MiB | 26.45 MiB/s
+Receiving objects:  13% (503/3864), 26.46 MiB | 26.45 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  36% (1356/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  14% (541/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  15% (580/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  16% (619/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  17% (657/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  18% (696/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  19% (735/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  20% (773/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  21% (812/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  22% (851/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  23% (889/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  24% (928/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  25% (966/3864), 64.86 MiB | 43.23 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  37% (1394/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  38% (1432/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  39% (1469/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  26% (1005/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  27% (1044/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  28% (1082/3864), 64.86 MiB | 43.23 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  40% (1507/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  41% (1545/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  42% (1582/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  29% (1121/3864), 64.86 MiB | 43.23 MiB/s
+Receiving objects:  30% (1160/3864), 64.86 MiB | 43.23 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  43% (1620/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  30% (1180/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  44% (1658/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  45% (1695/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  46% (1733/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  47% (1771/3766), 92.34 MiB | 61.60 MiB/s
-Receiving objects:  48% (1808/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  31% (1198/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  49% (1846/3766), 92.34 MiB | 61.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  32% (1237/3864), 85.45 MiB | 42.72 MiB/s
+Receiving objects:  33% (1276/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  49% (1849/3766), 119.16 MiB | 59.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  34% (1314/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  50% (1883/3766), 119.16 MiB | 59.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  35% (1353/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  51% (1921/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  52% (1959/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  53% (1996/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  54% (2034/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  55% (2072/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  56% (2109/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  57% (2147/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  58% (2185/3766), 119.16 MiB | 59.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  36% (1392/3864), 85.45 MiB | 42.72 MiB/s
+Receiving objects:  37% (1430/3864), 85.45 MiB | 42.72 MiB/s
+Receiving objects:  38% (1469/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  59% (2222/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  60% (2260/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  61% (2298/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  62% (2335/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  63% (2373/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  64% (2411/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  65% (2448/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  66% (2486/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  67% (2524/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  68% (2561/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  69% (2599/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  70% (2637/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  71% (2674/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  72% (2712/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  73% (2750/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  74% (2787/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  75% (2825/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  76% (2863/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  77% (2900/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  78% (2938/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  79% (2976/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  80% (3013/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  81% (3051/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  82% (3089/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  83% (3126/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  84% (3164/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  85% (3202/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  86% (3239/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  87% (3277/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  88% (3315/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  89% (3352/3766), 119.16 MiB | 59.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  39% (1507/3864), 85.45 MiB | 42.72 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  90% (3390/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  91% (3428/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  92% (3465/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  93% (3503/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  94% (3541/3766), 119.16 MiB | 59.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  40% (1546/3864), 85.45 MiB | 42.72 MiB/s
+Receiving objects:  41% (1585/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  42% (1623/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  95% (3578/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  96% (3616/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  97% (3654/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  98% (3691/3766), 119.16 MiB | 59.60 MiB/s
-Receiving objects:  99% (3729/3766), 119.16 MiB | 59.60 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  43% (1662/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  44% (1701/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Total 3766 (delta 104), reused 59 (delta 45), pack-reused 3614 (from 2)
-Receiving objects: 100% (3766/3766), 148.80 MiB | 59.56 MiB/s
-Receiving objects: 100% (3766/3766), 149.75 MiB | 59.57 MiB/s, done.
-Resolving deltas:   0% (0/2057)
-Resolving deltas:   1% (21/2057)
-Resolving deltas:   2% (42/2057)
-Resolving deltas:   3% (62/2057)
-Resolving deltas:   4% (83/2057)
-Resolving deltas:   5% (103/2057)
-Resolving deltas:   6% (124/2057)
-Resolving deltas:   7% (144/2057)
-Resolving deltas:   8% (165/2057)
-Resolving deltas:   9% (186/2057)
-Resolving deltas:  10% (206/2057)
-Resolving deltas:  11% (227/2057)
-Resolving deltas:  12% (247/2057)
-Resolving deltas:  13% (268/2057)
-Resolving deltas:  14% (288/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  45% (1739/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  46% (1778/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  47% (1817/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  15% (309/2057)
-Resolving deltas:  16% (330/2057)
-Resolving deltas:  17% (350/2057)
-Resolving deltas:  18% (371/2057)
-Resolving deltas:  19% (391/2057)
-Resolving deltas:  20% (412/2057)
-Resolving deltas:  21% (432/2057)
-Resolving deltas:  22% (453/2057)
-Resolving deltas:  23% (474/2057)
-Resolving deltas:  24% (495/2057)
-Resolving deltas:  25% (515/2057)
-Resolving deltas:  26% (535/2057)
-Resolving deltas:  27% (556/2057)
-Resolving deltas:  28% (576/2057)
-Resolving deltas:  29% (598/2057)
-Resolving deltas:  30% (618/2057)
-Resolving deltas:  31% (638/2057)
-Resolving deltas:  32% (659/2057)
-Resolving deltas:  33% (679/2057)
-Resolving deltas:  34% (700/2057)
-Resolving deltas:  35% (720/2057)
-Resolving deltas:  36% (741/2057)
-Resolving deltas:  37% (762/2057)
-Resolving deltas:  38% (782/2057)
-Resolving deltas:  39% (803/2057)
-Resolving deltas:  40% (823/2057)
-Resolving deltas:  41% (844/2057)
-Resolving deltas:  42% (864/2057)
-Resolving deltas:  43% (885/2057)
-Resolving deltas:  44% (906/2057)
-Resolving deltas:  45% (926/2057)
-Resolving deltas:  46% (947/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  48% (1855/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  47% (967/2057)
-Resolving deltas:  48% (988/2057)
-Resolving deltas:  49% (1008/2057)
-Resolving deltas:  50% (1029/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  49% (1894/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  51% (1050/2057)
-Resolving deltas:  52% (1070/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  50% (1932/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  53% (1091/2057)
-Resolving deltas:  54% (1111/2057)
-Resolving deltas:  55% (1132/2057)
-Resolving deltas:  56% (1152/2057)
-Resolving deltas:  57% (1173/2057)
-Resolving deltas:  58% (1194/2057)
-Resolving deltas:  59% (1214/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  51% (1971/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  52% (2010/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  53% (2048/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  54% (2087/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  55% (2126/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  56% (2164/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  57% (2203/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  58% (2242/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  59% (2280/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  60% (2319/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  61% (2358/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  62% (2396/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  63% (2435/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  64% (2473/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  65% (2512/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  66% (2551/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  67% (2589/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  68% (2628/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  69% (2667/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  70% (2705/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  71% (2744/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  72% (2783/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  73% (2821/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  74% (2860/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  75% (2898/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  76% (2937/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  77% (2976/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  78% (3014/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  79% (3053/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  80% (3092/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  81% (3130/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  82% (3169/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  83% (3208/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  84% (3246/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  85% (3285/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  86% (3324/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  60% (1235/2057)
-Resolving deltas:  61% (1255/2057)
-Resolving deltas:  62% (1276/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  87% (3362/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  88% (3401/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  89% (3439/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  90% (3478/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  91% (3517/3864), 108.36 MiB | 43.36 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  63% (1296/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  92% (3555/3864), 108.36 MiB | 43.36 MiB/s
+Receiving objects:  92% (3565/3864), 136.39 MiB | 45.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  63% (1299/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  93% (3594/3864), 136.39 MiB | 45.48 MiB/s
+Receiving objects:  94% (3633/3864), 136.39 MiB | 45.48 MiB/s
+Receiving objects:  95% (3671/3864), 136.39 MiB | 45.48 MiB/s
+Receiving objects:  96% (3710/3864), 136.39 MiB | 45.48 MiB/s
+Receiving objects:  97% (3749/3864), 136.39 MiB | 45.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  64% (1318/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  98% (3787/3864), 136.39 MiB | 45.48 MiB/s
+Receiving objects:  99% (3826/3864), 136.39 MiB | 45.48 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  65% (1338/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Total 3864 (delta 164), reused 132 (delta 99), pack-reused 3615 (from 2)
+Receiving objects: 100% (3864/3864), 136.39 MiB | 45.48 MiB/s
+Receiving objects: 100% (3864/3864), 153.84 MiB | 46.76 MiB/s, done.
+Resolving deltas:   0% (0/2117)
+Resolving deltas:   1% (22/2117)
+Resolving deltas:   2% (43/2117)
+Resolving deltas:   3% (64/2117)
+Resolving deltas:   4% (85/2117)
+Resolving deltas:   5% (106/2117)
+Resolving deltas:   6% (128/2117)
+Resolving deltas:   7% (149/2117)
+Resolving deltas:   8% (170/2117)
+Resolving deltas:   9% (192/2117)
+Resolving deltas:  10% (212/2117)
+Resolving deltas:  11% (233/2117)
+Resolving deltas:  12% (255/2117)
+Resolving deltas:  13% (276/2117)
+Resolving deltas:  14% (297/2117)
+Resolving deltas:  15% (318/2117)
+Resolving deltas:  16% (339/2117)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  66% (1358/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  17% (360/2117)
+Resolving deltas:  18% (382/2117)
+Resolving deltas:  19% (403/2117)
+Resolving deltas:  20% (424/2117)
+Resolving deltas:  21% (445/2117)
+Resolving deltas:  22% (466/2117)
+Resolving deltas:  23% (487/2117)
+Resolving deltas:  24% (509/2117)
+Resolving deltas:  25% (530/2117)
+Resolving deltas:  26% (551/2117)
+Resolving deltas:  27% (572/2117)
+Resolving deltas:  28% (593/2117)
+Resolving deltas:  29% (614/2117)
+Resolving deltas:  30% (636/2117)
+Resolving deltas:  31% (657/2117)
+Resolving deltas:  32% (678/2117)
+Resolving deltas:  33% (699/2117)
+Resolving deltas:  34% (720/2117)
+Resolving deltas:  35% (741/2117)
+Resolving deltas:  36% (763/2117)
+Resolving deltas:  37% (784/2117)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  67% (1379/2057)
-Resolving deltas:  67% (1387/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  38% (805/2117)
+Resolving deltas:  39% (826/2117)
+Resolving deltas:  40% (847/2117)
+Resolving deltas:  41% (868/2117)
+Resolving deltas:  42% (890/2117)
+Resolving deltas:  43% (911/2117)
+Resolving deltas:  44% (932/2117)
+Resolving deltas:  45% (953/2117)
+Resolving deltas:  46% (974/2117)
+Resolving deltas:  47% (995/2117)
+Resolving deltas:  48% (1017/2117)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  68% (1399/2057)
-Resolving deltas:  69% (1420/2057)
-Resolving deltas:  70% (1440/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  49% (1038/2117)
+Resolving deltas:  50% (1059/2117)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  71% (1461/2057)
-Resolving deltas:  72% (1482/2057)
-Resolving deltas:  73% (1502/2057)
-Resolving deltas:  74% (1523/2057)
-Resolving deltas:  75% (1543/2057)
-Resolving deltas:  76% (1564/2057)
-Resolving deltas:  77% (1584/2057)
-Resolving deltas:  78% (1605/2057)
-Resolving deltas:  79% (1626/2057)
-Resolving deltas:  80% (1646/2057)
-Resolving deltas:  81% (1667/2057)
-Resolving deltas:  82% (1687/2057)
-Resolving deltas:  83% (1708/2057)
-Resolving deltas:  84% (1728/2057)
-Resolving deltas:  85% (1749/2057)
-Resolving deltas:  86% (1770/2057)
-Resolving deltas:  87% (1790/2057)
-Resolving deltas:  88% (1811/2057)
-Resolving deltas:  89% (1831/2057)
-Resolving deltas:  90% (1852/2057)
-Resolving deltas:  91% (1872/2057)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  51% (1080/2117)
+Resolving deltas:  52% (1101/2117)
+Resolving deltas:  53% (1123/2117)
+Resolving deltas:  54% (1144/2117)
+Resolving deltas:  55% (1165/2117)
+Resolving deltas:  56% (1186/2117)
+Resolving deltas:  57% (1207/2117)
+Resolving deltas:  58% (1228/2117)
+Resolving deltas:  59% (1250/2117)
+Resolving deltas:  60% (1271/2117)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  92% (1893/2057)
-Resolving deltas:  93% (1914/2057)
-Resolving deltas:  94% (1934/2057)
-Resolving deltas:  95% (1955/2057)
-Resolving deltas:  96% (1975/2057)
-Resolving deltas:  97% (1996/2057)
-Resolving deltas:  98% (2016/2057)
-Resolving deltas:  99% (2037/2057)
-Resolving deltas: 100% (2057/2057)
-Resolving deltas: 100% (2057/2057), done.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  61% (1292/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  62% (1313/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  62% (1317/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  63% (1334/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  64% (1355/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  65% (1377/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  65% (1392/2117)
+Resolving deltas:  66% (1398/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  67% (1419/2117)
+Resolving deltas:  68% (1440/2117)
+Resolving deltas:  69% (1461/2117)
+Resolving deltas:  70% (1482/2117)
+Resolving deltas:  71% (1504/2117)
+Resolving deltas:  72% (1525/2117)
+Resolving deltas:  73% (1546/2117)
+Resolving deltas:  74% (1567/2117)
+Resolving deltas:  75% (1588/2117)
+Resolving deltas:  76% (1609/2117)
+Resolving deltas:  77% (1631/2117)
+Resolving deltas:  78% (1652/2117)
+Resolving deltas:  79% (1674/2117)
+Resolving deltas:  80% (1694/2117)
+Resolving deltas:  81% (1715/2117)
+Resolving deltas:  82% (1736/2117)
+Resolving deltas:  83% (1758/2117)
+Resolving deltas:  84% (1779/2117)
+Resolving deltas:  85% (1800/2117)
+Resolving deltas:  86% (1821/2117)
+Resolving deltas:  87% (1842/2117)
+Resolving deltas:  88% (1863/2117)
+Resolving deltas:  89% (1885/2117)
+Resolving deltas:  90% (1906/2117)
+Resolving deltas:  91% (1927/2117)
+Resolving deltas:  92% (1948/2117)
+Resolving deltas:  93% (1969/2117)
+Resolving deltas:  94% (1990/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  95% (2012/2117)
+Resolving deltas:  96% (2033/2117)
+Resolving deltas:  97% (2054/2117)
+Resolving deltas:  98% (2075/2117)
+Resolving deltas:  99% (2096/2117)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas: 100% (2117/2117)
+Resolving deltas: 100% (2117/2117), done.
 </pre></div>
 </div>
 </div>
@@ -952,8 +979,8 @@ Resolving deltas: 100% (2057/2057), done.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.3 s, sys: 66.3 ms, total: 2.37 s
-Wall time: 8.9 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.34 s, sys: 71.5 ms, total: 2.41 s
+Wall time: 7.24 s
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1008,7 +1035,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>250</td>
+      <td>251</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1020,7 +1047,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>152</td>
+      <td>184</td>
     </tr>
     <tr>
       <th>3</th>
@@ -1032,7 +1059,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>(2024-03-05, 2025-12-15)</td>
+      <td>(2024-03-05, 2026-01-02)</td>
     </tr>
     <tr>
       <th>4</th>
@@ -1044,7 +1071,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>651</td>
+      <td>669</td>
     </tr>
     <tr>
       <th>5</th>
@@ -1056,7 +1083,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>0.384025</td>
+      <td>0.375187</td>
     </tr>
     <tr>
       <th>6</th>
@@ -1068,7 +1095,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>2025-12-15T17:37:44.487678Z</td>
+      <td>2026-01-02T18:10:11.576647Z</td>
     </tr>
     <tr>
       <th>7</th>
@@ -1080,7 +1107,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>0.0.0.post1.dev0+e6ee0c2</td>
+      <td>0.0.0.post1.dev0+58e6383</td>
     </tr>
     <tr>
       <th>8</th>
@@ -1344,7 +1371,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>7</td>
+      <td>5</td>
     </tr>
     <tr>
       <th>30</th>
@@ -1380,7 +1407,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>77</td>
+      <td>79</td>
     </tr>
     <tr>
       <th>33</th>
@@ -1524,7 +1551,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>308</td>
+      <td>326</td>
     </tr>
     <tr>
       <th>45</th>
@@ -1536,7 +1563,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>0.83</td>
+      <td>0.84</td>
     </tr>
     <tr>
       <th>46</th>
@@ -1560,7 +1587,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>83</td>
+      <td>84</td>
     </tr>
     <tr>
       <th>48</th>
@@ -1572,7 +1599,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>17</td>
+      <td>16</td>
     </tr>
     <tr>
       <th>49</th>
@@ -1644,7 +1671,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>0.030637</td>
+      <td>0.025809</td>
     </tr>
     <tr>
       <th>55</th>
@@ -1656,7 +1683,7 @@ Wall time: 8.9 s
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>{'.alexignore': 0.0012613822036811719, '.githu...</td>
+      <td>{'.alexignore': 0.0012801416047473438, '.githu...</td>
     </tr>
   </tbody>
 </table>
@@ -1691,7 +1718,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 250
+        &quot;result&quot;: 251
     },
     {
         &quot;name&quot;: &quot;repo-file-count&quot;,
@@ -1702,7 +1729,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 152
+        &quot;result&quot;: 184
     },
     {
         &quot;name&quot;: &quot;repo-commit-time-range&quot;,
@@ -1715,7 +1742,7 @@ Wall time: 8.9 s
         &quot;fix_how&quot;: null,
         &quot;result&quot;: [
             &quot;2024-03-05&quot;,
-            &quot;2025-12-15&quot;
+            &quot;2026-01-02&quot;
         ]
     },
     {
@@ -1727,7 +1754,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 651
+        &quot;result&quot;: 669
     },
     {
         &quot;name&quot;: &quot;repo-commits-per-day&quot;,
@@ -1738,7 +1765,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 0.38402457757296465
+        &quot;result&quot;: 0.375186846038864
     },
     {
         &quot;name&quot;: &quot;almanack-table-datetime&quot;,
@@ -1749,7 +1776,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: &quot;2025-12-15T17:37:44.487678Z&quot;
+        &quot;result&quot;: &quot;2026-01-02T18:10:11.576647Z&quot;
     },
     {
         &quot;name&quot;: &quot;almanack-version&quot;,
@@ -1760,7 +1787,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: &quot;0.0.0.post1.dev0+e6ee0c2&quot;
+        &quot;result&quot;: &quot;0.0.0.post1.dev0+58e6383&quot;
     },
     {
         &quot;name&quot;: &quot;repo-primary-language&quot;,
@@ -2006,7 +2033,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 7
+        &quot;result&quot;: 5
     },
     {
         &quot;name&quot;: &quot;repo-stargazers-count&quot;,
@@ -2039,7 +2066,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 77
+        &quot;result&quot;: 79
     },
     {
         &quot;name&quot;: &quot;repo-pull-requests-enabled&quot;,
@@ -2173,7 +2200,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 308
+        &quot;result&quot;: 326
     },
     {
         &quot;name&quot;: &quot;repo-gh-workflow-success-ratio&quot;,
@@ -2184,7 +2211,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 0.83
+        &quot;result&quot;: 0.84
     },
     {
         &quot;name&quot;: &quot;repo-gh-workflow-succeeding-runs&quot;,
@@ -2206,7 +2233,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 83
+        &quot;result&quot;: 84
     },
     {
         &quot;name&quot;: &quot;repo-gh-workflow-queried-total&quot;,
@@ -2217,7 +2244,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 17
+        &quot;result&quot;: 16
     },
     {
         &quot;name&quot;: &quot;repo-code-coverage-percent&quot;,
@@ -2283,7 +2310,7 @@ Wall time: 8.9 s
         &quot;correction_guidance&quot;: null,
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
-        &quot;result&quot;: 0.03063685557846571
+        &quot;result&quot;: 0.025808699131227745
     },
     {
         &quot;name&quot;: &quot;repo-file-info-entropy&quot;,
@@ -2295,61 +2322,62 @@ Wall time: 8.9 s
         &quot;fix_why&quot;: null,
         &quot;fix_how&quot;: null,
         &quot;result&quot;: {
-            &quot;.alexignore&quot;: 0.0012613822036811719,
-            &quot;.github/CODEOWNERS&quot;: 0.005661602318104655,
-            &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.030685646722266667,
-            &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 0.0012613822036811719,
-            &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.02785317975965895,
-            &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.01635277042994339,
-            &quot;.github/actions/install-node-env/action.yml&quot;: 0.00697593667900816,
-            &quot;.github/actions/install-python-env/action.yml&quot;: 0.013392635806455411,
-            &quot;.github/dependabot.yml&quot;: 0.015624542903129163,
-            &quot;.github/release-drafter.yml&quot;: 0.009884515691319321,
-            &quot;.github/workflows/deploy-book.yml&quot;: 0.017788086188789003,
-            &quot;.github/workflows/draft-release.yml&quot;: 0.010683523632621598,
-            &quot;.github/workflows/entropy-check.yml&quot;: 0.02494396130160475,
-            &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.015624542903129163,
-            &quot;.github/workflows/publish-pypi.yml&quot;: 0.012246942809859314,
-            &quot;.github/workflows/pytest-tests.yml&quot;: 0.018847405151412575,
-            &quot;.github/workflows/test-links.yml&quot;: 0.009884515691319321,
-            &quot;.gitignore&quot;: 0.04972735299825477,
-            &quot;.linkcheckerrc.ini&quot;: 0.00824618660029969,
-            &quot;.pre-commit-config.yaml&quot;: 0.06146092095918149,
-            &quot;.pre-commit-hooks.yaml&quot;: 0.006105244924348429,
-            &quot;.vale.ini&quot;: 0.00697593667900816,
-            &quot;CITATION.cff&quot;: 0.06221552558048893,
-            &quot;CODE_OF_CONDUCT.md&quot;: 0.0018093034016370552,
-            &quot;CONTRIBUTING.md&quot;: 0.0018093034016370552,
-            &quot;LICENSE&quot;: 0.012631243228783229,
-            &quot;LICENSE.txt&quot;: 0.012631243228783229,
-            &quot;README.md&quot;: 0.035557211121902965,
-            &quot;coverage.xml&quot;: 0.22844300268554382,
-            &quot;docs/readme.md&quot;: 0.0018093034016370552,
-            &quot;media/coverage-badge.svg&quot;: 0.0006778564635989107,
-            &quot;pa11y.json&quot;: 0.0038181258718123527,
-            &quot;package-lock.json&quot;: 0.2608697333034489,
-            &quot;package.json&quot;: 0.002841709425133653,
-            &quot;poetry.lock&quot;: 0.4722330581738996,
-            &quot;pyproject.toml&quot;: 0.0659423694437872,
-            &quot;src/almanack/__init__.py&quot;: 0.011078521166497064,
-            &quot;src/almanack/book.py&quot;: 0.0265702572020666,
-            &quot;src/almanack/cli.py&quot;: 0.06983736600371734,
-            &quot;src/almanack/git.py&quot;: 0.11444933983936396,
-            &quot;src/almanack/metrics/data.py&quot;: 0.18754830236797446,
-            &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.038800053099639124,
-            &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.0265702572020666,
-            &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.08514148425829986,
-            &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.04053620370176245,
-            &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.022621226199100276,
-            &quot;src/almanack/metrics/metrics.yml&quot;: 0.16246067071852857,
-            &quot;src/almanack/metrics/remote.py&quot;: 0.03314592767724441,
-            &quot;src/almanack/reporting/report.py&quot;: 0.042250856403823714,
-            &quot;src/book/_config.yml&quot;: 0.02092603798518456,
+            &quot;.alexignore&quot;: 0.0012801416047473438,
+            &quot;.github/CODEOWNERS&quot;: 0.005743485846106062,
+            &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.031104973016931534,
+            &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 0.0012801416047473438,
+            &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.028235543723534734,
+            &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.01658214932251677,
+            &quot;.github/actions/install-node-env/action.yml&quot;: 0.007076318321137493,
+            &quot;.github/actions/install-python-env/action.yml&quot;: 0.013581776997830683,
+            &quot;.github/dependabot.yml&quot;: 0.01584405938454477,
+            &quot;.github/release-drafter.yml&quot;: 0.010025419626371808,
+            &quot;.github/workflows/deploy-book.yml&quot;: 0.018036837142836642,
+            &quot;.github/workflows/draft-release.yml&quot;: 0.010835471123180273,
+            &quot;.github/workflows/entropy-check.yml&quot;: 0.02528808214825166,
+            &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.01584405938454477,
+            &quot;.github/workflows/publish-pypi.yml&quot;: 0.012420400080775933,
+            &quot;.github/workflows/pytest-tests.yml&quot;: 0.01911039866388652,
+            &quot;.github/workflows/test-links.yml&quot;: 0.010025419626371808,
+            &quot;.gitignore&quot;: 0.050388871807616566,
+            &quot;.linkcheckerrc.ini&quot;: 0.008364330699849125,
+            &quot;.pre-commit-config.yaml&quot;: 0.06226672150666751,
+            &quot;.pre-commit-hooks.yaml&quot;: 0.006193386791203259,
+            &quot;.vale.ini&quot;: 0.007076318321137493,
+            &quot;CITATION.cff&quot;: 0.06303048378226882,
+            &quot;CODE_OF_CONDUCT.md&quot;: 0.0018360612849303822,
+            &quot;CONTRIBUTING.md&quot;: 0.0018360612849303822,
+            &quot;LICENSE&quot;: 0.01280996856900367,
+            &quot;LICENSE.txt&quot;: 0.01280996856900367,
+            &quot;README.md&quot;: 0.05417455937318192,
+            &quot;coverage.xml&quot;: 0.2514219861180094,
+            &quot;docs/readme.md&quot;: 0.0018360612849303822,
+            &quot;media/coverage-badge.svg&quot;: 0.0006880232335619331,
+            &quot;pa11y.json&quot;: 0.003873826178886575,
+            &quot;package-lock.json&quot;: 0.26360062672301965,
+            &quot;package.json&quot;: 0.002883405681838782,
+            &quot;poetry.lock&quot;: 0.47488174838965835,
+            &quot;pyproject.toml&quot;: 0.06705110651973725,
+            &quot;src/almanack/__init__.py&quot;: 0.01280996856900367,
+            &quot;src/almanack/batch_processing.py&quot;: 0.07292639771947133,
+            &quot;src/almanack/book.py&quot;: 0.026935792157792966,
+            &quot;src/almanack/cli.py&quot;: 0.0955254129450298,
+            &quot;src/almanack/git.py&quot;: 0.11586460019909949,
+            &quot;src/almanack/metrics/data.py&quot;: 0.20228029941232145,
+            &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.0393238751864393,
+            &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.026935792157792966,
+            &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.08622796060782567,
+            &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.04108212816884446,
+            &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.022934600991464712,
+            &quot;src/almanack/metrics/metrics.yml&quot;: 0.16437027815324431,
+            &quot;src/almanack/metrics/remote.py&quot;: 0.03694341767970571,
+            &quot;src/almanack/reporting/report.py&quot;: 0.04281852450614003,
+            &quot;src/book/_config.yml&quot;: 0.02121684903170528,
             &quot;src/book/_ext/__init__.py&quot;: 0.0,
-            &quot;src/book/_ext/gen_check_pages.py&quot;: 0.03644965829379011,
-            &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/_extension.yml&quot;: 0.005211765232684059,
-            &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-show.typ&quot;: 0.028488915847280517,
-            &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-template.typ&quot;: 0.056864477346255805,
+            &quot;src/book/_ext/gen_check_pages.py&quot;: 0.03694341767970571,
+            &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/_extension.yml&quot;: 0.005287287051794951,
+            &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-show.typ&quot;: 0.028879598776412135,
+            &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-template.typ&quot;: 0.057614183606608686,
             &quot;src/book/_posters/2025/almanack-2025-poster.pdf&quot;: 0.0,
             &quot;src/book/_posters/2025/images/almanack-handbook.png&quot;: 0.0,
             &quot;src/book/_posters/2025/images/almanack-notebook.png&quot;: 0.0,
@@ -2369,13 +2397,13 @@ Wall time: 8.9 s
             &quot;src/book/_posters/2025/images/spacer.png&quot;: 0.0,
             &quot;src/book/_posters/2025/images/sustainable-horizons-institute-logo.png&quot;: 0.0,
             &quot;src/book/_posters/2025/images/title-text.png&quot;: 0.0,
-            &quot;src/book/_posters/2025/poster.qmd&quot;: 0.0436640909852963,
-            &quot;src/book/_posters/2025/readme.md&quot;: 0.023290634905839016,
+            &quot;src/book/_posters/2025/poster.qmd&quot;: 0.044249617747425356,
+            &quot;src/book/_posters/2025/readme.md&quot;: 0.023612890573474293,
             &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.odp&quot;: 0.0,
             &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf&quot;: 0.0,
-            &quot;src/book/_static/custom.css&quot;: 0.008661247963214425,
-            &quot;src/book/_templates/check_template.md.j2&quot;: 0.005211765232684059,
-            &quot;src/book/_toc.yml&quot;: 0.01635277042994339,
+            &quot;src/book/_static/custom.css&quot;: 0.008785173453661088,
+            &quot;src/book/_templates/check_template.md.j2&quot;: 0.005287287051794951,
+            &quot;src/book/_toc.yml&quot;: 0.01658214932251677,
             &quot;src/book/assets/640px-Forgard2-003.gif&quot;: 0.0,
             &quot;src/book/assets/640px-Rundes_Fenster_mit_Gitter.jpeg&quot;: 0.0,
             &quot;src/book/assets/Sundial_2916_HDR.jpeg&quot;: 0.0,
@@ -2386,21 +2414,22 @@ Wall time: 8.9 s
             &quot;src/book/assets/software-lifecycle.png&quot;: 0.0,
             &quot;src/book/assets/xkcd_dependency.png&quot;: 0.0,
             &quot;src/book/favicon.png&quot;: 0.0,
-            &quot;src/book/garden-circle/contributing.md&quot;: 0.059432909370377554,
-            &quot;src/book/garden-circle/garden-circle.md&quot;: 0.002841709425133653,
-            &quot;src/book/garden-circle/garden-map.md&quot;: 0.018495857437686048,
-            &quot;src/book/garden-circle/package-api.md&quot;: 0.039670887327186766,
-            &quot;src/book/garden-circle/pavilion.md&quot;: 0.015257619109035461,
-            &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.017788086188789003,
-            &quot;src/book/garden-lattice/understanding.md&quot;: 0.04139614746401103,
-            &quot;src/book/introduction.md&quot;: 0.050535992246450036,
-            &quot;src/book/references.bib&quot;: 0.08758644673137438,
-            &quot;src/book/seed-bank/almanack-example/almanack-example.ipynb&quot;: 0.3090670058544851,
-            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.06095608222100272,
-            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.04945688494586533,
+            &quot;src/book/garden-circle/contributing.md&quot;: 0.06021402696952198,
+            &quot;src/book/garden-circle/garden-circle.md&quot;: 0.002883405681838782,
+            &quot;src/book/garden-circle/garden-map.md&quot;: 0.01875412943985726,
+            &quot;src/book/garden-circle/package-api.md&quot;: 0.04253059514614561,
+            &quot;src/book/garden-circle/pavilion.md&quot;: 0.01547215749263669,
+            &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.018036837142836642,
+            &quot;src/book/garden-lattice/understanding.md&quot;: 0.0419529874266187,
+            &quot;src/book/introduction.md&quot;: 0.05120757041002689,
+            &quot;src/book/references.bib&quot;: 0.08870112910501407,
+            &quot;src/book/seed-bank/almanack-example/almanack-example.ipynb&quot;: 0.31208239352446665,
+            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.061755748145690285,
+            &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.05011503525739898,
             &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links.parquet&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb&quot;: 0.05267261838040875,
+            &quot;src/book/seed-bank/pubmed-github-repositories/images/cdf_repository_inactivity_by_last_commit_date.png&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/images/primary-language-counts.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-lines-of-code-and-time.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-forks.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-open-issues.png&quot;: 0.0,
@@ -2408,46 +2437,76 @@ Wall time: 8.9 s
             &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-gh-stars.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-open-issues.png&quot;: 0.0,
             &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-top-5-langs.png&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_1.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_10.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_11.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_12.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_13.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_14.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_15.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_16.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_17.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_18.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_19.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_2.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_20.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_3.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_4.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_5.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_6.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_7.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_8.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_9.parquet&quot;: 0.0,
-            &quot;src/book/seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.ipynb&quot;: 0.30416398971154945,
-            &quot;src/book/seed-bank/seed-bank.md&quot;: 0.002841709425133653,
-            &quot;src/book/software-forest/software-forest.md&quot;: 0.01814276310821839,
-            &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.018495857437686048,
-            &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.014144948953833192,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_1.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_10.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_11.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_12.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_13.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_14.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_15.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_16.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_17.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_18.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_19.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_2.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_20.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_21.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_22.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_23.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_24.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_25.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_26.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_27.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_28.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_29.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_3.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_30.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_31.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_32.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_33.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_34.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_35.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_36.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_37.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_38.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_39.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_4.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_40.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_41.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_42.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_43.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_44.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_45.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_46.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_47.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_48.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_49.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_5.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_6.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_7.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_8.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_9.parquet&quot;: 0.0,
+            &quot;src/book/seed-bank/pubmed-github-repositories/understanding-pubmed-github-repos.ipynb&quot;: 0.17477434885796064,
+            &quot;src/book/seed-bank/seed-bank.md&quot;: 0.002883405681838782,
+            &quot;src/book/software-forest/software-forest.md&quot;: 0.01839628779102012,
+            &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.01875412943985726,
+            &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.014344354483860062,
             &quot;tests/__init__.py&quot;: 0.0,
-            &quot;tests/conftest.py&quot;: 0.05504343038115549,
-            &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 0.0006778564635989107,
-            &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.20767683716433613,
-            &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.08016584420935685,
-            &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.022621226199100276,
-            &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.007827120265049791,
-            &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.02295652747110573,
-            &quot;tests/metrics/test_data.py&quot;: 0.22896286709173302,
-            &quot;tests/metrics/test_garden_lattice.py&quot;: 0.03037443503947455,
-            &quot;tests/test_almanack.py&quot;: 0.015257619109035461,
-            &quot;tests/test_build.py&quot;: 0.0265702572020666,
-            &quot;tests/test_cli.py&quot;: 0.048370319700224415,
-            &quot;tests/test_git.py&quot;: 0.12182039541032824,
-            &quot;tests/utils.py&quot;: 0.015257619109035461
+            &quot;tests/conftest.py&quot;: 0.05577076248095453,
+            &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 0.0006880232335619331,
+            &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.2099986548989751,
+            &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.08119447814450106,
+            &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.022934600991464712,
+            &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.00793941614094221,
+            &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.023274352662153122,
+            &quot;tests/metrics/test_data.py&quot;: 0.23145899643603982,
+            &quot;tests/metrics/test_garden_lattice.py&quot;: 0.03078971292917691,
+            &quot;tests/test_almanack.py&quot;: 0.01547215749263669,
+            &quot;tests/test_batch.py&quot;: 0.05229272540945959,
+            &quot;tests/test_build.py&quot;: 0.026935792157792966,
+            &quot;tests/test_cli.py&quot;: 0.059438117542761106,
+            &quot;tests/test_git.py&quot;: 0.12331515278045987,
+            &quot;tests/utils.py&quot;: 0.01547215749263669
         }
     }
 ]
@@ -2465,11 +2524,11 @@ Wall time: 8.9 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&quot;name&quot;: &quot;repo-path&quot;, &quot;id&quot;: &quot;SGA-META-0001&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository path (local directory).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;/home/runner/work/almanack/almanack/src/book/seed-bank/almanack-example/almanack&quot;}, {&quot;name&quot;: &quot;repo-commits&quot;, &quot;id&quot;: &quot;SGA-META-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of commits for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 250}, {&quot;name&quot;: &quot;repo-file-count&quot;, &quot;id&quot;: &quot;SGA-META-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of files tracked within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 152}, {&quot;name&quot;: &quot;repo-commit-time-range&quot;, &quot;id&quot;: &quot;SGA-META-0004&quot;, &quot;result-type&quot;: &quot;tuple&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Starting commit and most recent commit for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: [&quot;2024-03-05&quot;, &quot;2025-12-15&quot;]}, {&quot;name&quot;: &quot;repo-days-of-development&quot;, &quot;id&quot;: &quot;SGA-META-0005&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Integer representing the number of days of development between most recent commit and first commit.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 651}, {&quot;name&quot;: &quot;repo-commits-per-day&quot;, &quot;id&quot;: &quot;SGA-META-0006&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Floating point number which represents the number of commits per day (using days of development).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0.38402457757296465}, {&quot;name&quot;: &quot;almanack-table-datetime&quot;, &quot;id&quot;: &quot;SGA-META-0007&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the date when this table was generated in the format of &#39;%Y-%m-%dT%H:%M:%S.%fZ&#39;, for example: 2024-11-22T18:20:30.123456Z .&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;2025-12-15T17:38:00.134119Z&quot;}, {&quot;name&quot;: &quot;almanack-version&quot;, &quot;id&quot;: &quot;SGA-META-0008&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the version of the almanack which was used to generate this table.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;0.0.0.post1.dev0+e6ee0c2&quot;}, {&quot;name&quot;: &quot;repo-primary-language&quot;, &quot;id&quot;: &quot;SGA-META-0009&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary programming language of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;Jupyter Notebook&quot;}, {&quot;name&quot;: &quot;repo-primary-license&quot;, &quot;id&quot;: &quot;SGA-META-0010&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary license of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;bsd-3-clause&quot;}, {&quot;name&quot;: &quot;repo-doi&quot;, &quot;id&quot;: &quot;SGA-META-0011&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI value detected from CITATION.cff file.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;10.5281/zenodo.14765834&quot;}, {&quot;name&quot;: &quot;repo-doi-publication-date&quot;, &quot;id&quot;: &quot;SGA-META-0012&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI publication date detected from CITATION.cff file and OpenAlex.org.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;2025-02-10T00:00:00.000000Z&quot;}, {&quot;name&quot;: &quot;repo-doi-fwci&quot;, &quot;id&quot;: &quot;SGA-META-0013&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Field-Weighted Citation Impact (FWCI) from OpenAlex for the work referenced by the repository DOI.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-doi-is-not-retracted&quot;, &quot;id&quot;: &quot;SGA-META-0014&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;If the work referenced by the repository DOI has been retracted as reported by OpenAlex.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-grants-count&quot;, &quot;id&quot;: &quot;SGA-META-0015&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of grant records attached to the DOI&#39;s work (from OpenAlex via Crossref).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0}, {&quot;name&quot;: &quot;repo-doi-grants&quot;, &quot;id&quot;: &quot;SGA-META-0016&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;List of grant records for the DOI&#39;s work (from OpenAlex via Crossref).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-almanack-score&quot;, &quot;id&quot;: &quot;SGA-META-0017&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Dictionary of length three, including the following: 1) number of Almanack boolean metrics that passed (numerator), 2) number of total Almanack boolean metrics considered (denominator), and 3) a score that represents how likely the repository will be maintained over time based (numerator / denominator).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: {&quot;almanack-score-numerator&quot;: 11, &quot;almanack-score-denominator&quot;: 11, &quot;almanack-score&quot;: 1.0}}, {&quot;name&quot;: &quot;repo-includes-readme&quot;, &quot;id&quot;: &quot;SGA-GL-0001&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a README file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a README file to the repository.&quot;, &quot;fix_why&quot;: &quot;A README file is essential for providing an overview of the project, its purpose, and how to use it. Many platforms like GitHub, GitLab, and Bitbucket use the README file to display project information prominently.&quot;, &quot;fix_how&quot;: &quot;Create a README file in the root directory of your repository. Include sections such as project description, installation instructions, usage examples, and contribution guidelines. You can use Markdown to format the README for better readability. For example, you can start with a text editor or use an online Markdown editor to create your README file. Save it as `README.md` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the README file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-contributing&quot;, &quot;id&quot;: &quot;SGA-GL-0002&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CONTRIBUTING file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CONTRIBUTING file to the repository.&quot;, &quot;fix_why&quot;: &quot;A CONTRIBUTING file is important for guiding potential contributors on how to contribute to the project, including coding standards, pull request guidelines, and other relevant information. It helps maintain a consistent contribution process and encourages community involvement.&quot;, &quot;fix_how&quot;: &quot;Create a CONTRIBUTING file in your repository. Include guidelines for contributing, such as coding standards, pull request instructions, and any other relevant information. You can use Markdown to format the CONTRIBUTING file for better readability. For example, you can start with a text editor or use an online Markdown editor to create your CONTRIBUTING file. Save it as `CONTRIBUTING.md` in the root or `.github/` directory of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the CONTRIBUTING file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-code-of-conduct&quot;, &quot;id&quot;: &quot;SGA-GL-0003&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CODE_OF_CONDUCT file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CODE_OF_CONDUCT file to the repository.&quot;, &quot;fix_why&quot;: &quot;A CODE_OF_CONDUCT file is essential for establishing a respectful and inclusive community within the project. It sets expectations for behavior, helps prevent harassment, and provides a framework for resolving conflicts.&quot;, &quot;fix_how&quot;: &quot;Create a CODE_OF_CONDUCT file in the root directory of your repository. Include guidelines for acceptable behavior, reporting procedures, and any other relevant information. You can use Markdown to format the CODE_OF_CONDUCT file for better readability. For example, you can start with a text editor or use an online Markdown editor to create your CODE_OF_CONDUCT file. Save it as `CODE_OF_CONDUCT.md` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the CODE_OF_CONDUCT file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-license&quot;, &quot;id&quot;: &quot;SGA-GL-0004&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a LICENSE file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a LICENSE file to the repository.&quot;, &quot;fix_why&quot;: &quot;A LICENSE file is crucial for defining the terms under which the code can be used, modified, and distributed. It helps protect both the authors and users of the code by clarifying legal rights and responsibilities.&quot;, &quot;fix_how&quot;: &quot;Create a LICENSE file in the root directory of your repository. Include the text of the license you wish to apply to your code. You can choose from existing open-source licenses, such as MIT, Apache 2.0, or GPL, depending on your project&#39;s needs. For example, you can start with a text editor or use an online license generator to create your LICENSE file. Save it as `LICENSE` or `LICENSE.txt` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the LICENSE file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-is-citable&quot;, &quot;id&quot;: &quot;SGA-GL-0005&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CITATION file or some other means of indicating how to cite the work.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CITATION file to the repository (e.g. citation.cff, etc.).&quot;, &quot;fix_why&quot;: &quot;A CITATION file is important for providing a standardized way to cite the work, making it easier for others to reference and acknowledge the project in their own work. It helps promote the visibility and impact of the project within the academic and research communities.&quot;, &quot;fix_how&quot;: &quot;Create a CITATION file in the root directory of your repository. Include information on how to cite the work, such as the authors, title, publication date, and any relevant identifiers (e.g., DOI). You can use the Citation File Format (CFF) standard to structure the CITATION file for better compatibility with citation tools. For example, you can start with a text editor or use an online CFF editor to create your CITATION file. Save it as `CITATION.cff` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the CITATION file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-default-branch-not-master&quot;, &quot;id&quot;: &quot;SGA-GL-0006&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating that the repo uses a default branch name besides &#39;master&#39;.&quot;, &quot;correction_guidance&quot;: &quot;Consider using a default source control branch name other than &#39;master&#39;.&quot;, &quot;fix_why&quot;: &quot;Using a default branch name other than &#39;master&#39; is more collaborative and avoids possible negative historical connotations associated with the term.&quot;, &quot;fix_how&quot;: &quot;Change the default branch name in your source control platform (e.g., GitHub, GitLab, Bitbucket) to a more inclusive term like &#39;main&#39;, &#39;develop&#39;, or any other preferred name. This can usually be done through the repository settings or by renaming the branch locally and pushing the changes to the remote repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-common-docs&quot;, &quot;id&quot;: &quot;SGA-GL-0007&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating whether the repo includes common documentation directory and files associated with building docsites.&quot;, &quot;correction_guidance&quot;: &quot;Consider including project documentation through the &#39;docs/&#39; directory.&quot;, &quot;fix_why&quot;: &quot;Including a &#39;docs/&#39; directory with common documentation files helps in maintaining a clear structure for project documentation, making it easier for contributors and users to find relevant information. It also promotes better collaboration and understanding of the project.&quot;, &quot;fix_how&quot;: &quot;Create a &#39;docs/&#39; directory in the root of your repository. Inside this directory, include common documentation files such as &#39;index.md&#39;, &#39;CONTRIBUTING.md&#39;, &#39;CODE_OF_CONDUCT.md&#39;, and any other relevant documentation files that provide information about the project, its usage, and contribution guidelines. You can use Markdown to format these files for better readability. If you&#39;re using GitHub, you can also use their web interface to create and edit these files directly within the &#39;docs/&#39; directory.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-unique-contributors&quot;, &quot;id&quot;: &quot;SGA-GL-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors since the beginning of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 6}, {&quot;name&quot;: &quot;repo-unique-contributors-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-unique-contributors-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0010&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-tags-count&quot;, &quot;id&quot;: &quot;SGA-GL-0011&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 16}, {&quot;name&quot;: &quot;repo-tags-count-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0012&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 13}, {&quot;name&quot;: &quot;repo-tags-count-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0013&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 7}, {&quot;name&quot;: &quot;repo-stargazers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0014&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of stargazers on repository remote hosting platform.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 23}, {&quot;name&quot;: &quot;repo-uses-issues&quot;, &quot;id&quot;: &quot;SGA-GL-0015&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository uses issues (for example, as a bug and/or feature tracking tool.&quot;, &quot;correction_guidance&quot;: &quot;Consider leveraging issues for tracking bugs and/or features within your repository hosting platform.&quot;, &quot;fix_why&quot;: &quot;Using issues for tracking bugs and features helps in maintaining a clear record of project development, facilitates collaboration, and allows for better prioritization of tasks.&quot;, &quot;fix_how&quot;: &quot;Enable issues on your repository hosting platform (e.g., GitHub, GitLab, Bitbucket) if not already enabled. This can usually be done through the repository settings or by creating an issue template. Encourage contributors to use issues for reporting bugs, suggesting features, and discussing project-related topics.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-issues-open-count&quot;, &quot;id&quot;: &quot;SGA-GL-0016&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of open issues for repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 77}, {&quot;name&quot;: &quot;repo-pull-requests-enabled&quot;, &quot;id&quot;: &quot;SGA-GL-0017&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository enables pull requests.&quot;, &quot;correction_guidance&quot;: &quot;Consider enabling pull requests for the repository through your repository hosting platform.&quot;, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-forks-count&quot;, &quot;id&quot;: &quot;SGA-GL-0018&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of forks of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-subscribers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0019&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of subscribers (or watchers) of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-ecosystems&quot;, &quot;id&quot;: &quot;SGA-GL-0020&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;List of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: [&quot;pypi&quot;]}, {&quot;name&quot;: &quot;repo-packages-ecosystems-count&quot;, &quot;id&quot;: &quot;SGA-GL-0021&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-versions-count&quot;, &quot;id&quot;: &quot;SGA-GL-0022&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package versions on package hosts or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 17}, {&quot;name&quot;: &quot;repo-social-media-platforms&quot;, &quot;id&quot;: &quot;SGA-GL-0023&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: []}, {&quot;name&quot;: &quot;repo-social-media-platforms-count&quot;, &quot;id&quot;: &quot;SGA-GL-0024&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0}, {&quot;name&quot;: &quot;repo-doi-valid-format&quot;, &quot;id&quot;: &quot;SGA-GL-0025&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is of a valid format.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not of a valid format or missing.&quot;, &quot;fix_why&quot;: &quot;A valid DOI format is essential for ensuring that the DOI can be resolved and used to reference the work correctly.&quot;, &quot;fix_how&quot;: &quot;Ensure that the DOI in the CITATION.cff file follows the standard DOI format, which typically includes a prefix (e.g., 10.1234) and a suffix (e.g., 56789/abcde). The DOI should be in the format: `10.&lt;prefix&gt;/&lt;suffix&gt;`. If the DOI is missing or incorrectly formatted, update it to match the correct structure.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-https-resolvable&quot;, &quot;id&quot;: &quot;SGA-GL-0026&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is HTTPS resolvable.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not HTTPS resolvable or missing.&quot;, &quot;fix_why&quot;: &quot;An HTTPS resolvable DOI is crucial for ensuring that the DOI can be accessed securely and reliably, allowing users to retrieve the work associated with the DOI.&quot;, &quot;fix_how&quot;: &quot;Verify that the DOI in the CITATION.cff file can be resolved using an HTTPS URL. The DOI should be formatted as: `https://doi.org/10.&lt;prefix&gt;/&lt;suffix&gt;`. If the DOI is not resolvable or does not use HTTPS, update it to ensure it points to a valid and secure URL.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-cited-by-count&quot;, &quot;id&quot;: &quot;SGA-GL-0027&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;How many other works cite the DOI for the repository found within the CITATION.cff as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 3}, {&quot;name&quot;: &quot;repo-days-between-doi-publication-date-and-latest-commit&quot;, &quot;id&quot;: &quot;SGA-GL-0028&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;The number of days between the most recent commit and DOI for the repository&#39;s publication date as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 308}, {&quot;name&quot;: &quot;repo-gh-workflow-success-ratio&quot;, &quot;id&quot;: &quot;SGA-SF-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Ratio of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0.83}, {&quot;name&quot;: &quot;repo-gh-workflow-succeeding-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 100}, {&quot;name&quot;: &quot;repo-gh-workflow-failing-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of failing workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 83}, {&quot;name&quot;: &quot;repo-gh-workflow-queried-total&quot;, &quot;id&quot;: &quot;SGA-SF-0004&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 17}, {&quot;name&quot;: &quot;repo-code-coverage-percent&quot;, &quot;id&quot;: &quot;SGA-SF-0005&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Percentage of code coverage for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-date-of-last-coverage-run&quot;, &quot;id&quot;: &quot;SGA-SF-0006&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Date of code coverage run for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-days-between-last-coverage-run-latest-commit&quot;, &quot;id&quot;: &quot;SGA-SF-0007&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Days between last coverage run date and latest commit date.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-total-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines of code used for code coverage within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-executed-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines covered code within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-agg-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Aggregated information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Represents value from 0 to 1 where 0 equals no information entropy and 1 represents maximum information entropy.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0.03063685557846571}, {&quot;name&quot;: &quot;repo-file-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0002&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;File-level information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Shows all files and their corresponding information entropy measurements relative to the other files found within the range of commits.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: {&quot;.alexignore&quot;: 0.0012613822036811719, &quot;.github/CODEOWNERS&quot;: 0.005661602318104655, &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.030685646722266667, &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 0.0012613822036811719, &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.02785317975965895, &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.01635277042994339, &quot;.github/actions/install-node-env/action.yml&quot;: 0.00697593667900816, &quot;.github/actions/install-python-env/action.yml&quot;: 0.013392635806455411, &quot;.github/dependabot.yml&quot;: 0.015624542903129163, &quot;.github/release-drafter.yml&quot;: 0.009884515691319321, &quot;.github/workflows/deploy-book.yml&quot;: 0.017788086188789003, &quot;.github/workflows/draft-release.yml&quot;: 0.010683523632621598, &quot;.github/workflows/entropy-check.yml&quot;: 0.02494396130160475, &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.015624542903129163, &quot;.github/workflows/publish-pypi.yml&quot;: 0.012246942809859314, &quot;.github/workflows/pytest-tests.yml&quot;: 0.018847405151412575, &quot;.github/workflows/test-links.yml&quot;: 0.009884515691319321, &quot;.gitignore&quot;: 0.04972735299825477, &quot;.linkcheckerrc.ini&quot;: 0.00824618660029969, &quot;.pre-commit-config.yaml&quot;: 0.06146092095918149, &quot;.pre-commit-hooks.yaml&quot;: 0.006105244924348429, &quot;.vale.ini&quot;: 0.00697593667900816, &quot;CITATION.cff&quot;: 0.06221552558048893, &quot;CODE_OF_CONDUCT.md&quot;: 0.0018093034016370552, &quot;CONTRIBUTING.md&quot;: 0.0018093034016370552, &quot;LICENSE&quot;: 0.012631243228783229, &quot;LICENSE.txt&quot;: 0.012631243228783229, &quot;README.md&quot;: 0.035557211121902965, &quot;coverage.xml&quot;: 0.22844300268554382, &quot;docs/readme.md&quot;: 0.0018093034016370552, &quot;media/coverage-badge.svg&quot;: 0.0006778564635989107, &quot;pa11y.json&quot;: 0.0038181258718123527, &quot;package-lock.json&quot;: 0.2608697333034489, &quot;package.json&quot;: 0.002841709425133653, &quot;poetry.lock&quot;: 0.4722330581738996, &quot;pyproject.toml&quot;: 0.0659423694437872, &quot;src/almanack/__init__.py&quot;: 0.011078521166497064, &quot;src/almanack/book.py&quot;: 0.0265702572020666, &quot;src/almanack/cli.py&quot;: 0.06983736600371734, &quot;src/almanack/git.py&quot;: 0.11444933983936396, &quot;src/almanack/metrics/data.py&quot;: 0.18754830236797446, &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.038800053099639124, &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.0265702572020666, &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.08514148425829986, &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.04053620370176245, &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.022621226199100276, &quot;src/almanack/metrics/metrics.yml&quot;: 0.16246067071852857, &quot;src/almanack/metrics/remote.py&quot;: 0.03314592767724441, &quot;src/almanack/reporting/report.py&quot;: 0.042250856403823714, &quot;src/book/_config.yml&quot;: 0.02092603798518456, &quot;src/book/_ext/__init__.py&quot;: 0.0, &quot;src/book/_ext/gen_check_pages.py&quot;: 0.03644965829379011, &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/_extension.yml&quot;: 0.005211765232684059, &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-show.typ&quot;: 0.028488915847280517, &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-template.typ&quot;: 0.056864477346255805, &quot;src/book/_posters/2025/almanack-2025-poster.pdf&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-handbook.png&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-notebook.png&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-package-and-handbook.png&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-package.png&quot;: 0.0, &quot;src/book/_posters/2025/images/bssw-logo-w-background.png&quot;: 0.0, &quot;src/book/_posters/2025/images/cu-anschutz-short.png&quot;: 0.0, &quot;src/book/_posters/2025/images/dbmi.png&quot;: 0.0, &quot;src/book/_posters/2025/images/entropy-for-repos.png&quot;: 0.0, &quot;src/book/_posters/2025/images/forest_modified.png&quot;: 0.0, &quot;src/book/_posters/2025/images/header-combined-images.png&quot;: 0.0, &quot;src/book/_posters/2025/images/roadmap.png&quot;: 0.0, &quot;src/book/_posters/2025/images/seed-bank-entropy-pubmed.png&quot;: 0.0, &quot;src/book/_posters/2025/images/sga-qr-text.png&quot;: 0.0, &quot;src/book/_posters/2025/images/sga-qr.png&quot;: 0.0, &quot;src/book/_posters/2025/images/software-lifecycle.png&quot;: 0.0, &quot;src/book/_posters/2025/images/spacer.png&quot;: 0.0, &quot;src/book/_posters/2025/images/sustainable-horizons-institute-logo.png&quot;: 0.0, &quot;src/book/_posters/2025/images/title-text.png&quot;: 0.0, &quot;src/book/_posters/2025/poster.qmd&quot;: 0.0436640909852963, &quot;src/book/_posters/2025/readme.md&quot;: 0.023290634905839016, &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.odp&quot;: 0.0, &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf&quot;: 0.0, &quot;src/book/_static/custom.css&quot;: 0.008661247963214425, &quot;src/book/_templates/check_template.md.j2&quot;: 0.005211765232684059, &quot;src/book/_toc.yml&quot;: 0.01635277042994339, &quot;src/book/assets/640px-Forgard2-003.gif&quot;: 0.0, &quot;src/book/assets/640px-Rundes_Fenster_mit_Gitter.jpeg&quot;: 0.0, &quot;src/book/assets/Sundial_2916_HDR.jpeg&quot;: 0.0, &quot;src/book/assets/almanack-influencing-software.png&quot;: 0.0, &quot;src/book/assets/garden-lattice-understanding-transfer.png&quot;: 0.0, &quot;src/book/assets/software-gardening-almanack-logo.png&quot;: 0.0, &quot;src/book/assets/software-gardening-logo.png&quot;: 0.0, &quot;src/book/assets/software-lifecycle.png&quot;: 0.0, &quot;src/book/assets/xkcd_dependency.png&quot;: 0.0, &quot;src/book/favicon.png&quot;: 0.0, &quot;src/book/garden-circle/contributing.md&quot;: 0.059432909370377554, &quot;src/book/garden-circle/garden-circle.md&quot;: 0.002841709425133653, &quot;src/book/garden-circle/garden-map.md&quot;: 0.018495857437686048, &quot;src/book/garden-circle/package-api.md&quot;: 0.039670887327186766, &quot;src/book/garden-circle/pavilion.md&quot;: 0.015257619109035461, &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.017788086188789003, &quot;src/book/garden-lattice/understanding.md&quot;: 0.04139614746401103, &quot;src/book/introduction.md&quot;: 0.050535992246450036, &quot;src/book/references.bib&quot;: 0.08758644673137438, &quot;src/book/seed-bank/almanack-example/almanack-example.ipynb&quot;: 0.3090670058544851, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.06095608222100272, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.04945688494586533, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-software-information-entropy.ipynb&quot;: 0.05267261838040875, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-lines-of-code-and-time.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-gh-stars.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-top-5-langs.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_1.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_10.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_11.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_12.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_13.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_14.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_15.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_16.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_17.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_18.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_19.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_2.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_20.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_3.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_4.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_5.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_6.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_7.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_8.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/repository_analysis_results_batch_9.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.ipynb&quot;: 0.30416398971154945, &quot;src/book/seed-bank/seed-bank.md&quot;: 0.002841709425133653, &quot;src/book/software-forest/software-forest.md&quot;: 0.01814276310821839, &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.018495857437686048, &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.014144948953833192, &quot;tests/__init__.py&quot;: 0.0, &quot;tests/conftest.py&quot;: 0.05504343038115549, &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 0.0006778564635989107, &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.20767683716433613, &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.08016584420935685, &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.022621226199100276, &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.007827120265049791, &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.02295652747110573, &quot;tests/metrics/test_data.py&quot;: 0.22896286709173302, &quot;tests/metrics/test_garden_lattice.py&quot;: 0.03037443503947455, &quot;tests/test_almanack.py&quot;: 0.015257619109035461, &quot;tests/test_build.py&quot;: 0.0265702572020666, &quot;tests/test_cli.py&quot;: 0.048370319700224415, &quot;tests/test_git.py&quot;: 0.12182039541032824, &quot;tests/utils.py&quot;: 0.015257619109035461}}]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[{&quot;name&quot;: &quot;repo-path&quot;, &quot;id&quot;: &quot;SGA-META-0001&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository path (local directory).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;/home/runner/work/almanack/almanack/src/book/seed-bank/almanack-example/almanack&quot;}, {&quot;name&quot;: &quot;repo-commits&quot;, &quot;id&quot;: &quot;SGA-META-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of commits for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 251}, {&quot;name&quot;: &quot;repo-file-count&quot;, &quot;id&quot;: &quot;SGA-META-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of files tracked within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 184}, {&quot;name&quot;: &quot;repo-commit-time-range&quot;, &quot;id&quot;: &quot;SGA-META-0004&quot;, &quot;result-type&quot;: &quot;tuple&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Starting commit and most recent commit for the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: [&quot;2024-03-05&quot;, &quot;2026-01-02&quot;]}, {&quot;name&quot;: &quot;repo-days-of-development&quot;, &quot;id&quot;: &quot;SGA-META-0005&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Integer representing the number of days of development between most recent commit and first commit.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 669}, {&quot;name&quot;: &quot;repo-commits-per-day&quot;, &quot;id&quot;: &quot;SGA-META-0006&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Floating point number which represents the number of commits per day (using days of development).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0.375186846038864}, {&quot;name&quot;: &quot;almanack-table-datetime&quot;, &quot;id&quot;: &quot;SGA-META-0007&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the date when this table was generated in the format of &#39;%Y-%m-%dT%H:%M:%S.%fZ&#39;, for example: 2024-11-22T18:20:30.123456Z .&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;2026-01-02T18:10:26.829833Z&quot;}, {&quot;name&quot;: &quot;almanack-version&quot;, &quot;id&quot;: &quot;SGA-META-0008&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;String representing the version of the almanack which was used to generate this table.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;0.0.0.post1.dev0+58e6383&quot;}, {&quot;name&quot;: &quot;repo-primary-language&quot;, &quot;id&quot;: &quot;SGA-META-0009&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary programming language of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;Jupyter Notebook&quot;}, {&quot;name&quot;: &quot;repo-primary-license&quot;, &quot;id&quot;: &quot;SGA-META-0010&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Detected primary license of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;bsd-3-clause&quot;}, {&quot;name&quot;: &quot;repo-doi&quot;, &quot;id&quot;: &quot;SGA-META-0011&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI value detected from CITATION.cff file.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;10.5281/zenodo.14765834&quot;}, {&quot;name&quot;: &quot;repo-doi-publication-date&quot;, &quot;id&quot;: &quot;SGA-META-0012&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Repository DOI publication date detected from CITATION.cff file and OpenAlex.org.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: &quot;2025-02-10T00:00:00.000000Z&quot;}, {&quot;name&quot;: &quot;repo-doi-fwci&quot;, &quot;id&quot;: &quot;SGA-META-0013&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Field-Weighted Citation Impact (FWCI) from OpenAlex for the work referenced by the repository DOI.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-doi-is-not-retracted&quot;, &quot;id&quot;: &quot;SGA-META-0014&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;If the work referenced by the repository DOI has been retracted as reported by OpenAlex.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-grants-count&quot;, &quot;id&quot;: &quot;SGA-META-0015&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of grant records attached to the DOI&#39;s work (from OpenAlex via Crossref).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0}, {&quot;name&quot;: &quot;repo-doi-grants&quot;, &quot;id&quot;: &quot;SGA-META-0016&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;List of grant records for the DOI&#39;s work (from OpenAlex via Crossref).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-almanack-score&quot;, &quot;id&quot;: &quot;SGA-META-0017&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Dictionary of length three, including the following: 1) number of Almanack boolean metrics that passed (numerator), 2) number of total Almanack boolean metrics considered (denominator), and 3) a score that represents how likely the repository will be maintained over time based (numerator / denominator).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: {&quot;almanack-score-numerator&quot;: 11, &quot;almanack-score-denominator&quot;: 11, &quot;almanack-score&quot;: 1.0}}, {&quot;name&quot;: &quot;repo-includes-readme&quot;, &quot;id&quot;: &quot;SGA-GL-0001&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a README file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a README file to the repository.&quot;, &quot;fix_why&quot;: &quot;A README file is essential for providing an overview of the project, its purpose, and how to use it. Many platforms like GitHub, GitLab, and Bitbucket use the README file to display project information prominently.&quot;, &quot;fix_how&quot;: &quot;Create a README file in the root directory of your repository. Include sections such as project description, installation instructions, usage examples, and contribution guidelines. You can use Markdown to format the README for better readability. For example, you can start with a text editor or use an online Markdown editor to create your README file. Save it as `README.md` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the README file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-contributing&quot;, &quot;id&quot;: &quot;SGA-GL-0002&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CONTRIBUTING file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CONTRIBUTING file to the repository.&quot;, &quot;fix_why&quot;: &quot;A CONTRIBUTING file is important for guiding potential contributors on how to contribute to the project, including coding standards, pull request guidelines, and other relevant information. It helps maintain a consistent contribution process and encourages community involvement.&quot;, &quot;fix_how&quot;: &quot;Create a CONTRIBUTING file in your repository. Include guidelines for contributing, such as coding standards, pull request instructions, and any other relevant information. You can use Markdown to format the CONTRIBUTING file for better readability. For example, you can start with a text editor or use an online Markdown editor to create your CONTRIBUTING file. Save it as `CONTRIBUTING.md` in the root or `.github/` directory of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the CONTRIBUTING file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-code-of-conduct&quot;, &quot;id&quot;: &quot;SGA-GL-0003&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CODE_OF_CONDUCT file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CODE_OF_CONDUCT file to the repository.&quot;, &quot;fix_why&quot;: &quot;A CODE_OF_CONDUCT file is essential for establishing a respectful and inclusive community within the project. It sets expectations for behavior, helps prevent harassment, and provides a framework for resolving conflicts.&quot;, &quot;fix_how&quot;: &quot;Create a CODE_OF_CONDUCT file in the root directory of your repository. Include guidelines for acceptable behavior, reporting procedures, and any other relevant information. You can use Markdown to format the CODE_OF_CONDUCT file for better readability. For example, you can start with a text editor or use an online Markdown editor to create your CODE_OF_CONDUCT file. Save it as `CODE_OF_CONDUCT.md` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the CODE_OF_CONDUCT file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-license&quot;, &quot;id&quot;: &quot;SGA-GL-0004&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a LICENSE file in the repository.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a LICENSE file to the repository.&quot;, &quot;fix_why&quot;: &quot;A LICENSE file is crucial for defining the terms under which the code can be used, modified, and distributed. It helps protect both the authors and users of the code by clarifying legal rights and responsibilities.&quot;, &quot;fix_how&quot;: &quot;Create a LICENSE file in the root directory of your repository. Include the text of the license you wish to apply to your code. You can choose from existing open-source licenses, such as MIT, Apache 2.0, or GPL, depending on your project&#39;s needs. For example, you can start with a text editor or use an online license generator to create your LICENSE file. Save it as `LICENSE` or `LICENSE.txt` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the LICENSE file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-is-citable&quot;, &quot;id&quot;: &quot;SGA-GL-0005&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating the presence of a CITATION file or some other means of indicating how to cite the work.&quot;, &quot;correction_guidance&quot;: &quot;Consider adding a CITATION file to the repository (e.g. citation.cff, etc.).&quot;, &quot;fix_why&quot;: &quot;A CITATION file is important for providing a standardized way to cite the work, making it easier for others to reference and acknowledge the project in their own work. It helps promote the visibility and impact of the project within the academic and research communities.&quot;, &quot;fix_how&quot;: &quot;Create a CITATION file in the root directory of your repository. Include information on how to cite the work, such as the authors, title, publication date, and any relevant identifiers (e.g., DOI). You can use the Citation File Format (CFF) standard to structure the CITATION file for better compatibility with citation tools. For example, you can start with a text editor or use an online CFF editor to create your CITATION file. Save it as `CITATION.cff` in the root of your repository. If you&#39;re using GitHub, you can also use their web interface to create and edit the CITATION file directly.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-default-branch-not-master&quot;, &quot;id&quot;: &quot;SGA-GL-0006&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating that the repo uses a default branch name besides &#39;master&#39;.&quot;, &quot;correction_guidance&quot;: &quot;Consider using a default source control branch name other than &#39;master&#39;.&quot;, &quot;fix_why&quot;: &quot;Using a default branch name other than &#39;master&#39; is more collaborative and avoids possible negative historical connotations associated with the term.&quot;, &quot;fix_how&quot;: &quot;Change the default branch name in your source control platform (e.g., GitHub, GitLab, Bitbucket) to a more inclusive term like &#39;main&#39;, &#39;develop&#39;, or any other preferred name. This can usually be done through the repository settings or by renaming the branch locally and pushing the changes to the remote repository.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-includes-common-docs&quot;, &quot;id&quot;: &quot;SGA-GL-0007&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Boolean value indicating whether the repo includes common documentation directory and files associated with building docsites.&quot;, &quot;correction_guidance&quot;: &quot;Consider including project documentation through the &#39;docs/&#39; directory.&quot;, &quot;fix_why&quot;: &quot;Including a &#39;docs/&#39; directory with common documentation files helps in maintaining a clear structure for project documentation, making it easier for contributors and users to find relevant information. It also promotes better collaboration and understanding of the project.&quot;, &quot;fix_how&quot;: &quot;Create a &#39;docs/&#39; directory in the root of your repository. Inside this directory, include common documentation files such as &#39;index.md&#39;, &#39;CONTRIBUTING.md&#39;, &#39;CODE_OF_CONDUCT.md&#39;, and any other relevant documentation files that provide information about the project, its usage, and contribution guidelines. You can use Markdown to format these files for better readability. If you&#39;re using GitHub, you can also use their web interface to create and edit these files directly within the &#39;docs/&#39; directory.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-unique-contributors&quot;, &quot;id&quot;: &quot;SGA-GL-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors since the beginning of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 6}, {&quot;name&quot;: &quot;repo-unique-contributors-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-unique-contributors-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0010&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of unique contributors within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-tags-count&quot;, &quot;id&quot;: &quot;SGA-GL-0011&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 16}, {&quot;name&quot;: &quot;repo-tags-count-past-year&quot;, &quot;id&quot;: &quot;SGA-GL-0012&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last year from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 13}, {&quot;name&quot;: &quot;repo-tags-count-past-182-days&quot;, &quot;id&quot;: &quot;SGA-GL-0013&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of tags within the repository within the last 182 days from now (where now is a reference to table value of almanack-table-datetime).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 5}, {&quot;name&quot;: &quot;repo-stargazers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0014&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of the number of stargazers on repository remote hosting platform.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 23}, {&quot;name&quot;: &quot;repo-uses-issues&quot;, &quot;id&quot;: &quot;SGA-GL-0015&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository uses issues (for example, as a bug and/or feature tracking tool.&quot;, &quot;correction_guidance&quot;: &quot;Consider leveraging issues for tracking bugs and/or features within your repository hosting platform.&quot;, &quot;fix_why&quot;: &quot;Using issues for tracking bugs and features helps in maintaining a clear record of project development, facilitates collaboration, and allows for better prioritization of tasks.&quot;, &quot;fix_how&quot;: &quot;Enable issues on your repository hosting platform (e.g., GitHub, GitLab, Bitbucket) if not already enabled. This can usually be done through the repository settings or by creating an issue template. Encourage contributors to use issues for reporting bugs, suggesting features, and discussing project-related topics.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-issues-open-count&quot;, &quot;id&quot;: &quot;SGA-GL-0016&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of open issues for repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 79}, {&quot;name&quot;: &quot;repo-pull-requests-enabled&quot;, &quot;id&quot;: &quot;SGA-GL-0017&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the repository enables pull requests.&quot;, &quot;correction_guidance&quot;: &quot;Consider enabling pull requests for the repository through your repository hosting platform.&quot;, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-forks-count&quot;, &quot;id&quot;: &quot;SGA-GL-0018&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of forks of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 4}, {&quot;name&quot;: &quot;repo-subscribers-count&quot;, &quot;id&quot;: &quot;SGA-GL-0019&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of subscribers (or watchers) of the repository.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-ecosystems&quot;, &quot;id&quot;: &quot;SGA-GL-0020&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;List of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: [&quot;pypi&quot;]}, {&quot;name&quot;: &quot;repo-packages-ecosystems-count&quot;, &quot;id&quot;: &quot;SGA-GL-0021&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package platforms or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 1}, {&quot;name&quot;: &quot;repo-packages-versions-count&quot;, &quot;id&quot;: &quot;SGA-GL-0022&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of package versions on package hosts or services where the repository was detected (leveraging the ecosyste.ms packages API).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 17}, {&quot;name&quot;: &quot;repo-social-media-platforms&quot;, &quot;id&quot;: &quot;SGA-GL-0023&quot;, &quot;result-type&quot;: &quot;list&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: []}, {&quot;name&quot;: &quot;repo-social-media-platforms-count&quot;, &quot;id&quot;: &quot;SGA-GL-0024&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Count of social media platforms detected within the readme.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0}, {&quot;name&quot;: &quot;repo-doi-valid-format&quot;, &quot;id&quot;: &quot;SGA-GL-0025&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is of a valid format.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not of a valid format or missing.&quot;, &quot;fix_why&quot;: &quot;A valid DOI format is essential for ensuring that the DOI can be resolved and used to reference the work correctly.&quot;, &quot;fix_how&quot;: &quot;Ensure that the DOI in the CITATION.cff file follows the standard DOI format, which typically includes a prefix (e.g., 10.1234) and a suffix (e.g., 56789/abcde). The DOI should be in the format: `10.&lt;prefix&gt;/&lt;suffix&gt;`. If the DOI is missing or incorrectly formatted, update it to match the correct structure.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-https-resolvable&quot;, &quot;id&quot;: &quot;SGA-GL-0026&quot;, &quot;result-type&quot;: &quot;bool&quot;, &quot;sustainability_correlation&quot;: 1, &quot;description&quot;: &quot;Whether the DOI found in the CITATION.cff file is HTTPS resolvable.&quot;, &quot;correction_guidance&quot;: &quot;DOI within the CITATION.cff file is not HTTPS resolvable or missing.&quot;, &quot;fix_why&quot;: &quot;An HTTPS resolvable DOI is crucial for ensuring that the DOI can be accessed securely and reliably, allowing users to retrieve the work associated with the DOI.&quot;, &quot;fix_how&quot;: &quot;Verify that the DOI in the CITATION.cff file can be resolved using an HTTPS URL. The DOI should be formatted as: `https://doi.org/10.&lt;prefix&gt;/&lt;suffix&gt;`. If the DOI is not resolvable or does not use HTTPS, update it to ensure it points to a valid and secure URL.&quot;, &quot;result&quot;: true}, {&quot;name&quot;: &quot;repo-doi-cited-by-count&quot;, &quot;id&quot;: &quot;SGA-GL-0027&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;How many other works cite the DOI for the repository found within the CITATION.cff as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 3}, {&quot;name&quot;: &quot;repo-days-between-doi-publication-date-and-latest-commit&quot;, &quot;id&quot;: &quot;SGA-GL-0028&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;The number of days between the most recent commit and DOI for the repository&#39;s publication date as discovered by the OpenAlex.org API.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 326}, {&quot;name&quot;: &quot;repo-gh-workflow-success-ratio&quot;, &quot;id&quot;: &quot;SGA-SF-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Ratio of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0.84}, {&quot;name&quot;: &quot;repo-gh-workflow-succeeding-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0002&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of succeeding workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 100}, {&quot;name&quot;: &quot;repo-gh-workflow-failing-runs&quot;, &quot;id&quot;: &quot;SGA-SF-0003&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Number of failing workflow runs out of queried workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 84}, {&quot;name&quot;: &quot;repo-gh-workflow-queried-total&quot;, &quot;id&quot;: &quot;SGA-SF-0004&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total number of workflow runs from GitHub (only applies to GitHub hosted repositories which use workflows).&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 16}, {&quot;name&quot;: &quot;repo-code-coverage-percent&quot;, &quot;id&quot;: &quot;SGA-SF-0005&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Percentage of code coverage for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-date-of-last-coverage-run&quot;, &quot;id&quot;: &quot;SGA-SF-0006&quot;, &quot;result-type&quot;: &quot;str&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Date of code coverage run for repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-days-between-last-coverage-run-latest-commit&quot;, &quot;id&quot;: &quot;SGA-SF-0007&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Days between last coverage run date and latest commit date.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-total-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0008&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines of code used for code coverage within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-code-coverage-executed-lines&quot;, &quot;id&quot;: &quot;SGA-SF-0009&quot;, &quot;result-type&quot;: &quot;int&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Total lines covered code within repository given detected code coverage data.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: null}, {&quot;name&quot;: &quot;repo-agg-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0001&quot;, &quot;result-type&quot;: &quot;float&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;Aggregated information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Represents value from 0 to 1 where 0 equals no information entropy and 1 represents maximum information entropy.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: 0.025808699131227745}, {&quot;name&quot;: &quot;repo-file-info-entropy&quot;, &quot;id&quot;: &quot;SGA-VS-0002&quot;, &quot;result-type&quot;: &quot;dict&quot;, &quot;sustainability_correlation&quot;: 0, &quot;description&quot;: &quot;File-level information entropy for all files within a repository given a range between two commits (by default, the first and latest commits). Shows all files and their corresponding information entropy measurements relative to the other files found within the range of commits.&quot;, &quot;correction_guidance&quot;: null, &quot;fix_why&quot;: null, &quot;fix_how&quot;: null, &quot;result&quot;: {&quot;.alexignore&quot;: 0.0012801416047473438, &quot;.github/CODEOWNERS&quot;: 0.005743485846106062, &quot;.github/ISSUE_TEMPLATE/bug.yml&quot;: 0.031104973016931534, &quot;.github/ISSUE_TEMPLATE/config.yml&quot;: 0.0012801416047473438, &quot;.github/ISSUE_TEMPLATE/feature.yml&quot;: 0.028235543723534734, &quot;.github/PULL_REQUEST_TEMPLATE.md&quot;: 0.01658214932251677, &quot;.github/actions/install-node-env/action.yml&quot;: 0.007076318321137493, &quot;.github/actions/install-python-env/action.yml&quot;: 0.013581776997830683, &quot;.github/dependabot.yml&quot;: 0.01584405938454477, &quot;.github/release-drafter.yml&quot;: 0.010025419626371808, &quot;.github/workflows/deploy-book.yml&quot;: 0.018036837142836642, &quot;.github/workflows/draft-release.yml&quot;: 0.010835471123180273, &quot;.github/workflows/entropy-check.yml&quot;: 0.02528808214825166, &quot;.github/workflows/pre-commit-checks.yml&quot;: 0.01584405938454477, &quot;.github/workflows/publish-pypi.yml&quot;: 0.012420400080775933, &quot;.github/workflows/pytest-tests.yml&quot;: 0.01911039866388652, &quot;.github/workflows/test-links.yml&quot;: 0.010025419626371808, &quot;.gitignore&quot;: 0.050388871807616566, &quot;.linkcheckerrc.ini&quot;: 0.008364330699849125, &quot;.pre-commit-config.yaml&quot;: 0.06226672150666751, &quot;.pre-commit-hooks.yaml&quot;: 0.006193386791203259, &quot;.vale.ini&quot;: 0.007076318321137493, &quot;CITATION.cff&quot;: 0.06303048378226882, &quot;CODE_OF_CONDUCT.md&quot;: 0.0018360612849303822, &quot;CONTRIBUTING.md&quot;: 0.0018360612849303822, &quot;LICENSE&quot;: 0.01280996856900367, &quot;LICENSE.txt&quot;: 0.01280996856900367, &quot;README.md&quot;: 0.05417455937318192, &quot;coverage.xml&quot;: 0.2514219861180094, &quot;docs/readme.md&quot;: 0.0018360612849303822, &quot;media/coverage-badge.svg&quot;: 0.0006880232335619331, &quot;pa11y.json&quot;: 0.003873826178886575, &quot;package-lock.json&quot;: 0.26360062672301965, &quot;package.json&quot;: 0.002883405681838782, &quot;poetry.lock&quot;: 0.47488174838965835, &quot;pyproject.toml&quot;: 0.06705110651973725, &quot;src/almanack/__init__.py&quot;: 0.01280996856900367, &quot;src/almanack/batch_processing.py&quot;: 0.07292639771947133, &quot;src/almanack/book.py&quot;: 0.026935792157792966, &quot;src/almanack/cli.py&quot;: 0.0955254129450298, &quot;src/almanack/git.py&quot;: 0.11586460019909949, &quot;src/almanack/metrics/data.py&quot;: 0.20228029941232145, &quot;src/almanack/metrics/entropy/calculate_entropy.py&quot;: 0.0393238751864393, &quot;src/almanack/metrics/entropy/processing_repositories.py&quot;: 0.026935792157792966, &quot;src/almanack/metrics/garden_lattice/connectedness.py&quot;: 0.08622796060782567, &quot;src/almanack/metrics/garden_lattice/practicality.py&quot;: 0.04108212816884446, &quot;src/almanack/metrics/garden_lattice/understanding.py&quot;: 0.022934600991464712, &quot;src/almanack/metrics/metrics.yml&quot;: 0.16437027815324431, &quot;src/almanack/metrics/remote.py&quot;: 0.03694341767970571, &quot;src/almanack/reporting/report.py&quot;: 0.04281852450614003, &quot;src/book/_config.yml&quot;: 0.02121684903170528, &quot;src/book/_ext/__init__.py&quot;: 0.0, &quot;src/book/_ext/gen_check_pages.py&quot;: 0.03694341767970571, &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/_extension.yml&quot;: 0.005287287051794951, &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-show.typ&quot;: 0.028879598776412135, &quot;src/book/_posters/2025/_extensions/quarto-ext/poster/typst-template.typ&quot;: 0.057614183606608686, &quot;src/book/_posters/2025/almanack-2025-poster.pdf&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-handbook.png&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-notebook.png&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-package-and-handbook.png&quot;: 0.0, &quot;src/book/_posters/2025/images/almanack-package.png&quot;: 0.0, &quot;src/book/_posters/2025/images/bssw-logo-w-background.png&quot;: 0.0, &quot;src/book/_posters/2025/images/cu-anschutz-short.png&quot;: 0.0, &quot;src/book/_posters/2025/images/dbmi.png&quot;: 0.0, &quot;src/book/_posters/2025/images/entropy-for-repos.png&quot;: 0.0, &quot;src/book/_posters/2025/images/forest_modified.png&quot;: 0.0, &quot;src/book/_posters/2025/images/header-combined-images.png&quot;: 0.0, &quot;src/book/_posters/2025/images/roadmap.png&quot;: 0.0, &quot;src/book/_posters/2025/images/seed-bank-entropy-pubmed.png&quot;: 0.0, &quot;src/book/_posters/2025/images/sga-qr-text.png&quot;: 0.0, &quot;src/book/_posters/2025/images/sga-qr.png&quot;: 0.0, &quot;src/book/_posters/2025/images/software-lifecycle.png&quot;: 0.0, &quot;src/book/_posters/2025/images/spacer.png&quot;: 0.0, &quot;src/book/_posters/2025/images/sustainable-horizons-institute-logo.png&quot;: 0.0, &quot;src/book/_posters/2025/images/title-text.png&quot;: 0.0, &quot;src/book/_posters/2025/poster.qmd&quot;: 0.044249617747425356, &quot;src/book/_posters/2025/readme.md&quot;: 0.023612890573474293, &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.odp&quot;: 0.0, &quot;src/book/_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf&quot;: 0.0, &quot;src/book/_static/custom.css&quot;: 0.008785173453661088, &quot;src/book/_templates/check_template.md.j2&quot;: 0.005287287051794951, &quot;src/book/_toc.yml&quot;: 0.01658214932251677, &quot;src/book/assets/640px-Forgard2-003.gif&quot;: 0.0, &quot;src/book/assets/640px-Rundes_Fenster_mit_Gitter.jpeg&quot;: 0.0, &quot;src/book/assets/Sundial_2916_HDR.jpeg&quot;: 0.0, &quot;src/book/assets/almanack-influencing-software.png&quot;: 0.0, &quot;src/book/assets/garden-lattice-understanding-transfer.png&quot;: 0.0, &quot;src/book/assets/software-gardening-almanack-logo.png&quot;: 0.0, &quot;src/book/assets/software-gardening-logo.png&quot;: 0.0, &quot;src/book/assets/software-lifecycle.png&quot;: 0.0, &quot;src/book/assets/xkcd_dependency.png&quot;: 0.0, &quot;src/book/favicon.png&quot;: 0.0, &quot;src/book/garden-circle/contributing.md&quot;: 0.06021402696952198, &quot;src/book/garden-circle/garden-circle.md&quot;: 0.002883405681838782, &quot;src/book/garden-circle/garden-map.md&quot;: 0.01875412943985726, &quot;src/book/garden-circle/package-api.md&quot;: 0.04253059514614561, &quot;src/book/garden-circle/pavilion.md&quot;: 0.01547215749263669, &quot;src/book/garden-lattice/garden-lattice.md&quot;: 0.018036837142836642, &quot;src/book/garden-lattice/understanding.md&quot;: 0.0419529874266187, &quot;src/book/introduction.md&quot;: 0.05120757041002689, &quot;src/book/references.bib&quot;: 0.08870112910501407, &quot;src/book/seed-bank/almanack-example/almanack-example.ipynb&quot;: 0.31208239352446665, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_data.py&quot;: 0.061755748145690285, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/generate_github_enriched_data.py&quot;: 0.05011503525739898, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/cdf_repository_inactivity_by_last_commit_date.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/primary-language-counts.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-lines-of-code-and-time.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/pubmed-stars-and-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-forks.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-gh-stars.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-open-issues.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/images/software-information-entropy-top-5-langs.png&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_1.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_10.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_11.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_12.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_13.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_14.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_15.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_16.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_17.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_18.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_19.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_2.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_20.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_21.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_22.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_23.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_24.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_25.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_26.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_27.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_28.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_29.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_3.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_30.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_31.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_32.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_33.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_34.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_35.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_36.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_37.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_38.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_39.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_4.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_40.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_41.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_42.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_43.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_44.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_45.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_46.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_47.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_48.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_49.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_5.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_6.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_7.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_8.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/repository_analysis_results/batch_9.parquet&quot;: 0.0, &quot;src/book/seed-bank/pubmed-github-repositories/understanding-pubmed-github-repos.ipynb&quot;: 0.17477434885796064, &quot;src/book/seed-bank/seed-bank.md&quot;: 0.002883405681838782, &quot;src/book/software-forest/software-forest.md&quot;: 0.01839628779102012, &quot;src/book/verdant-sundial/verdant-sundial.md&quot;: 0.01875412943985726, &quot;styles/config/vocabularies/almanack/accept.txt&quot;: 0.014344354483860062, &quot;tests/__init__.py&quot;: 0.0, &quot;tests/conftest.py&quot;: 0.05577076248095453, &quot;tests/data/almanack/coverage/python/coverage.json&quot;: 0.0006880232335619331, &quot;tests/data/almanack/coverage/python/coverage.lcov&quot;: 0.2099986548989751, &quot;tests/data/almanack/repo_setup/create_repo.py&quot;: 0.08119447814450106, &quot;tests/data/almanack/repo_setup/insert_code.py&quot;: 0.022934600991464712, &quot;tests/data/jupyter-book/sandbox.md&quot;: 0.00793941614094221, &quot;tests/metrics/test_calculate_entropy.py&quot;: 0.023274352662153122, &quot;tests/metrics/test_data.py&quot;: 0.23145899643603982, &quot;tests/metrics/test_garden_lattice.py&quot;: 0.03078971292917691, &quot;tests/test_almanack.py&quot;: 0.01547215749263669, &quot;tests/test_batch.py&quot;: 0.05229272540945959, &quot;tests/test_build.py&quot;: 0.026935792157792966, &quot;tests/test_cli.py&quot;: 0.059438117542761106, &quot;tests/test_git.py&quot;: 0.12331515278045987, &quot;tests/utils.py&quot;: 0.01547215749263669}}]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 51 ms, sys: 14.3 ms, total: 65.2 ms
-Wall time: 3.67 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 53.8 ms, sys: 22.7 ms, total: 76.5 ms
+Wall time: 4.39 s
 </pre></div>
 </div>
 </div>
@@ -2485,16 +2544,16 @@ Wall time: 3.67 s
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running Software Gardening Almanack checks.
-Datetime: 2025-12-15T17:38:03.845012Z
-Almanack version: 0.0.0.post1.dev0+e6ee0c2
+Datetime: 2026-01-02T18:10:31.251943Z
+Almanack version: 0.0.0.post1.dev0+58e6383
 Target repository path: ./almanack
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Software Gardening Almanack summary: 100.00% (11/11)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 46.4 ms, sys: 18.3 ms, total: 64.7 ms
-Wall time: 3.73 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 53.5 ms, sys: 20.7 ms, total: 74.2 ms
+Wall time: 4.3 s
 </pre></div>
 </div>
 </div>
@@ -2541,11 +2600,11 @@ Wall time: 3.73 s
       </div>
     </a>
     <a class="right-next"
-       href="../pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html"
+       href="../../checks/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Visualizing PubMed article GitHub repository software information entropy</p>
+        <p class="prev-next-title">Checks index</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

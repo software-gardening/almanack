@@ -28,6 +28,14 @@
    :show-inheritance:
 ```
 
+```{eval-rst}
+.. automodule:: almanack.batch_processing
+   :members:
+   :private-members:
+   :undoc-members:
+   :show-inheritance:
+```
+
 ## Reporting
 
 ```{eval-rst}

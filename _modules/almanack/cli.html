@@ -187,7 +187,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../seed-bank/almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../seed-bank/pubmed-github-repositories/visualize-pubmed-repo-sofware-entropy.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
 </li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
@@ -354,6 +353,7 @@ document.write(`
 <span class="sd">Setup almanack CLI through python-fire</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -361,12 +361,15 @@ document.write(`
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 <span class="kn">import</span> <span class="nn">fire</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
 
+<span class="kn">from</span> <span class="nn">almanack.batch_processing</span> <span class="kn">import</span> <span class="n">process_repositories_batch</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.data</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">_get_almanack_version</span><span class="p">,</span>
     <span class="n">gather_failed_almanack_metric_checks</span><span class="p">,</span>
     <span class="n">get_table</span><span class="p">,</span>
+    <span class="n">process_repo_for_almanack</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -565,6 +568,113 @@ document.write(`
 
         <span class="c1"># exit with zero (no failures)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="AlmanackCLI.batch">
+<a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.AlmanackCLI.batch">[docs]</a>
+    <span class="k">def</span> <span class="nf">batch</span><span class="p">(</span>  <span class="c1"># noqa: PLR0913</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">output_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">parquet_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">repo_urls</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">column</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;github_link&quot;</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span>
+        <span class="n">max_workers</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">16</span><span class="p">,</span>
+        <span class="n">limit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">compression</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;zstd&quot;</span><span class="p">,</span>
+        <span class="n">show_repo_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">processor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">executor</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;process&quot;</span><span class="p">,</span>
+        <span class="n">split_batches</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">collect_dataframe</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">show_batch_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_errors</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Run Almanack across many repositories defined in a parquet file or a provided list.</span>
+
+<span class="sd">        Example:</span>
+<span class="sd">            almanack batch links.parquet results.parquet --column github_link --batch_size 1000 --max_workers 8</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            output_path: Optional destination parquet for aggregated results. If omitted, results are printed as JSON.</span>
+<span class="sd">            parquet_path: Parquet file containing repository URLs.</span>
+<span class="sd">            repo_urls: Optional list of repository URLs to process.</span>
+<span class="sd">            output_path: Destination parquet for aggregated results.</span>
+<span class="sd">            column: Column name holding repository URLs.</span>
+<span class="sd">            batch_size: Repositories per batch.</span>
+<span class="sd">            max_workers: Parallel workers per batch.</span>
+<span class="sd">            limit: Optional maximum repositories to process.</span>
+<span class="sd">            compression: Parquet compression codec (default zstd).</span>
+<span class="sd">            show_repo_progress: Print per-repository progress to stdout.</span>
+<span class="sd">            show_batch_progress: Print per-batch progress to stdout.</span>
+<span class="sd">            show_errors: Print repository-level errors to stdout.</span>
+<span class="sd">            processor: Optional import path to a processor function (e.g., module:function). Defaults to Almanack processor.</span>
+<span class="sd">            executor: Parallelism backend: &quot;process&quot; (default) or &quot;thread&quot;.</span>
+<span class="sd">            split_batches: If True, write one parquet file per batch inside output_path (must be a directory).</span>
+<span class="sd">            collect_dataframe: If False, skip retaining the combined DataFrame (avoids large in-memory data).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">repo_urls</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">repo_urls</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">repo_urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">repo_urls</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">url</span><span class="o">.</span><span class="n">strip</span><span class="p">()]</span>
+            <span class="n">repo_urls</span> <span class="o">=</span> <span class="p">[</span><span class="n">url</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">repo_urls</span> <span class="k">if</span> <span class="n">url</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">parquet_path</span><span class="p">:</span>
+            <span class="n">df_links</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">parquet_path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">column</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df_links</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">column</span><span class="si">}</span><span class="s2">&#39; column not found. Available columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">df_links</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+            <span class="n">repo_urls</span> <span class="o">=</span> <span class="n">df_links</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Provide either repo_urls or parquet_path.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">executor</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;thread&quot;</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ThreadPoolExecutor</span>  <span class="c1"># noqa: PLC0415</span>
+
+            <span class="n">executor_cls</span> <span class="o">=</span> <span class="n">ThreadPoolExecutor</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>  <span class="c1"># noqa: PLC0415</span>
+
+            <span class="n">executor_cls</span> <span class="o">=</span> <span class="n">ProcessPoolExecutor</span>
+
+        <span class="n">processor_fn</span> <span class="o">=</span> <span class="n">process_repo_for_almanack</span>
+        <span class="k">if</span> <span class="n">processor</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">module_path</span><span class="p">,</span> <span class="n">func_name</span> <span class="o">=</span> <span class="n">processor</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;processor must be provided as &#39;module:function&#39;&quot;</span>
+                <span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+            <span class="n">module</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_path</span><span class="p">)</span>
+            <span class="n">processor_fn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">module</span><span class="p">,</span> <span class="n">func_name</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">process_repositories_batch</span><span class="p">(</span>
+            <span class="n">repo_urls</span><span class="o">=</span><span class="n">repo_urls</span><span class="p">,</span>
+            <span class="n">output_path</span><span class="o">=</span><span class="n">output_path</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="n">max_workers</span><span class="p">,</span>
+            <span class="n">limit</span><span class="o">=</span><span class="n">limit</span><span class="p">,</span>
+            <span class="n">compression</span><span class="o">=</span><span class="n">compression</span><span class="p">,</span>
+            <span class="n">processor</span><span class="o">=</span><span class="n">processor_fn</span><span class="p">,</span>
+            <span class="n">executor_cls</span><span class="o">=</span><span class="n">executor_cls</span><span class="p">,</span>
+            <span class="n">show_repo_progress</span><span class="o">=</span><span class="n">show_repo_progress</span><span class="p">,</span>
+            <span class="n">split_batches</span><span class="o">=</span><span class="n">split_batches</span><span class="p">,</span>
+            <span class="n">collect_dataframe</span><span class="o">=</span><span class="n">collect_dataframe</span><span class="p">,</span>
+            <span class="n">show_batch_progress</span><span class="o">=</span><span class="n">show_batch_progress</span><span class="p">,</span>
+            <span class="n">show_errors</span><span class="o">=</span><span class="n">show_errors</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">output_path</span><span class="p">:</span>
+            <span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> <span class="k">if</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;unknown&quot;</span>
+            <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
+                <span class="sa">f</span><span class="s2">&quot;Wrote </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2"> records to </span><span class="si">{</span><span class="n">output_path</span><span class="si">}</span><span class="s2"> &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;(input </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">repo_urls</span><span class="p">)</span><span class="si">}</span><span class="s2"> repos, batch_size=</span><span class="si">{</span><span class="n">batch_size</span><span class="si">}</span><span class="s2">, max_workers=</span><span class="si">{</span><span class="n">max_workers</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="n">df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">))</span>  <span class="c1"># noqa: T201</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[]&quot;</span><span class="p">)</span>  <span class="c1"># noqa: T201</span></div>
 </div>
 
 

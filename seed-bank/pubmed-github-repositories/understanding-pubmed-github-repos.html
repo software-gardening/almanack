@@ -1,0 +1,1078 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Undersatanding PubMed GitHub repositories with the Software Gardening Almanack &#8212; The Software Gardening Almanack</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+
+  
+  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3fce4d98" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
+  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+
+    <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'seed-bank/pubmed-github-repositories/understanding-pubmed-github-repos';</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="icon" href="../../_static/favicon.png"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+
+<a class="navbar-brand logo" href="../../introduction.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
+    <script>document.write(`<img src="../../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../../introduction.html">
+                    Introduction
+                </a>
+            </li>
+        </ul>
+        <ul class="nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-lattice/garden-lattice.html">1. Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-lattice/understanding.html">Understanding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../software-forest/software-forest.html">2. Software Forest</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-circle/contributing.html">Contributing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-circle/garden-map.html">Garden Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-circle/pavilion.html">Pavilion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../garden-circle/package-api.html">Almanack Package API</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</label></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/software-gardening/almanack/issues/new?title=Issue%20on%20page%20%2Fseed-bank/pubmed-github-repositories/understanding-pubmed-github-repos.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/seed-bank/pubmed-github-repositories/understanding-pubmed-github-repos.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
+    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</label>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Undersatanding PubMed GitHub repositories with the Software Gardening Almanack</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-extraction">Data Extraction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-repositories-are-dormant">How many repositories are dormant?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-languages-are-used-within-pubmed-article-repositories">What languages are used within PubMed article repositories?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-software-entropy-different-across-primary-languages">How is software entropy different across primary languages?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-relationship-between-github-stars-and-forks-for-repositories">What is the relationship between GitHub Stars and Forks for repositories?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-github-stars-software-entropy-and-time-relate">How do GitHub Stars, software entropy, and time relate?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-github-forks-software-entropy-and-time-relate">How do GitHub Forks, software entropy, and time relate?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-relationship-between-github-stars-and-open-issues-for-the-repositories">What is the relationship between GitHub Stars and Open Issues for the repositories?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-software-entropy-time-and-github-issues-relate-to-one-another">How do software entropy, time, and GitHub issues relate to one another?</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="undersatanding-pubmed-github-repositories-with-the-software-gardening-almanack">
+<h1>Undersatanding PubMed GitHub repositories with the Software Gardening Almanack<a class="headerlink" href="#undersatanding-pubmed-github-repositories-with-the-software-gardening-almanack" title="Link to this heading">#</a></h1>
+<p>The content below seeks to better understand a dataset of ~10,000 PubMed article GitHub repositories using the Software Gardening Almanack.</p>
+<p>PubMed GitHub repositories are extracted using the PubMed API to query for GitHub links within article abstracts.
+GitHub data about these repositories is gathered using the GitHub API.
+The code to perform data extractions may be found under the directory: <a class="reference external" href="https://github.com/software-gardening/almanack/tree/main/src/book/seed-bank/pubmed-github-repositories/gather-pubmed-repos/">gather-pubmed-repos</a> .</p>
+<p>These repositories are then processed using the Software Gardening Almanack to contextualize how they compare to one another.</p>
+<section id="data-extraction">
+<h2>Data Extraction<a class="headerlink" href="#data-extraction" title="Link to this heading">#</a></h2>
+<p>The following section extracts data which includes software entropy and GitHub-derived data.
+We merge the data to form a table which includes PubMed, GitHub, and Almanack software entropy information on the repositories.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+
+<span class="kn">from</span> <span class="nn">almanack</span> <span class="kn">import</span> <span class="n">process_repositories_batch</span>
+
+<span class="c1"># set plotly default theme</span>
+<span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
+
+<span class="c1"># set almanack data directory</span>
+<span class="n">ALMANACK_DATA_DIR</span> <span class="o">=</span> <span class="s2">&quot;repository_analysis_results&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># if we don&#39;t already have a data dir, batch process almanack data</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">ALMANACK_DATA_DIR</span><span class="p">)</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+    <span class="n">process_repositories_batch</span><span class="p">(</span>
+        <span class="c1"># read pre-collected pubmeb github repos</span>
+        <span class="n">repo_urls</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">=</span><span class="s2">&quot;gather-pubmed-repos/pubmed_github_links_with_github_data.parquet&quot;</span><span class="p">,</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;github_link&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">github_link</span><span class="o">.</span><span class="n">tolist</span><span class="p">()[</span><span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">],</span>
+        <span class="n">output_path</span><span class="o">=</span><span class="n">ALMANACK_DATA_DIR</span><span class="p">,</span>
+        <span class="n">split_batches</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+        <span class="n">max_workers</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">collect_dataframe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_repo_progress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">show_batch_progress</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+<span class="c1"># read the dataset as a concenated dataframe from parquet chunks</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">pq_file</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pq_file</span> <span class="ow">in</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">ALMANACK_DATA_DIR</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.parquet&quot;</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 9631 entries, 0 to 9630
+Data columns (total 62 columns):
+ #   Column                                                    Non-Null Count  Dtype  
+---  ------                                                    --------------  -----  
+ 0   Repository URL                                            9631 non-null   object 
+ 1   repo-path                                                 9631 non-null   object 
+ 2   repo-commits                                              9587 non-null   float64
+ 3   repo-file-count                                           9587 non-null   float64
+ 4   repo-commit-time-range                                    9631 non-null   object 
+ 5   repo-days-of-development                                  9587 non-null   float64
+ 6   repo-commits-per-day                                      9587 non-null   float64
+ 7   almanack-table-datetime                                   9631 non-null   object 
+ 8   almanack-version                                          9631 non-null   object 
+ 9   repo-primary-language                                     5789 non-null   object 
+ 10  repo-primary-license                                      3503 non-null   object 
+ 11  repo-doi                                                  125 non-null    object 
+ 12  repo-doi-publication-date                                 107 non-null    object 
+ 13  repo-doi-fwci                                             46 non-null     float64
+ 14  repo-doi-is-not-retracted                                 75 non-null     float64
+ 15  repo-doi-grants-count                                     84 non-null     float64
+ 16  repo-doi-grants                                           0 non-null      object 
+ 17  repo-includes-readme                                      9587 non-null   float64
+ 18  repo-includes-contributing                                9587 non-null   float64
+ 19  repo-includes-code-of-conduct                             9587 non-null   float64
+ 20  repo-includes-license                                     9587 non-null   float64
+ 21  repo-is-citable                                           9587 non-null   float64
+ 22  repo-default-branch-not-master                            9587 non-null   float64
+ 23  repo-includes-common-docs                                 9587 non-null   float64
+ 24  repo-unique-contributors                                  9587 non-null   float64
+ 25  repo-unique-contributors-past-year                        9587 non-null   float64
+ 26  repo-unique-contributors-past-182-days                    9587 non-null   float64
+ 27  repo-tags-count                                           9587 non-null   float64
+ 28  repo-tags-count-past-year                                 9587 non-null   float64
+ 29  repo-tags-count-past-182-days                             9587 non-null   float64
+ 30  repo-stargazers-count                                     6024 non-null   float64
+ 31  repo-uses-issues                                          6024 non-null   float64
+ 32  repo-issues-open-count                                    6024 non-null   float64
+ 33  repo-pull-requests-enabled                                6024 non-null   float64
+ 34  repo-forks-count                                          6024 non-null   float64
+ 35  repo-subscribers-count                                    6024 non-null   float64
+ 36  repo-packages-ecosystems-count                            9587 non-null   float64
+ 37  repo-packages-versions-count                              9587 non-null   float64
+ 38  repo-social-media-platforms-count                         9295 non-null   float64
+ 39  repo-doi-valid-format                                     90 non-null     float64
+ 40  repo-doi-https-resolvable                                 84 non-null     float64
+ 41  repo-doi-cited-by-count                                   75 non-null     float64
+ 42  repo-days-between-doi-publication-date-and-latest-commit  75 non-null     float64
+ 43  repo-gh-workflow-success-ratio                            463 non-null    float64
+ 44  repo-gh-workflow-succeeding-runs                          463 non-null    float64
+ 45  repo-gh-workflow-failing-runs                             463 non-null    float64
+ 46  repo-gh-workflow-queried-total                            463 non-null    float64
+ 47  repo-code-coverage-percent                                0 non-null      object 
+ 48  repo-date-of-last-coverage-run                            0 non-null      object 
+ 49  repo-days-between-last-coverage-run-latest-commit         0 non-null      object 
+ 50  repo-code-coverage-total-lines                            0 non-null      object 
+ 51  repo-code-coverage-executed-lines                         0 non-null      object 
+ 52  repo-agg-info-entropy                                     9587 non-null   float64
+ 53  repo-almanack-score_json                                  9631 non-null   object 
+ 54  repo-packages-ecosystems_json                             9631 non-null   object 
+ 55  repo-social-media-platforms_json                          9631 non-null   object 
+ 56  checks_total                                              9587 non-null   float64
+ 57  checks_passed                                             9587 non-null   float64
+ 58  checks_pct                                                9587 non-null   float64
+ 59  repo-social-media-platforms                               0 non-null      float64
+ 60  almanack_error                                            6000 non-null   object 
+ 61  repo-doi-grants_json                                      4200 non-null   object 
+dtypes: float64(42), object(20)
+memory usage: 4.6+ MB
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3332/2236761407.py:21: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
+  df = pd.concat(
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-many-repositories-are-dormant">
+<h2>How many repositories are dormant?<a class="headerlink" href="#how-many-repositories-are-dormant" title="Link to this heading">#</a></h2>
+<p>Software must evolve continuously to remain stable, useful, and aligned with current needs.
+The following section explores how repository dormancy appears within the dataset based on the date of most recent commit.
+Sustained, incremental updates help prevent this stagnation and ensure that a project continues to serve its users effectively.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># cleanup: drop columns or rows whose values are all empty</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gather repo commit start and end dates</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;repo-commit-start-date&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-commit-end-date&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
+    <span class="s2">&quot;repo-commit-time-range&quot;</span>
+<span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\(&#39;([^&#39;]+)&#39;, &#39;([^&#39;]+)&#39;\)&quot;</span><span class="p">)</span>
+<span class="c1"># turn these into datetimes for datetime calcs</span>
+<span class="n">df</span><span class="p">[[</span><span class="s2">&quot;repo-commit-start-date&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-commit-end-date&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;repo-commit-start-date&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-commit-end-date&quot;</span><span class="p">]</span>
+<span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">)</span>
+<span class="c1"># set a cuttoff of 1 year for dormancy</span>
+<span class="n">cutoff</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">pd</span><span class="o">.</span><span class="n">DateOffset</span><span class="p">(</span><span class="n">years</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;dormant&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-commit-end-date&quot;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">cutoff</span>
+<span class="c1"># show how many dormant repos there are in this dataset</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;dormant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dormant
+True     8105
+False    1526
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-commit-start-date&quot;</span><span class="p">]</span>
+<span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+<span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-days-inactive&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Timestamp</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-commit-end-date&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">ecdf</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-days-inactive&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;CDF of repository inactivity by last commit date&quot;</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span>
+    <span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/cdf_repository_inactivity_by_last_commit_date.png&quot;</span>
+<span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/fffdcbf3c24b86a8636d4ee607cb86f117e61c5a5156f9bdfab25a4051b28336.png" src="../../_images/fffdcbf3c24b86a8636d4ee607cb86f117e61c5a5156f9bdfab25a4051b28336.png" />
+</div>
+</div>
+</section>
+<section id="what-languages-are-used-within-pubmed-article-repositories">
+<h2>What languages are used within PubMed article repositories?<a class="headerlink" href="#what-languages-are-used-within-pubmed-article-repositories" title="Link to this heading">#</a></h2>
+<p>The following section observes the top 10 languages which are used in repositories from the dataset.
+Primary language is determined as the language which has the most lines of code within a repository.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count dormant &amp; active repos per language</span>
+<span class="n">lang_status</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">,</span> <span class="s2">&quot;dormant&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Map boolean to readable labels</span>
+<span class="n">lang_status</span><span class="p">[</span><span class="s2">&quot;Status&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lang_status</span><span class="p">[</span><span class="s2">&quot;dormant&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
+    <span class="p">{</span>
+        <span class="kc">True</span><span class="p">:</span> <span class="s2">&quot;Dormant (no commits &gt;= 1 year)&quot;</span><span class="p">,</span>
+        <span class="kc">False</span><span class="p">:</span> <span class="s2">&quot;Active (&lt; 1 year since last commit)&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">)</span>
+
+<span class="c1"># Total repos per language</span>
+<span class="n">total_counts</span> <span class="o">=</span> <span class="n">lang_status</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">)[</span><span class="s2">&quot;Count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="c1"># Top 10 languages by total repo count (sorted)</span>
+<span class="n">top_langs</span> <span class="o">=</span> <span class="n">total_counts</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="c1"># Filter to top languages</span>
+<span class="n">plot_data</span> <span class="o">=</span> <span class="n">lang_status</span><span class="p">[</span>
+    <span class="n">lang_status</span><span class="p">[</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">top_langs</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Ensure y-axis follows the sorted order by total count</span>
+<span class="n">lang_order</span> <span class="o">=</span> <span class="n">top_langs</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">plot_data</span><span class="p">[</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Categorical</span><span class="p">(</span>
+    <span class="n">plot_data</span><span class="p">[</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">],</span>
+    <span class="n">categories</span><span class="o">=</span><span class="n">lang_order</span><span class="p">,</span>
+    <span class="n">ordered</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Stacked horizontal bar chart: Active (green) + Dormant (red)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span>
+    <span class="n">plot_data</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;Status&quot;</span><span class="p">,</span>
+    <span class="n">orientation</span><span class="o">=</span><span class="s2">&quot;h&quot;</span><span class="p">,</span>
+    <span class="n">color_discrete_map</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;Active (&lt; 1 year since last commit)&quot;</span><span class="p">:</span> <span class="s2">&quot;#2ca02c&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Dormant (no commits &gt;= 1 year)&quot;</span><span class="p">:</span> <span class="s2">&quot;#d62728&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Primary language count (active vs dormant repos)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">barmode</span><span class="o">=</span><span class="s2">&quot;stack&quot;</span><span class="p">,</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Repository count&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Primary language&quot;</span><span class="p">,</span>
+    <span class="n">legend_title</span><span class="o">=</span><span class="s2">&quot;Repository status&quot;</span><span class="p">,</span>
+    <span class="n">yaxis</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">categoryorder</span><span class="o">=</span><span class="s2">&quot;array&quot;</span><span class="p">,</span> <span class="n">categoryarray</span><span class="o">=</span><span class="n">lang_order</span><span class="p">),</span>
+<span class="p">)</span>
+
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/primary-language-counts.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/a7f4fef971cc43a392b3113c665fc0292dfa8cdc840d731602b4dbbaf5e5b9d6.png" src="../../_images/a7f4fef971cc43a392b3113c665fc0292dfa8cdc840d731602b4dbbaf5e5b9d6.png" />
+</div>
+</div>
+</section>
+<section id="how-is-software-entropy-different-across-primary-languages">
+<h2>How is software entropy different across primary languages?<a class="headerlink" href="#how-is-software-entropy-different-across-primary-languages" title="Link to this heading">#</a></h2>
+<p>The following section explores how software entropy manifests differently across different primary languages for repositories.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">language_grouped_data</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span>
+            <span class="n">language_grouped_data</span>
+            <span class="c1"># exclude HTML to focus on formal programming languages</span>
+            <span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+                <span class="o">~</span><span class="n">language_grouped_data</span><span class="p">[</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span>
+                    <span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="n">case</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span>
+                <span class="p">)</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Count&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">5</span><span class="p">:][</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
+    <span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">),</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">,</span>
+    <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">],</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Software entropy over time for PubMed GitHub repositories&quot;</span><span class="p">,</span>
+    <span class="n">marginal_x</span><span class="o">=</span><span class="s2">&quot;rug&quot;</span><span class="p">,</span>
+    <span class="n">marginal_y</span><span class="o">=</span><span class="s2">&quot;box&quot;</span><span class="p">,</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">color</span><span class="o">=</span><span class="s2">&quot;repo-primary-language&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;yref&quot;</span><span class="p">:</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;yanchor&quot;</span><span class="p">:</span> <span class="s2">&quot;bottom&quot;</span><span class="p">},</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-top-5-langs.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6074397fdf4cdcae35911c085a8faf5a07c84cea2c3065019ff4093e691053b7.png" src="../../_images/6074397fdf4cdcae35911c085a8faf5a07c84cea2c3065019ff4093e691053b7.png" />
+</div>
+</div>
+</section>
+<section id="what-is-the-relationship-between-github-stars-and-forks-for-repositories">
+<h2>What is the relationship between GitHub Stars and Forks for repositories?<a class="headerlink" href="#what-is-the-relationship-between-github-stars-and-forks-for-repositories" title="Link to this heading">#</a></h2>
+<p>We next explore how GitHub Stars and Forks are related within the repositories.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-stargazers-count&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-forks-count&quot;</span><span class="p">,</span>
+    <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">],</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Stars and forks for PubMed GitHub repositories&quot;</span><span class="p">,</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">log_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">log_x</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;yref&quot;</span><span class="p">:</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;yanchor&quot;</span><span class="p">:</span> <span class="s2">&quot;bottom&quot;</span><span class="p">},</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Stars&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Forks&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/pubmed-stars-and-forks.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/f6b33155f44051bdbe600e9e1a25672f2efe5fb596071b8ba6425a47e81e3c58.png" src="../../_images/f6b33155f44051bdbe600e9e1a25672f2efe5fb596071b8ba6425a47e81e3c58.png" />
+</div>
+</div>
+</section>
+<section id="how-do-github-stars-software-entropy-and-time-relate">
+<h2>How do GitHub Stars, software entropy, and time relate?<a class="headerlink" href="#how-do-github-stars-software-entropy-and-time-relate" title="Link to this heading">#</a></h2>
+<p>The next section explores how GitHub Stars, software entropy, and time relate to one another.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;GitHub Stars (log)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-stargazers-count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># avoid log(0)</span>
+<span class="p">)</span>
+
+<span class="n">df_plot</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GitHub Stars (log)&quot;</span><span class="p">])</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">density_heatmap</span><span class="p">(</span>
+    <span class="n">df_plot</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="s2">&quot;GitHub Stars (log)&quot;</span><span class="p">,</span>  <span class="c1"># aggregate value per bin</span>
+    <span class="n">histfunc</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span>  <span class="c1"># mean log stars per bin (could use &quot;sum&quot; or &quot;count&quot;)</span>
+    <span class="n">nbinsx</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">nbinsy</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">color_continuous_scale</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sequential</span><span class="o">.</span><span class="n">thermal</span><span class="p">,</span>
+    <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">],</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Software entropy over time for PubMed GitHub repositories (binned density)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;yref&quot;</span><span class="p">:</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;yanchor&quot;</span><span class="p">:</span> <span class="s2">&quot;bottom&quot;</span><span class="p">},</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-gh-stars.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d72a9d08dd8804e4c4b705004d2a32f6d89e35f364889d49eaed2e2fd357fc8c.png" src="../../_images/d72a9d08dd8804e4c4b705004d2a32f6d89e35f364889d49eaed2e2fd357fc8c.png" />
+</div>
+</div>
+</section>
+<section id="how-do-github-forks-software-entropy-and-time-relate">
+<h2>How do GitHub Forks, software entropy, and time relate?<a class="headerlink" href="#how-do-github-forks-software-entropy-and-time-relate" title="Link to this heading">#</a></h2>
+<p>The next section explores how GitHub Forks, software entropy, and time relate to one another.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;GitHub Forks (log)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-forks-count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="c1"># move 0&#39;s to None to avoid log(0)</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Drop rows with missing values in the relevant columns</span>
+<span class="n">df_plot</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span>
+    <span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GitHub Forks (log)&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">density_heatmap</span><span class="p">(</span>
+    <span class="n">df_plot</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="s2">&quot;GitHub Forks (log)&quot;</span><span class="p">,</span>  <span class="c1"># value to aggregate per bin</span>
+    <span class="n">histfunc</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span>  <span class="c1"># mean log forks per bin (can use &quot;sum&quot; or &quot;count&quot;)</span>
+    <span class="n">nbinsx</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">nbinsy</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">color_continuous_scale</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sequential</span><span class="o">.</span><span class="n">thermal</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Software entropy over time for PubMed GitHub repositories (binned density)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;yref&quot;</span><span class="p">:</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;yanchor&quot;</span><span class="p">:</span> <span class="s2">&quot;bottom&quot;</span><span class="p">},</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-forks.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/2c4d41b9c30cb65cca74549d52446c784e1c6b1cada4d60b51355cec231d0366.png" src="../../_images/2c4d41b9c30cb65cca74549d52446c784e1c6b1cada4d60b51355cec231d0366.png" />
+</div>
+</div>
+</section>
+<section id="what-is-the-relationship-between-github-stars-and-open-issues-for-the-repositories">
+<h2>What is the relationship between GitHub Stars and Open Issues for the repositories?<a class="headerlink" href="#what-is-the-relationship-between-github-stars-and-open-issues-for-the-repositories" title="Link to this heading">#</a></h2>
+<p>Below we explore how GitHub Stars and Open Issues are related for the repositories.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;GitHub Open Issues (log)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-issues-open-count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="c1"># move 0&#39;s to None to avoid divide by 0</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-stargazers-count&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-issues-open-count&quot;</span><span class="p">,</span>
+    <span class="n">hover_data</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">],</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Stars and open issues for PubMed GitHub repositories&quot;</span><span class="p">,</span>
+    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">log_y</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">log_x</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;yref&quot;</span><span class="p">:</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;yanchor&quot;</span><span class="p">:</span> <span class="s2">&quot;bottom&quot;</span><span class="p">},</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Stars (log)&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;GitHub Open Issues (log)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/pubmed-stars-and-open-issues.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/0b616674eb937fa54a0b6ace9f9683bb32fd3f2a6c9eca05513720b355406036.png" src="../../_images/0b616674eb937fa54a0b6ace9f9683bb32fd3f2a6c9eca05513720b355406036.png" />
+</div>
+</div>
+</section>
+<section id="how-do-software-entropy-time-and-github-issues-relate-to-one-another">
+<h2>How do software entropy, time, and GitHub issues relate to one another?<a class="headerlink" href="#how-do-software-entropy-time-and-github-issues-relate-to-one-another" title="Link to this heading">#</a></h2>
+<p>The next section visualizes how software entropy, time, and GitHub issues relate to one another.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;GitHub Open Issues (log)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;repo-issues-open-count&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="c1"># move 0&#39;s to None to avoid log(0)</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># Drop rows with missing values in the relevant columns</span>
+<span class="n">df_plot</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span>
+    <span class="n">subset</span><span class="o">=</span><span class="p">[</span>
+        <span class="s2">&quot;GitHub Open Issues (log)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">density_heatmap</span><span class="p">(</span>
+    <span class="n">df_plot</span><span class="p">,</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;repo-days-of-existence&quot;</span><span class="p">,</span>
+    <span class="n">y</span><span class="o">=</span><span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">,</span>
+    <span class="n">z</span><span class="o">=</span><span class="s2">&quot;GitHub Open Issues (log)&quot;</span><span class="p">,</span>  <span class="c1"># value to aggregate per bin</span>
+    <span class="n">histfunc</span><span class="o">=</span><span class="s2">&quot;avg&quot;</span><span class="p">,</span>  <span class="c1"># mean log open issues per bin</span>
+    <span class="n">nbinsx</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">nbinsy</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
+    <span class="n">color_continuous_scale</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sequential</span><span class="o">.</span><span class="n">thermal</span><span class="p">,</span>
+    <span class="n">width</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span>
+    <span class="n">height</span><span class="o">=</span><span class="mi">700</span><span class="p">,</span>
+    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Software entropy over time for PubMed GitHub repositories (binned density)&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+    <span class="n">font</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="mi">13</span><span class="p">),</span>
+    <span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;yref&quot;</span><span class="p">:</span> <span class="s2">&quot;container&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">,</span> <span class="s2">&quot;yanchor&quot;</span><span class="p">:</span> <span class="s2">&quot;bottom&quot;</span><span class="p">},</span>
+    <span class="n">xaxis_title</span><span class="o">=</span><span class="s2">&quot;Project duration (days)&quot;</span><span class="p">,</span>
+    <span class="n">yaxis_title</span><span class="o">=</span><span class="s2">&quot;Software entropy&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">image_file</span> <span class="o">:=</span> <span class="s2">&quot;images/software-information-entropy-open-issues.png&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">Image</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">image_file</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/b37f4e92f6208dd0b2027824e1dcdbd2e1babaa8a12f2bb5dd2bb9f58d0f5872.png" src="../../_images/b37f4e92f6208dd0b2027824e1dcdbd2e1babaa8a12f2bb5dd2bb9f58d0f5872.png" />
+</div>
+</div>
+<span class="target" id="id1"></span></section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./seed-bank/pubmed-github-repositories"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-extraction">Data Extraction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-repositories-are-dormant">How many repositories are dormant?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-languages-are-used-within-pubmed-article-repositories">What languages are used within PubMed article repositories?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-is-software-entropy-different-across-primary-languages">How is software entropy different across primary languages?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-relationship-between-github-stars-and-forks-for-repositories">What is the relationship between GitHub Stars and Forks for repositories?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-github-stars-software-entropy-and-time-relate">How do GitHub Stars, software entropy, and time relate?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-github-forks-software-entropy-and-time-relate">How do GitHub Forks, software entropy, and time relate?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-the-relationship-between-github-stars-and-open-issues-for-the-repositories">What is the relationship between GitHub Stars and Open Issues for the repositories?</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-do-software-entropy-time-and-github-issues-relate-to-one-another">How do software entropy, time, and GitHub issues relate to one another?</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By The Software Gardening Community
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
+<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
