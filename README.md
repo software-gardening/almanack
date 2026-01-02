@@ -138,6 +138,18 @@ process_repositories_batch(
 )
 ```
 
+### GitHub API performance
+
+The Almanack uses GitHub’s API to gather certain metrics.
+Anonymous API requests have extremely low rate limits—once hit, requests are throttled and batch jobs slow down.
+Export a [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) as `GITHUB_TOKEN` before running any CLI or Python workflows to raise the per-hour quota:
+
+```bash
+export GITHUB_TOKEN=ghp_yourtokenhere
+```
+
+Commands launched from the same shell automatically reuse the token, so your GitHub requests complete faster and more reliably.
+
 ## Contributing
 
 Please see our [`CONTRIBUTING.md`](CONTRIBUTING.md) document for more information on how to contribute to this project.
