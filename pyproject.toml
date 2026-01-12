@@ -42,7 +42,7 @@ plotly = ">=5.22,<7.0"
 jinja2 = "^3.1.6"
 
 [tool.poetry.group.dev.dependencies]
-poethepoet = ">=0.25,<0.40"
+poethepoet = ">=0.25,<0.41"
 pytest = ">=8.1.1,<10.0.0"
 linkchecker = "^10.4.0"
 vale = "^3.3.1.0"
