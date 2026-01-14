@@ -14,7 +14,7 @@ import requests
 import yaml
 
 from almanack.git import file_exists_in_repo, find_file, read_file
-from almanack.metrics.remote import get_api_data
+from almanack.metrics.remote import get_api_data, request_with_backoff
 
 LOGGER = logging.getLogger(__name__)
 
@@ -236,18 +236,24 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
         if result["valid_format_doi"]:
             try:
                 # Check DOI resolvability via HTTPS
-                if (
-                    requests.head(
-                        f"https://doi.org/{result['doi']}",
-                        allow_redirects=True,
-                        timeout=30,
-                    ).status_code
-                    == 200  # noqa: PLR2004
-                ):
+                # Use backoff to reduce false negatives from flaky DOI endpoints.
+                response = request_with_backoff(
+                    "HEAD",
+                    f"https://doi.org/{result['doi']}",
+                    headers={"accept": "application/json"},
+                    timeout=30,
+                    allow_redirects=True,
+                    max_retries=5,
+                    base_backoff=2,
+                    backoff_multiplier=2,
+                )
+                if response is not None and response.status_code == 200:  # noqa: PLR2004
                     result["https_resolvable_doi"] = True
                 else:
+                    status_code = response.status_code if response is not None else "unknown"
                     LOGGER.warning(
-                        f"DOI does not resolve properly: https://doi.org/{result['doi']}"
+                        "DOI does not resolve properly: "
+                        f"https://doi.org/{result['doi']} (status {status_code})"
                     )
                     result["https_resolvable_doi"] = False
 
