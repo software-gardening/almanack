@@ -18,7 +18,7 @@ METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
 
-def request_with_backoff(
+def request_with_backoff(  # noqa: PLR0913
     method: str,
     url: str,
     *,
@@ -84,7 +84,9 @@ def request_with_backoff(
                 )
                 time.sleep(backoff)
                 continue
-            LOGGER.warning(f"Request failed for {url} after {max_retries} attempts: {reqe}")
+            LOGGER.warning(
+                f"Request failed for {url} after {max_retries} attempts: {reqe}"
+            )
             return None
 
     return None

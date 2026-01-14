@@ -247,10 +247,15 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                     base_backoff=2,
                     backoff_multiplier=2,
                 )
-                if response is not None and response.status_code == 200:  # noqa: PLR2004
+                if (
+                    response is not None
+                    and response.status_code == 200  # noqa: PLR2004
+                ):
                     result["https_resolvable_doi"] = True
                 else:
-                    status_code = response.status_code if response is not None else "unknown"
+                    status_code = (
+                        response.status_code if response is not None else "unknown"
+                    )
                     LOGGER.warning(
                         "DOI does not resolve properly: "
                         f"https://doi.org/{result['doi']} (status {status_code})"

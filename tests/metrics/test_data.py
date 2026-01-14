@@ -32,12 +32,12 @@ from almanack.metrics.garden_lattice.connectedness import (
     find_doi_citation_data,
     is_citable,
 )
-from almanack.metrics.remote import request_with_backoff
 from almanack.metrics.garden_lattice.practicality import (
     count_repo_tags,
     get_ecosystems_package_metrics,
 )
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
+from almanack.metrics.remote import request_with_backoff
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
 DATETIME_NOW = datetime.now()
