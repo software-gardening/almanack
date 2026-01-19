@@ -871,15 +871,9 @@ def test_get_ecosystems_package_metrics():
     "files_data, expected_result",
     [
         (
-            [
-                {
-                    "files": {
-                        "CITATION.cff": """
+            [{"files": {"CITATION.cff": """
                     doi: "10.48550/arXiv.2311.13417"
-                    """
-                    }
-                }
-            ],
+                    """}}],
             {
                 "doi": "10.48550/arXiv.2311.13417",
                 "valid_format_doi": True,
@@ -889,17 +883,11 @@ def test_get_ecosystems_package_metrics():
             },
         ),
         (
-            [
-                {
-                    "files": {
-                        "CITATION.cff": """
+            [{"files": {"CITATION.cff": """
                     identifiers:
                         - type: doi
                           value: "10.1186/s44330-024-00014-3"
-                    """
-                    }
-                }
-            ],
+                    """}}],
             {
                 "doi": "10.1186/s44330-024-00014-3",
                 "valid_format_doi": True,
