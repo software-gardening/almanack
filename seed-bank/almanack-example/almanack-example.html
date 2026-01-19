@@ -415,12 +415,12 @@ The Almanack is an open-source handbook of applied guidance and tools for sustai
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: almanack in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (0.0.0.post1.dev0+21c7c13)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Requirement already satisfied: almanack in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (0.0.0.post1.dev0+ed54f58)
 Requirement already satisfied: charset-normalizer&lt;4.0.0,&gt;=3.4.0 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (3.4.4)
 Requirement already satisfied: defusedxml&lt;0.8.0,&gt;=0.7.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.7.1)
 Requirement already satisfied: fire&lt;0.8,&gt;=0.6 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (0.7.1)
 Requirement already satisfied: pandas&gt;=2.2.2 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (2.3.3)
-Requirement already satisfied: pyarrow&gt;=16 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (22.0.0)
+Requirement already satisfied: pyarrow&gt;=16 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (23.0.0)
 Requirement already satisfied: pygit2&gt;=1.15.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (1.18.2)
 Requirement already satisfied: pyyaml&lt;7.0.0,&gt;=6.0.1 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (6.0.3)
 Requirement already satisfied: requests&lt;3.0.0,&gt;=2.32.3 in /home/runner/.cache/pypoetry/virtualenvs/almanack-1GdAbBV3-py3.11/lib/python3.11/site-packages (from almanack) (2.32.5)
@@ -454,511 +454,401 @@ Requirement already satisfied: six&gt;=1.5 in /home/runner/.cache/pypoetry/virtu
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cloning into &#39;almanack&#39;...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 4027, done.
-remote: Counting objects:   0% (1/174)
-remote: Counting objects:   1% (2/174)
-remote: Counting objects:   2% (4/174)
-remote: Counting objects:   3% (6/174)
-remote: Counting objects:   4% (7/174)
-remote: Counting objects:   5% (9/174)
-remote: Counting objects:   6% (11/174)
-remote: Counting objects:   7% (13/174)
-remote: Counting objects:   8% (14/174)
-remote: Counting objects:   9% (16/174)
-remote: Counting objects:  10% (18/174)
-remote: Counting objects:  11% (20/174)
-remote: Counting objects:  12% (21/174)
-remote: Counting objects:  13% (23/174)
-remote: Counting objects:  14% (25/174)
-remote: Counting objects:  15% (27/174)
-remote: Counting objects:  16% (28/174)
-remote: Counting objects:  17% (30/174)
-remote: Counting objects:  18% (32/174)
-remote: Counting objects:  19% (34/174)
-remote: Counting objects:  20% (35/174)
-remote: Counting objects:  21% (37/174)
-remote: Counting objects:  22% (39/174)
-remote: Counting objects:  23% (41/174)
-remote: Counting objects:  24% (42/174)
-remote: Counting objects:  25% (44/174)
-remote: Counting objects:  26% (46/174)
-remote: Counting objects:  27% (47/174)
-remote: Counting objects:  28% (49/174)
-remote: Counting objects:  29% (51/174)
-remote: Counting objects:  30% (53/174)
-remote: Counting objects:  31% (54/174)
-remote: Counting objects:  32% (56/174)
-remote: Counting objects:  33% (58/174)
-remote: Counting objects:  34% (60/174)
-remote: Counting objects:  35% (61/174)
-remote: Counting objects:  36% (63/174)
-remote: Counting objects:  37% (65/174)
-remote: Counting objects:  38% (67/174)
-remote: Counting objects:  39% (68/174)
-remote: Counting objects:  40% (70/174)
-remote: Counting objects:  41% (72/174)
-remote: Counting objects:  42% (74/174)
-remote: Counting objects:  43% (75/174)
-remote: Counting objects:  44% (77/174)
-remote: Counting objects:  45% (79/174)
-remote: Counting objects:  46% (81/174)
-remote: Counting objects:  47% (82/174)
-remote: Counting objects:  48% (84/174)
-remote: Counting objects:  49% (86/174)
-remote: Counting objects:  50% (87/174)
-remote: Counting objects:  51% (89/174)
-remote: Counting objects:  52% (91/174)
-remote: Counting objects:  53% (93/174)
-remote: Counting objects:  54% (94/174)
-remote: Counting objects:  55% (96/174)
-remote: Counting objects:  56% (98/174)
-remote: Counting objects:  57% (100/174)
-remote: Counting objects:  58% (101/174)
-remote: Counting objects:  59% (103/174)
-remote: Counting objects:  60% (105/174)
-remote: Counting objects:  61% (107/174)
-remote: Counting objects:  62% (108/174)
-remote: Counting objects:  63% (110/174)
-remote: Counting objects:  64% (112/174)
-remote: Counting objects:  65% (114/174)
-remote: Counting objects:  66% (115/174)
-remote: Counting objects:  67% (117/174)
-remote: Counting objects:  68% (119/174)
-remote: Counting objects:  69% (121/174)
-remote: Counting objects:  70% (122/174)
-remote: Counting objects:  71% (124/174)
-remote: Counting objects:  72% (126/174)
-remote: Counting objects:  73% (128/174)
-remote: Counting objects:  74% (129/174)
-remote: Counting objects:  75% (131/174)
-remote: Counting objects:  76% (133/174)
-remote: Counting objects:  77% (134/174)
-remote: Counting objects:  78% (136/174)
-remote: Counting objects:  79% (138/174)
-remote: Counting objects:  80% (140/174)
-remote: Counting objects:  81% (141/174)
-remote: Counting objects:  82% (143/174)
-remote: Counting objects:  83% (145/174)
-remote: Counting objects:  84% (147/174)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Enumerating objects: 4053, done.
+remote: Counting objects:   0% (1/202)
+remote: Counting objects:   1% (3/202)
+remote: Counting objects:   2% (5/202)
+remote: Counting objects:   3% (7/202)
+remote: Counting objects:   4% (9/202)
+remote: Counting objects:   5% (11/202)
+remote: Counting objects:   6% (13/202)
+remote: Counting objects:   7% (15/202)
+remote: Counting objects:   8% (17/202)
+remote: Counting objects:   9% (19/202)
+remote: Counting objects:  10% (21/202)
+remote: Counting objects:  11% (23/202)
+remote: Counting objects:  12% (25/202)
+remote: Counting objects:  13% (27/202)
+remote: Counting objects:  14% (29/202)
+remote: Counting objects:  15% (31/202)
+remote: Counting objects:  16% (33/202)
+remote: Counting objects:  17% (35/202)
+remote: Counting objects:  18% (37/202)
+remote: Counting objects:  19% (39/202)
+remote: Counting objects:  20% (41/202)
+remote: Counting objects:  21% (43/202)
+remote: Counting objects:  22% (45/202)
+remote: Counting objects:  23% (47/202)
+remote: Counting objects:  24% (49/202)
+remote: Counting objects:  25% (51/202)
+remote: Counting objects:  26% (53/202)
+remote: Counting objects:  27% (55/202)
+remote: Counting objects:  28% (57/202)
+remote: Counting objects:  29% (59/202)
+remote: Counting objects:  30% (61/202)
+remote: Counting objects:  31% (63/202)
+remote: Counting objects:  32% (65/202)
+remote: Counting objects:  33% (67/202)
+remote: Counting objects:  34% (69/202)
+remote: Counting objects:  35% (71/202)
+remote: Counting objects:  36% (73/202)
+remote: Counting objects:  37% (75/202)
+remote: Counting objects:  38% (77/202)
+remote: Counting objects:  39% (79/202)
+remote: Counting objects:  40% (81/202)
+remote: Counting objects:  41% (83/202)
+remote: Counting objects:  42% (85/202)
+remote: Counting objects:  43% (87/202)
+remote: Counting objects:  44% (89/202)
+remote: Counting objects:  45% (91/202)
+remote: Counting objects:  46% (93/202)
+remote: Counting objects:  47% (95/202)
+remote: Counting objects:  48% (97/202)
+remote: Counting objects:  49% (99/202)
+remote: Counting objects:  50% (101/202)
+remote: Counting objects:  51% (104/202)
+remote: Counting objects:  52% (106/202)
+remote: Counting objects:  53% (108/202)
+remote: Counting objects:  54% (110/202)
+remote: Counting objects:  55% (112/202)
+remote: Counting objects:  56% (114/202)
+remote: Counting objects:  57% (116/202)
+remote: Counting objects:  58% (118/202)
+remote: Counting objects:  59% (120/202)
+remote: Counting objects:  60% (122/202)
+remote: Counting objects:  61% (124/202)
+remote: Counting objects:  62% (126/202)
+remote: Counting objects:  63% (128/202)
+remote: Counting objects:  64% (130/202)
+remote: Counting objects:  65% (132/202)
+remote: Counting objects:  66% (134/202)
+remote: Counting objects:  67% (136/202)
+remote: Counting objects:  68% (138/202)
+remote: Counting objects:  69% (140/202)
+remote: Counting objects:  70% (142/202)
+remote: Counting objects:  71% (144/202)
+remote: Counting objects:  72% (146/202)
+remote: Counting objects:  73% (148/202)
+remote: Counting objects:  74% (150/202)
+remote: Counting objects:  75% (152/202)
+remote: Counting objects:  76% (154/202)
+remote: Counting objects:  77% (156/202)
+remote: Counting objects:  78% (158/202)
+remote: Counting objects:  79% (160/202)
+remote: Counting objects:  80% (162/202)
+remote: Counting objects:  81% (164/202)
+remote: Counting objects:  82% (166/202)
+remote: Counting objects:  83% (168/202)
+remote: Counting objects:  84% (170/202)
+remote: Counting objects:  85% (172/202)
+remote: Counting objects:  86% (174/202)
+remote: Counting objects:  87% (176/202)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Counting objects:  85% (148/174)
-remote: Counting objects:  86% (150/174)
-remote: Counting objects:  87% (152/174)
-remote: Counting objects:  88% (154/174)
-remote: Counting objects:  89% (155/174)
-remote: Counting objects:  90% (157/174)
-remote: Counting objects:  91% (159/174)
-remote: Counting objects:  92% (161/174)
-remote: Counting objects:  93% (162/174)
-remote: Counting objects:  94% (164/174)
-remote: Counting objects:  95% (166/174)
-remote: Counting objects:  96% (168/174)
-remote: Counting objects:  97% (169/174)
-remote: Counting objects:  98% (171/174)
-remote: Counting objects:  99% (173/174)
-remote: Counting objects: 100% (174/174)
-remote: Counting objects: 100% (174/174), done.
-remote: Compressing objects:   0% (1/131)
-remote: Compressing objects:   1% (2/131)
-remote: Compressing objects:   2% (3/131)
-remote: Compressing objects:   3% (4/131)
-remote: Compressing objects:   4% (6/131)
-remote: Compressing objects:   5% (7/131)
-remote: Compressing objects:   6% (8/131)
-remote: Compressing objects:   7% (10/131)
-remote: Compressing objects:   8% (11/131)
-remote: Compressing objects:   9% (12/131)
-remote: Compressing objects:  10% (14/131)
-remote: Compressing objects:  11% (15/131)
-remote: Compressing objects:  12% (16/131)
-remote: Compressing objects:  13% (18/131)
-remote: Compressing objects:  14% (19/131)
-remote: Compressing objects:  15% (20/131)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Counting objects:  88% (178/202)
+remote: Counting objects:  89% (180/202)
+remote: Counting objects:  90% (182/202)
+remote: Counting objects:  91% (184/202)
+remote: Counting objects:  92% (186/202)
+remote: Counting objects:  93% (188/202)
+remote: Counting objects:  94% (190/202)
+remote: Counting objects:  95% (192/202)
+remote: Counting objects:  96% (194/202)
+remote: Counting objects:  97% (196/202)
+remote: Counting objects:  98% (198/202)
+remote: Counting objects:  99% (200/202)
+remote: Counting objects: 100% (202/202)
+remote: Counting objects: 100% (202/202), done.
+remote: Compressing objects:   0% (1/153)
+remote: Compressing objects:   1% (2/153)
+remote: Compressing objects:   2% (4/153)
+remote: Compressing objects:   3% (5/153)
+remote: Compressing objects:   4% (7/153)
+remote: Compressing objects:   5% (8/153)
+remote: Compressing objects:   6% (10/153)
+remote: Compressing objects:   7% (11/153)
+remote: Compressing objects:   8% (13/153)
+remote: Compressing objects:   9% (14/153)
+remote: Compressing objects:  10% (16/153)
+remote: Compressing objects:  11% (17/153)
+remote: Compressing objects:  12% (19/153)
+remote: Compressing objects:  13% (20/153)
+remote: Compressing objects:  14% (22/153)
+remote: Compressing objects:  15% (23/153)
+remote: Compressing objects:  16% (25/153)
+remote: Compressing objects:  17% (27/153)
+remote: Compressing objects:  18% (28/153)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  16% (21/131)
-remote: Compressing objects:  17% (23/131)
-remote: Compressing objects:  18% (24/131)
-remote: Compressing objects:  19% (25/131)
-remote: Compressing objects:  20% (27/131)
-remote: Compressing objects:  21% (28/131)
-remote: Compressing objects:  22% (29/131)
-remote: Compressing objects:  23% (31/131)
-remote: Compressing objects:  24% (32/131)
-remote: Compressing objects:  25% (33/131)
-remote: Compressing objects:  26% (35/131)
-remote: Compressing objects:  27% (36/131)
-remote: Compressing objects:  28% (37/131)
-remote: Compressing objects:  29% (38/131)
-remote: Compressing objects:  30% (40/131)
-remote: Compressing objects:  31% (41/131)
-remote: Compressing objects:  32% (42/131)
-remote: Compressing objects:  33% (44/131)
-remote: Compressing objects:  34% (45/131)
-remote: Compressing objects:  35% (46/131)
-remote: Compressing objects:  36% (48/131)
-remote: Compressing objects:  37% (49/131)
-remote: Compressing objects:  38% (50/131)
-remote: Compressing objects:  39% (52/131)
-remote: Compressing objects:  40% (53/131)
-remote: Compressing objects:  41% (54/131)
-remote: Compressing objects:  42% (56/131)
-remote: Compressing objects:  43% (57/131)
-remote: Compressing objects:  44% (58/131)
-remote: Compressing objects:  45% (59/131)
-remote: Compressing objects:  46% (61/131)
-remote: Compressing objects:  47% (62/131)
-remote: Compressing objects:  48% (63/131)
-remote: Compressing objects:  49% (65/131)
-remote: Compressing objects:  50% (66/131)
-remote: Compressing objects:  51% (67/131)
-remote: Compressing objects:  52% (69/131)
-remote: Compressing objects:  53% (70/131)
-remote: Compressing objects:  54% (71/131)
-remote: Compressing objects:  55% (73/131)
-remote: Compressing objects:  56% (74/131)
-remote: Compressing objects:  57% (75/131)
-remote: Compressing objects:  58% (76/131)
-remote: Compressing objects:  59% (78/131)
-remote: Compressing objects:  60% (79/131)
-remote: Compressing objects:  61% (80/131)
-remote: Compressing objects:  62% (82/131)
-remote: Compressing objects:  63% (83/131)
-remote: Compressing objects:  64% (84/131)
-remote: Compressing objects:  65% (86/131)
-remote: Compressing objects:  66% (87/131)
-remote: Compressing objects:  67% (88/131)
-remote: Compressing objects:  68% (90/131)
-remote: Compressing objects:  69% (91/131)
-remote: Compressing objects:  70% (92/131)
-remote: Compressing objects:  71% (94/131)
-remote: Compressing objects:  72% (95/131)
-remote: Compressing objects:  73% (96/131)
-remote: Compressing objects:  74% (97/131)
-remote: Compressing objects:  75% (99/131)
-remote: Compressing objects:  76% (100/131)
-remote: Compressing objects:  77% (101/131)
-remote: Compressing objects:  78% (103/131)
-remote: Compressing objects:  79% (104/131)
-remote: Compressing objects:  80% (105/131)
-remote: Compressing objects:  81% (107/131)
-remote: Compressing objects:  82% (108/131)
-remote: Compressing objects:  83% (109/131)
-remote: Compressing objects:  84% (111/131)
-remote: Compressing objects:  85% (112/131)
-remote: Compressing objects:  86% (113/131)
-remote: Compressing objects:  87% (114/131)
-remote: Compressing objects:  88% (116/131)
-remote: Compressing objects:  89% (117/131)
-remote: Compressing objects:  90% (118/131)
-remote: Compressing objects:  91% (120/131)
-remote: Compressing objects:  92% (121/131)
-remote: Compressing objects:  93% (122/131)
-remote: Compressing objects:  94% (124/131)
-remote: Compressing objects:  95% (125/131)
-remote: Compressing objects:  96% (126/131)
-remote: Compressing objects:  97% (128/131)
-remote: Compressing objects:  98% (129/131)
-remote: Compressing objects:  99% (130/131)
-remote: Compressing objects: 100% (131/131)
-remote: Compressing objects: 100% (131/131), done.
-Receiving objects:   0% (1/4027)
-Receiving objects:   1% (41/4027)
-Receiving objects:   2% (81/4027)
-Receiving objects:   3% (121/4027)
-Receiving objects:   4% (162/4027)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  19% (30/153)
+remote: Compressing objects:  20% (31/153)
+remote: Compressing objects:  21% (33/153)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   5% (202/4027)
-Receiving objects:   6% (242/4027)
-Receiving objects:   7% (282/4027)
-Receiving objects:   8% (323/4027)
-Receiving objects:   9% (363/4027)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Compressing objects:  22% (34/153)
+remote: Compressing objects:  23% (36/153)
+remote: Compressing objects:  24% (37/153)
+remote: Compressing objects:  25% (39/153)
+remote: Compressing objects:  26% (40/153)
+remote: Compressing objects:  27% (42/153)
+remote: Compressing objects:  28% (43/153)
+remote: Compressing objects:  29% (45/153)
+remote: Compressing objects:  30% (46/153)
+remote: Compressing objects:  31% (48/153)
+remote: Compressing objects:  32% (49/153)
+remote: Compressing objects:  33% (51/153)
+remote: Compressing objects:  34% (53/153)
+remote: Compressing objects:  35% (54/153)
+remote: Compressing objects:  36% (56/153)
+remote: Compressing objects:  37% (57/153)
+remote: Compressing objects:  38% (59/153)
+remote: Compressing objects:  39% (60/153)
+remote: Compressing objects:  40% (62/153)
+remote: Compressing objects:  41% (63/153)
+remote: Compressing objects:  42% (65/153)
+remote: Compressing objects:  43% (66/153)
+remote: Compressing objects:  44% (68/153)
+remote: Compressing objects:  45% (69/153)
+remote: Compressing objects:  46% (71/153)
+remote: Compressing objects:  47% (72/153)
+remote: Compressing objects:  48% (74/153)
+remote: Compressing objects:  49% (75/153)
+remote: Compressing objects:  50% (77/153)
+remote: Compressing objects:  51% (79/153)
+remote: Compressing objects:  52% (80/153)
+remote: Compressing objects:  53% (82/153)
+remote: Compressing objects:  54% (83/153)
+remote: Compressing objects:  55% (85/153)
+remote: Compressing objects:  56% (86/153)
+remote: Compressing objects:  57% (88/153)
+remote: Compressing objects:  58% (89/153)
+remote: Compressing objects:  59% (91/153)
+remote: Compressing objects:  60% (92/153)
+remote: Compressing objects:  61% (94/153)
+remote: Compressing objects:  62% (95/153)
+remote: Compressing objects:  63% (97/153)
+remote: Compressing objects:  64% (98/153)
+remote: Compressing objects:  65% (100/153)
+remote: Compressing objects:  66% (101/153)
+remote: Compressing objects:  67% (103/153)
+remote: Compressing objects:  68% (105/153)
+remote: Compressing objects:  69% (106/153)
+remote: Compressing objects:  70% (108/153)
+remote: Compressing objects:  71% (109/153)
+remote: Compressing objects:  72% (111/153)
+remote: Compressing objects:  73% (112/153)
+remote: Compressing objects:  74% (114/153)
+remote: Compressing objects:  75% (115/153)
+remote: Compressing objects:  76% (117/153)
+remote: Compressing objects:  77% (118/153)
+remote: Compressing objects:  78% (120/153)
+remote: Compressing objects:  79% (121/153)
+remote: Compressing objects:  80% (123/153)
+remote: Compressing objects:  81% (124/153)
+remote: Compressing objects:  82% (126/153)
+remote: Compressing objects:  83% (127/153)
+remote: Compressing objects:  84% (129/153)
+remote: Compressing objects:  85% (131/153)
+remote: Compressing objects:  86% (132/153)
+remote: Compressing objects:  87% (134/153)
+remote: Compressing objects:  88% (135/153)
+remote: Compressing objects:  89% (137/153)
+remote: Compressing objects:  90% (138/153)
+remote: Compressing objects:  91% (140/153)
+remote: Compressing objects:  92% (141/153)
+remote: Compressing objects:  93% (143/153)
+remote: Compressing objects:  94% (144/153)
+remote: Compressing objects:  95% (146/153)
+remote: Compressing objects:  96% (147/153)
+remote: Compressing objects:  97% (149/153)
+remote: Compressing objects:  98% (150/153)
+remote: Compressing objects:  99% (152/153)
+remote: Compressing objects: 100% (153/153)
+remote: Compressing objects: 100% (153/153), done.
+Receiving objects:   0% (1/4053)
+Receiving objects:   1% (41/4053)
+Receiving objects:   2% (82/4053)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  10% (403/4027)
-Receiving objects:  11% (443/4027)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:   3% (122/4053)
+Receiving objects:   4% (163/4053)
+Receiving objects:   5% (203/4053)
+Receiving objects:   6% (244/4053)
+Receiving objects:   7% (284/4053)
+Receiving objects:   8% (325/4053)
+Receiving objects:   9% (365/4053)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (459/4027), 39.57 MiB | 38.92 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  10% (406/4053)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  12% (484/4027), 62.57 MiB | 40.85 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (446/4053)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  13% (524/4027), 62.57 MiB | 40.85 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 3.94 MiB | 3.79 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  14% (564/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  15% (605/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  16% (645/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  17% (685/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  18% (725/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  19% (766/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  20% (806/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  21% (846/4027), 62.57 MiB | 40.85 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 7.96 MiB | 3.87 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  22% (886/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  23% (927/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  24% (967/4027), 62.57 MiB | 40.85 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 12.11 MiB | 3.94 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  25% (1007/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  26% (1048/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  27% (1088/4027), 62.57 MiB | 40.85 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 15.63 MiB | 3.83 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  28% (1128/4027), 62.57 MiB | 40.85 MiB/s
-Receiving objects:  29% (1168/4027), 62.57 MiB | 40.85 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 19.18 MiB | 3.79 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  29% (1180/4027), 83.84 MiB | 41.27 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 23.10 MiB | 3.79 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  30% (1209/4027), 83.84 MiB | 41.27 MiB/s
-Receiving objects:  31% (1249/4027), 83.84 MiB | 41.27 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 26.71 MiB | 3.68 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  32% (1289/4027), 83.84 MiB | 41.27 MiB/s
-Receiving objects:  33% (1329/4027), 83.84 MiB | 41.27 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 29.91 MiB | 3.50 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  34% (1370/4027), 83.84 MiB | 41.27 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 33.32 MiB | 3.52 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  35% (1410/4027), 83.84 MiB | 41.27 MiB/s
-Receiving objects:  36% (1450/4027), 83.84 MiB | 41.27 MiB/s
-Receiving objects:  37% (1490/4027), 83.84 MiB | 41.27 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 36.83 MiB | 3.47 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  38% (1531/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  39% (1571/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 40.50 MiB | 3.39 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  40% (1611/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  41% (1652/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 44.36 MiB | 3.54 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  42% (1692/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 48.32 MiB | 3.68 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  43% (1732/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  44% (1772/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  45% (1813/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 51.58 MiB | 3.64 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  46% (1853/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (458/4053), 55.33 MiB | 3.67 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  47% (1893/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (459/4053), 59.13 MiB | 3.68 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  48% (1933/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  49% (1974/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  11% (459/4053), 62.21 MiB | 3.49 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  50% (2014/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  51% (2054/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  52% (2095/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  53% (2135/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  54% (2175/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  55% (2215/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  56% (2256/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  57% (2296/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  58% (2336/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  59% (2376/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  60% (2417/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  61% (2457/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  62% (2497/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  63% (2538/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  64% (2578/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  64% (2588/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  65% (2618/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  66% (2658/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  67% (2699/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  68% (2739/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  69% (2779/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  70% (2819/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  71% (2860/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  72% (2900/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  73% (2940/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  74% (2980/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  75% (3021/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  76% (3061/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  77% (3101/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  78% (3142/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  79% (3182/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  80% (3222/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  81% (3262/4027), 107.16 MiB | 42.33 MiB/s
-Receiving objects:  82% (3303/4027), 107.16 MiB | 42.33 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  12% (487/4053), 63.84 MiB | 3.41 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  83% (3343/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  84% (3383/4027), 129.49 MiB | 42.71 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  12% (505/4053), 63.84 MiB | 3.41 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  85% (3423/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  86% (3464/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  87% (3504/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  88% (3544/4027), 129.49 MiB | 42.71 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  13% (527/4053), 67.23 MiB | 3.44 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  89% (3585/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  90% (3625/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  91% (3665/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  92% (3705/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  93% (3746/4027), 129.49 MiB | 42.71 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  13% (536/4053), 68.93 MiB | 3.42 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  94% (3786/4027), 129.49 MiB | 42.71 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  13% (537/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  14% (568/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  15% (608/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  16% (649/4053), 70.69 MiB | 3.38 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  95% (3826/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  96% (3866/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  97% (3907/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  98% (3947/4027), 129.49 MiB | 42.71 MiB/s
-Receiving objects:  99% (3987/4027), 129.49 MiB | 42.71 MiB/s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  17% (690/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  18% (730/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  19% (771/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  20% (811/4053), 70.69 MiB | 3.38 MiB/s
+Receiving objects:  21% (852/4053), 70.69 MiB | 3.38 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>remote: Total 4027 (delta 97), reused 54 (delta 39), pack-reused 3853 (from 3)
-Receiving objects: 100% (4027/4027), 151.71 MiB | 42.96 MiB/s
-Receiving objects: 100% (4027/4027), 157.44 MiB | 43.05 MiB/s, done.
-Resolving deltas:   0% (0/2184)
-Resolving deltas:   1% (22/2184)
-Resolving deltas:   2% (44/2184)
-Resolving deltas:   3% (66/2184)
-Resolving deltas:   4% (88/2184)
-Resolving deltas:   5% (110/2184)
-Resolving deltas:   6% (133/2184)
-Resolving deltas:   7% (153/2184)
-Resolving deltas:   8% (175/2184)
-Resolving deltas:   9% (197/2184)
-Resolving deltas:  10% (219/2184)
-Resolving deltas:  11% (241/2184)
-Resolving deltas:  12% (263/2184)
-Resolving deltas:  13% (284/2184)
-Resolving deltas:  14% (306/2184)
-Resolving deltas:  15% (328/2184)
-Resolving deltas:  16% (350/2184)
-Resolving deltas:  17% (372/2184)
-Resolving deltas:  18% (394/2184)
-Resolving deltas:  19% (415/2184)
-Resolving deltas:  20% (437/2184)
-Resolving deltas:  21% (459/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  22% (892/4053), 70.69 MiB | 3.38 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  22% (481/2184)
-Resolving deltas:  23% (503/2184)
-Resolving deltas:  24% (525/2184)
-Resolving deltas:  25% (546/2184)
-Resolving deltas:  26% (568/2184)
-Resolving deltas:  27% (590/2184)
-Resolving deltas:  28% (612/2184)
-Resolving deltas:  29% (634/2184)
-Resolving deltas:  30% (656/2184)
-Resolving deltas:  31% (678/2184)
-Resolving deltas:  32% (699/2184)
-Resolving deltas:  33% (721/2184)
-Resolving deltas:  34% (743/2184)
-Resolving deltas:  35% (765/2184)
-Resolving deltas:  36% (787/2184)
-Resolving deltas:  37% (809/2184)
-Resolving deltas:  38% (830/2184)
-Resolving deltas:  39% (852/2184)
-Resolving deltas:  40% (874/2184)
-Resolving deltas:  41% (896/2184)
-Resolving deltas:  42% (918/2184)
-Resolving deltas:  43% (940/2184)
-Resolving deltas:  44% (961/2184)
-Resolving deltas:  45% (983/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  23% (933/4053), 72.46 MiB | 3.35 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  46% (1005/2184)
-Resolving deltas:  47% (1027/2184)
-Resolving deltas:  48% (1049/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  24% (973/4053), 72.46 MiB | 3.35 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  49% (1071/2184)
-Resolving deltas:  50% (1092/2184)
-Resolving deltas:  51% (1114/2184)
-Resolving deltas:  52% (1136/2184)
-Resolving deltas:  53% (1158/2184)
-Resolving deltas:  54% (1180/2184)
-Resolving deltas:  55% (1202/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  24% (1003/4053), 74.31 MiB | 3.35 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  56% (1224/2184)
-Resolving deltas:  57% (1245/2184)
-Resolving deltas:  58% (1267/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  25% (1014/4053), 74.31 MiB | 3.35 MiB/s
+Receiving objects:  26% (1054/4053), 74.31 MiB | 3.35 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  59% (1289/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  27% (1095/4053), 74.31 MiB | 3.35 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  60% (1312/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  28% (1135/4053), 78.11 MiB | 3.52 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  60% (1313/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  28% (1169/4053), 78.11 MiB | 3.52 MiB/s
+Receiving objects:  29% (1176/4053), 78.11 MiB | 3.52 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  61% (1333/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  29% (1179/4053), 84.26 MiB | 3.77 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  62% (1355/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  29% (1179/4053), 88.67 MiB | 3.97 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  63% (1376/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  29% (1179/4053), 93.22 MiB | 4.17 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  63% (1384/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  30% (1216/4053), 93.22 MiB | 4.17 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  64% (1398/2184)
-Resolving deltas:  65% (1420/2184)
-Resolving deltas:  66% (1442/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  31% (1257/4053), 93.22 MiB | 4.17 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  67% (1464/2184)
-Resolving deltas:  68% (1486/2184)
-Resolving deltas:  69% (1507/2184)
-Resolving deltas:  70% (1529/2184)
-Resolving deltas:  71% (1552/2184)
-Resolving deltas:  72% (1573/2184)
-Resolving deltas:  73% (1595/2184)
-Resolving deltas:  74% (1617/2184)
-Resolving deltas:  75% (1638/2184)
-Resolving deltas:  76% (1660/2184)
-Resolving deltas:  77% (1682/2184)
-Resolving deltas:  78% (1704/2184)
-Resolving deltas:  79% (1726/2184)
-Resolving deltas:  80% (1748/2184)
-Resolving deltas:  81% (1770/2184)
-Resolving deltas:  82% (1791/2184)
-Resolving deltas:  83% (1813/2184)
-Resolving deltas:  84% (1835/2184)
-Resolving deltas:  85% (1857/2184)
-Resolving deltas:  86% (1879/2184)
-Resolving deltas:  87% (1901/2184)
-Resolving deltas:  88% (1922/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  31% (1279/4053), 95.62 MiB | 4.28 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  89% (1944/2184)
-Resolving deltas:  90% (1966/2184)
-Resolving deltas:  91% (1988/2184)
-Resolving deltas:  92% (2010/2184)
-Resolving deltas:  93% (2032/2184)
-Resolving deltas:  94% (2053/2184)
-Resolving deltas:  95% (2075/2184)
-Resolving deltas:  96% (2097/2184)
-Resolving deltas:  97% (2119/2184)
-Resolving deltas:  98% (2141/2184)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  32% (1297/4053), 98.23 MiB | 4.44 MiB/s
+Receiving objects:  33% (1338/4053), 98.23 MiB | 4.44 MiB/s
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Resolving deltas:  99% (2163/2184)
-Resolving deltas: 100% (2184/2184)
-Resolving deltas: 100% (2184/2184), done.
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  33% (1375/4053), 101.08 MiB | 4.63 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  34% (1379/4053), 101.08 MiB | 4.63 MiB/s
+Receiving objects:  35% (1419/4053), 101.08 MiB | 4.63 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  36% (1460/4053), 101.08 MiB | 4.63 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  37% (1500/4053), 101.08 MiB | 4.63 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  38% (1541/4053), 104.28 MiB | 4.85 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  39% (1581/4053), 104.28 MiB | 4.85 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  39% (1605/4053), 107.93 MiB | 5.20 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  40% (1622/4053), 107.93 MiB | 5.20 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  41% (1662/4053), 111.35 MiB | 5.48 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  42% (1703/4053), 111.35 MiB | 5.48 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  43% (1743/4053), 111.35 MiB | 5.48 MiB/s
+Receiving objects:  44% (1784/4053), 111.35 MiB | 5.48 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Receiving objects:  45% (1824/4053), 114.38 MiB | 5.64 MiB/s
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
+fetch-pack: unexpected disconnect while reading sideband packet
 </pre></div>
 </div>
 </div>
@@ -977,80 +867,773 @@ Resolving deltas: 100% (2184/2184), done.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Transient HTTP 429 for https://doi.org/10.5281/zenodo.14765834 (attempt 1/8). Retrying in 2.0 seconds...
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU times: user 2.91 s, sys: 222 ms, total: 3.13 s
+Wall time: 6.35 s
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Transient HTTP 429 for https://doi.org/10.5281/zenodo.14765834 (attempt 2/8). Retrying in 4.0 seconds...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Transient HTTP 429 for https://doi.org/10.5281/zenodo.14765834 (attempt 3/8). Retrying in 8.0 seconds...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Transient HTTP 429 for https://doi.org/10.5281/zenodo.14765834 (attempt 4/8). Retrying in 16.0 seconds...
-</pre></div>
-</div>
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">File</span> <span class="o">&lt;</span><span class="n">timed</span> <span class="n">exec</span><span class="o">&gt;</span><span class="p">:</span><span class="mi">2</span>
+<div class="output text_html">
+  <div id="df-bed88d28-3c31-46e2-aaee-ac5e711778c2" class="colab-df-container">
+    <div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
-<span class="nn">File ~/work/almanack/almanack/src/almanack/metrics/data.py:98,</span> in <span class="ni">get_table</span><span class="nt">(repo_path, ignore)</span>
-<span class="g g-Whitespace">     </span><span class="mi">95</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid ignore keys: </span><span class="si">{</span><span class="n">invalid_ignore_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span> <span class="c1"># gather data for use in the metrics table</span>
-<span class="ne">---&gt; </span><span class="mi">98</span> <span class="n">metrics_data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">100</span> <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">metrics_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-<span class="g g-Whitespace">    </span><span class="mi">101</span>     <span class="k">raise</span> <span class="ne">ReferenceError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">102</span>         <span class="s2">&quot;Encountered an error with processing the data.&quot;</span><span class="p">,</span> <span class="n">metrics_data</span>
-<span class="g g-Whitespace">    </span><span class="mi">103</span>     <span class="p">)</span>
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
 
-<span class="nn">File ~/work/almanack/almanack/src/almanack/metrics/data.py:309,</span> in <span class="ni">compute_repo_data</span><span class="nt">(repo_path)</span>
-<span class="g g-Whitespace">    </span><span class="mi">302</span> <span class="n">social_media_metrics</span> <span class="o">=</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">303</span>     <span class="n">detect_social_media_links</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">readme_file</span><span class="p">))</span>
-<span class="g g-Whitespace">    </span><span class="mi">304</span>     <span class="k">if</span> <span class="n">readme_exists</span>
-<span class="g g-Whitespace">    </span><span class="mi">305</span>     <span class="k">else</span> <span class="p">{}</span>
-<span class="g g-Whitespace">    </span><span class="mi">306</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">308</span> <span class="c1"># gather doi citation data</span>
-<span class="ne">--&gt; </span><span class="mi">309</span> <span class="n">doi_citation_data</span> <span class="o">=</span> <span class="n">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">311</span> <span class="c1"># Return the data structure</span>
-<span class="g g-Whitespace">    </span><span class="mi">312</span> <span class="k">return</span> <span class="p">{</span>
-<span class="g g-Whitespace">    </span><span class="mi">313</span>     <span class="s2">&quot;repo-path&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">),</span>
-<span class="g g-Whitespace">    </span><span class="mi">314</span>     <span class="s2">&quot;repo-commits&quot;</span><span class="p">:</span> <span class="p">(</span><span class="n">commits_count</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">commits</span><span class="p">)),</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">419</span>     <span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">:</span> <span class="n">file_entropy</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">420</span> <span class="p">}</span>
-
-<span class="nn">File ~/work/almanack/almanack/src/almanack/metrics/garden_lattice/connectedness.py:241,</span> in <span class="ni">find_doi_citation_data</span><span class="nt">(repo)</span>
-<span class="g g-Whitespace">    </span><span class="mi">236</span> <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;valid_format_doi&quot;</span><span class="p">]:</span>
-<span class="g g-Whitespace">    </span><span class="mi">237</span>     <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">238</span>         <span class="c1"># Check DOI resolvability via HTTPS</span>
-<span class="g g-Whitespace">    </span><span class="mi">239</span>         <span class="c1"># Use backoff to reduce the chance that a DOI HTTP request</span>
-<span class="g g-Whitespace">    </span><span class="mi">240</span>         <span class="c1"># fails due to rate limiting or transient network issues.</span>
-<span class="ne">--&gt; </span><span class="mi">241</span>         <span class="n">response</span> <span class="o">=</span> <span class="n">request_with_backoff</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">242</span>             <span class="s2">&quot;HEAD&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">243</span>             <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">244</span>             <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">},</span>
-<span class="g g-Whitespace">    </span><span class="mi">245</span>             <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">246</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">247</span>         <span class="c1"># if we have a response and the response is code 200</span>
-<span class="g g-Whitespace">    </span><span class="mi">248</span>         <span class="c1"># also known as HTTP OK, then the DOI resolves properly</span>
-<span class="g g-Whitespace">    </span><span class="mi">249</span>         <span class="k">if</span> <span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">250</span>             <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">251</span>             <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>  <span class="c1"># noqa: PLR2004</span>
-<span class="g g-Whitespace">    </span><span class="mi">252</span>         <span class="p">):</span>
-
-<span class="nn">File ~/work/almanack/almanack/src/almanack/metrics/remote.py:76,</span> in <span class="ni">request_with_backoff</span><span class="nt">(method, url, headers, params, timeout, allow_redirects, max_retries, base_backoff, backoff_multiplier, retry_statuses)</span>
-<span class="g g-Whitespace">     </span><span class="mi">71</span>     <span class="n">backoff</span> <span class="o">=</span> <span class="n">base_backoff</span> <span class="o">*</span> <span class="p">(</span><span class="n">backoff_multiplier</span> <span class="o">**</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">72</span>     <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-<span class="g g-Whitespace">     </span><span class="mi">73</span>         <span class="sa">f</span><span class="s2">&quot;Transient HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> &quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">74</span>         <span class="sa">f</span><span class="s2">&quot;(attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). Retrying in </span><span class="si">{</span><span class="n">backoff</span><span class="si">}</span><span class="s2"> seconds...&quot;</span>
-<span class="g g-Whitespace">     </span><span class="mi">75</span>     <span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">76</span>     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">backoff</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">77</span>     <span class="k">continue</span>
-<span class="g g-Whitespace">     </span><span class="mi">78</span> <span class="k">return</span> <span class="n">response</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>id</th>
+      <th>result-type</th>
+      <th>sustainability_correlation</th>
+      <th>description</th>
+      <th>correction_guidance</th>
+      <th>result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>repo-path</td>
+      <td>SGA-META-0001</td>
+      <td>str</td>
+      <td>0</td>
+      <td>Repository path (local directory).</td>
+      <td>None</td>
+      <td>/content/almanack</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>repo-commits</td>
+      <td>SGA-META-0002</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Total number of commits for the repository.</td>
+      <td>None</td>
+      <td>156</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>repo-file-count</td>
+      <td>SGA-META-0003</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Total number of files tracked within the repos...</td>
+      <td>None</td>
+      <td>117</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>repo-commit-time-range</td>
+      <td>SGA-META-0004</td>
+      <td>tuple</td>
+      <td>0</td>
+      <td>Starting commit and most recent commit for the...</td>
+      <td>None</td>
+      <td>(2024-03-05, 2025-01-13)</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>repo-days-of-development</td>
+      <td>SGA-META-0005</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Integer representing the number of days of dev...</td>
+      <td>None</td>
+      <td>315</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>repo-commits-per-day</td>
+      <td>SGA-META-0006</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Floating point number which represents the num...</td>
+      <td>None</td>
+      <td>0.495238</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>almanack-table-datetime</td>
+      <td>SGA-META-0007</td>
+      <td>str</td>
+      <td>0</td>
+      <td>String representing the date when this table w...</td>
+      <td>None</td>
+      <td>2025-01-13T18:33:41.174159Z</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>almanack-version</td>
+      <td>SGA-META-0008</td>
+      <td>str</td>
+      <td>0</td>
+      <td>String representing the version of the almanac...</td>
+      <td>None</td>
+      <td>0.0.5</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>repo-primary-language</td>
+      <td>SGA-META-0009</td>
+      <td>str</td>
+      <td>0</td>
+      <td>Detected primary programming language of the r...</td>
+      <td>None</td>
+      <td>Jupyter Notebook</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>repo-primary-license</td>
+      <td>SGA-META-0010</td>
+      <td>str</td>
+      <td>0</td>
+      <td>Detected primary license of the repository.</td>
+      <td>None</td>
+      <td>bsd-3-clause</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>repo-doi</td>
+      <td>SGA-META-0011</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Repository DOI value detected from CITATION.cf...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>repo-doi-publication-date</td>
+      <td>SGA-META-0012</td>
+      <td>str</td>
+      <td>0</td>
+      <td>Repository DOI publication date detected from ...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>repo-almanack-score</td>
+      <td>SGA-META-0013</td>
+      <td>dict</td>
+      <td>0</td>
+      <td>Dictionary of length three, including the foll...</td>
+      <td>None</td>
+      <td>{'almanack-score-numerator': 9, 'almanack-scor...</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>repo-includes-readme</td>
+      <td>SGA-GL-0001</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating the presence of a REA...</td>
+      <td>Consider adding a README file to the repository.</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>repo-includes-contributing</td>
+      <td>SGA-GL-0002</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating the presence of a CON...</td>
+      <td>Consider adding a CONTRIBUTING file to the rep...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>repo-includes-code-of-conduct</td>
+      <td>SGA-GL-0003</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating the presence of a COD...</td>
+      <td>Consider adding a CODE_OF_CONDUCT file to the ...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>repo-includes-license</td>
+      <td>SGA-GL-0004</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating the presence of a LIC...</td>
+      <td>Consider adding a LICENSE file to the repository.</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>repo-is-citable</td>
+      <td>SGA-GL-0005</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating the presence of a CIT...</td>
+      <td>Consider adding a CITATION file to the reposit...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>repo-default-branch-not-master</td>
+      <td>SGA-GL-0006</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating that the repo uses a ...</td>
+      <td>Consider using a default source control branch...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>repo-includes-common-docs</td>
+      <td>SGA-GL-0007</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Boolean value indicating whether the repo incl...</td>
+      <td>Consider including project documentation throu...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>repo-unique-contributors</td>
+      <td>SGA-GL-0008</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of unique contributors since the beginni...</td>
+      <td>None</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>repo-unique-contributors-past-year</td>
+      <td>SGA-GL-0009</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of unique contributors within the last y...</td>
+      <td>None</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>repo-unique-contributors-past-182-days</td>
+      <td>SGA-GL-0010</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of unique contributors within the last 1...</td>
+      <td>None</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>repo-tags-count</td>
+      <td>SGA-GL-0011</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of the number of tags within the reposit...</td>
+      <td>None</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>repo-tags-count-past-year</td>
+      <td>SGA-GL-0012</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of the number of tags within the reposit...</td>
+      <td>None</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>repo-tags-count-past-182-days</td>
+      <td>SGA-GL-0013</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of the number of tags within the reposit...</td>
+      <td>None</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>repo-stargazers-count</td>
+      <td>SGA-GL-0014</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of the number of stargazers on repositor...</td>
+      <td>None</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>repo-uses-issues</td>
+      <td>SGA-GL-0015</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Whether the repository uses issues (for exampl...</td>
+      <td>Consider leveraging issues for tracking bugs a...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>repo-issues-open-count</td>
+      <td>SGA-GL-0016</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of open issues for repository.</td>
+      <td>None</td>
+      <td>44</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>repo-pull-requests-enabled</td>
+      <td>SGA-GL-0017</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Whether the repository enables pull requests.</td>
+      <td>Consider enabling pull requests for the reposi...</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>30</th>
+      <td>repo-forks-count</td>
+      <td>SGA-GL-0018</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of forks of the repository.</td>
+      <td>None</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>31</th>
+      <td>repo-subscribers-count</td>
+      <td>SGA-GL-0019</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of subscribers (or watchers) of the repo...</td>
+      <td>None</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>32</th>
+      <td>repo-packages-ecosystems</td>
+      <td>SGA-GL-0020</td>
+      <td>list</td>
+      <td>0</td>
+      <td>List of package platforms or services where th...</td>
+      <td>None</td>
+      <td>[pypi]</td>
+    </tr>
+    <tr>
+      <th>33</th>
+      <td>repo-packages-ecosystems-count</td>
+      <td>SGA-GL-0021</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of package platforms or services where t...</td>
+      <td>None</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>34</th>
+      <td>repo-packages-versions-count</td>
+      <td>SGA-GL-0022</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of package versions on package hosts or ...</td>
+      <td>None</td>
+      <td>6</td>
+    </tr>
+    <tr>
+      <th>35</th>
+      <td>repo-social-media-platforms</td>
+      <td>SGA-GL-0023</td>
+      <td>list</td>
+      <td>0</td>
+      <td>Social media platforms detected within the rea...</td>
+      <td>None</td>
+      <td>[]</td>
+    </tr>
+    <tr>
+      <th>36</th>
+      <td>repo-social-media-platforms-count</td>
+      <td>SGA-GL-0024</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Count of social media platforms detected withi...</td>
+      <td>None</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>37</th>
+      <td>repo-doi-valid-format</td>
+      <td>SGA-GL-0025</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Whether the DOI found in the CITATION.cff file...</td>
+      <td>DOI within the CITATION.cff file is not of a v...</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>38</th>
+      <td>repo-doi-https-resolvable</td>
+      <td>SGA-GL-0026</td>
+      <td>bool</td>
+      <td>1</td>
+      <td>Whether the DOI found in the CITATION.cff file...</td>
+      <td>DOI within the CITATION.cff file is not https ...</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>39</th>
+      <td>repo-doi-cited-by-count</td>
+      <td>SGA-GL-0027</td>
+      <td>int</td>
+      <td>0</td>
+      <td>How many other works cite the DOI for the repo...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>repo-days-between-doi-publication-date-and-lat...</td>
+      <td>SGA-GL-0028</td>
+      <td>int</td>
+      <td>0</td>
+      <td>The number of days between the most recent com...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>repo-gh-workflow-success-ratio</td>
+      <td>SGA-SF-0001</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Ratio of succeeding workflow runs out of queri...</td>
+      <td>None</td>
+      <td>0.81</td>
+    </tr>
+    <tr>
+      <th>42</th>
+      <td>repo-gh-workflow-succeeding-runs</td>
+      <td>SGA-SF-0002</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Number of succeeding workflow runs out of quer...</td>
+      <td>None</td>
+      <td>100</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>repo-gh-workflow-failing-runs</td>
+      <td>SGA-SF-0003</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Number of failing workflow runs out of queried...</td>
+      <td>None</td>
+      <td>81</td>
+    </tr>
+    <tr>
+      <th>44</th>
+      <td>repo-gh-workflow-queried-total</td>
+      <td>SGA-SF-0004</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Total number of workflow runs from GitHub (onl...</td>
+      <td>None</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>repo-code-coverage-percent</td>
+      <td>SGA-SF-0005</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Percentage of code coverage for repository giv...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>46</th>
+      <td>repo-date-of-last-coverage-run</td>
+      <td>SGA-SF-0006</td>
+      <td>str</td>
+      <td>0</td>
+      <td>Date of code coverage run for repository given...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>repo-days-between-last-coverage-run-latest-commit</td>
+      <td>SGA-SF-0007</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Days between last coverage run date and latest...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>48</th>
+      <td>repo-code-coverage-total-lines</td>
+      <td>SGA-SF-0008</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Total lines of code used for code coverage wit...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>49</th>
+      <td>repo-code-coverage-executed-lines</td>
+      <td>SGA-SF-0009</td>
+      <td>int</td>
+      <td>0</td>
+      <td>Total lines covered code within repository giv...</td>
+      <td>None</td>
+      <td>None</td>
+    </tr>
+    <tr>
+      <th>50</th>
+      <td>repo-agg-info-entropy</td>
+      <td>SGA-VS-0001</td>
+      <td>float</td>
+      <td>0</td>
+      <td>Aggregated information entropy for all files w...</td>
+      <td>None</td>
+      <td>0.00324</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>repo-file-info-entropy</td>
+      <td>SGA-VS-0002</td>
+      <td>dict</td>
+      <td>0</td>
+      <td>File-level information entropy for all files w...</td>
+      <td>None</td>
+      <td>{'.alexignore': 8.137557051950418e-05, '.githu...</td>
+    </tr>
+  </tbody>
+</table>
 </div>
+    <div class="colab-df-buttons">
+
+  <div class="colab-df-container">
+    <button class="colab-df-convert" onclick="convertToInteractive('df-bed88d28-3c31-46e2-aaee-ac5e711778c2')"
+            title="Convert this dataframe to an interactive table."
+            style="display:none;">
+
+  <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960">
+    <path d="M120-120v-720h720v720H120Zm60-500h600v-160H180v160Zm220 220h160v-160H400v160Zm0 220h160v-160H400v160ZM180-400h160v-160H180v160Zm440 0h160v-160H620v160ZM180-180h160v-160H180v160Zm440 0h160v-160H620v160Z"/>
+  </svg>
+    </button>
+
+  <style>
+    .colab-df-container {
+      display:flex;
+      gap: 12px;
+    }
+
+    .colab-df-convert {
+      background-color: #E8F0FE;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: none;
+      fill: #1967D2;
+      height: 32px;
+      padding: 0 0 0 0;
+      width: 32px;
+    }
+
+    .colab-df-convert:hover {
+      background-color: #E2EBFA;
+      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);
+      fill: #174EA6;
+    }
+
+    .colab-df-buttons div {
+      margin-bottom: 4px;
+    }
+
+    [theme=dark] .colab-df-convert {
+      background-color: #3B4455;
+      fill: #D2E3FC;
+    }
+
+    [theme=dark] .colab-df-convert:hover {
+      background-color: #434B5C;
+      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));
+      fill: #FFFFFF;
+    }
+  </style>
+
+    <script>
+      const buttonEl =
+        document.querySelector('#df-bed88d28-3c31-46e2-aaee-ac5e711778c2 button.colab-df-convert');
+      buttonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+
+      async function convertToInteractive(key) {
+        const element = document.querySelector('#df-bed88d28-3c31-46e2-aaee-ac5e711778c2');
+        const dataTable =
+          await google.colab.kernel.invokeFunction('convertToInteractive',
+                                                    [key], {});
+        if (!dataTable) return;
+
+        const docLinkHtml = 'Like what you see? Visit the ' +
+          '<a target="_blank" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'
+          + ' to learn more about interactive tables.';
+        element.innerHTML = '';
+        dataTable['output_type'] = 'display_data';
+        await google.colab.output.renderOutput(dataTable, element);
+        const docLink = document.createElement('div');
+        docLink.innerHTML = docLinkHtml;
+        element.appendChild(docLink);
+      }
+    </script>
+  </div>
+
+
+<div id="df-bbeccc86-1620-40c0-98f9-2aa6c52287a5">
+  <button class="colab-df-quickchart" onclick="quickchart('df-bbeccc86-1620-40c0-98f9-2aa6c52287a5')"
+            title="Suggest charts"
+            style="display:none;">
+
+<svg xmlns="http://www.w3.org/2000/svg" height="24px"viewBox="0 0 24 24"
+     width="24px">
+    <g>
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
+    </g>
+</svg>
+  </button>
+
+<style>
+  .colab-df-quickchart {
+      --bg-color: #E8F0FE;
+      --fill-color: #1967D2;
+      --hover-bg-color: #E2EBFA;
+      --hover-fill-color: #174EA6;
+      --disabled-fill-color: #AAA;
+      --disabled-bg-color: #DDD;
+  }
+
+  [theme=dark] .colab-df-quickchart {
+      --bg-color: #3B4455;
+      --fill-color: #D2E3FC;
+      --hover-bg-color: #434B5C;
+      --hover-fill-color: #FFFFFF;
+      --disabled-bg-color: #3B4455;
+      --disabled-fill-color: #666;
+  }
+
+  .colab-df-quickchart {
+    background-color: var(--bg-color);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    fill: var(--fill-color);
+    height: 32px;
+    padding: 0;
+    width: 32px;
+  }
+
+  .colab-df-quickchart:hover {
+    background-color: var(--hover-bg-color);
+    box-shadow: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    fill: var(--button-hover-fill-color);
+  }
+
+  .colab-df-quickchart-complete:disabled,
+  .colab-df-quickchart-complete:disabled:hover {
+    background-color: var(--disabled-bg-color);
+    fill: var(--disabled-fill-color);
+    box-shadow: none;
+  }
+
+  .colab-df-spinner {
+    border: 2px solid var(--fill-color);
+    border-color: transparent;
+    border-bottom-color: var(--fill-color);
+    animation:
+      spin 1s steps(1) infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+      border-left-color: var(--fill-color);
+    }
+    20% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    30% {
+      border-color: transparent;
+      border-left-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+      border-right-color: var(--fill-color);
+    }
+    40% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-top-color: var(--fill-color);
+    }
+    60% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+    }
+    80% {
+      border-color: transparent;
+      border-right-color: var(--fill-color);
+      border-bottom-color: var(--fill-color);
+    }
+    90% {
+      border-color: transparent;
+      border-bottom-color: var(--fill-color);
+    }
+  }
+</style>
+
+  <script>
+    async function quickchart(key) {
+      const quickchartButtonEl =
+        document.querySelector('#' + key + ' button');
+      quickchartButtonEl.disabled = true;  // To prevent multiple clicks.
+      quickchartButtonEl.classList.add('colab-df-spinner');
+      try {
+        const charts = await google.colab.kernel.invokeFunction(
+            'suggestCharts', [key], {});
+      } catch (error) {
+        console.error('Error during call to suggestCharts:', error);
+      }
+      quickchartButtonEl.classList.remove('colab-df-spinner');
+      quickchartButtonEl.classList.add('colab-df-quickchart-complete');
+    }
+    (() => {
+      let quickchartButtonEl =
+        document.querySelector('#df-bbeccc86-1620-40c0-98f9-2aa6c52287a5 button');
+      quickchartButtonEl.style.display =
+        google.colab.kernel.accessAllowed ? 'block' : 'none';
+    })();
+  </script>
 </div>
+
+    </div>
+  </div>
+</div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">

@@ -37,13 +37,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-%%time
-
-
-# gather the almanack table using the almanack repo as a reference
-almanack_table = almanack.metrics.data.get_table("almanack")
-
-# show the almanack table as a Pandas DataFrame
-pd.DataFrame(almanack_table)
+# clone the almanack repo for example usage below
+# we will apply the almanack tool to the almanack repo
+!git clone https://github.com/software-gardening/almanack
 -------------------
 
