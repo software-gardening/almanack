@@ -19,10 +19,6 @@ repos:
       # whitespace-sensitive and prone to syntax errors.
     -   id: check-yaml
 
-      # Warns if files above a specified size are added, as large files
-      # can bloat the repository and slow down cloning and other operations.
-
-
       # Checks the syntax of TOML files, ensuring the correctness of
       # `pyproject.toml` or other configuration files in TOML format.
     -   id: check-toml
