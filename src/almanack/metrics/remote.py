@@ -32,7 +32,8 @@ def request_with_backoff(  # noqa: PLR0913
     retry_statuses: Optional[Set[int]] = None,
 ) -> Optional[requests.Response]:
     """
-    Perform an HTTP request with retry/backoff for transient failures.
+    Perform an HTTP request with retry using 
+    a backoff for transient failures.
 
     Args:
         method (str): The HTTP method to use (e.g., "GET", "HEAD").

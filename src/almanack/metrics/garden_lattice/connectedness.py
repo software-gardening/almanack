@@ -236,7 +236,8 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
         if result["valid_format_doi"]:
             try:
                 # Check DOI resolvability via HTTPS
-                # Use backoff to reduce false negatives from flaky DOI endpoints.
+                # Use backoff to reduce the chance that a DOI HTTP request
+                # fails due to rate limiting or transient network issues.
                 response = request_with_backoff(
                     "HEAD",
                     f"https://doi.org/{result['doi']}",
@@ -247,6 +248,8 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                     base_backoff=2,
                     backoff_multiplier=2,
                 )
+                # if we have a response and the response is code 200
+                # also known as HTTP OK, then the DOI resolves properly
                 if (
                     response is not None
                     and response.status_code == 200  # noqa: PLR2004
