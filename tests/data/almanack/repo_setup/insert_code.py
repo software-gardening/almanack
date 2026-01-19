@@ -18,24 +18,15 @@ def write_lines(file_path: pathlib.Path, lines_of_code: str) -> None:
 
 
 # Define the lines of code for each file
-high_code_change = (
-    """
+high_code_change = """
 \n
-"""
-    * 20
-)
-medium_code_change = (
-    """
+""" * 20
+medium_code_change = """
 \n
-"""
-    * 10
-)
-low_code_change = (
-    """
+""" * 10
+low_code_change = """
 \n
-"""
-    * 5
-)
+""" * 5
 
 
 def add_LOC(base_path: pathlib.Path) -> None:

@@ -37,6 +37,7 @@ from almanack.metrics.garden_lattice.practicality import (
     get_ecosystems_package_metrics,
 )
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
+from almanack.metrics.remote import request_with_backoff
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
 DATETIME_NOW = datetime.now()
@@ -870,15 +871,9 @@ def test_get_ecosystems_package_metrics():
     "files_data, expected_result",
     [
         (
-            [
-                {
-                    "files": {
-                        "CITATION.cff": """
+            [{"files": {"CITATION.cff": """
                     doi: "10.48550/arXiv.2311.13417"
-                    """
-                    }
-                }
-            ],
+                    """}}],
             {
                 "doi": "10.48550/arXiv.2311.13417",
                 "valid_format_doi": True,
@@ -888,17 +883,11 @@ def test_get_ecosystems_package_metrics():
             },
         ),
         (
-            [
-                {
-                    "files": {
-                        "CITATION.cff": """
+            [{"files": {"CITATION.cff": """
                     identifiers:
                         - type: doi
                           value: "10.1186/s44330-024-00014-3"
-                    """
-                    }
-                }
-            ],
+                    """}}],
             {
                 "doi": "10.1186/s44330-024-00014-3",
                 "valid_format_doi": True,
@@ -922,6 +911,11 @@ def test_get_ecosystems_package_metrics():
 def test_find_doi_citation_data(tmp_path, files_data, expected_result):
     """
     Tests find_doi_citation_data
+
+    Args:
+        tmp_path: Pytest temporary path fixture.
+        files_data: Repository files to seed for the test.
+        expected_result: Expected DOI metadata output.
     """
     # Setup repository
     if files_data is None:
@@ -933,6 +927,22 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
             repo_path=tmp_path,
             files=files_data,
         )
+
+    # Skip if DOI endpoint is unavailable to avoid false negatives.
+    doi = expected_result.get("doi")
+    if doi:
+        response = request_with_backoff(
+            "HEAD",
+            f"https://doi.org/{doi}",
+            headers={"accept": "application/json"},
+            timeout=30,
+            allow_redirects=True,
+            max_retries=3,
+            base_backoff=1,
+            backoff_multiplier=2,
+        )
+        if response is None or response.status_code != 200:
+            pytest.skip(f"DOI endpoint unavailable for {doi}")
 
     # Run the function
     result = find_doi_citation_data(repo)
