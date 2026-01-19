@@ -365,7 +365,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">yaml</span>
 
 <span class="kn">from</span> <span class="nn">almanack.git</span> <span class="kn">import</span> <span class="n">file_exists_in_repo</span><span class="p">,</span> <span class="n">find_file</span><span class="p">,</span> <span class="n">read_file</span>
-<span class="kn">from</span> <span class="nn">almanack.metrics.remote</span> <span class="kn">import</span> <span class="n">get_api_data</span>
+<span class="kn">from</span> <span class="nn">almanack.metrics.remote</span> <span class="kn">import</span> <span class="n">get_api_data</span><span class="p">,</span> <span class="n">request_with_backoff</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
@@ -601,18 +601,28 @@ document.write(`
         <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;valid_format_doi&quot;</span><span class="p">]:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="c1"># Check DOI resolvability via HTTPS</span>
+                <span class="c1"># Use backoff to reduce the chance that a DOI HTTP request</span>
+                <span class="c1"># fails due to rate limiting or transient network issues.</span>
+                <span class="n">response</span> <span class="o">=</span> <span class="n">request_with_backoff</span><span class="p">(</span>
+                    <span class="s2">&quot;HEAD&quot;</span><span class="p">,</span>
+                    <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                    <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">},</span>
+                    <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="c1"># if we have a response and the response is code 200</span>
+                <span class="c1"># also known as HTTP OK, then the DOI resolves properly</span>
                 <span class="k">if</span> <span class="p">(</span>
-                    <span class="n">requests</span><span class="o">.</span><span class="n">head</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
-                        <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                        <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
-                    <span class="p">)</span><span class="o">.</span><span class="n">status_code</span>
-                    <span class="o">==</span> <span class="mi">200</span>  <span class="c1"># noqa: PLR2004</span>
+                    <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                    <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">==</span> <span class="mi">200</span>  <span class="c1"># noqa: PLR2004</span>
                 <span class="p">):</span>
                     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">else</span><span class="p">:</span>
+                    <span class="n">status_code</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;unknown&quot;</span>
+                    <span class="p">)</span>
                     <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">&quot;DOI does not resolve properly: https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                        <span class="s2">&quot;DOI does not resolve properly: &quot;</span>
+                        <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> (status </span><span class="si">{</span><span class="n">status_code</span><span class="si">}</span><span class="s2">)&quot;</span>
                     <span class="p">)</span>
                     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 

@@ -359,7 +359,7 @@ document.write(`
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Set</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 
@@ -367,6 +367,84 @@ document.write(`
 
 <span class="n">METRICS_TABLE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="si">!s}</span><span class="s2">/metrics.yml&quot;</span>
 <span class="n">DATETIME_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="request_with_backoff">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.remote.request_with_backoff">[docs]</a>
+<span class="k">def</span> <span class="nf">request_with_backoff</span><span class="p">(</span>  <span class="c1"># noqa: PLR0913</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">headers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+    <span class="n">allow_redirects</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
+    <span class="n">base_backoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">backoff_multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">retry_statuses</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Perform an HTTP request with retry using</span>
+<span class="sd">    a backoff for transient failures.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        method (str): The HTTP method to use (e.g., &quot;GET&quot;, &quot;HEAD&quot;).</span>
+<span class="sd">        url (str): The URL to request.</span>
+<span class="sd">        headers (Optional[Dict[str, str]]): Optional HTTP headers.</span>
+<span class="sd">        params (Optional[Dict[str, str]]): Optional query parameters.</span>
+<span class="sd">        timeout (int): Request timeout in seconds.</span>
+<span class="sd">        allow_redirects (Optional[bool]): Whether to follow redirects.</span>
+<span class="sd">        max_retries (int): Maximum number of attempts before giving up.</span>
+<span class="sd">        base_backoff (float): Base backoff duration in seconds.</span>
+<span class="sd">        backoff_multiplier (float): Multiplier for exponential backoff growth.</span>
+<span class="sd">        retry_statuses (Optional[Set[int]]): HTTP status codes to retry.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[requests.Response]: The response on success, or None on failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">retry_statuses</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">retry_statuses</span> <span class="o">=</span> <span class="p">{</span><span class="mi">429</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">503</span><span class="p">,</span> <span class="mi">504</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">request_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="n">method</span><span class="p">,</span>
+                <span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">url</span><span class="p">,</span>
+                <span class="s2">&quot;headers&quot;</span><span class="p">:</span> <span class="n">headers</span><span class="p">,</span>
+                <span class="s2">&quot;params&quot;</span><span class="p">:</span> <span class="n">params</span><span class="p">,</span>
+                <span class="s2">&quot;timeout&quot;</span><span class="p">:</span> <span class="n">timeout</span><span class="p">,</span>
+            <span class="p">}</span>
+            <span class="k">if</span> <span class="n">allow_redirects</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">request_kwargs</span><span class="p">[</span><span class="s2">&quot;allow_redirects&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">allow_redirects</span>
+            <span class="c1"># Attempt the request; retry on transient failures.</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">request</span><span class="p">(</span><span class="o">**</span><span class="n">request_kwargs</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="ow">in</span> <span class="n">retry_statuses</span> <span class="ow">and</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="c1"># Exponential backoff limits repeated transient failures.</span>
+                <span class="n">backoff</span> <span class="o">=</span> <span class="n">base_backoff</span> <span class="o">*</span> <span class="p">(</span><span class="n">backoff_multiplier</span> <span class="o">**</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Transient HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2"> for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;(attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). Retrying in </span><span class="si">{</span><span class="n">backoff</span><span class="si">}</span><span class="s2"> seconds...&quot;</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">backoff</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="k">return</span> <span class="n">response</span>
+        <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">reqe</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">&lt;</span> <span class="n">max_retries</span><span class="p">:</span>
+                <span class="n">backoff</span> <span class="o">=</span> <span class="n">base_backoff</span> <span class="o">*</span> <span class="p">(</span><span class="n">backoff_multiplier</span> <span class="o">**</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Request error for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> (attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">reqe</span><span class="si">}</span><span class="s2">. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Retrying in </span><span class="si">{</span><span class="n">backoff</span><span class="si">}</span><span class="s2"> seconds...&quot;</span>
+                <span class="p">)</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">backoff</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Request failed for </span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2"> after </span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2"> attempts: </span><span class="si">{</span><span class="n">reqe</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
 
 
 <div class="viewcode-block" id="get_api_data">
@@ -409,12 +487,18 @@ document.write(`
     <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Perform the GET request with query parameters</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">request_with_backoff</span><span class="p">(</span>
+                <span class="s2">&quot;GET&quot;</span><span class="p">,</span>
                 <span class="n">api_endpoint</span><span class="p">,</span>
                 <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span>
                 <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">,</span>
                 <span class="n">timeout</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span>
+                <span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                <span class="n">base_backoff</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                <span class="n">backoff_multiplier</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="n">response</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">{}</span>
 
             <span class="c1"># Raise an exception for HTTP errors</span>
             <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
