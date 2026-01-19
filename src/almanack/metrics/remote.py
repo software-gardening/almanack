@@ -26,8 +26,8 @@ def request_with_backoff(  # noqa: PLR0913
     params: Optional[Dict[str, str]] = None,
     timeout: int = 30,
     allow_redirects: Optional[bool] = None,
-    max_retries: int = 5,
-    base_backoff: float = 1.0,
+    max_retries: int = 8,
+    base_backoff: float = 2.0,
     backoff_multiplier: float = 2.0,
     retry_statuses: Optional[Set[int]] = None,
 ) -> Optional[requests.Response]:
