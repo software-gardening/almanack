@@ -543,7 +543,7 @@ metrics:
   - name: "repo-doi-https-resolvable"
     id: "SGA-GL-0026"
     result-type: "bool"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Whether the DOI found in the CITATION.cff file is HTTPS resolvable.
     correction_guidance: >-

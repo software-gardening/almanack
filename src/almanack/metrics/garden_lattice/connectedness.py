@@ -243,6 +243,7 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                     f"https://doi.org/{result['doi']}",
                     headers={"accept": "application/json"},
                     allow_redirects=True,
+                    max_retries=3,
                 )
                 # if we have a response and the response is code 200
                 # also known as HTTP OK, then the DOI resolves properly

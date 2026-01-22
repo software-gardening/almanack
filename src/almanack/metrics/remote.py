@@ -26,8 +26,8 @@ def request_with_backoff(  # noqa: PLR0913
     params: Optional[Dict[str, str]] = None,
     timeout: int = 30,
     allow_redirects: Optional[bool] = None,
-    max_retries: int = 8,
-    base_backoff: float = 2.0,
+    max_retries: int = 5,
+    base_backoff: float = 1.0,
     backoff_multiplier: float = 2.0,
     retry_statuses: Optional[Set[int]] = None,
 ) -> Optional[requests.Response]:
@@ -160,7 +160,7 @@ def get_api_data(
                     # Calculate backoff time multiplied by attempt number
                     # (linear growth)
                     backoff = base_backoff * (attempt - 1)
-                    LOGGER.warning(
+                    LOGGER.info(
                         f"Rate limit exceeded (attempt {attempt}/{max_retries}). "
                         f"Retrying in {backoff} seconds..."
                     )
