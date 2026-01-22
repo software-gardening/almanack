@@ -379,8 +379,8 @@ document.write(`
     <span class="n">params</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
     <span class="n">allow_redirects</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="n">base_backoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
+    <span class="n">max_retries</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span>
+    <span class="n">base_backoff</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">backoff_multiplier</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">,</span>
     <span class="n">retry_statuses</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Set</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">requests</span><span class="o">.</span><span class="n">Response</span><span class="p">]:</span>
@@ -516,7 +516,7 @@ document.write(`
                     <span class="c1"># Calculate backoff time multiplied by attempt number</span>
                     <span class="c1"># (linear growth)</span>
                     <span class="n">backoff</span> <span class="o">=</span> <span class="n">base_backoff</span> <span class="o">*</span> <span class="p">(</span><span class="n">attempt</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="n">LOGGER</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
                         <span class="sa">f</span><span class="s2">&quot;Rate limit exceeded (attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">max_retries</span><span class="si">}</span><span class="s2">). &quot;</span>
                         <span class="sa">f</span><span class="s2">&quot;Retrying in </span><span class="si">{</span><span class="n">backoff</span><span class="si">}</span><span class="s2"> seconds...&quot;</span>
                     <span class="p">)</span>

@@ -608,6 +608,7 @@ document.write(`
                     <span class="sa">f</span><span class="s2">&quot;https://doi.org/</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
                     <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;accept&quot;</span><span class="p">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">},</span>
                     <span class="n">allow_redirects</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="n">max_retries</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
                 <span class="p">)</span>
                 <span class="c1"># if we have a response and the response is code 200</span>
                 <span class="c1"># also known as HTTP OK, then the DOI resolves properly</span>

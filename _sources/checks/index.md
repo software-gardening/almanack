@@ -12,4 +12,3 @@ This is an index of all checks in the Almanack metrics catalog.
 - [repo-uses-issues (SGA-GL-0015)](./SGA-GL-0015.md)
 - [repo-pull-requests-enabled (SGA-GL-0017)](./SGA-GL-0017.md)
 - [repo-doi-valid-format (SGA-GL-0025)](./SGA-GL-0025.md)
-- [repo-doi-https-resolvable (SGA-GL-0026)](./SGA-GL-0026.md)
