@@ -4,37 +4,13 @@ Tests CLI functionality.
 
 import json
 
+import pandas as pd
 import yaml
 
-from almanack.cli import cli_link
 from almanack.metrics.data import METRICS_TABLE
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
 from .utils import run_cli_command
-
-
-def test_cli_link():
-    """
-    Test the cli_link function to ensure
-    it generates the correct link format.
-    """
-
-    link = cli_link(
-        uri="https://example.com",
-        label="Example Link",
-    )
-
-    assert isinstance(link, str)
-    assert "Example Link" in link
-    assert "https://example.com" in link
-
-    link = cli_link(
-        uri="https://example.com",
-    )
-
-    assert isinstance(link, str)
-    assert "https://example.com" in link
-    assert link.count("https://example.com") == 2  # noqa: PLR2004
 
 
 def test_cli_util():
@@ -165,3 +141,41 @@ def test_cli_almanack_check(tmp_path):
     # we assert that the return code is still 2
     # (return code of 1 would mean exception)
     assert returncode == almanack_failed_check_exit_code
+
+
+def test_cli_almanack_batch(tmp_path):
+    """
+    Tests running `almanack batch` as a CLI
+    """
+
+    repo = repo_setup(
+        repo_path=tmp_path / "repo", files=[{"files": {"example.txt": "example"}}]
+    )
+
+    output_path = tmp_path / "results.parquet"
+    repo_arg = repo.path
+
+    _, stderr, returncode = run_cli_command(
+        command=[
+            "almanack",
+            "batch",
+            str(output_path),
+            "--repo_urls",
+            repo_arg,
+            "--batch_size",
+            "1",
+            "--max_workers",
+            "1",
+            "--show_repo_progress",
+            "False",
+            "--executor",
+            "thread",
+        ]
+    )
+
+    assert returncode == 0, stderr
+    assert output_path.exists()
+
+    df = pd.read_parquet(output_path)
+    assert len(df) == 1
+    assert "Repository URL" in df.columns

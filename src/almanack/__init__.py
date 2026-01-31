@@ -11,9 +11,13 @@ Program via LLNL under Contract DE-AC52-07NA27344; and by the National Science
 Foundation (NSF) via SHI under Grant No. 2327079.
 """
 
+from .batch_processing import (
+    process_repositories_batch,
+    sanitize_for_parquet,
+)
 from .book import read
 from .metrics.data import get_table as table
-from .metrics.data import process_repo_for_analysis
+from .metrics.data import process_repo_for_almanack, process_repo_for_analysis
 from .metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
     calculate_normalized_entropy,

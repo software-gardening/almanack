@@ -2,6 +2,14 @@
 
 We sometimes share the Software Gardening Almanack through events, blog posts, or other media which we want to share with you under this pavilion.
 
+## Poster for CU Anschutz DBMI Retreat - August 2025
+
+We created this poster to share the Almanack with audiences attending the [CU Anschutz DBMI](https://medschool.cuanschutz.edu/dbmi) 2025 retreat.
+
+We also archived the work for reference here: https://doi.org/10.5281/zenodo.16943577
+
+<iframe src="../_posters/2025/almanack-2025-poster.pdf" width="100%" height="600px"></iframe>
+
 ## BSSw Blog Post Introducing the Almanack - April 2025
 
 This blog post through the [Better Scientific Software (BSSw) Blog](https://bssw.io/blog_posts) shared our initial findings and efforts to apply Software Gardening via the Almanack book and Python package.
