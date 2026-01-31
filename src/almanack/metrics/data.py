@@ -44,7 +44,7 @@ from almanack.metrics.garden_lattice.practicality import (
 )
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
 from almanack.metrics.notebooks import (
-    check_nb_code_exec_order,
+    check_ipynb_code_exec_order,
     get_nb_contents,
 )
 from almanack.metrics.remote import get_api_data
@@ -430,7 +430,7 @@ def compute_repo_data(repo_path: str) -> None:
         ),
         "repo-check-notebook-exec-order": (
             all(
-                check_nb_code_exec_order(nb_cells=cells)
+                check_ipynb_code_exec_order(nb_cells=cells)
                 for cells in notebook_cells.values()
             )
             if notebook_cells

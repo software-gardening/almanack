@@ -46,6 +46,7 @@ def _create_jupyter_cell(cell: dict) -> JupyterCell:
 
 def get_nb_contents(
     repo_path: Union[str, pathlib.Path],
+    ignore_dirs: Union[List[str], None] = None,
 ) -> Dict[pathlib.Path, List[JupyterCell]]:
     """
     Loads the contents of all Jupyter notebooks in a repository and extracts cell information.
@@ -54,6 +55,9 @@ def get_nb_contents(
     ----------
     repo_path : Union[str, pathlib.Path]
         Path to the repository directory. Can be either a string or a pathlib.Path object.
+    ignore_dirs : Union[List[str], None], optional
+        List of directory names to ignore when searching for notebooks.
+        If None, defaults to ignoring notebooks in 'tests' directories within 'almanack'.
 
     Returns
     -------
@@ -81,12 +85,16 @@ def get_nb_contents(
 
     resolved_repo_path = repo_path.resolve()
 
+    # Set default ignore directories
+    if ignore_dirs is None:
+        ignore_dirs = []
+
     # Find and process all notebook files in the repository
     notebook_contents = {}
 
     for notebook_file in resolved_repo_path.rglob("*.ipynb"):
-        # Skip notebooks in test directories (including nested ones)
-        if "almanack" in notebook_file.parts and "tests" in notebook_file.parts:
+        # Skip notebooks in ignored directories
+        if any(ignored_dir in notebook_file.parts for ignored_dir in ignore_dirs):
             continue
 
         try:
@@ -103,6 +111,8 @@ def get_nb_contents(
             logging.warning(f"Failed to process notebook {notebook_file}: {e}")
         except PermissionError as e:
             logging.warning(f"Permission denied for notebook {notebook_file}: {e}")
+        except Exception as e:
+            logging.warning(f"Failed to process notebook {notebook_file}: {e}")
             continue
 
     return notebook_contents

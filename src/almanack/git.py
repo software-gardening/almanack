@@ -444,16 +444,25 @@ def repo_dir_exists(repo: pygit2.Repository, directory_name: str) -> bool:
     Returns:
         bool: True if the directory exists, False otherwise.
     """
+    def search_tree(tree: pygit2.Tree) -> bool:
+        """Recursively search for a directory in the tree."""
+        for entry in tree:
+            if entry.type == pygit2.GIT_OBJECT_TREE and entry.name == directory_name:
+                return True
+            # If this is a tree (subdirectory), search it recursively
+            if entry.type == pygit2.GIT_OBJECT_TREE:
+                try:
+                    subtree = repo[entry.id]
+                    if search_tree(subtree):
+                        return True
+                except (KeyError, pygit2.GitError):
+                    continue
+        return False
+
     try:
         # Get the tree from the latest commit
         tree = repo.revparse_single("HEAD").tree
-
-        # tree.walk(pygit2.GIT_TREEWALK_PREORDER) iterates through all
-        # subdirectories and files automatically
-        for root, entry in tree.walk(pygit2.GIT_TREEWALK_PREORDER):
-            if entry.type == pygit2.GIT_OBJ_TREE and entry.name == directory_name:
-                return True
-        return False
+        return search_tree(tree)
     except (KeyError, pygit2.GitError):
         # This handles cases where HEAD doesn't exist (empty repo)
         return False
