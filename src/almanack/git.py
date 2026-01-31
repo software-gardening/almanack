@@ -394,9 +394,10 @@ def file_exists_in_repo(
 
     return False
 
+
 def repo_dir_exists(repo: pygit2.Repository, directory_name: str) -> bool:
-    """ 
-    Checks if a directory with the given name exists in the latest commit of the 
+    """
+    Checks if a directory with the given name exists in the latest commit of the
     repository.
 
     Args:

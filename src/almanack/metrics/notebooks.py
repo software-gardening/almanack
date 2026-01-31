@@ -89,7 +89,6 @@ def get_nb_contents(
         if "almanack" in notebook_file.parts and "tests" in notebook_file.parts:
             continue
 
-
         try:
             # Read notebook and extract cell metadata
             notebook = nbformat.read(notebook_file, as_version=4)
@@ -113,10 +112,10 @@ def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     """
     Checks if code cells in a Jupyter notebook were executed in sequential order.
 
-    This function extracts the execution counts from all code cells in the notebook. 
-    If any code cell has an execution count of None (indicating it was not executed), 
-    the function returns False. If there are no code cells or all code cells are 
-    unexecuted, it returns True. Otherwise, it checks if the execution counts form a 
+    This function extracts the execution counts from all code cells in the notebook.
+    If any code cell has an execution count of None (indicating it was not executed),
+    the function returns False. If there are no code cells or all code cells are
+    unexecuted, it returns True. Otherwise, it checks if the execution counts form a
     consecutive sequence starting from 1 (i.e., [1, 2, 3, ...]).
 
     Parameters
@@ -127,15 +126,13 @@ def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     Returns
     -------
     bool
-        True if code cells were executed in sequential order starting from 1 with no 
-        gaps or missing executions, False otherwise. Returns True for notebooks with 
+        True if code cells were executed in sequential order starting from 1 with no
+        gaps or missing executions, False otherwise. Returns True for notebooks with
         no executed code cells.
     """
     # Extract execution counts from code cells, filtering out None values
     execution_counts = [
-        cell.execution_count
-        for cell in nb_cells
-        if cell.cell_type == "code" 
+        cell.execution_count for cell in nb_cells if cell.cell_type == "code"
     ]
 
     # if there's a None in execution counts, return False
@@ -150,4 +147,3 @@ def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     # Check if execution counts form a consecutive sequence starting from 1
     expected_sequence = list(range(1, len(execution_counts) + 1))
     return execution_counts == expected_sequence
-
