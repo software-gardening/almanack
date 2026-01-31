@@ -24,6 +24,7 @@ from almanack.git import (
     get_edited_files,
     get_remote_url,
     read_file,
+    repo_dir_exists,
 )
 from almanack.metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
@@ -44,7 +45,6 @@ from almanack.metrics.garden_lattice.understanding import includes_common_docs
 from almanack.metrics.notebooks import (
     check_nb_code_exec_order,
     get_nb_contents,
-    notebook_dir_exists,
 )
 from almanack.metrics.remote import get_api_data
 
@@ -413,7 +413,7 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
-        "repo-check-notebook-dir": notebook_dir_exists(repo_path=repo_path),
+        "repo-check-notebook-dir": repo_dir_exists(repo=repo, directory_name="notebooks"),
         "repo-check-notebook-exec-order": (
             all(
                 check_nb_code_exec_order(nb_cells=cells)
