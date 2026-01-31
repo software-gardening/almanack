@@ -89,6 +89,7 @@ def get_nb_contents(
         if "almanack" in notebook_file.parts and "tests" in notebook_file.parts:
             continue
 
+
         try:
             # Read notebook and extract cell metadata
             notebook = nbformat.read(notebook_file, as_version=4)
@@ -98,22 +99,25 @@ def get_nb_contents(
             notebook_contents[notebook_file] = [
                 _create_jupyter_cell(cell) for cell in cells
             ]
-
-        except Exception as e:
-            # Log error but continue processing other notebooks
-            logging.warning(f"Failed to read notebook {notebook_file}: {e}")
+        # Handle potential file read errors
+        except FileNotFoundError as e:
+            logging.warning(f"Failed to process notebook {notebook_file}: {e}")
+        except PermissionError as e:
+            logging.warning(f"Permission denied for notebook {notebook_file}: {e}")
             continue
 
     return notebook_contents
 
 
-def check_nb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
+def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     """
     Checks if code cells in a Jupyter notebook were executed in sequential order.
 
-    Verifies that the execution counts of code cells form a consecutive sequence
-    starting from 1, indicating the notebook was executed from top to bottom
-    without re-running cells out of order.
+    This function extracts the execution counts from all code cells in the notebook. 
+    If any code cell has an execution count of None (indicating it was not executed), 
+    the function returns False. If there are no code cells or all code cells are 
+    unexecuted, it returns True. Otherwise, it checks if the execution counts form a 
+    consecutive sequence starting from 1 (i.e., [1, 2, 3, ...]).
 
     Parameters
     ----------
@@ -123,15 +127,21 @@ def check_nb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     Returns
     -------
     bool
-        True if code cells were executed in sequential order (1, 2, 3, ...),
-        False otherwise. Returns True for notebooks with no executed code cells.
+        True if code cells were executed in sequential order starting from 1 with no 
+        gaps or missing executions, False otherwise. Returns True for notebooks with 
+        no executed code cells.
     """
     # Extract execution counts from code cells, filtering out None values
     execution_counts = [
         cell.execution_count
         for cell in nb_cells
-        if cell.cell_type == "code" and cell.execution_count is not None
+        if cell.cell_type == "code" 
     ]
+
+    # if there's a None in execution counts, return False
+    # None can be ambiguous in code cells (sometimes means not executed)
+    if any(count is None for count in execution_counts):
+        return False
 
     # Empty list or no executed cells is considered valid
     if not execution_counts:
@@ -141,28 +151,3 @@ def check_nb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     expected_sequence = list(range(1, len(execution_counts) + 1))
     return execution_counts == expected_sequence
 
-
-def notebook_dir_exists(repo_path: Union[str, pathlib.Path]) -> bool:
-    """
-    Check if the specified path exists and is a directory.
-
-    Parameters
-    ----------
-    repo_path : Union[str, pathlib.Path]
-        Path to check. Can be either a string or a pathlib.Path object.
-
-    Returns
-    -------
-    bool
-        True if the path exists and is a directory, False otherwise.
-
-    Raises
-    ------
-    TypeError
-        If repo_path is not a string or pathlib.Path object.
-    """
-    if not isinstance(repo_path, (str, pathlib.Path)):
-        raise TypeError("repo_path must be a str or pathlib.Path")
-
-    repo_path = pathlib.Path(repo_path)
-    return repo_path.exists() and repo_path.is_dir()
