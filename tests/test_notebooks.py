@@ -26,8 +26,8 @@ from almanack.git import repo_dir_exists
 from almanack.metrics.notebooks import (
     JupyterCell,
     _create_jupyter_cell,
-    get_nb_contents,
     check_ipynb_code_exec_order,
+    get_nb_contents,
 )
 
 # Test constants

@@ -444,6 +444,7 @@ def repo_dir_exists(repo: pygit2.Repository, directory_name: str) -> bool:
     Returns:
         bool: True if the directory exists, False otherwise.
     """
+
     def search_tree(tree: pygit2.Tree) -> bool:
         """Recursively search for a directory in the tree."""
         for entry in tree:
