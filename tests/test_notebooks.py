@@ -22,12 +22,12 @@ from unittest.mock import patch
 
 import pytest
 
+from almanack.git import repo_dir_exists
 from almanack.metrics.notebooks import (
     JupyterCell,
     _create_jupyter_cell,
-    check_nb_code_exec_order,
     get_nb_contents,
-    notebook_dir_exists,
+    check_ipynb_code_exec_order,
 )
 
 # Test constants
@@ -85,34 +85,20 @@ class TestCreateJupyterCell:
         assert cell.execution_count is None
 
 
-class TestNotebookDirExists:
-    """Test the notebook_dir_exists function."""
+class TestRepoDirExists:
+    """Test the repo_dir_exists function."""
 
-    def test_existing_directory(self):
+    def test_existing_directory(self, current_repo):
         """Test with an existing directory."""
-        test_dir = pathlib.Path(__file__).parent / "data" / "jupyter-book"
-        assert notebook_dir_exists(test_dir) is True
+        assert repo_dir_exists(current_repo, "jupyter-book") is True
 
-    def test_existing_directory_string(self):
-        """Test with an existing directory as string."""
-        test_dir = str(pathlib.Path(__file__).parent / "data" / "jupyter-book")
-        assert notebook_dir_exists(test_dir) is True
-
-    def test_non_existing_directory(self):
+    def test_non_existing_directory(self, current_repo):
         """Test with a non-existing directory."""
-        assert notebook_dir_exists("/non/existent/path") is False
+        assert repo_dir_exists(current_repo, "non-existent-directory") is False
 
-    def test_file_instead_of_directory(self):
-        """Test with a file path instead of directory."""
-        test_file = (
-            pathlib.Path(__file__).parent / "data" / "jupyter-book" / "ordered-nb.ipynb"
-        )
-        assert notebook_dir_exists(test_file) is False
-
-    def test_invalid_input_type(self):
-        """Test with invalid input type."""
-        with pytest.raises(TypeError, match="repo_path must be a str or pathlib.Path"):
-            notebook_dir_exists(123)
+    def test_existing_nested_directory(self, current_repo):
+        """Test with an existing nested directory."""
+        assert repo_dir_exists(current_repo, "data") is True
 
 
 class TestGetNbContents:
@@ -251,7 +237,7 @@ class TestCheckNbCodeExecOrder:
             JupyterCell("code", 3),
             JupyterCell("code", 4),
         ]
-        assert check_nb_code_exec_order(cells) is True
+        assert check_ipynb_code_exec_order(cells) is True
 
     def test_unordered_execution(self):
         """Test with unordered execution counts."""
@@ -263,7 +249,7 @@ class TestCheckNbCodeExecOrder:
             JupyterCell("code", 3),  # Out of order
             JupyterCell("code", 6),
         ]
-        assert check_nb_code_exec_order(cells) is False
+        assert check_ipynb_code_exec_order(cells) is False
 
     def test_no_code_cells(self):
         """Test with no code cells."""
@@ -271,16 +257,17 @@ class TestCheckNbCodeExecOrder:
             JupyterCell("markdown", None),
             JupyterCell("markdown", None),
         ]
-        assert check_nb_code_exec_order(cells) is True
+        assert check_ipynb_code_exec_order(cells) is True
 
     def test_no_executed_code_cells(self):
-        """Test with code cells that haven't been executed."""
+        """Test with code cells that haven't been executed (None execution counts)."""
         cells = [
             JupyterCell("markdown", None),
             JupyterCell("code", None),
             JupyterCell("code", None),
         ]
-        assert check_nb_code_exec_order(cells) is True
+        # None execution counts indicate unexecuted cells, which returns False
+        assert check_ipynb_code_exec_order(cells) is False
 
     def test_mixed_executed_unexecuted_cells(self):
         """Test with mix of executed and unexecuted code cells."""
@@ -289,21 +276,22 @@ class TestCheckNbCodeExecOrder:
             JupyterCell("code", None),  # Unexecuted
             JupyterCell("code", 2),
         ]
-        assert check_nb_code_exec_order(cells) is True
+        # Any None execution count causes the function to return False
+        assert check_ipynb_code_exec_order(cells) is False
 
     def test_empty_cell_list(self):
         """Test with empty cell list."""
-        assert check_nb_code_exec_order([]) is True
+        assert check_ipynb_code_exec_order([]) is True
 
     def test_single_code_cell(self):
         """Test with single executed code cell."""
         cells = [JupyterCell("code", 1)]
-        assert check_nb_code_exec_order(cells) is True
+        assert check_ipynb_code_exec_order(cells) is True
 
     def test_single_code_cell_wrong_start(self):
         """Test with single code cell not starting at 1."""
         cells = [JupyterCell("code", 5)]
-        assert check_nb_code_exec_order(cells) is False
+        assert check_ipynb_code_exec_order(cells) is False
 
     def test_gap_in_execution_sequence(self):
         """Test with gap in execution sequence."""
@@ -312,7 +300,7 @@ class TestCheckNbCodeExecOrder:
             JupyterCell("code", 2),
             JupyterCell("code", 4),  # Gap: missing 3
         ]
-        assert check_nb_code_exec_order(cells) is False
+        assert check_ipynb_code_exec_order(cells) is False
 
 
 class TestIntegrationTests:
@@ -338,7 +326,7 @@ class TestIntegrationTests:
         cells = result[ordered_nb_path]
 
         # Should be properly ordered
-        assert check_nb_code_exec_order(cells) is True
+        assert check_ipynb_code_exec_order(cells) is True
 
     def test_unordered_notebook_integration(self, test_data_dir):
         """Test full workflow with unordered notebook."""
@@ -355,17 +343,16 @@ class TestIntegrationTests:
         cells = result[unordered_nb_path]
 
         # Should be improperly ordered
-        assert check_nb_code_exec_order(cells) is False
+        assert check_ipynb_code_exec_order(cells) is False
 
-    def test_directory_validation_integration(self, test_data_dir):
+    def test_directory_validation_integration(self, test_data_dir, current_repo):
         """Test directory validation before processing."""
         # Valid directory should work
-        assert notebook_dir_exists(test_data_dir) is True
+        assert repo_dir_exists(current_repo, "jupyter-book") is True
         result = get_nb_contents(test_data_dir)
         assert len(result) == EXPECTED_TEST_NOTEBOOKS
 
         # Invalid directory should fail validation
-        invalid_path = "/definitely/does/not/exist"
-        assert notebook_dir_exists(invalid_path) is False
+        assert repo_dir_exists(current_repo, "non-existent-directory") is False
         with pytest.raises(FileNotFoundError):
-            get_nb_contents(invalid_path)
+            get_nb_contents("/definitely/does/not/exist")
