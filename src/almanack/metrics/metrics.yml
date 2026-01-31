@@ -541,7 +541,7 @@ metrics:
   - name: "repo-check-notebook-dir"
     id: "SGA-GL-0029"
     result-type: "bool"
-    sustainability_correlation: 1
+    sustainability_correlation: 0
     description: >-
       Checks whether there is a dedicated `notebooks/` directory.
     correction_guidance: >-
@@ -556,7 +556,7 @@ metrics:
       Create a `notebooks/` directory in the root of your project and move all
       Jupyter notebook files into this directory. Update any references to the
       notebook files in your code or documentation to reflect the new location.
-  - name: "repo-check-notebook-exec-order"
+  - name: "repo-notebook-exec-order-sequential"
     id: "SGA-GL-0030"
     result-type: "bool"
     sustainability_correlation: 1
