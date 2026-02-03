@@ -32,6 +32,7 @@ requests = "^2.32.3"
 defusedxml = "^0.7.1"
 pandas = ">=2.2.2"
 pyarrow = ">=16"
+nbformat = "^5.10.4"
 
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
