@@ -192,7 +192,9 @@ class TestGetNbContents:
 
     def test_invalid_input_type(self):
         """Test with invalid input type."""
-        with pytest.raises(TypeError, match="repo_path must be a str or pathlib.Path"):
+        with pytest.raises(
+            TypeError, match=r"repo_path must be a str or pathlib\.Path"
+        ):
             get_nb_contents(123)
 
     def test_empty_directory(self):
