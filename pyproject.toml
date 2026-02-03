@@ -58,16 +58,19 @@ jsonschema = "^4.23.0"
 dunamai = "^1.23.0"
 playwright = "^1.51.0"
 
-[tool.poetry.scripts]
-almanack = "almanack.cli:trigger"
-
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
+
+[tool.poetry.scripts]
+almanack = "almanack.cli:trigger"
 
 [tool.poetry-dynamic-versioning]
 enable = true
 style = "pep440"
 vcs = "git"
+
+[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
+persistent-substitution = false
 
 # specify where version replacement is performed
 [tool.poetry-dynamic-versioning.substitution]
@@ -75,8 +78,6 @@ files = [ "src/almanack/__init__.py" ]
 
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
-[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
-persistent-substitution = false
 
 [tool.setuptools_scm]
 root = "."
