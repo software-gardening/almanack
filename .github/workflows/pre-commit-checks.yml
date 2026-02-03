@@ -4,9 +4,9 @@ name: pre-commit checks
 
 on:
   push:
-      branches: [main]
-      paths-ignore:
-        - 'tests/data/jupyter-book/**'
+    branches: [main]
+    paths-ignore:
+      - 'tests/data/jupyter-book/**'
   pull_request:
     branches: [main]
     paths-ignore:
