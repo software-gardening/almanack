@@ -817,6 +817,46 @@ document.write(`
 
     <span class="k">return</span> <span class="kc">False</span></div>
 
+
+
+<div class="viewcode-block" id="repo_dir_exists">
+<a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.git.repo_dir_exists">[docs]</a>
+<span class="k">def</span> <span class="nf">repo_dir_exists</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span> <span class="n">directory_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks if a directory with the given name exists in the latest commit of the</span>
+<span class="sd">    repository.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo (pygit2.Repository): The repository object to search in.</span>
+<span class="sd">        directory_name (str): The name of the directory to look for.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if the directory exists, False otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">search_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Tree</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively search for a directory in the tree.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GIT_OBJECT_TREE</span> <span class="ow">and</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">directory_name</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="c1"># If this is a tree (subdirectory), search it recursively</span>
+            <span class="k">if</span> <span class="n">entry</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GIT_OBJECT_TREE</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">subtree</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">search_tree</span><span class="p">(</span><span class="n">subtree</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="kc">True</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GitError</span><span class="p">):</span>
+                    <span class="k">continue</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Get the tree from the latest commit</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">revparse_single</span><span class="p">(</span><span class="s2">&quot;HEAD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">tree</span>
+        <span class="k">return</span> <span class="n">search_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GitError</span><span class="p">):</span>
+        <span class="c1"># This handles cases where HEAD doesn&#39;t exist (empty repo)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
 </pre></div>
 
                 </article>

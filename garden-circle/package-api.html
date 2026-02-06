@@ -414,6 +414,7 @@ document.write(`
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_most_recent_commits"><code class="docutils literal notranslate"><span class="pre">get_most_recent_commits()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_remote_url"><code class="docutils literal notranslate"><span class="pre">get_remote_url()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.repo_dir_exists"><code class="docutils literal notranslate"><span class="pre">repo_dir_exists()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.resolve_redirects"><code class="docutils literal notranslate"><span class="pre">resolve_redirects()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing._nullable_dtype"><code class="docutils literal notranslate"><span class="pre">_nullable_dtype()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing.process_repositories_batch"><code class="docutils literal notranslate"><span class="pre">process_repositories_batch()</span></code></a></li>
@@ -428,6 +429,7 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._normalize_exclude_paths"><code class="docutils literal notranslate"><span class="pre">_normalize_exclude_paths()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_almanack_score"><code class="docutils literal notranslate"><span class="pre">compute_almanack_score()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_pr_data"><code class="docutils literal notranslate"><span class="pre">compute_pr_data()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_repo_data"><code class="docutils literal notranslate"><span class="pre">compute_repo_data()</span></code></a></li>
@@ -575,20 +577,15 @@ otherwise 0.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="almanack.cli.AlmanackCLI.check">
-<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.check" title="Link to this definition">#</a></dt>
-<dd><p>Used through CLI to
-check table of metrics for
-boolean values with a non-zero
-sustainability direction
-for failures.</p>
-<p>This enables the use of CLI such as:
-<cite>almanack check &lt;repo path&gt;</cite></p>
+<span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.check" title="Link to this definition">#</a></dt>
+<dd><p>Check sustainability metrics and report failures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_path</strong> (<em>str</em>) – The path to the repository to analyze.</p></li>
-<li><p><strong>ignore</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – A list of metric IDs to ignore when
-running the checks. Defaults to None.</p></li>
+<li><p><strong>repo_path</strong> – The path to the repository to analyze.</p></li>
+<li><p><strong>ignore</strong> – A list of metric IDs to ignore when running the checks.</p></li>
+<li><p><strong>exclude_paths</strong> – Repository-relative paths or glob patterns to exclude.</p></li>
+<li><p><strong>verbose</strong> – If True, print extra information and enable debug logging.</p></li>
 </ul>
 </dd>
 </dl>
@@ -596,23 +593,16 @@ running the checks. Defaults to None.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="almanack.cli.AlmanackCLI.table">
-<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.table" title="Link to this definition">#</a></dt>
-<dd><p>Used through CLI to
-generate a table of metrics</p>
-<p>This enables the use of CLI such as:
-<cite>almanack table &lt;repo path&gt;</cite></p>
+<span class="sig-name descname"><span class="pre">table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/cli.html#AlmanackCLI.table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.cli.AlmanackCLI.table" title="Link to this definition">#</a></dt>
+<dd><p>Generate a table of metrics for a repository.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_path</strong> (<em>str</em>) – The path to the repository to analyze.</p></li>
-<li><p><strong>dest_path</strong> (<em>str</em>) – A path to send the output to.</p></li>
-<li><p><strong>ignore</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – <dl class="simple">
-<dt>A list of metric IDs to ignore when</dt><dd><p>running the checks. Defaults to None.</p>
-</dd>
-<dt>verbose (bool):</dt><dd><p>If True, print extra information.</p>
-</dd>
-</dl>
-</p></li>
+<li><p><strong>repo_path</strong> – The path to the repository to analyze.</p></li>
+<li><p><strong>dest_path</strong> – A path to send the output to.</p></li>
+<li><p><strong>ignore</strong> – A list of metric IDs to ignore when running the checks.</p></li>
+<li><p><strong>exclude_paths</strong> – Repository-relative paths or glob patterns to exclude.</p></li>
+<li><p><strong>verbose</strong> – If True, print extra information and enable debug logging.</p></li>
 </ul>
 </dd>
 </dl>
@@ -857,6 +847,27 @@ or None if the file is not found or reading fails.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="almanack.git.repo_dir_exists">
+<span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">repo_dir_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directory_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#repo_dir_exists"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.repo_dir_exists" title="Link to this definition">#</a></dt>
+<dd><p>Checks if a directory with the given name exists in the latest commit of the
+repository.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> (<em>pygit2.Repository</em>) – The repository object to search in.</p></li>
+<li><p><strong>directory_name</strong> (<em>str</em>) – The name of the directory to look for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the directory exists, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="almanack.git.resolve_redirects">
 <span class="sig-prename descclassname"><span class="pre">almanack.git.</span></span><span class="sig-name descname"><span class="pre">resolve_redirects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/almanack/git.html#resolve_redirects"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.git.resolve_redirects" title="Link to this definition">#</a></dt>
 <dd><p>Follow HTTP redirects until the final URL is reached.</p>
@@ -995,6 +1006,21 @@ or dunamai to determine the current version being used.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._normalize_exclude_paths">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_normalize_exclude_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_normalize_exclude_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._normalize_exclude_paths" title="Link to this definition">#</a></dt>
+<dd><p>Normalize exclude path inputs into a list of strings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exclude_paths</strong> – A string, list, or tuple of exclude paths. Accepts
+comma-separated strings and strips surrounding quotes.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of normalized exclude paths, or None if no paths are provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data.compute_almanack_score">
 <span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">compute_almanack_score</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">almanack_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#compute_almanack_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.compute_almanack_score" title="Link to this definition">#</a></dt>
 <dd><p>Computes an Almanack score by counting boolean Almanack
@@ -1059,17 +1085,17 @@ over time based (numerator / denominator).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data.compute_repo_data">
-<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">compute_repo_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#compute_repo_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.compute_repo_data" title="Link to this definition">#</a></dt>
-<dd><p>Computes comprehensive data for a GitHub repository.</p>
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">compute_repo_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#compute_repo_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.compute_repo_data" title="Link to this definition">#</a></dt>
+<dd><p>Compute comprehensive data for a GitHub repository.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>repo_path</strong> (<em>str</em>) – The local path to the Git repository.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_path</strong> – The local path to the Git repository.</p></li>
+<li><p><strong>exclude_paths</strong> – Repository-relative paths or glob patterns to exclude from checks.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A dictionary containing data key-pairs.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1092,29 +1118,22 @@ over time based (numerator / denominator).</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data.gather_failed_almanack_metric_checks">
-<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">gather_failed_almanack_metric_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#gather_failed_almanack_metric_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.gather_failed_almanack_metric_checks" title="Link to this definition">#</a></dt>
-<dd><p>Gather checks on the repository metrics and returns a list of failed checks
-for use in helping others understand the failed checks and rectify them.</p>
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">gather_failed_almanack_metric_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#gather_failed_almanack_metric_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.gather_failed_almanack_metric_checks" title="Link to this definition">#</a></dt>
+<dd><p>Gather checks on the repository metrics and return a list of failed checks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_path</strong> (<em>str</em>) – The file path to the repository which will have metrics
+<li><p><strong>repo_path</strong> – The file path to the repository which will have metrics
 calculated and includes boolean checks.</p></li>
-<li><p><strong>ignore</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list of metric IDs to ignore when running the checks.
-Defaults to None.</p></li>
+<li><p><strong>ignore</strong> – A list of metric IDs to ignore when running the checks.</p></li>
+<li><p><strong>exclude_paths</strong> – Repository-relative paths or glob patterns to exclude from checks.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of dictionaries containing the metrics and
-their associated results. Each dictionary includes the name, id, and</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>List[Dict[str, Any]]</p>
-<dl class="simple">
-<dt>guidance on how to fix each failed check. The dictionary also</dt><dd><p>includes data about the almanack score for use in summarizing the results.</p>
-</dd>
-</dl>
-</p>
+<dd class="field-even"><p>A list of dictionaries containing the metrics and their associated results.
+Each dictionary includes the name, id, and guidance on how to fix each
+failed check. The dictionary also includes data about the almanack score
+for use in summarizing the results.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1144,7 +1163,7 @@ their associated results. Each dictionary includes the name, id, and</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data.get_table">
-<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#get_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.get_table" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">get_table</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#get_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.get_table" title="Link to this definition">#</a></dt>
 <dd><p>Gather metrics on a repository and return the results in a structured format.</p>
 <p>This function reads a metrics table from a predefined YAML file, computes relevant
 data from the specified repository, and associates the computed results with
@@ -1153,24 +1172,19 @@ computation, an exception is raised.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>repo_path</strong> (<em>str</em>) – The file path to the repository for which the Almanack runs metrics.</p></li>
-<li><p><strong>ignore</strong> (<em>Optional</em><em>[</em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – A list of metric IDs to ignore when running the checks.
-Defaults to None.</p></li>
+<li><p><strong>repo_path</strong> – The file path to the repository for which the Almanack runs metrics.</p></li>
+<li><p><strong>ignore</strong> – A list of metric IDs to ignore when running the checks.</p></li>
+<li><p><strong>exclude_paths</strong> – Repository-relative paths or glob patterns to exclude from checks.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of dictionaries containing the metrics and
-their associated results. Each dictionary includes the original metrics data
-along with the computed result under the key “result”.</p>
+<dd class="field-even"><p>A list of dictionaries containing the metrics and their associated results.
+Each dictionary includes the original metrics data along with the computed
+result under the key “result”.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>List[Dict[str, Any]]</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>ReferenceError</strong> – If there is an error encountered while processing the</p></li>
-<li><p><strong>data</strong><strong>, </strong><strong>providing context in the error message.</strong> – </p></li>
-</ul>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ReferenceError</strong> – If there is an error encountered while processing the data,
+    providing context in the error message.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1218,21 +1232,18 @@ empty dict if no data is found.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data.process_repo_for_almanack">
-<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">process_repo_for_almanack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#process_repo_for_almanack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.process_repo_for_almanack" title="Link to this definition">#</a></dt>
-<dd><p>Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.</p>
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">process_repo_for_almanack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#process_repo_for_almanack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.process_repo_for_almanack" title="Link to this definition">#</a></dt>
+<dd><p>Process a GitHub repository URL into a flat dictionary of Almanack metrics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>repo_url</strong> (<em>str</em>) – The GitHub repository URL.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo_url</strong> – The GitHub repository URL.</p></li>
+<li><p><strong>exclude_paths</strong> – Repository-relative paths or glob patterns to exclude from checks.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>Flattened metrics for the repository, including sustainability checks.</dt><dd><p>If the processing fails, returns an error entry with the repository URL.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
+<dd class="field-even"><p>Flattened metrics for the repository, including sustainability checks.
+If the processing fails, returns an error entry with the repository URL.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1730,6 +1741,7 @@ related to the repository.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_most_recent_commits"><code class="docutils literal notranslate"><span class="pre">get_most_recent_commits()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.get_remote_url"><code class="docutils literal notranslate"><span class="pre">get_remote_url()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.read_file"><code class="docutils literal notranslate"><span class="pre">read_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.repo_dir_exists"><code class="docutils literal notranslate"><span class="pre">repo_dir_exists()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.git.resolve_redirects"><code class="docutils literal notranslate"><span class="pre">resolve_redirects()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing._nullable_dtype"><code class="docutils literal notranslate"><span class="pre">_nullable_dtype()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.batch_processing.process_repositories_batch"><code class="docutils literal notranslate"><span class="pre">process_repositories_batch()</span></code></a></li>
@@ -1744,6 +1756,7 @@ related to the repository.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._normalize_exclude_paths"><code class="docutils literal notranslate"><span class="pre">_normalize_exclude_paths()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_almanack_score"><code class="docutils literal notranslate"><span class="pre">compute_almanack_score()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_pr_data"><code class="docutils literal notranslate"><span class="pre">compute_pr_data()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_repo_data"><code class="docutils literal notranslate"><span class="pre">compute_repo_data()</span></code></a></li>

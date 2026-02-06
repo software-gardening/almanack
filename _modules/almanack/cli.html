@@ -355,6 +355,7 @@ document.write(`
 
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timezone</span>
@@ -401,36 +402,34 @@ document.write(`
         <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">dest_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used through CLI to</span>
-<span class="sd">        generate a table of metrics</span>
-
-<span class="sd">        This enables the use of CLI such as:</span>
-<span class="sd">        `almanack table &lt;repo path&gt;`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate a table of metrics for a repository.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            repo_path (str):</span>
-<span class="sd">                The path to the repository to analyze.</span>
-<span class="sd">            dest_path (str):</span>
-<span class="sd">                A path to send the output to.</span>
-<span class="sd">            ignore (List[str]):</span>
-<span class="sd">                A list of metric IDs to ignore when</span>
-<span class="sd">                running the checks. Defaults to None.</span>
-<span class="sd">             verbose (bool):</span>
-<span class="sd">                If True, print extra information.</span>
+<span class="sd">            repo_path: The path to the repository to analyze.</span>
+<span class="sd">            dest_path: A path to send the output to.</span>
+<span class="sd">            ignore: A list of metric IDs to ignore when running the checks.</span>
+<span class="sd">            exclude_paths: Repository-relative paths or glob patterns to exclude.</span>
+<span class="sd">            verbose: If True, print extra information and enable debug logging.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
-                <span class="sa">f</span><span class="s2">&quot;Gathering table for repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span>
+                <span class="s2">&quot;Gathering table for repo: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">, exclude_paths=</span><span class="si">{</span><span class="n">exclude_paths</span><span class="si">}</span><span class="s2">)&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># serialized JSON as a string</span>
         <span class="n">json_output</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span>
             <span class="c1"># gather table data from Almanack</span>
-            <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">),</span>
+            <span class="n">get_table</span><span class="p">(</span>
+                <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+                <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">,</span>
+                <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
+            <span class="p">),</span>
         <span class="p">)</span>
 
         <span class="c1"># if we have a dest_path, send data to file</span>
@@ -452,24 +451,19 @@ document.write(`
 <div class="viewcode-block" id="AlmanackCLI.check">
 <a class="viewcode-back" href="../../garden-circle/package-api.html#almanack.cli.AlmanackCLI.check">[docs]</a>
     <span class="k">def</span> <span class="nf">check</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Used through CLI to</span>
-<span class="sd">        check table of metrics for</span>
-<span class="sd">        boolean values with a non-zero</span>
-<span class="sd">        sustainability direction</span>
-<span class="sd">        for failures.</span>
-
-<span class="sd">        This enables the use of CLI such as:</span>
-<span class="sd">        `almanack check &lt;repo path&gt;`</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check sustainability metrics and report failures.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            repo_path (str):</span>
-<span class="sd">                The path to the repository to analyze.</span>
-<span class="sd">            ignore (List[str]):</span>
-<span class="sd">                A list of metric IDs to ignore when</span>
-<span class="sd">                running the checks. Defaults to None.</span>
+<span class="sd">            repo_path: The path to the repository to analyze.</span>
+<span class="sd">            ignore: A list of metric IDs to ignore when running the checks.</span>
+<span class="sd">            exclude_paths: Repository-relative paths or glob patterns to exclude.</span>
+<span class="sd">            verbose: If True, print extra information and enable debug logging.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># header for CLI output</span>
@@ -483,11 +477,17 @@ document.write(`
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Running check on repo: </span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>  <span class="c1"># noqa: T201</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span>  <span class="c1"># noqa: T201</span>
+                <span class="s2">&quot;Running check on repo: &quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">repo_path</span><span class="si">}</span><span class="s2"> (ignore=</span><span class="si">{</span><span class="n">ignore</span><span class="si">}</span><span class="s2">, exclude_paths=</span><span class="si">{</span><span class="n">exclude_paths</span><span class="si">}</span><span class="s2">)&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># gather failed metrics</span>
         <span class="n">failed_metrics</span> <span class="o">=</span> <span class="n">gather_failed_almanack_metric_checks</span><span class="p">(</span>
-            <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span>
+            <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+            <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">,</span>
+            <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># gather almanack score metrics</span>

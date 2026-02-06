@@ -376,6 +376,7 @@ document.write(`
     <span class="n">get_edited_files</span><span class="p">,</span>
     <span class="n">get_remote_url</span><span class="p">,</span>
     <span class="n">read_file</span><span class="p">,</span>
+    <span class="n">repo_dir_exists</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.entropy.calculate_entropy</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">calculate_aggregate_entropy</span><span class="p">,</span>
@@ -393,6 +394,10 @@ document.write(`
     <span class="n">get_ecosystems_package_metrics</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.garden_lattice.understanding</span> <span class="kn">import</span> <span class="n">includes_common_docs</span>
+<span class="kn">from</span> <span class="nn">almanack.metrics.notebooks</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">check_ipynb_code_exec_order</span><span class="p">,</span>
+    <span class="n">get_nb_contents</span><span class="p">,</span>
+<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.remote</span> <span class="kn">import</span> <span class="n">get_api_data</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -401,13 +406,53 @@ document.write(`
 <span class="n">DATETIME_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
 
 
+<div class="viewcode-block" id="_normalize_exclude_paths">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._normalize_exclude_paths">[docs]</a>
+<span class="k">def</span> <span class="nf">_normalize_exclude_paths</span><span class="p">(</span>
+    <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]]],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize exclude path inputs into a list of strings.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        exclude_paths: A string, list, or tuple of exclude paths. Accepts</span>
+<span class="sd">            comma-separated strings and strips surrounding quotes.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A list of normalized exclude paths, or None if no paths are provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">exclude_paths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">exclude_paths</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">exclude_paths</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">exclude_paths</span><span class="p">)</span>
+    <span class="n">normalized</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">part</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">part_str</span> <span class="o">=</span> <span class="n">part</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">raw_candidate</span> <span class="ow">in</span> <span class="n">part_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+            <span class="n">candidate</span> <span class="o">=</span> <span class="n">raw_candidate</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">candidate</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">candidate</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">candidate</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span>
+                <span class="n">candidate</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">candidate</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="n">candidate</span> <span class="o">=</span> <span class="n">candidate</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">candidate</span><span class="p">:</span>
+                <span class="n">normalized</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">normalized</span> <span class="ow">or</span> <span class="kc">None</span></div>
+
+
+
 <div class="viewcode-block" id="get_table">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.get_table">[docs]</a>
 <span class="k">def</span> <span class="nf">get_table</span><span class="p">(</span>
-    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Gather metrics on a repository and return the results in a structured format.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gather metrics on a repository and return the results in a structured format.</span>
 
 <span class="sd">    This function reads a metrics table from a predefined YAML file, computes relevant</span>
 <span class="sd">    data from the specified repository, and associates the computed results with</span>
@@ -415,21 +460,21 @@ document.write(`
 <span class="sd">    computation, an exception is raised.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_path (str):</span>
-<span class="sd">            The file path to the repository for which the Almanack runs metrics.</span>
-<span class="sd">        ignore (Optional[List[str]]):</span>
-<span class="sd">            A list of metric IDs to ignore when running the checks.</span>
-<span class="sd">            Defaults to None.</span>
+<span class="sd">        repo_path: The file path to the repository for which the Almanack runs metrics.</span>
+<span class="sd">        ignore: A list of metric IDs to ignore when running the checks.</span>
+<span class="sd">        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        List[Dict[str, Any]]: A list of dictionaries containing the metrics and</span>
-<span class="sd">        their associated results. Each dictionary includes the original metrics data</span>
-<span class="sd">        along with the computed result under the key &quot;result&quot;.</span>
+<span class="sd">        A list of dictionaries containing the metrics and their associated results.</span>
+<span class="sd">        Each dictionary includes the original metrics data along with the computed</span>
+<span class="sd">        result under the key &quot;result&quot;.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ReferenceError: If there is an error encountered while processing the</span>
-<span class="sd">        data, providing context in the error message.</span>
+<span class="sd">        ReferenceError: If there is an error encountered while processing the data,</span>
+<span class="sd">            providing context in the error message.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">exclude_paths</span> <span class="o">=</span> <span class="n">_normalize_exclude_paths</span><span class="p">(</span><span class="n">exclude_paths</span><span class="p">)</span>
 
     <span class="c1"># read the metrics table</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">METRICS_TABLE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
@@ -448,7 +493,7 @@ document.write(`
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid ignore keys: </span><span class="si">{</span><span class="n">invalid_ignore_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># gather data for use in the metrics table</span>
-    <span class="n">metrics_data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">)</span>
+    <span class="n">metrics_data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">metrics_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">ReferenceError</span><span class="p">(</span>
@@ -488,25 +533,23 @@ document.write(`
 <div class="viewcode-block" id="gather_failed_almanack_metric_checks">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.gather_failed_almanack_metric_checks">[docs]</a>
 <span class="k">def</span> <span class="nf">gather_failed_almanack_metric_checks</span><span class="p">(</span>
-    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ignore</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Gather checks on the repository metrics and returns a list of failed checks</span>
-<span class="sd">    for use in helping others understand the failed checks and rectify them.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Gather checks on the repository metrics and return a list of failed checks.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_path (str):</span>
-<span class="sd">            The file path to the repository which will have metrics</span>
+<span class="sd">        repo_path: The file path to the repository which will have metrics</span>
 <span class="sd">            calculated and includes boolean checks.</span>
-<span class="sd">        ignore (Optional[List[str]]):</span>
-<span class="sd">            A list of metric IDs to ignore when running the checks.</span>
-<span class="sd">            Defaults to None.</span>
+<span class="sd">        ignore: A list of metric IDs to ignore when running the checks.</span>
+<span class="sd">        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        List[Dict[str, Any]]: A list of dictionaries containing the metrics and</span>
-<span class="sd">        their associated results. Each dictionary includes the name, id, and</span>
-<span class="sd">       guidance on how to fix each failed check. The dictionary also</span>
-<span class="sd">        includes data about the almanack score for use in summarizing the results.</span>
+<span class="sd">        A list of dictionaries containing the metrics and their associated results.</span>
+<span class="sd">        Each dictionary includes the name, id, and guidance on how to fix each</span>
+<span class="sd">        failed check. The dictionary also includes data about the almanack score</span>
+<span class="sd">        for use in summarizing the results.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="p">[</span>
@@ -517,7 +560,11 @@ document.write(`
             <span class="c1"># (we need only these for the output)</span>
             <span class="k">if</span> <span class="n">metric_key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;correction_guidance&quot;</span><span class="p">,</span> <span class="s2">&quot;result&quot;</span><span class="p">]</span>
         <span class="p">}</span>
-        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">get_table</span><span class="p">(</span>
+            <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+            <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">,</span>
+            <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">if</span>
         <span class="c1"># gathers the almanack score</span>
         <span class="p">(</span><span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">)</span> <span class="ow">or</span>
@@ -587,16 +634,20 @@ document.write(`
 
 <div class="viewcode-block" id="compute_repo_data">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.compute_repo_data">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes comprehensive data for a GitHub repository.</span>
+<span class="k">def</span> <span class="nf">compute_repo_data</span><span class="p">(</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute comprehensive data for a GitHub repository.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_path (str): The local path to the Git repository.</span>
+<span class="sd">        repo_path: The local path to the Git repository.</span>
+<span class="sd">        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        dict: A dictionary containing data key-pairs.</span>
+<span class="sd">        A dictionary containing data key-pairs.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">exclude_paths</span> <span class="o">=</span> <span class="n">_normalize_exclude_paths</span><span class="p">(</span><span class="n">exclude_paths</span><span class="p">)</span>
 
     <span class="c1"># Check if we need to download the repo because it&#39;s a link</span>
     <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;http&quot;</span><span class="p">):</span>
@@ -669,6 +720,27 @@ document.write(`
 
     <span class="c1"># gather doi citation data</span>
     <span class="n">doi_citation_data</span> <span class="o">=</span> <span class="n">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+
+    <span class="c1"># collect notebook cell data</span>
+    <span class="n">ignore_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.venv&quot;</span><span class="p">]</span>
+
+    <span class="n">notebook_cells</span> <span class="o">=</span> <span class="n">get_nb_contents</span><span class="p">(</span>
+        <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+        <span class="n">ignore_dirs</span><span class="o">=</span><span class="n">ignore_dirs</span><span class="p">,</span>
+        <span class="n">ignore_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">failed_notebook_exec_order</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">notebook_path</span><span class="p">,</span> <span class="n">cells</span> <span class="ow">in</span> <span class="n">notebook_cells</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">check_ipynb_code_exec_order</span><span class="p">(</span><span class="n">nb_cells</span><span class="o">=</span><span class="n">cells</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">failed_notebook_exec_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">notebook_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)))</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="n">failed_notebook_exec_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">notebook_path</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">failed_notebook_exec_order</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Notebook execution order failures: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">failed_notebook_exec_order</span>
+        <span class="p">)</span>
 
     <span class="c1"># Return the data structure</span>
     <span class="k">return</span> <span class="p">{</span>
@@ -779,6 +851,10 @@ document.write(`
         <span class="s2">&quot;repo-code-coverage-executed-lines&quot;</span><span class="p">:</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executed_lines&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">:</span> <span class="n">normalized_total_entropy</span><span class="p">,</span>
         <span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">:</span> <span class="n">file_entropy</span><span class="p">,</span>
+        <span class="s2">&quot;repo-check-notebook-dir&quot;</span><span class="p">:</span> <span class="n">repo_dir_exists</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">directory_name</span><span class="o">=</span><span class="s2">&quot;notebooks&quot;</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-check-notebook-exec-order&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="n">failed_notebook_exec_order</span><span class="p">,</span>
     <span class="p">}</span></div>
 
 
@@ -1002,22 +1078,24 @@ document.write(`
 
 <div class="viewcode-block" id="process_repo_for_almanack">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.process_repo_for_almanack">[docs]</a>
-<span class="k">def</span> <span class="nf">process_repo_for_almanack</span><span class="p">(</span><span class="n">repo_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.</span>
+<span class="k">def</span> <span class="nf">process_repo_for_almanack</span><span class="p">(</span>
+    <span class="n">repo_url</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Process a GitHub repository URL into a flat dictionary of Almanack metrics.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_url (str): The GitHub repository URL.</span>
+<span class="sd">        repo_url: The GitHub repository URL.</span>
+<span class="sd">        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        dict: Flattened metrics for the repository, including sustainability checks.</span>
-<span class="sd">              If the processing fails, returns an error entry with the repository URL.</span>
+<span class="sd">        Flattened metrics for the repository, including sustainability checks.</span>
+<span class="sd">        If the processing fails, returns an error entry with the repository URL.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Merge the base repo identifier with flattened metrics in one dictionary</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="o">**</span><span class="p">{</span><span class="s2">&quot;Repository URL&quot;</span><span class="p">:</span> <span class="n">repo_url</span><span class="p">},</span>
-            <span class="o">**</span><span class="n">table_to_wide</span><span class="p">(</span><span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_url</span><span class="p">)),</span>
+            <span class="o">**</span><span class="n">table_to_wide</span><span class="p">(</span><span class="n">get_table</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_url</span><span class="p">,</span> <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">)),</span>
         <span class="p">}</span>
 
     <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
