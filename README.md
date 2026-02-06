@@ -48,6 +48,12 @@ almanack table path/to/repository
 
 # perform linting-style checks on a repository
 almanack check path/to/repository
+
+# exclude paths (comma-separated)
+almanack check path/to/repository --exclude_paths=tests,src/book/_build
+
+# enable debug logging
+almanack check path/to/repository --verbose
 ```
 
 ### Pre-commit Hook

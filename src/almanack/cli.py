@@ -4,6 +4,7 @@ Setup almanack CLI through python-fire
 
 import importlib
 import json
+import logging
 import shutil
 import sys
 from datetime import datetime, timezone
@@ -46,36 +47,34 @@ class AlmanackCLI(object):
         repo_path: str,
         dest_path: Optional[str] = None,
         ignore: Optional[List[str]] = None,
+        exclude_paths: Optional[List[str]] = None,
         verbose: bool = False,
     ) -> None:
-        """
-        Used through CLI to
-        generate a table of metrics
-
-        This enables the use of CLI such as:
-        `almanack table <repo path>`
+        """Generate a table of metrics for a repository.
 
         Args:
-            repo_path (str):
-                The path to the repository to analyze.
-            dest_path (str):
-                A path to send the output to.
-            ignore (List[str]):
-                A list of metric IDs to ignore when
-                running the checks. Defaults to None.
-             verbose (bool):
-                If True, print extra information.
+            repo_path: The path to the repository to analyze.
+            dest_path: A path to send the output to.
+            ignore: A list of metric IDs to ignore when running the checks.
+            exclude_paths: Repository-relative paths or glob patterns to exclude.
+            verbose: If True, print extra information and enable debug logging.
         """
 
         if verbose:
+            logging.basicConfig(level=logging.DEBUG)
             print(  # noqa: T201
-                f"Gathering table for repo: {repo_path} (ignore={ignore})"
+                "Gathering table for repo: "
+                f"{repo_path} (ignore={ignore}, exclude_paths={exclude_paths})"
             )
 
         # serialized JSON as a string
         json_output = json.dumps(
             # gather table data from Almanack
-            get_table(repo_path=repo_path, ignore=ignore),
+            get_table(
+                repo_path=repo_path,
+                ignore=ignore,
+                exclude_paths=exclude_paths,
+            ),
         )
 
         # if we have a dest_path, send data to file
@@ -94,24 +93,19 @@ class AlmanackCLI(object):
         sys.exit(0)
 
     def check(
-        self, repo_path: str, ignore: Optional[List[str]] = None, verbose: bool = False
+        self,
+        repo_path: str,
+        ignore: Optional[List[str]] = None,
+        exclude_paths: Optional[List[str]] = None,
+        verbose: bool = False,
     ) -> None:
-        """
-        Used through CLI to
-        check table of metrics for
-        boolean values with a non-zero
-        sustainability direction
-        for failures.
-
-        This enables the use of CLI such as:
-        `almanack check <repo path>`
+        """Check sustainability metrics and report failures.
 
         Args:
-            repo_path (str):
-                The path to the repository to analyze.
-            ignore (List[str]):
-                A list of metric IDs to ignore when
-                running the checks. Defaults to None.
+            repo_path: The path to the repository to analyze.
+            ignore: A list of metric IDs to ignore when running the checks.
+            exclude_paths: Repository-relative paths or glob patterns to exclude.
+            verbose: If True, print extra information and enable debug logging.
         """
 
         # header for CLI output
@@ -125,11 +119,17 @@ class AlmanackCLI(object):
         )
 
         if verbose:
-            print(f"Running check on repo: {repo_path} (ignore={ignore})")  # noqa: T201
+            logging.basicConfig(level=logging.DEBUG)
+            print(  # noqa: T201
+                "Running check on repo: "
+                f"{repo_path} (ignore={ignore}, exclude_paths={exclude_paths})"
+            )
 
         # gather failed metrics
         failed_metrics = gather_failed_almanack_metric_checks(
-            repo_path=repo_path, ignore=ignore
+            repo_path=repo_path,
+            ignore=ignore,
+            exclude_paths=exclude_paths,
         )
 
         # gather almanack score metrics

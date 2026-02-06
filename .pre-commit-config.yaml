@@ -180,6 +180,15 @@ repos:
         entry: poetry run poe code-coverage-report
         pass_filenames: false
         always_run: true
+      # Run the Almanack hook locally, skipping the tests directory.
+    -   id: almanack-check
+        name: almanack-check
+        entry: almanack check .
+        language: python
+        pass_filenames: false
+        args:
+        - "--exclude_paths=tests,src/book/_build,src/book/seed-bank/almanack-example/almanack-example.ipynb"
+        additional_dependencies: ["."]
 -   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
     rev: 0.1.1
     hooks:
