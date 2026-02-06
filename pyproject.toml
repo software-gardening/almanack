@@ -32,6 +32,7 @@ requests = "^2.32.3"
 defusedxml = "^0.7.1"
 pandas = ">=2.2.2"
 pyarrow = ">=16"
+nbformat = "^5.10.4"
 
 [tool.poetry.group.book.dependencies]
 jupyter-book = "^1.0.0"
@@ -58,16 +59,19 @@ jsonschema = "^4.23.0"
 dunamai = "^1.23.0"
 playwright = "^1.51.0"
 
-[tool.poetry.scripts]
-almanack = "almanack.cli:trigger"
-
 [tool.poetry.requires-plugins]
 poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
+
+[tool.poetry.scripts]
+almanack = "almanack.cli:trigger"
 
 [tool.poetry-dynamic-versioning]
 enable = true
 style = "pep440"
 vcs = "git"
+
+[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
+persistent-substitution = false
 
 # specify where version replacement is performed
 [tool.poetry-dynamic-versioning.substitution]
@@ -75,8 +79,6 @@ files = [ "src/almanack/__init__.py" ]
 
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
-[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
-persistent-substitution = false
 
 [tool.setuptools_scm]
 root = "."
@@ -196,16 +198,4 @@ else
     echo "No differences found (ignoring timestamps)."
     rm "new_cov.xml"
 fi
-"""
-# note: quarto commands below expect quarto installed on the local system.
-# see here for more information: https://quarto.org/docs/download/
-poster-preview.shell = """
-quarto preview \
-  src/book/_posters/2025/poster.qmd
-"""
-poster-render.shell = """
-  quarto render \
-  src/book/_posters/2025/poster.qmd
-  mv src/book/_posters/2025/2026-poster.pdf \
-  src/book/_static/2026-poster.pdf
 """

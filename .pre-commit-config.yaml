@@ -28,14 +28,14 @@ repos:
     -   id: detect-private-key
 
 -   repo: https://github.com/python-poetry/poetry
-    rev: "2.3.1"
+    rev: "2.3.2"
     hooks:
       # Verifies that the `pyproject.toml` file is valid and follows Poetry's
       # expected syntax, which ensures consistent dependency management.
     -   id: poetry-check
 
 -   repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.11.1"
+    rev: "v2.12.1"
     hooks:
       # Formats the `pyproject.toml` file to follow a consistent structure
       # and style, making it easier to read and maintain.
@@ -116,7 +116,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.14.13"
+    rev: "v0.15.0"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
@@ -180,6 +180,15 @@ repos:
         entry: poetry run poe code-coverage-report
         pass_filenames: false
         always_run: true
+      # Run the Almanack hook locally, skipping the tests directory.
+    -   id: almanack-check
+        name: almanack-check
+        entry: almanack check .
+        language: python
+        pass_filenames: false
+        args:
+        - "--exclude_paths=tests,src/book/_build,src/book/seed-bank/almanack-example/almanack-example.ipynb"
+        additional_dependencies: ["."]
 -   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
     rev: 0.1.1
     hooks:

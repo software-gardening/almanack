@@ -25,6 +25,7 @@ from almanack.git import (
     get_edited_files,
     get_remote_url,
     read_file,
+    repo_dir_exists,
 )
 from almanack.metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
@@ -42,6 +43,10 @@ from almanack.metrics.garden_lattice.practicality import (
     get_ecosystems_package_metrics,
 )
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
+from almanack.metrics.notebooks import (
+    check_ipynb_code_exec_order,
+    get_nb_contents,
+)
 from almanack.metrics.remote import get_api_data
 
 LOGGER = logging.getLogger(__name__)
@@ -50,11 +55,48 @@ METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
 
-def get_table(
-    repo_path: str, ignore: Optional[List[str]] = None
-) -> List[Dict[str, Any]]:
+def _normalize_exclude_paths(
+    exclude_paths: Optional[Union[str, List[str], Tuple[str, ...]]],
+) -> Optional[List[str]]:
+    """Normalize exclude path inputs into a list of strings.
+
+    Args:
+        exclude_paths: A string, list, or tuple of exclude paths. Accepts
+            comma-separated strings and strips surrounding quotes.
+
+    Returns:
+        A list of normalized exclude paths, or None if no paths are provided.
     """
-    Gather metrics on a repository and return the results in a structured format.
+    if exclude_paths is None:
+        return None
+    if isinstance(exclude_paths, str):
+        parts = [exclude_paths]
+    else:
+        parts = list(exclude_paths)
+    normalized = []
+    for part in parts:
+        if not part:
+            continue
+        part_str = part if isinstance(part, str) else str(part)
+        for raw_candidate in part_str.split(","):
+            candidate = raw_candidate.strip()
+            if not candidate:
+                continue
+            if (candidate.startswith("'") and candidate.endswith("'")) or (
+                candidate.startswith('"') and candidate.endswith('"')
+            ):
+                candidate = candidate[1:-1]
+            if candidate:
+                normalized.append(candidate)
+    return normalized or None
+
+
+def get_table(
+    repo_path: str,
+    ignore: Optional[List[str]] = None,
+    exclude_paths: Optional[List[str]] = None,
+) -> List[Dict[str, Any]]:
+    """Gather metrics on a repository and return the results in a structured format.
 
     This function reads a metrics table from a predefined YAML file, computes relevant
     data from the specified repository, and associates the computed results with
@@ -62,21 +104,21 @@ def get_table(
     computation, an exception is raised.
 
     Args:
-        repo_path (str):
-            The file path to the repository for which the Almanack runs metrics.
-        ignore (Optional[List[str]]):
-            A list of metric IDs to ignore when running the checks.
-            Defaults to None.
+        repo_path: The file path to the repository for which the Almanack runs metrics.
+        ignore: A list of metric IDs to ignore when running the checks.
+        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.
 
     Returns:
-        List[Dict[str, Any]]: A list of dictionaries containing the metrics and
-        their associated results. Each dictionary includes the original metrics data
-        along with the computed result under the key "result".
+        A list of dictionaries containing the metrics and their associated results.
+        Each dictionary includes the original metrics data along with the computed
+        result under the key "result".
 
     Raises:
-        ReferenceError: If there is an error encountered while processing the
-        data, providing context in the error message.
+        ReferenceError: If there is an error encountered while processing the data,
+            providing context in the error message.
     """
+
+    exclude_paths = _normalize_exclude_paths(exclude_paths)
 
     # read the metrics table
     with open(METRICS_TABLE, "r") as f:
@@ -95,7 +137,7 @@ def get_table(
             raise ValueError(f"Invalid ignore keys: {invalid_ignore_keys}")
 
     # gather data for use in the metrics table
-    metrics_data = compute_repo_data(repo_path=repo_path)
+    metrics_data = compute_repo_data(repo_path=repo_path, exclude_paths=exclude_paths)
 
     if "error" in metrics_data.keys():
         raise ReferenceError(
@@ -132,25 +174,23 @@ def get_table(
 
 
 def gather_failed_almanack_metric_checks(
-    repo_path: str, ignore: Optional[List[str]] = None
+    repo_path: str,
+    ignore: Optional[List[str]] = None,
+    exclude_paths: Optional[List[str]] = None,
 ) -> List[Dict[str, Any]]:
-    """
-    Gather checks on the repository metrics and returns a list of failed checks
-    for use in helping others understand the failed checks and rectify them.
+    """Gather checks on the repository metrics and return a list of failed checks.
 
     Args:
-        repo_path (str):
-            The file path to the repository which will have metrics
+        repo_path: The file path to the repository which will have metrics
             calculated and includes boolean checks.
-        ignore (Optional[List[str]]):
-            A list of metric IDs to ignore when running the checks.
-            Defaults to None.
+        ignore: A list of metric IDs to ignore when running the checks.
+        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.
 
     Returns:
-        List[Dict[str, Any]]: A list of dictionaries containing the metrics and
-        their associated results. Each dictionary includes the name, id, and
-       guidance on how to fix each failed check. The dictionary also
-        includes data about the almanack score for use in summarizing the results.
+        A list of dictionaries containing the metrics and their associated results.
+        Each dictionary includes the name, id, and guidance on how to fix each
+        failed check. The dictionary also includes data about the almanack score
+        for use in summarizing the results.
     """
 
     return [
@@ -161,7 +201,11 @@ def gather_failed_almanack_metric_checks(
             # (we need only these for the output)
             if metric_key in ["name", "id", "correction_guidance", "result"]
         }
-        for metric in get_table(repo_path=repo_path, ignore=ignore)
+        for metric in get_table(
+            repo_path=repo_path,
+            ignore=ignore,
+            exclude_paths=exclude_paths,
+        )
         if
         # gathers the almanack score
         (metric["name"] == "repo-almanack-score") or
@@ -225,16 +269,20 @@ def days_of_development(repo: pygit2.Repository) -> float:
     return total_days
 
 
-def compute_repo_data(repo_path: str) -> None:
-    """
-    Computes comprehensive data for a GitHub repository.
+def compute_repo_data(
+    repo_path: str, exclude_paths: Optional[List[str]] = None
+) -> Dict[str, Any]:
+    """Compute comprehensive data for a GitHub repository.
 
     Args:
-        repo_path (str): The local path to the Git repository.
+        repo_path: The local path to the Git repository.
+        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.
 
     Returns:
-        dict: A dictionary containing data key-pairs.
+        A dictionary containing data key-pairs.
     """
+
+    exclude_paths = _normalize_exclude_paths(exclude_paths)
 
     # Check if we need to download the repo because it's a link
     if str(repo_path).startswith("http"):
@@ -307,6 +355,27 @@ def compute_repo_data(repo_path: str) -> None:
 
     # gather doi citation data
     doi_citation_data = find_doi_citation_data(repo=repo)
+
+    # collect notebook cell data
+    ignore_dirs = [".venv"]
+
+    notebook_cells = get_nb_contents(
+        repo_path=repo_path,
+        ignore_dirs=ignore_dirs,
+        ignore_paths=exclude_paths,
+    )
+    failed_notebook_exec_order = []
+    for notebook_path, cells in notebook_cells.items():
+        if check_ipynb_code_exec_order(nb_cells=cells):
+            continue
+        try:
+            failed_notebook_exec_order.append(str(notebook_path.relative_to(repo_path)))
+        except ValueError:
+            failed_notebook_exec_order.append(str(notebook_path))
+    if failed_notebook_exec_order:
+        LOGGER.debug(
+            "Notebook execution order failures: %s", failed_notebook_exec_order
+        )
 
     # Return the data structure
     return {
@@ -417,6 +486,10 @@ def compute_repo_data(repo_path: str) -> None:
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
+        "repo-check-notebook-dir": repo_dir_exists(
+            repo=repo, directory_name="notebooks"
+        ),
+        "repo-check-notebook-exec-order": not failed_notebook_exec_order,
     }
 
 
@@ -628,22 +701,24 @@ def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     return wide
 
 
-def process_repo_for_almanack(repo_url: str) -> Dict[str, Any]:
-    """
-    Processes a single GitHub repository URL into a flat dictionary of Almanack metrics.
+def process_repo_for_almanack(
+    repo_url: str, exclude_paths: Optional[List[str]] = None
+) -> Dict[str, Any]:
+    """Process a GitHub repository URL into a flat dictionary of Almanack metrics.
 
     Args:
-        repo_url (str): The GitHub repository URL.
+        repo_url: The GitHub repository URL.
+        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.
 
     Returns:
-        dict: Flattened metrics for the repository, including sustainability checks.
-              If the processing fails, returns an error entry with the repository URL.
+        Flattened metrics for the repository, including sustainability checks.
+        If the processing fails, returns an error entry with the repository URL.
     """
     try:
         # Merge the base repo identifier with flattened metrics in one dictionary
         return {
             **{"Repository URL": repo_url},
-            **table_to_wide(get_table(repo_path=repo_url)),
+            **table_to_wide(get_table(repo_path=repo_url, exclude_paths=exclude_paths)),
         }
 
     except Exception as e:
