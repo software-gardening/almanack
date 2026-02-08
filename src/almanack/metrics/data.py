@@ -45,8 +45,8 @@ from almanack.metrics.garden_lattice.practicality import (
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
 from almanack.metrics.notebooks import (
     check_ipynb_code_exec_order,
-    get_nb_contents,
     check_ipynb_import_calls,
+    get_nb_contents,
 )
 from almanack.metrics.remote import get_api_data
 
@@ -209,8 +209,7 @@ def gather_failed_almanack_metric_checks(
         )
         if
         # gathers the almanack score
-        (metric["name"] == "repo-almanack-score")
-        or
+        (metric["name"] == "repo-almanack-score") or
         # gathers failed checks
         (
             (
@@ -381,9 +380,21 @@ def compute_repo_data(
         )
 
     # check that import calls are in the first code cell for all notebooks
-    failed_import_checks = check_ipynb_import_calls(notebook_cells)
-    if not failed_import_checks:
-        LOGGER.debug("Notebooks with import calls not in the first code cell")
+    failed_import_checks = []
+    for notebook_path, cells in notebook_cells.items():
+        if check_ipynb_import_calls(nb_cells=cells):
+            continue
+        try:
+            failed_import_checks.append(str(notebook_path))
+        except ValueError:
+            failed_import_checks.append(str(notebook_path.relative_to(repo_path)))
+        except ValueError:
+            failed_import_checks.append(str(notebook_path))
+    if failed_import_checks:
+        LOGGER.debug(
+            "Notebooks with import calls not in the first code cell %s",
+            failed_import_checks,
+        )
 
     # Return the data structure
     return {
