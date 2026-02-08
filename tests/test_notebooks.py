@@ -1,8 +1,9 @@
 """
 Tests for the notebooks module.
 
-This module contains comprehensive tests for loading and analyzing Jupyter notebook contents,
-including testing execution order validation, import statement placement, and cell parsing functionality.
+This module contains comprehensive tests for loading and analyzing Jupyter notebook
+contents, including testing execution order validation, import statement placement,
+and cell parsing functionality.
 
 Test Data:
 ---------
@@ -39,7 +40,7 @@ from almanack.metrics.notebooks import (
     _create_jupyter_cell,
     _has_imports_in_cell,
     check_ipynb_code_exec_order,
-    check_ipynb_imports_calls,
+    check_ipynb_import_calls,
     get_nb_contents,
 )
 
@@ -392,57 +393,65 @@ class TestCheckIpynbImportsCalls:
 
     def test_imports_in_first_cell_only(self, notebook_cells):
         """Test notebook with all imports in first code cell (should pass)."""
-        cells = self._get_cells_by_filename(notebook_cells, "pass-imports-first-cell.ipynb")
+        cells = self._get_cells_by_filename(
+            notebook_cells, "pass-imports-first-cell.ipynb"
+        )
         assert cells is not None, "Test notebook not found"
-        assert check_ipynb_imports_calls(cells) is True
+        assert check_ipynb_import_calls(cells) is True
 
     def test_imports_scattered(self, notebook_cells):
         """Test notebook with imports in multiple cells (should fail)."""
-        cells = self._get_cells_by_filename(notebook_cells, "fail-imports-scattered.ipynb")
+        cells = self._get_cells_by_filename(
+            notebook_cells, "fail-imports-scattered.ipynb"
+        )
         assert cells is not None, "Test notebook not found"
-        assert check_ipynb_imports_calls(cells) is False
+        assert check_ipynb_import_calls(cells) is False
 
     def test_no_imports(self, notebook_cells):
         """Test notebook with no imports (should pass)."""
         cells = self._get_cells_by_filename(notebook_cells, "pass-no-imports.ipynb")
         assert cells is not None, "Test notebook not found"
-        assert check_ipynb_imports_calls(cells) is True
+        assert check_ipynb_import_calls(cells) is True
 
     def test_imports_not_in_first_cell(self, notebook_cells):
         """Test notebook where first cell has no imports but later cells do (should fail)."""
-        cells = self._get_cells_by_filename(notebook_cells, "fail-imports-not-first.ipynb")
+        cells = self._get_cells_by_filename(
+            notebook_cells, "fail-imports-not-first.ipynb"
+        )
         assert cells is not None, "Test notebook not found"
-        assert check_ipynb_imports_calls(cells) is False
+        assert check_ipynb_import_calls(cells) is False
 
     def test_only_markdown_cells(self, notebook_cells):
         """Test notebook with only markdown cells (should pass)."""
         cells = self._get_cells_by_filename(notebook_cells, "pass-only-markdown.ipynb")
         assert cells is not None, "Test notebook not found"
-        assert check_ipynb_imports_calls(cells) is True
+        assert check_ipynb_import_calls(cells) is True
 
     def test_empty_notebook(self):
         """Test empty notebook (should pass)."""
-        assert check_ipynb_imports_calls([]) is True
+        assert check_ipynb_import_calls([]) is True
 
     def test_ipython_magic_with_imports_first_cell(self, notebook_cells):
         """Test that IPython magic commands with imports in first cell pass."""
-        cells = self._get_cells_by_filename(notebook_cells, "pass-imports-with-magic.ipynb")
+        cells = self._get_cells_by_filename(
+            notebook_cells, "pass-imports-with-magic.ipynb"
+        )
         assert cells is not None, "Test notebook not found"
-        assert check_ipynb_imports_calls(cells) is True
+        assert check_ipynb_import_calls(cells) is True
 
     def test_ordered_notebook_imports(self, notebook_cells):
         """Test that the ordered execution notebook also has proper import placement."""
         cells = self._get_cells_by_filename(notebook_cells, "ordered-nb.ipynb")
         assert cells is not None, "Test notebook not found"
         # ordered-nb has imports in first code cell
-        assert check_ipynb_imports_calls(cells) is True
+        assert check_ipynb_import_calls(cells) is True
 
     def test_unordered_notebook_imports(self, notebook_cells):
         """Test that the unordered execution notebook also has proper import placement."""
         cells = self._get_cells_by_filename(notebook_cells, "unordered-nb.ipynb")
         assert cells is not None, "Test notebook not found"
         # unordered-nb has imports in first code cell
-        assert check_ipynb_imports_calls(cells) is True
+        assert check_ipynb_import_calls(cells) is True
 
 
 class TestIntegrationTests:
@@ -514,19 +523,25 @@ class TestIntegrationTests:
         cells = result[target_nb_path]
 
         # Should pass - word 'import' in docstrings/comments is not an actual import
-        assert check_ipynb_imports_calls(cells) is True
-        
+        assert check_ipynb_import_calls(cells) is True
+
         # Verify the cells contain the word 'import' in non-import contexts
         # Check that first code cell has docstring with 'import' in it
         code_cells = [cell for cell in cells if cell.cell_type == "code"]
         assert len(code_cells) > 0, "Should have code cells"
-        
+
         # First code cell should have actual imports plus docstring mentioning 'import'
         first_code_cell = code_cells[0]
-        assert "import" in first_code_cell.source.lower(), "First cell should contain 'import'"
-        assert "import numpy" in first_code_cell.source, "Should have actual import statement"
-        
+        assert (
+            "import" in first_code_cell.source.lower()
+        ), "First cell should contain 'import'"
+        assert (
+            "import numpy" in first_code_cell.source
+        ), "Should have actual import statement"
+
         # Later cells should have 'import' in comments/docstrings but not as statements
         if len(code_cells) > 1:
             later_cells_combined = "\n".join(cell.source for cell in code_cells[1:])
-            assert "import" in later_cells_combined.lower(), "Later cells should mention 'import' in comments/docstrings"
+            assert (
+                "import" in later_cells_combined.lower()
+            ), "Later cells should mention 'import' in comments/docstrings"

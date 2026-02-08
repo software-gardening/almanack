@@ -330,7 +330,7 @@ def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     return execution_counts == expected_sequence
 
 
-def check_ipynb_imports_calls(nb_cells: List[JupyterCell]) -> bool:
+def check_ipynb_import_calls(nb_cells: List[JupyterCell]) -> bool:
     """Checks whether all import statements in a Jupyter notebook are confined to the
     first code cell.
 
