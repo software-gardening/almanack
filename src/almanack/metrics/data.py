@@ -381,8 +381,8 @@ def compute_repo_data(
         )
 
     # check that import calls are in the first code cell for all notebooks
-    ipynb_import_check = check_ipynb_import_calls(notebook_cells)
-    if not ipynb_import_check:
+    failed_import_checks = check_ipynb_import_calls(notebook_cells)
+    if not failed_import_checks:
         LOGGER.debug("Notebooks with import calls not in the first code cell")
 
     # Return the data structure
@@ -498,7 +498,7 @@ def compute_repo_data(
             repo=repo, directory_name="notebooks"
         ),
         "repo-check-notebook-exec-order": not failed_notebook_exec_order,
-        "repo-check-notebook-import-calls": ipynb_import_check,
+        "repo-check-notebook-import-calls": not failed_import_checks,
     }
 
 

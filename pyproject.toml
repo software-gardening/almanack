@@ -1,6 +1,5 @@
 [build-system]
 build-backend = "poetry_dynamic_versioning.backend"
-
 requires = [ "poetry-core>=1", "poetry-dynamic-versioning>=1,<2" ]
 
 [tool.poetry]
@@ -17,65 +16,51 @@ include = [
   "src/book/references.bib",
 ]
 exclude = [ "src/book/_build" ]
-
-[tool.poetry.dependencies]
-python = ">=3.10,<3.14"
-pyyaml = "^6.0.1"
-pygit2 = [
+dependencies.python = ">=3.10,<3.14"
+dependencies.pyyaml = "^6.0.1"
+dependencies.pygit2 = [
   { version = ">=1.15.1", python = "<=3.12" },
   { version = ">=1.18.2", python = ">3.12" },
 ]
-fire = ">=0.6,<0.8"
-tabulate = "^0.9.0"
-charset-normalizer = "^3.4.0"
-requests = "^2.32.3"
-defusedxml = "^0.7.1"
-pandas = ">=2.2.2"
-pyarrow = ">=16"
-nbformat = "^5.10.4"
-
-[tool.poetry.group.book.dependencies]
-jupyter-book = "^1.0.0"
-docutils = "0.21.2"
-sphinxcontrib-bibtex = "^2.6.2"
-jupyterlab = "^4.2.3"
-plotly = ">=5.22,<7.0"
-jinja2 = "^3.1.6"
-
-[tool.poetry.group.dev.dependencies]
-poethepoet = ">=0.25,<0.41"
-pytest = ">=8.1.1,<10.0.0"
-linkchecker = "^10.4.0"
-vale = "^3.3.1.0"
-coverage = "^7.5.3"
-black = ">=24.4.2,<27.0.0"
-isort = ">=5.13.2,<8.0.0"
-jupyterlab-code-formatter = ">=2.2.1,<4.0.0"
-requests = "^2.32.3"
-kaleido = "1.2.0"
-pygithub = "^2.3.0"
-jupyterlab-spellchecker = "^0.8.4"
-jsonschema = "^4.23.0"
-dunamai = "^1.23.0"
-playwright = "^1.51.0"
-
-[tool.poetry.requires-plugins]
-poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
-
-[tool.poetry.scripts]
-almanack = "almanack.cli:trigger"
+dependencies.fire = ">=0.6,<0.8"
+dependencies.tabulate = "^0.9.0"
+dependencies.charset-normalizer = "^3.4.0"
+dependencies.requests = "^2.32.3"
+dependencies.defusedxml = "^0.7.1"
+dependencies.pandas = ">=2.2.2"
+dependencies.pyarrow = ">=16"
+dependencies.nbformat = "^5.10.4"
+group.book.dependencies.jupyter-book = "^1.0.0"
+group.book.dependencies.docutils = "0.21.2"
+group.book.dependencies.sphinxcontrib-bibtex = "^2.6.2"
+group.book.dependencies.jupyterlab = "^4.2.3"
+group.book.dependencies.plotly = ">=5.22,<7.0"
+group.book.dependencies.jinja2 = "^3.1.6"
+group.dev.dependencies.poethepoet = ">=0.25,<0.41"
+group.dev.dependencies.pytest = ">=8.1.1,<10.0.0"
+group.dev.dependencies.linkchecker = "^10.4.0"
+group.dev.dependencies.vale = "^3.3.1.0"
+group.dev.dependencies.coverage = "^7.5.3"
+group.dev.dependencies.black = ">=24.4.2,<27.0.0"
+group.dev.dependencies.isort = ">=5.13.2,<8.0.0"
+group.dev.dependencies.jupyterlab-code-formatter = ">=2.2.1,<4.0.0"
+group.dev.dependencies.requests = "^2.32.3"
+group.dev.dependencies.kaleido = "1.2.0"
+group.dev.dependencies.pygithub = "^2.3.0"
+group.dev.dependencies.jupyterlab-spellchecker = "^0.8.4"
+group.dev.dependencies.jsonschema = "^4.23.0"
+group.dev.dependencies.dunamai = "^1.23.0"
+group.dev.dependencies.playwright = "^1.51.0"
+requires-plugins.poetry-dynamic-versioning = { version = ">=1.0.0,<2.0.0", extras = [ "plugin" ] }
+scripts.almanack = "almanack.cli:trigger"
 
 [tool.poetry-dynamic-versioning]
 enable = true
 style = "pep440"
 vcs = "git"
-
-[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
-persistent-substitution = false
-
+files.persistent-substitution = false
 # specify where version replacement is performed
-[tool.poetry-dynamic-versioning.substitution]
-files = [ "src/almanack/__init__.py" ]
+substitution.files = [ "src/almanack/__init__.py" ]
 
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
@@ -87,6 +72,8 @@ root = "."
 target-version = "py311"
 fix = true
 lint.select = [
+  # flake8-print
+  "T20",
   # mccabe
   "C90",
   # pyflakes
@@ -95,8 +82,6 @@ lint.select = [
   "PL",
   # ruff
   "RUF",
-  # flake8-print
-  "T20",
 ]
 # defines poe the poet tasks
 # Ignore `E402` and `F401` (unused imports) in all `__init__.py` files
@@ -113,9 +98,9 @@ ignore-words = "styles/config/vocabularies/almanack/accept.txt"
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex = ".{1024}|.*codespell-ignore.*"
 
-[tool.pytest.ini_options]
-testpaths = "tests"
-markers = [
+[tool.pytest]
+ini_options.testpaths = "tests"
+ini_options.markers = [
   "links: tests which involve checking for hyperlink rot.",
 ]
 
@@ -126,76 +111,48 @@ paths = [ "src/almanack", "tests" ]
 [tool.bandit]
 exclude_dirs = [ "tests" ]
 
-[tool.poe.tasks]
+[tool.poe]
 # builds the jupyter book related to this project
 # note: we include the pythonpath var to properly build sphinx autodocs
-build-book.shell = """
+tasks.build-book.shell = """
   PYTHONPATH="./src/almanack" jupyter-book build src/book --all
 """
 # build a PDF from the HTML content
 # note: depends on build-book content and creates copy to avoid
 # single-page changes performed on the HTML build.
-build-book-pdf.shell = """
+tasks.build-book-pdf.shell = """
   cp -r src/book src/_pdfbuild &&
   jupyter-book build src/_pdfbuild --builder pdfhtml
 """
 # builds the jupyter book related to this project and opens a new browser window
 # note: we include the pythonpath var to properly build sphinx autodocs
-build-book-dev.shell = """
-  PYTHONPATH="./src/almanack" jupyter-book build src/book && \
-  python -m webbrowser -t "file://$PWD/src/book/_build/html/index.html"
-"""
+tasks.build-book-dev.shell = """\
+    PYTHONPATH=\"./src/almanack\" jupyter-book build src/book && \\\n  python -m webbrowser -t \
+  \"file://$PWD/src/book/_build/html/index.html\"\n\
+  """
 # syncs and runs vale relative to this project
 # through pre-commit to trigger warnings as
 # non-zero return when there is more than one
 # line of output from vale.
-vale-checks.shell = """
-vale sync || true;
-output=$(vale ./src/book) ||
-if [ $(echo "$output" | wc -l) -gt 1 ]; then
-echo "$output"; exit 1;
-fi
-"""
+tasks.vale-checks.shell = """\
+  vale sync || true;\noutput=$(vale ./src/book) ||\nif [ $(echo \"$output\" | wc -l) -gt 1 ]; then\necho \"$output\"; \
+  exit 1;\nfi\n\
+  """
 # add a convenience task for package-focused testing
-pkg-tests.shell = """
+tasks.pkg-tests.shell = """
 pytest --ignore tests/test_build.py
 """
 # task for running code coverage report steps
-code-coverage-report.shell = """
-coverage run -m pytest --ignore tests/test_build.py
-coverage report
-coverage xml -o new_cov.xml
-
-# Define a Python function for reusable attribute extraction
-PYTHON_FUNC="
-import xml.etree.ElementTree as ET
-def extract_relevant_attributes(file):
-    attributes = ET.parse(file).getroot().attrib
-    return [v for k, v in attributes.items() if k != 'timestamp']
-
-if __name__ == '__main__':
-    import sys
-    file_path = sys.argv[1]
-    print(extract_relevant_attributes(file_path))
-"
-
-# Check if the existing coverage file exists
-if [[ ! -f "coverage.xml" ]]; then
-    echo "Existing coverage file not found. Creating a new one."
-    mv "new_cov.xml" "coverage.xml"
-    exit 0
-fi
-
-# Extract attributes (excluding timestamp) from both files using Python
-EXISTING_ATTRS=$(python -c "$PYTHON_FUNC" "coverage.xml")
-NEW_ATTRS=$(python -c "$PYTHON_FUNC" "new_cov.xml")
-
-# Compare the extracted attributes
-if [[ "$EXISTING_ATTRS" != "$NEW_ATTRS" ]]; then
-    echo "Files differ (ignoring timestamps). Replacing the existing file."
-    mv "new_cov.xml" "coverage.xml"
-else
-    echo "No differences found (ignoring timestamps)."
-    rm "new_cov.xml"
-fi
-"""
+tasks.code-coverage-report.shell = """\
+  coverage run -m pytest --ignore tests/test_build.py\ncoverage report\ncoverage xml -o new_cov.xml\n\n# Define a \
+  Python function for reusable attribute extraction\nPYTHON_FUNC=\"\nimport xml.etree.ElementTree as ET\ndef \
+  extract_relevant_attributes(file):\n    attributes = ET.parse(file).getroot().attrib\n    return [v for k, v in \
+  attributes.items() if k != 'timestamp']\n\nif __name__ == '__main__':\n    import sys\n    file_path = sys.argv[1]\n \
+     print(extract_relevant_attributes(file_path))\n\"\n\n# Check if the existing coverage file exists\nif [[ ! -f \
+  \"coverage.xml\" ]]; then\n    echo \"Existing coverage file not found. Creating a new one.\"\n    mv \
+  \"new_cov.xml\" \"coverage.xml\"\n    exit 0\nfi\n\n# Extract attributes (excluding timestamp) from both files using \
+  Python\nEXISTING_ATTRS=$(python -c \"$PYTHON_FUNC\" \"coverage.xml\")\nNEW_ATTRS=$(python -c \"$PYTHON_FUNC\" \
+  \"new_cov.xml\")\n\n# Compare the extracted attributes\nif [[ \"$EXISTING_ATTRS\" != \"$NEW_ATTRS\" ]]; then\n    \
+  echo \"Files differ (ignoring timestamps). Replacing the existing file.\"\n    mv \"new_cov.xml\" \
+  \"coverage.xml\"\nelse\n    echo \"No differences found (ignoring timestamps).\"\n    rm \"new_cov.xml\"\nfi\n\
+  """
