@@ -71,8 +71,6 @@ root = "."
 target-version = "py311"
 fix = true
 lint.select = [
-  # flake8-print
-  "T20",
   # mccabe
   "C90",
   # pyflakes
@@ -81,6 +79,8 @@ lint.select = [
   "PL",
   # ruff
   "RUF",
+  # flake8-print
+  "T20",
 ]
 # defines poe the poet tasks
 # Ignore `E402` and `F401` (unused imports) in all `__init__.py` files

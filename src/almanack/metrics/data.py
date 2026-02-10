@@ -385,8 +385,6 @@ def compute_repo_data(
         if check_ipynb_import_calls(nb_cells=cells):
             continue
         try:
-            failed_import_checks.append(str(notebook_path))
-        except ValueError:
             failed_import_checks.append(str(notebook_path.relative_to(repo_path)))
         except ValueError:
             failed_import_checks.append(str(notebook_path))
