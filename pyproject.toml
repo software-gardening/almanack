@@ -58,7 +58,6 @@ scripts.almanack = "almanack.cli:trigger"
 enable = true
 style = "pep440"
 vcs = "git"
-files.persistent-substitution = false
 # specify where version replacement is performed
 substitution.files = [ "src/almanack/__init__.py" ]
 
