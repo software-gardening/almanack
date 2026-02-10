@@ -211,3 +211,4 @@ repos:
       # generate code coverage badge
     -   id: coverage-badge
         args: ["-i", "coverage.xml", "-o", "media/coverage-badge.svg"]
+        additional_dependencies: ["setuptools"]
