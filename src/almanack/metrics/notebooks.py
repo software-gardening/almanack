@@ -1,11 +1,10 @@
 import ast
 import fnmatch
+import json
 import logging
 import pathlib
 from dataclasses import dataclass
 from typing import Dict, List, Optional, Sequence, Union
-
-import nbformat
 
 
 @dataclass
@@ -106,8 +105,10 @@ def _has_imports_in_cell(cell_source: str) -> bool:
 def _create_jupyter_cell(cell: dict) -> JupyterCell:
     """Create a JupyterCell object from a notebook cell dictionary.
 
-    Args:
-        cell (dict): Dictionary containing cell information from nbformat.
+    Parameters
+    ----------
+    cell : dict
+        Dictionary containing notebook cell information from notebook JSON.
 
     Returns:
         JupyterCell: A JupyterCell object with cell type, execution count, and source.
@@ -279,8 +280,9 @@ def get_nb_contents(
             continue
 
         try:
-            # Read notebook and extract cell metadata
-            notebook = nbformat.read(notebook_file, as_version=4)
+            # Parse raw notebook JSON and only extract fields needed for metrics.
+            with notebook_file.open(encoding="utf-8") as notebook_json:
+                notebook = json.load(notebook_json)
             cells = notebook.get("cells", [])
 
             # Create JupyterCell objects for each cell
