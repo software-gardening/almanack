@@ -195,4 +195,5 @@ repos:
       # generate code coverage badge
     -   id: coverage-badge
         args: ["-i", "coverage.xml", "-o", "media/coverage-badge.svg"]
-        additional_dependencies: ["setuptools"]
+        # pkg_resources was removed in newer setuptools; genbadge still imports it.
+        additional_dependencies: ["setuptools<81"]
