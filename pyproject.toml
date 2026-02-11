@@ -1,5 +1,6 @@
 [build-system]
 build-backend = "poetry_dynamic_versioning.backend"
+
 requires = [ "poetry-core>=1", "poetry-dynamic-versioning>=1,<2" ]
 
 [tool.poetry]
@@ -16,9 +17,11 @@ include = [
   "src/book/references.bib",
 ]
 exclude = [ "src/book/_build" ]
-dependencies.python = ">=3.10,<3.14"
-dependencies.pyyaml = "^6.0.1"
-dependencies.pygit2 = [
+
+[tool.poetry.dependencies]
+python = ">=3.10,<3.14"
+pyyaml = "^6.0.1"
+pygit2 = [
   { version = ">=1.15.1", python = "<=3.12" },
   { version = ">=1.18.2", python = ">3.12" },
 ]
@@ -65,8 +68,13 @@ almanack = "almanack.cli:trigger"
 enable = true
 style = "pep440"
 vcs = "git"
+
+[tool.poetry-dynamic-versioning.files."src/almanack/__init__.py"]
+persistent-substitution = false
+
 # specify where version replacement is performed
-substitution.files = [ "src/almanack/__init__.py" ]
+[tool.poetry-dynamic-versioning.substitution]
+files = [ "src/almanack/__init__.py" ]
 
 # set persistent versions within the __init__.py file in cases
 # where we may not have or want access to full git history
@@ -104,9 +112,9 @@ ignore-words = "styles/config/vocabularies/almanack/accept.txt"
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex = ".{1024}|.*codespell-ignore.*"
 
-[tool.pytest]
-ini_options.testpaths = "tests"
-ini_options.markers = [
+[tool.pytest.ini_options]
+testpaths = "tests"
+markers = [
   "links: tests which involve checking for hyperlink rot.",
 ]
 
@@ -117,48 +125,76 @@ paths = [ "src/almanack", "tests" ]
 [tool.bandit]
 exclude_dirs = [ "tests" ]
 
-[tool.poe]
+[tool.poe.tasks]
 # builds the jupyter book related to this project
 # note: we include the pythonpath var to properly build sphinx autodocs
-tasks.build-book.shell = """
+build-book.shell = """
   PYTHONPATH="./src/almanack" jupyter-book build src/book --all
 """
 # build a PDF from the HTML content
 # note: depends on build-book content and creates copy to avoid
 # single-page changes performed on the HTML build.
-tasks.build-book-pdf.shell = """
+build-book-pdf.shell = """
   cp -r src/book src/_pdfbuild &&
   jupyter-book build src/_pdfbuild --builder pdfhtml
 """
 # builds the jupyter book related to this project and opens a new browser window
 # note: we include the pythonpath var to properly build sphinx autodocs
-tasks.build-book-dev.shell = """\
-  PYTHONPATH=\"./src/almanack\" jupyter-book build src/book && \\\n  python -m webbrowser -t \
-  \"file://$PWD/src/book/_build/html/index.html\"\n\
-  """
+build-book-dev.shell = """
+  PYTHONPATH="./src/almanack" jupyter-book build src/book && \
+  python -m webbrowser -t "file://$PWD/src/book/_build/html/index.html"
+"""
 # syncs and runs vale relative to this project
 # through pre-commit to trigger warnings as
 # non-zero return when there is more than one
 # line of output from vale.
-tasks.vale-checks.shell = """\
-  vale sync || true;\noutput=$(vale ./src/book) ||\nif [ $(echo \"$output\" | wc -l) -gt 1 ]; then\necho \"$output\"; \
-  exit 1;\nfi\n\
-  """
+vale-checks.shell = """
+vale sync || true;
+output=$(vale ./src/book) ||
+if [ $(echo "$output" | wc -l) -gt 1 ]; then
+echo "$output"; exit 1;
+fi
+"""
 # add a convenience task for package-focused testing
-tasks.pkg-tests.shell = """
+pkg-tests.shell = """
 pytest --ignore tests/test_build.py
 """
 # task for running code coverage report steps
-tasks.code-coverage-report.shell = """\
-  coverage run -m pytest --ignore tests/test_build.py\ncoverage report\ncoverage xml -o new_cov.xml\n\n# Define a \
-  Python function for reusable attribute extraction\nPYTHON_FUNC=\"\nimport xml.etree.ElementTree as ET\ndef \
-  extract_relevant_attributes(file):\n    attributes = ET.parse(file).getroot().attrib\n    return [v for k, v in \
-  attributes.items() if k != 'timestamp']\n\nif __name__ == '__main__':\n    import sys\n    file_path = sys.argv[1]\n \
-  print(extract_relevant_attributes(file_path))\n\"\n\n# Check if the existing coverage file exists\nif [[ ! -f \
-  \"coverage.xml\" ]]; then\n    echo \"Existing coverage file not found. Creating a new one.\"\n    mv \
-  \"new_cov.xml\" \"coverage.xml\"\n    exit 0\nfi\n\n# Extract attributes (excluding timestamp) from both files using \
-  Python\nEXISTING_ATTRS=$(python -c \"$PYTHON_FUNC\" \"coverage.xml\")\nNEW_ATTRS=$(python -c \"$PYTHON_FUNC\" \
-  \"new_cov.xml\")\n\n# Compare the extracted attributes\nif [[ \"$EXISTING_ATTRS\" != \"$NEW_ATTRS\" ]]; then\n    \
-  echo \"Files differ (ignoring timestamps). Replacing the existing file.\"\n    mv \"new_cov.xml\" \
-  \"coverage.xml\"\nelse\n    echo \"No differences found (ignoring timestamps).\"\n    rm \"new_cov.xml\"\nfi\n\
-  """
+code-coverage-report.shell = """
+coverage run -m pytest --ignore tests/test_build.py
+coverage report
+coverage xml -o new_cov.xml
+
+# Define a Python function for reusable attribute extraction
+PYTHON_FUNC="
+import xml.etree.ElementTree as ET
+def extract_relevant_attributes(file):
+    attributes = ET.parse(file).getroot().attrib
+    return [v for k, v in attributes.items() if k != 'timestamp']
+
+if __name__ == '__main__':
+    import sys
+    file_path = sys.argv[1]
+    print(extract_relevant_attributes(file_path))
+"
+
+# Check if the existing coverage file exists
+if [[ ! -f "coverage.xml" ]]; then
+    echo "Existing coverage file not found. Creating a new one."
+    mv "new_cov.xml" "coverage.xml"
+    exit 0
+fi
+
+# Extract attributes (excluding timestamp) from both files using Python
+EXISTING_ATTRS=$(python -c "$PYTHON_FUNC" "coverage.xml")
+NEW_ATTRS=$(python -c "$PYTHON_FUNC" "new_cov.xml")
+
+# Compare the extracted attributes
+if [[ "$EXISTING_ATTRS" != "$NEW_ATTRS" ]]; then
+    echo "Files differ (ignoring timestamps). Replacing the existing file."
+    mv "new_cov.xml" "coverage.xml"
+else
+    echo "No differences found (ignoring timestamps)."
+    rm "new_cov.xml"
+fi
+"""
