@@ -208,14 +208,14 @@ class TestGetNbContents:
         result = get_nb_contents(str(test_data_dir))
         assert len(result) == EXPECTED_TEST_NOTEBOOKS
 
-    @patch("almanack.metrics.notebooks.nbformat.read")
+    @patch("almanack.metrics.notebooks.json.load")
     @patch("almanack.metrics.notebooks.logging.warning")
     def test_error_handling_corrupt_notebook(
-        self, mock_warning, mock_read, test_data_dir
+        self, mock_warning, mock_json_load, test_data_dir
     ):
         """Test error handling when a notebook file is corrupted."""
-        # Mock nbformat.read to raise an exception
-        mock_read.side_effect = Exception("Corrupted notebook file")
+        # Mock json.load to raise an exception
+        mock_json_load.side_effect = Exception("Corrupted notebook file")
 
         result = get_nb_contents(test_data_dir)
 
