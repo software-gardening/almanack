@@ -758,19 +758,19 @@ class TestIntegrationTests:
 
         # First code cell should have actual imports plus docstring mentioning 'import'
         first_code_cell = code_cells[0]
-        assert "import" in first_code_cell.source.lower(), (
-            "First cell should contain 'import'"
-        )
-        assert "import numpy" in first_code_cell.source, (
-            "Should have actual import statement"
-        )
+        assert (
+            "import" in first_code_cell.source.lower()
+        ), "First cell should contain 'import'"
+        assert (
+            "import numpy" in first_code_cell.source
+        ), "Should have actual import statement"
 
         # Later cells should have 'import' in comments/docstrings but not as statements
         if len(code_cells) > 1:
             later_cells_combined = "\n".join(cell.source for cell in code_cells[1:])
-            assert "import" in later_cells_combined.lower(), (
-                "Later cells should mention 'import' in comments/docstrings"
-            )
+            assert (
+                "import" in later_cells_combined.lower()
+            ), "Later cells should mention 'import' in comments/docstrings"
 
     def test_get_cells_by_filename_not_found(self):
         """Test _get_cells_by_filename when notebook file is not found."""
