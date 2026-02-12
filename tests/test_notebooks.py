@@ -394,6 +394,33 @@ class TestHasImportsInCell:
         # Falls back to heuristic which should detect this
         assert _has_imports_in_cell(source) is True
 
+    def test_fallback_with_docstring_and_import(self):
+        """Test fallback heuristic with docstrings and imports."""
+        # This will cause AST parsing to fail and use fallback (missing colon after if)
+        source = '''if True
+"""This is a docstring"""
+import pandas as pd'''
+        assert _has_imports_in_cell(source) is True
+
+    def test_fallback_with_multiline_docstring_no_import(self):
+        """Test fallback heuristic with multiline docstring but no imports."""
+        source = '''if True
+"""This is a docstring\nWith multiple lines"""
+x = 5'''
+        assert _has_imports_in_cell(source) is False
+
+    def test_fallback_inside_docstring_import(self):
+        """Test that imports inside docstrings are ignored by fallback."""
+        source = '''if True
+"""\nimport should be ignored here\n"""
+x = 5'''
+        assert _has_imports_in_cell(source) is False
+
+    def test_fallback_comment_with_import(self):
+        """Test fallback with comments containing import keyword."""
+        source = "if True  # Missing colon\n# import is just a comment\nfrom typing import List"
+        assert _has_imports_in_cell(source) is True
+
 
 class TestCheckIpynbImportsCalls:
     """Test the check_ipynb_imports_calls function using actual test notebooks."""
@@ -476,6 +503,179 @@ class TestCheckIpynbImportsCalls:
         assert cells is not None, "Test notebook not found"
         # unordered-nb has imports in first code cell
         assert check_ipynb_import_calls(cells) is True
+
+
+class TestIgnorePaths:
+    """Test ignore path functionality."""
+
+    def test_get_nb_contents_with_ignore_dirs(self):
+        """Test ignoring directories by name."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+
+            # Create test notebooks
+            (temp_path / "notebook1.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+
+            # Create ignored directory with notebook
+            ignored_dir = temp_path / "__pycache__"
+            ignored_dir.mkdir()
+            (ignored_dir / "notebook2.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+
+            result = get_nb_contents(temp_path, ignore_dirs=["__pycache__"])
+
+            # Should only find notebook1, not the one in __pycache__
+            assert len(result) == 1
+            assert any(path.name == "notebook1.ipynb" for path in result.keys())
+
+    def test_get_nb_contents_with_ignore_paths_string(self):
+        """Test ignore paths as comma-separated string."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+
+            # Create test notebooks
+            (temp_path / "notebook1.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+            (temp_path / "ignored.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+
+            result = get_nb_contents(temp_path, ignore_paths="ignored.ipynb")
+
+            # Should only find notebook1
+            assert len(result) == 1
+            assert any(path.name == "notebook1.ipynb" for path in result.keys())
+
+    def test_get_nb_contents_with_glob_patterns(self):
+        """Test ignore paths with glob patterns."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+
+            # Create test notebooks
+            (temp_path / "notebook1.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+            (temp_path / "test_notebook.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+
+            result = get_nb_contents(temp_path, ignore_paths=["test_*.ipynb"])
+
+            # Should only find notebook1
+            assert len(result) == 1
+            assert any(path.name == "notebook1.ipynb" for path in result.keys())
+
+    def test_get_nb_contents_with_relative_path_prefix(self):
+        """Test ignore paths with relative path prefixes."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+
+            # Create directory structure
+            subdir = temp_path / "subdir"
+            subdir.mkdir()
+
+            # Create test notebooks
+            (temp_path / "notebook1.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+            (subdir / "notebook2.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+
+            result = get_nb_contents(temp_path, ignore_paths=["subdir"])
+
+            # Should only find notebook1
+            assert len(result) == 1
+            assert any(path.name == "notebook1.ipynb" for path in result.keys())
+
+    def test_get_nb_contents_with_absolute_paths(self):
+        """Test ignore paths with absolute paths."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+
+            # Create test notebooks
+            (temp_path / "notebook1.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+            notebook2_path = temp_path / "notebook2.ipynb"
+            notebook2_path.write_text('{"cells": [], "metadata": {}, "nbformat": 4}')
+
+            # Use resolved path for absolute path matching
+            result = get_nb_contents(
+                temp_path, ignore_paths=[str(notebook2_path.resolve())]
+            )
+
+            # Should only find notebook1
+            assert len(result) == 1
+            assert any(path.name == "notebook1.ipynb" for path in result.keys())
+
+    def test_get_nb_contents_with_empty_ignore_path(self):
+        """Test ignore paths with empty strings."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+
+            # Create test notebook
+            (temp_path / "notebook1.ipynb").write_text(
+                '{"cells": [], "metadata": {}, "nbformat": 4}'
+            )
+
+            result = get_nb_contents(temp_path, ignore_paths=["", "  ", None])
+
+            # Should find the notebook (empty paths are ignored)
+            assert len(result) == 1
+
+
+class TestErrorHandling:
+    """Test error handling in notebook processing."""
+
+    @patch("almanack.metrics.notebooks.json.load")
+    @patch("almanack.metrics.notebooks.logging.warning")
+    def test_file_not_found_error(self, mock_warning, mock_json_load):
+        """Test handling of FileNotFoundError."""
+        mock_json_load.side_effect = FileNotFoundError("File not found")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+            (temp_path / "notebook.ipynb").write_text('{"cells": []}')
+
+            result = get_nb_contents(temp_path)
+
+            assert result == {}
+            mock_warning.assert_called()
+
+    @patch("almanack.metrics.notebooks.json.load")
+    @patch("almanack.metrics.notebooks.logging.warning")
+    def test_permission_error(self, mock_warning, mock_json_load):
+        """Test handling of PermissionError."""
+        mock_json_load.side_effect = PermissionError("Permission denied")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+            (temp_path / "notebook.ipynb").write_text('{"cells": []}')
+
+            result = get_nb_contents(temp_path)
+
+            assert result == {}
+            mock_warning.assert_called()
+
+    @patch("almanack.metrics.notebooks.json.load")
+    @patch("almanack.metrics.notebooks.logging.warning")
+    def test_general_exception(self, mock_warning, mock_json_load):
+        """Test handling of general exceptions."""
+        mock_json_load.side_effect = ValueError("Invalid JSON")
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_path = pathlib.Path(temp_dir)
+            (temp_path / "notebook.ipynb").write_text('{"cells": []}')
+
+            result = get_nb_contents(temp_path)
+
+            assert result == {}
+            mock_warning.assert_called()
 
 
 class TestIntegrationTests:
@@ -569,3 +769,14 @@ class TestIntegrationTests:
             assert (
                 "import" in later_cells_combined.lower()
             ), "Later cells should mention 'import' in comments/docstrings"
+
+    def test_get_cells_by_filename_not_found(self):
+        """Test _get_cells_by_filename when notebook file is not found."""
+        # Create a simple test notebook dictionary
+        test_notebooks = {pathlib.Path("test.ipynb"): []}
+
+        test_instance = TestCheckIpynbImportsCalls()
+        cells = test_instance._get_cells_by_filename(
+            test_notebooks, "nonexistent-notebook.ipynb"
+        )
+        assert cells is None
