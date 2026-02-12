@@ -116,7 +116,7 @@ def _create_jupyter_cell(cell: dict) -> JupyterCell:
     cell_type = cell["cell_type"]
     execution_count = cell.get("execution_count") if cell_type == "code" else None
     source = cell.get("source", "")
-    
+
     # Convert source to string if it's a list (common in Jupyter notebooks)
     if isinstance(source, list):
         source = "".join(source)
