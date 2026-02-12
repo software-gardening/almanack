@@ -35,7 +35,7 @@ repos:
     -   id: poetry-check
 
 -   repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.12.1"
+    rev: "v2.15.1"
     hooks:
       # Formats the `pyproject.toml` file to follow a consistent structure
       # and style, making it easier to read and maintain.
@@ -80,6 +80,9 @@ repos:
       # Formats Python code to follow the Black code style,
       # promoting consistency and readability across the codebase.
     -   id: black
+        # exclude the jupyter-book directory since it contains notebooks with
+        # intentional style violations for testing purposes
+        exclude: ^tests/data/jupyter-book/
 
 -   repo: https://github.com/asottile/blacken-docs
     rev: 1.20.0
@@ -105,6 +108,9 @@ repos:
       # Sorts imports in Python files, making the code easier to
       # navigate and reducing merge conflicts in import statements.
     -   id: isort
+        # exclude the jupyter-book directory since it contains notebooks with
+        # intentional style violations for testing purposes
+        exclude: ^tests/data/jupyter-book/
 
 -   repo: https://github.com/PyCQA/bandit
     rev: 1.9.3
@@ -121,6 +127,9 @@ repos:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
     -   id: ruff-check
+        # exclude the jupyter-book directory since it contains notebooks with
+        # intentional style violations for testing purposes
+        exclude: ^tests/data/jupyter-book/
 
 -   repo: https://github.com/rhysd/actionlint
     rev: v1.7.10
@@ -149,11 +158,18 @@ repos:
       # Runs Black formatting on Jupyter notebooks, ensuring code cells
       # adhere to the Black code style.
     -   id: nbqa-black
+        # exclude the jupyter-book directory since it contains notebooks with
+        # intentional style violations for testing purposes
+        exclude: ^tests/data/jupyter-book/
 
       # Runs isort on Jupyter notebooks, sorting imports in code
       # cells for consistency.
     -   id: nbqa-isort
         args: ["--float-to-top"]
+
+        # exclude the jupyter-book directory since it contains notebooks with
+        # intentional style violations for testing purposes
+        exclude: ^tests/data/jupyter-book/
 -   repo: https://github.com/aristanetworks/j2lint
     rev: v1.2.0
     hooks:

@@ -617,6 +617,31 @@ metrics:
       execute all cells sequentially from top to bottom. This ensures that all
       variables and outputs are generated in the correct order, making the
       notebook reproducible and easier to understand for others.
+  - name: "repo-check-notebook-import-calls"
+    id: "SGA-GL-0031"
+    result-type: "bool"
+    sustainability_correlation: 1
+    description: >-
+      Checks whether all import statements in a Jupyter notebook
+      are confined to the first code cell.
+    correction_guidance: >-
+      Consider placing all import statements in the first code cell of your
+      Jupyter notebooks.
+    fix_why: >-
+      Placing all import statements in the first code cell of a
+      Jupyter notebook is a best practice that enhances readability
+      and organization. It allows readers to quickly identify the
+      dependencies and libraries used in the notebook, making it easier
+      to understand the context and setup of the analysis. Additionally,
+      it helps ensure that all necessary imports are executed before
+      any other code, reducing the likelihood of errors due to missing
+      imports.
+    fix_how: >-
+      Review your Jupyter notebook and identify any import statements
+      that are not located in the first code cell. Move all import
+      statements to the first code cell at the top of your notebook.
+      After making this change, run the first cell to ensure that
+      all imports are executed before any other code in the notebook.
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
