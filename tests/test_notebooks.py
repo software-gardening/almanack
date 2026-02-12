@@ -98,6 +98,30 @@ class TestCreateJupyterCell:
         assert cell.cell_type == "code"
         assert cell.execution_count is None
 
+    def test_create_cell_with_list_source(self):
+        """Test creating a JupyterCell from a cell with list source."""
+        cell_dict = {
+            "cell_type": "code",
+            "execution_count": 1,
+            "source": ["import numpy as np\n", "import pandas as pd"],
+        }
+        cell = _create_jupyter_cell(cell_dict)
+        assert cell.cell_type == "code"
+        assert cell.execution_count == 1
+        assert cell.source == "import numpy as np\nimport pandas as pd"
+
+    def test_create_cell_with_string_source(self):
+        """Test creating a JupyterCell from a cell with string source."""
+        cell_dict = {
+            "cell_type": "code",
+            "execution_count": 1,
+            "source": "import numpy as np\nimport pandas as pd",
+        }
+        cell = _create_jupyter_cell(cell_dict)
+        assert cell.cell_type == "code"
+        assert cell.execution_count == 1
+        assert cell.source == "import numpy as np\nimport pandas as pd"
+
 
 class TestRepoDirExists:
     """Test the repo_dir_exists function."""
