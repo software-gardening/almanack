@@ -163,8 +163,7 @@ repos:
     rev: v0.8.0
     hooks:
     -   id: pre-commit-update
-        args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert",
-          "--keep", "pyproject-fmt"]
+        args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert", "--keep", "pyproject-fmt"]
 -   repo: local
     hooks:
       # Runs the Vale linting tool to check for spelling, grammar,
@@ -196,3 +195,5 @@ repos:
       # generate code coverage badge
     -   id: coverage-badge
         args: ["-i", "coverage.xml", "-o", "media/coverage-badge.svg"]
+        # pkg_resources was removed in newer setuptools; genbadge still imports it.
+        additional_dependencies: ["setuptools<81"]

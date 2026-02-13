@@ -10,4 +10,3 @@
   entry: almanack check .
   pass_filenames: false
   language: python
-  additional_dependencies: ["."]
