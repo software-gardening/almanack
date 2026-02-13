@@ -116,7 +116,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.0"
+    rev: "v0.15.1"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
@@ -163,7 +163,8 @@ repos:
     rev: v0.8.0
     hooks:
     -   id: pre-commit-update
-        args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert", "--keep", "pyproject-fmt"]
+        args: ["--keep", "mdformat", "--keep", "pre-commit-update", "--keep", "cffconvert",
+          "--keep", "pyproject-fmt"]
 -   repo: local
     hooks:
       # Runs the Vale linting tool to check for spelling, grammar,
@@ -187,7 +188,7 @@ repos:
         language: python
         pass_filenames: false
         args:
-        - "--exclude_paths=tests,src/book/_build,src/book/seed-bank/almanack-example/almanack-example.ipynb"
+        -   "--exclude_paths=tests,src/book/_build,src/book/seed-bank/almanack-example/almanack-example.ipynb"
         additional_dependencies: ["."]
 -   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
     rev: 0.1.1
