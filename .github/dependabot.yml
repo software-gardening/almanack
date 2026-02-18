@@ -12,8 +12,8 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      # Check for updates every week
-      interval: "weekly"
+      # Check for updates every month
+      interval: "monthly"
 
   # Perform checks and updates for python poetry environment.
   # See here for more information:
@@ -21,8 +21,8 @@ updates:
   - package-ecosystem: "pip"
     directory: "/"
     schedule:
-      # Check for updates every week
-      interval: "weekly"
+      # Check for updates every month
+      interval: "monthly"
     groups:
       python-packages:
         patterns:
@@ -33,4 +33,4 @@ updates:
     directory: "/"
     schedule:
       # Check for updates every week
-      interval: "weekly"
+      interval: "monthly"
