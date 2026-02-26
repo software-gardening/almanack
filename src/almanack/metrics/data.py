@@ -29,6 +29,8 @@ from almanack.git import (
 )
 from almanack.metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
+    calculate_aggregate_history_complexity_with_decay,
+    calculate_history_complexity_with_decay,
     calculate_normalized_entropy,
 )
 from almanack.metrics.garden_lattice.connectedness import (
@@ -335,6 +337,20 @@ def compute_repo_data(
         str(most_recent_commit.id),
         edited_file_names,
     )
+    aggregate_history_complexity_decay = (
+        calculate_aggregate_history_complexity_with_decay(
+            repo_path,
+            str(first_commit.id),
+            str(most_recent_commit.id),
+            edited_file_names,
+        )
+    )
+    file_history_complexity_decay = calculate_history_complexity_with_decay(
+        repo_path,
+        str(first_commit.id),
+        str(most_recent_commit.id),
+        edited_file_names,
+    )
     # Convert commit times to UTC datetime objects, then format as date strings.
     first_commit_date, most_recent_commit_date = (
         datetime.fromtimestamp(commit.commit_time).date()
@@ -486,6 +502,8 @@ def compute_repo_data(
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
+        "repo-agg-history-complexity-decay": aggregate_history_complexity_decay,
+        "repo-file-history-complexity-decay": file_history_complexity_decay,
         "repo-check-notebook-dir": repo_dir_exists(
             repo=repo, directory_name="notebooks"
         ),
@@ -643,7 +661,8 @@ def process_repo_for_analysis(
 def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     """
     Transpose Almanack table (name->result), compute checks summary, flatten nested.
-    `repo-file-info-entropy` is ignored due to scope and increased runtime for analysis.
+    `repo-file-info-entropy` and `repo-file-history-complexity-decay` are ignored due
+    to scope and increased runtime for analysis.
 
     Args:
         table_rows (list[dict]):
@@ -680,6 +699,7 @@ def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     )
 
     wide.pop("repo-file-info-entropy", None)
+    wide.pop("repo-file-history-complexity-decay", None)
 
     # Flatten repo-almanack-score if present (avoid nested dict in parquet)
     score = wide.get("repo-almanack-score")
