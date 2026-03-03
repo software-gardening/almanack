@@ -100,7 +100,7 @@ repos:
         -   "--ignore-init-module-imports"
 
 -   repo: https://github.com/PyCQA/isort
-    rev: 8.0.0
+    rev: 8.0.1
     hooks:
       # Sorts imports in Python files, making the code easier to
       # navigate and reducing merge conflicts in import statements.
@@ -116,7 +116,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.2"
+    rev: "v0.15.4"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
