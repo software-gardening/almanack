@@ -42,7 +42,7 @@ repos:
     -   id: pyproject-fmt
 
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
       # Detects and corrects common typos in the codebase, improving
       # readability and reducing minor mistakes.
@@ -100,7 +100,7 @@ repos:
         -   "--ignore-init-module-imports"
 
 -   repo: https://github.com/PyCQA/isort
-    rev: 8.0.0
+    rev: 8.0.1
     hooks:
       # Sorts imports in Python files, making the code easier to
       # navigate and reducing merge conflicts in import statements.
@@ -137,7 +137,7 @@ repos:
     -   id: validate-cff
 
 -   repo: https://github.com/jendrikseipp/vulture
-    rev: 'v2.14'
+    rev: 'v2.15'
     hooks:
       # Detects unused code, helping identify dead code that can be removed
       # to keep the codebase lean and maintainable.

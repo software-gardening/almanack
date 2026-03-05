@@ -1,6 +1,4 @@
-"""
-This module calculates the amount of Software information entropy
-"""
+"""Calculate software change entropy and decay-weighted history complexity."""
 
 import math
 import pathlib
@@ -15,7 +13,12 @@ from almanack.git import get_loc_changed
 
 @dataclass(frozen=True)
 class HistoryComplexityConfig:
-    """Configuration for history complexity metric with decay."""
+    """Configuration values for the decay-weighted history complexity metric.
+
+    Attributes:
+        decay_factor: Exponential decay constant in hours.
+        quiet_time_seconds: Maximum gap between commits in a single burst period.
+    """
 
     decay_factor: float = 10.0
     quiet_time_seconds: int = 3600
@@ -27,31 +30,24 @@ def calculate_normalized_entropy(
     target_commit: pygit2.Commit,
     file_names: list[str],
 ) -> dict[str, float]:
-    """
-    Calculates the entropy of changes in specified files between two commits,
-    inspired by Shannon's information theory entropy formula.
-    Normalized relative to the total lines of code changes across specified files.
-    We follow an approach described by Hassan (2009) (see references).
+    """Calculate per-file normalized Shannon entropy for changed lines.
 
-    Application of Entropy Calculation:
-    Entropy measures the uncertainty in a given system. Calculating the entropy
-    of lines of code (LoC) changed reveals the variability and complexity of
-    modifications in each file. Higher entropy values indicate more unpredictable
-    changes, helping identify potentially unstable code areas.
+    Entropy is computed from line-change proportions between `source_commit`
+    and `target_commit` for the provided files.
 
     Args:
-        repo_path (str): The file path to the git repository.
-        source_commit (pygit2.Commit): The git hash of the source commit.
-        target_commit (pygit2.Commit): The git hash of the target commit.
-        file_names (list[str]): List of file names to calculate entropy for.
+        repo_path: Path to the local Git repository.
+        source_commit: Commit that defines the start of the comparison range.
+        target_commit: Commit that defines the end of the comparison range.
+        file_names: Repository-relative file paths to include in the calculation.
 
     Returns:
-        dict[str, float]: A dictionary mapping file names to their calculated entropy.
+        Mapping of file path to that file's entropy contribution.
 
     References:
-        * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.
-            2009 IEEE 31st International Conference on Software Engineering, 78-88.
-            https://doi.org/10.1109/ICSE.2009.5070510
+        Hassan, A. E. (2009). Predicting faults using the complexity of code
+        changes. 2009 IEEE 31st International Conference on Software
+        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510
     """
     loc_changes = get_loc_changed(repo_path, source_commit, target_commit, file_names)
     # Calculate total lines of code changes across all specified files
@@ -79,7 +75,15 @@ def calculate_normalized_entropy(
 def _resolve_commit(
     repo: pygit2.Repository, commit_ref: Union[str, pygit2.Commit]
 ) -> pygit2.Commit:
-    """Resolve commit input into a pygit2 commit object."""
+    """Resolve a commit reference into a concrete commit object.
+
+    Args:
+        repo: Open repository used to resolve commit strings.
+        commit_ref: Commit object or rev-parse compatible commit reference string.
+
+    Returns:
+        Resolved commit object.
+    """
     if isinstance(commit_ref, pygit2.Commit):
         return commit_ref
     return repo.revparse_single(commit_ref)
@@ -92,11 +96,21 @@ def _collect_period_file_changes(
     tracked_files: set[str],
     quiet_time_seconds: int = 3600,
 ) -> list[tuple[int, dict[str, int]]]:
-    """
-    Collect file-level line change totals for one-hour burst periods.
+    """Collect per-period file change totals separated by quiet windows.
 
     A new period starts when the elapsed time between consecutive commit events
-    exceeds ``quiet_time_seconds``.
+    is greater than `quiet_time_seconds`.
+
+    Args:
+        repo: Open repository used to read commit history and diffs.
+        source_commit: Commit that marks the start boundary (exclusive).
+        target_commit: Commit that marks the end boundary (inclusive).
+        tracked_files: File paths that should contribute to change totals.
+        quiet_time_seconds: Threshold separating consecutive burst periods.
+
+    Returns:
+        Time-ordered list of periods. Each item contains the period end time
+        (Unix timestamp) and file-level changed-line totals for that period.
     """
     commit_events = _collect_commit_events(
         repo=repo,
@@ -120,7 +134,17 @@ def _collect_commit_events(
     target_commit: pygit2.Commit,
     tracked_files: set[str],
 ) -> list[tuple[int, dict[str, int]]]:
-    """Collect changed line counts per file for each commit event."""
+    """Collect changed-line counts for tracked files at each commit event.
+
+    Args:
+        repo: Open repository used to walk commits and compute diffs.
+        source_commit: Commit that marks the start boundary (exclusive).
+        target_commit: Commit that marks the end boundary (inclusive).
+        tracked_files: File paths that should be included in each event.
+
+    Returns:
+        List of `(commit_time, file_changes)` tuples for commits in range.
+    """
     commit_events: list[tuple[int, dict[str, int]]] = []
     walker = repo.walk(target_commit.id, pygit2.GIT_SORT_TIME)
 
@@ -142,7 +166,16 @@ def _extract_tracked_file_changes(
     commit: pygit2.Commit,
     tracked_files: set[str],
 ) -> dict[str, int]:
-    """Extract line changes for tracked files from a single commit."""
+    """Extract tracked file changed-line totals from one commit.
+
+    Args:
+        repo: Open repository used to compute parent-to-commit diffs.
+        commit: Commit to evaluate.
+        tracked_files: File paths that should be included in the output.
+
+    Returns:
+        Mapping of file path to changed-line count for the commit.
+    """
     if not commit.parents:
         return {}
 
@@ -159,7 +192,14 @@ def _extract_tracked_file_changes(
 
 
 def _count_patch_line_changes(patch: pygit2.Patch) -> int:
-    """Count line additions and deletions for a patch."""
+    """Count line additions plus deletions for one patch.
+
+    Args:
+        patch: Diff patch containing hunk and line-level delta details.
+
+    Returns:
+        Total number of added and removed lines in the patch.
+    """
     additions = 0
     deletions = 0
     for hunk in patch.hunks:
@@ -175,7 +215,15 @@ def _group_commit_events_by_quiet_window(
     commit_events: list[tuple[int, dict[str, int]]],
     quiet_time_seconds: int,
 ) -> list[tuple[int, dict[str, int]]]:
-    """Group commit events into burst periods separated by quiet windows."""
+    """Group commit events into burst periods separated by quiet windows.
+
+    Args:
+        commit_events: Sequence of `(event_time, file_changes)` tuples.
+        quiet_time_seconds: Threshold that starts a new period when exceeded.
+
+    Returns:
+        Time-ordered periods with end timestamp and aggregated file changes.
+    """
     commit_events.sort(key=lambda event: event[0])
     periods: list[tuple[int, dict[str, int]]] = []
     current_end_time = commit_events[0][0]
@@ -201,13 +249,28 @@ def calculate_history_complexity_with_decay(
     file_names: list[str],
     config: HistoryComplexityConfig = HistoryComplexityConfig(),
 ) -> dict[str, float]:
-    """
-    Calculate history complexity metric with decay (HCM_1d) for each file.
+    """Calculate decay-weighted history complexity for each tracked file.
 
-    Periods are formed using a one-hour quiet threshold between commit events,
-    as recommended by Hassan (2009). For each period we compute Shannon entropy
-    over changed-line probabilities across files, then assign that period's
-    entropy to changed files and apply an exponential time decay.
+    For each burst period, this computes Shannon entropy across file-level
+    changed-line probabilities, then applies exponential decay by period age.
+
+    Args:
+        repo_path: Path to the local Git repository.
+        source_commit: Commit object or reference string for range start.
+        target_commit: Commit object or reference string for range end.
+        file_names: Repository-relative file paths to score.
+        config: Decay and period-grouping configuration.
+
+    Returns:
+        Mapping of file path to decay-weighted history complexity score.
+
+    Raises:
+        ValueError: If `config.decay_factor` is less than or equal to zero.
+
+    References:
+        Hassan, A. E. (2009). Predicting faults using the complexity of code
+        changes. 2009 IEEE 31st International Conference on Software
+        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510
     """
     if config.decay_factor <= 0:
         raise ValueError("decay_factor must be greater than zero.")
@@ -258,7 +321,23 @@ def calculate_aggregate_history_complexity_with_decay(
     file_names: List[str],
     config: HistoryComplexityConfig = HistoryComplexityConfig(),
 ) -> float:
-    """Calculate the aggregate HCM_1d score as the mean file-level score."""
+    """Calculate the mean decay-weighted history complexity across files.
+
+    Args:
+        repo_path: Path to the local Git repository.
+        source_commit: Commit object or reference string for range start.
+        target_commit: Commit object or reference string for range end.
+        file_names: Repository-relative file paths to include in the mean.
+        config: Decay and period-grouping configuration.
+
+    Returns:
+        Mean file-level history complexity score, or `0.0` for no files.
+
+    References:
+        Hassan, A. E. (2009). Predicting faults using the complexity of code
+        changes. 2009 IEEE 31st International Conference on Software
+        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510
+    """
     history_complexity = calculate_history_complexity_with_decay(
         repo_path=repo_path,
         source_commit=source_commit,
@@ -276,25 +355,21 @@ def calculate_aggregate_entropy(
     target_commit: pygit2.Commit,
     file_names: List[str],
 ) -> float:
-    """
-    Computes the aggregated normalized entropy score from the output of
-    calculate_normalized_entropy for specified a Git repository.
-    Inspired by Shannon's information theory entropy formula.
-    We follow an approach described by Hassan (2009) (see references).
+    """Calculate mean normalized entropy across the provided files.
 
     Args:
-        repo_path (str): The file path to the git repository.
-        source_commit (pygit2.Commit): The git hash of the source commit.
-        target_commit (pygit2.Commit): The git hash of the target commit.
-        file_names (list[str]): List of file names to calculate entropy for.
+        repo_path: Path to the local Git repository.
+        source_commit: Commit that defines the start of the comparison range.
+        target_commit: Commit that defines the end of the comparison range.
+        file_names: Repository-relative file paths to include in the calculation.
 
     Returns:
-        float: Normalized entropy calculation.
+        Mean of per-file normalized entropy values, or `0.0` for no files.
 
     References:
-        * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.
-            2009 IEEE 31st International Conference on Software Engineering, 78-88.
-            https://doi.org/10.1109/ICSE.2009.5070510
+        Hassan, A. E. (2009). Predicting faults using the complexity of code
+        changes. 2009 IEEE 31st International Conference on Software
+        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510
     """
     # Get the entropy for each file
     entropy_calculation = calculate_normalized_entropy(
