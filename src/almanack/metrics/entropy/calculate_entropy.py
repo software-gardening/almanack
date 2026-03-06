@@ -96,10 +96,13 @@ def _collect_period_file_changes(
     tracked_files: set[str],
     quiet_time_seconds: int = 3600,
 ) -> list[tuple[int, dict[str, int]]]:
-    """Collect per-period file change totals separated by quiet windows.
+    """Collect per-period tracked-file change totals separated by quiet windows.
 
-    A new period starts when the elapsed time between consecutive commit events
-    is greater than `quiet_time_seconds`.
+    This function walks commits from `target_commit` backwards to
+    `source_commit`, extracts tracked-file line changes from each commit, and
+    then groups commit events into burst periods. A new period starts when the
+    elapsed time between consecutive commit events is greater than
+    `quiet_time_seconds`.
 
     Args:
         repo: Open repository used to read commit history and diffs.
@@ -112,118 +115,37 @@ def _collect_period_file_changes(
         Time-ordered list of periods. Each item contains the period end time
         (Unix timestamp) and file-level changed-line totals for that period.
     """
-    commit_events = _collect_commit_events(
-        repo=repo,
-        source_commit=source_commit,
-        target_commit=target_commit,
-        tracked_files=tracked_files,
-    )
-
-    if not commit_events:
-        return []
-
-    return _group_commit_events_by_quiet_window(
-        commit_events=commit_events,
-        quiet_time_seconds=quiet_time_seconds,
-    )
-
-
-def _collect_commit_events(
-    repo: pygit2.Repository,
-    source_commit: pygit2.Commit,
-    target_commit: pygit2.Commit,
-    tracked_files: set[str],
-) -> list[tuple[int, dict[str, int]]]:
-    """Collect changed-line counts for tracked files at each commit event.
-
-    Args:
-        repo: Open repository used to walk commits and compute diffs.
-        source_commit: Commit that marks the start boundary (exclusive).
-        target_commit: Commit that marks the end boundary (inclusive).
-        tracked_files: File paths that should be included in each event.
-
-    Returns:
-        List of `(commit_time, file_changes)` tuples for commits in range.
-    """
     commit_events: list[tuple[int, dict[str, int]]] = []
     walker = repo.walk(target_commit.id, pygit2.GIT_SORT_TIME)
 
     for commit in walker:
         if commit.id == source_commit.id:
             break
-        changed_lines = _extract_tracked_file_changes(
-            repo=repo,
-            commit=commit,
-            tracked_files=tracked_files,
-        )
-        if changed_lines:
-            commit_events.append((commit.commit_time, changed_lines))
-    return commit_events
-
-
-def _extract_tracked_file_changes(
-    repo: pygit2.Repository,
-    commit: pygit2.Commit,
-    tracked_files: set[str],
-) -> dict[str, int]:
-    """Extract tracked file changed-line totals from one commit.
-
-    Args:
-        repo: Open repository used to compute parent-to-commit diffs.
-        commit: Commit to evaluate.
-        tracked_files: File paths that should be included in the output.
-
-    Returns:
-        Mapping of file path to changed-line count for the commit.
-    """
-    if not commit.parents:
-        return {}
-
-    diff = repo.diff(commit.parents[0], commit)
-    changed_lines: dict[str, int] = defaultdict(int)
-
-    for patch in diff:
-        file_path = patch.delta.new_file.path or patch.delta.old_file.path
-        if file_path not in tracked_files:
+        if not commit.parents:
             continue
-        changed_lines[file_path] += _count_patch_line_changes(patch)
 
-    return dict(changed_lines)
+        diff = repo.diff(commit.parents[0], commit)
+        file_changes: dict[str, int] = defaultdict(int)
+        for patch in diff:
+            file_path = patch.delta.new_file.path or patch.delta.old_file.path
+            if file_path not in tracked_files:
+                continue
 
+            changed_lines = sum(
+                1
+                for hunk in patch.hunks
+                for line in hunk.lines
+                if line.origin in {"+", "-"}
+            )
+            if changed_lines > 0:
+                file_changes[file_path] += changed_lines
 
-def _count_patch_line_changes(patch: pygit2.Patch) -> int:
-    """Count line additions plus deletions for one patch.
+        if file_changes:
+            commit_events.append((commit.commit_time, dict(file_changes)))
 
-    Args:
-        patch: Diff patch containing hunk and line-level delta details.
+    if not commit_events:
+        return []
 
-    Returns:
-        Total number of added and removed lines in the patch.
-    """
-    additions = 0
-    deletions = 0
-    for hunk in patch.hunks:
-        for line in hunk.lines:
-            if line.origin == "+":
-                additions += 1
-            elif line.origin == "-":
-                deletions += 1
-    return additions + deletions
-
-
-def _group_commit_events_by_quiet_window(
-    commit_events: list[tuple[int, dict[str, int]]],
-    quiet_time_seconds: int,
-) -> list[tuple[int, dict[str, int]]]:
-    """Group commit events into burst periods separated by quiet windows.
-
-    Args:
-        commit_events: Sequence of `(event_time, file_changes)` tuples.
-        quiet_time_seconds: Threshold that starts a new period when exceeded.
-
-    Returns:
-        Time-ordered periods with end timestamp and aggregated file changes.
-    """
     commit_events.sort(key=lambda event: event[0])
     periods: list[tuple[int, dict[str, int]]] = []
     current_end_time = commit_events[0][0]
