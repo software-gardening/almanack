@@ -146,6 +146,25 @@ def _collect_period_file_changes(
     if not commit_events:
         return []
 
+    return _group_commit_events_by_quiet_window(
+        commit_events=commit_events,
+        quiet_time_seconds=quiet_time_seconds,
+    )
+
+
+def _group_commit_events_by_quiet_window(
+    commit_events: list[tuple[int, dict[str, int]]],
+    quiet_time_seconds: int,
+) -> list[tuple[int, dict[str, int]]]:
+    """Group commit events into burst periods separated by quiet windows.
+
+    Args:
+        commit_events: Sequence of `(event_time, file_changes)` tuples.
+        quiet_time_seconds: Threshold that starts a new period when exceeded.
+
+    Returns:
+        Time-ordered periods with end timestamp and aggregated file changes.
+    """
     commit_events.sort(key=lambda event: event[0])
     periods: list[tuple[int, dict[str, int]]] = []
     current_end_time = commit_events[0][0]
