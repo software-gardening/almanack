@@ -55,10 +55,14 @@ def calculate_normalized_entropy(
         Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510
     """
     source_commit_ref = (
-        str(source_commit.id) if isinstance(source_commit, pygit2.Commit) else source_commit
+        str(source_commit.id)
+        if isinstance(source_commit, pygit2.Commit)
+        else source_commit
     )
     target_commit_ref = (
-        str(target_commit.id) if isinstance(target_commit, pygit2.Commit) else target_commit
+        str(target_commit.id)
+        if isinstance(target_commit, pygit2.Commit)
+        else target_commit
     )
 
     loc_changes = get_loc_changed(
