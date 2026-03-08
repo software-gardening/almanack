@@ -349,54 +349,81 @@ document.write(`
                 <article class="bd-article">
                   
   <h1>Source code for almanack.metrics.entropy.calculate_entropy</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This module calculates the amount of Software information entropy</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">&quot;&quot;&quot;Calculate software change entropy and decay-weighted history complexity.&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">pygit2</span>
 
 <span class="kn">from</span> <span class="nn">almanack.git</span> <span class="kn">import</span> <span class="n">get_loc_changed</span>
 
 
+<div class="viewcode-block" id="HistoryComplexityConfig">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy.HistoryComplexityConfig">[docs]</a>
+<span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">HistoryComplexityConfig</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration values for the decay-weighted history complexity metric.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        decay_factor: Time scale (in hours) for exponential down-weighting of</span>
+<span class="sd">            older burst periods. Larger values make older periods lose influence</span>
+<span class="sd">            more slowly; smaller values make them fade faster.</span>
+<span class="sd">        quiet_time_seconds: Maximum allowed time gap between adjacent commit</span>
+<span class="sd">            events in the same burst period. If the gap is larger than this</span>
+<span class="sd">            threshold, a new burst period starts.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">decay_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">10.0</span>
+    <span class="n">quiet_time_seconds</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3600</span></div>
+
+
+
 <div class="viewcode-block" id="calculate_normalized_entropy">
 <a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy.calculate_normalized_entropy">[docs]</a>
 <span class="k">def</span> <span class="nf">calculate_normalized_entropy</span><span class="p">(</span>
     <span class="n">repo_path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
-    <span class="n">source_commit</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">,</span>
-    <span class="n">target_commit</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">,</span>
+    <span class="n">source_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
+    <span class="n">target_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
     <span class="n">file_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculates the entropy of changes in specified files between two commits,</span>
-<span class="sd">    inspired by Shannon&#39;s information theory entropy formula.</span>
-<span class="sd">    Normalized relative to the total lines of code changes across specified files.</span>
-<span class="sd">    We follow an approach described by Hassan (2009) (see references).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate per-file normalized Shannon entropy for changed lines.</span>
 
-<span class="sd">    Application of Entropy Calculation:</span>
-<span class="sd">    Entropy measures the uncertainty in a given system. Calculating the entropy</span>
-<span class="sd">    of lines of code (LoC) changed reveals the variability and complexity of</span>
-<span class="sd">    modifications in each file. Higher entropy values indicate more unpredictable</span>
-<span class="sd">    changes, helping identify potentially unstable code areas.</span>
+<span class="sd">    The function computes entropy using per-file change probabilities between</span>
+<span class="sd">    `source_commit` and `target_commit`, where each probability is:</span>
+<span class="sd">    `changed_lines_in_file / total_changed_lines_across_files`.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_path (str): The file path to the git repository.</span>
-<span class="sd">        source_commit (pygit2.Commit): The git hash of the source commit.</span>
-<span class="sd">        target_commit (pygit2.Commit): The git hash of the target commit.</span>
-<span class="sd">        file_names (list[str]): List of file names to calculate entropy for.</span>
+<span class="sd">        repo_path: Path to the local Git repository.</span>
+<span class="sd">        source_commit: Commit object or reference string for range start.</span>
+<span class="sd">        target_commit: Commit object or reference string for range end.</span>
+<span class="sd">        file_names: Repository-relative file paths to include in the calculation.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        dict[str, float]: A dictionary mapping file names to their calculated entropy.</span>
+<span class="sd">        Mapping of file path to that file&#39;s entropy contribution.</span>
 
 <span class="sd">    References:</span>
-<span class="sd">        * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.</span>
-<span class="sd">            2009 IEEE 31st International Conference on Software Engineering, 78-88.</span>
-<span class="sd">            https://doi.org/10.1109/ICSE.2009.5070510</span>
+<span class="sd">        Hassan, A. E. (2009). Predicting faults using the complexity of code</span>
+<span class="sd">        changes. 2009 IEEE 31st International Conference on Software</span>
+<span class="sd">        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">loc_changes</span> <span class="o">=</span> <span class="n">get_loc_changed</span><span class="p">(</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">source_commit</span><span class="p">,</span> <span class="n">target_commit</span><span class="p">,</span> <span class="n">file_names</span><span class="p">)</span>
+    <span class="n">source_commit_ref</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">source_commit</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source_commit</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">source_commit</span>
+    <span class="p">)</span>
+    <span class="n">target_commit_ref</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">target_commit</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">target_commit</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">)</span>
+        <span class="k">else</span> <span class="n">target_commit</span>
+    <span class="p">)</span>
+
+    <span class="n">loc_changes</span> <span class="o">=</span> <span class="n">get_loc_changed</span><span class="p">(</span>
+        <span class="n">repo_path</span><span class="p">,</span> <span class="n">source_commit_ref</span><span class="p">,</span> <span class="n">target_commit_ref</span><span class="p">,</span> <span class="n">file_names</span>
+    <span class="p">)</span>
     <span class="c1"># Calculate total lines of code changes across all specified files</span>
     <span class="n">total_changes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">loc_changes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
@@ -420,33 +447,266 @@ document.write(`
 
 
 
+<div class="viewcode-block" id="_resolve_commit">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy._resolve_commit">[docs]</a>
+<span class="k">def</span> <span class="nf">_resolve_commit</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span> <span class="n">commit_ref</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a commit input into a concrete `pygit2.Commit`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: Open repository used to look up commit reference strings.</span>
+<span class="sd">        commit_ref: Existing commit object or rev-parse compatible commit string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Commit object for `commit_ref`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">commit_ref</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">commit_ref</span>
+    <span class="k">return</span> <span class="n">repo</span><span class="o">.</span><span class="n">revparse_single</span><span class="p">(</span><span class="n">commit_ref</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_collect_period_file_changes">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy._collect_period_file_changes">[docs]</a>
+<span class="k">def</span> <span class="nf">_collect_period_file_changes</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span>
+    <span class="n">source_commit</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">,</span>
+    <span class="n">target_commit</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">,</span>
+    <span class="n">tracked_files</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">quiet_time_seconds</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3600</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Collect per-period tracked-file change totals separated by quiet windows.</span>
+
+<span class="sd">    This function walks commits from `target_commit` backwards to</span>
+<span class="sd">    `source_commit`, extracts tracked-file line changes from each commit, and</span>
+<span class="sd">    then groups these commit events into burst periods. A commit event is one</span>
+<span class="sd">    commit timestamp plus tracked-file counts of lines added and deleted. A new period</span>
+<span class="sd">    starts when the elapsed time between consecutive commit events is greater than</span>
+<span class="sd">    `quiet_time_seconds`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: Open repository used to read commit history and diffs.</span>
+<span class="sd">        source_commit: Commit that marks the start boundary (exclusive).</span>
+<span class="sd">        target_commit: Commit that marks the end boundary (inclusive).</span>
+<span class="sd">        tracked_files: File paths that should contribute to change totals.</span>
+<span class="sd">        quiet_time_seconds: Threshold separating consecutive burst periods.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Time-ordered list of periods. Each item contains the period end time</span>
+<span class="sd">        (Unix timestamp) and file-level counts of lines added plus deleted for</span>
+<span class="sd">        that period.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">commit_events</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">walker</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">target_commit</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GIT_SORT_TIME</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">commit</span> <span class="ow">in</span> <span class="n">walker</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">commit</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">source_commit</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">commit</span><span class="o">.</span><span class="n">parents</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">commit</span><span class="p">)</span>
+        <span class="n">file_changes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">patch</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span>
+            <span class="n">file_path</span> <span class="o">=</span> <span class="n">patch</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">new_file</span><span class="o">.</span><span class="n">path</span> <span class="ow">or</span> <span class="n">patch</span><span class="o">.</span><span class="n">delta</span><span class="o">.</span><span class="n">old_file</span><span class="o">.</span><span class="n">path</span>
+            <span class="k">if</span> <span class="n">file_path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">tracked_files</span><span class="p">:</span>
+                <span class="k">continue</span>
+
+            <span class="n">changed_lines</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="mi">1</span>
+                <span class="k">for</span> <span class="n">hunk</span> <span class="ow">in</span> <span class="n">patch</span><span class="o">.</span><span class="n">hunks</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">hunk</span><span class="o">.</span><span class="n">lines</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">origin</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">}</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">changed_lines</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">file_changes</span><span class="p">[</span><span class="n">file_path</span><span class="p">]</span> <span class="o">+=</span> <span class="n">changed_lines</span>
+
+        <span class="k">if</span> <span class="n">file_changes</span><span class="p">:</span>
+            <span class="n">commit_events</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">file_changes</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">commit_events</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+
+    <span class="k">return</span> <span class="n">_group_commit_events_by_quiet_window</span><span class="p">(</span>
+        <span class="n">commit_events</span><span class="o">=</span><span class="n">commit_events</span><span class="p">,</span>
+        <span class="n">quiet_time_seconds</span><span class="o">=</span><span class="n">quiet_time_seconds</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_group_commit_events_by_quiet_window">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy._group_commit_events_by_quiet_window">[docs]</a>
+<span class="k">def</span> <span class="nf">_group_commit_events_by_quiet_window</span><span class="p">(</span>
+    <span class="n">commit_events</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span>
+    <span class="n">quiet_time_seconds</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Group commit events into burst periods separated by quiet windows.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        commit_events: Sequence of commit events, where each event is</span>
+<span class="sd">            `(event_time, file_changes)`. `event_time` is a commit timestamp,</span>
+<span class="sd">            and `file_changes` maps tracked file paths to counts of lines added</span>
+<span class="sd">            plus deleted from that commit.</span>
+<span class="sd">        quiet_time_seconds: Threshold that starts a new period when exceeded.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Time-ordered periods with end timestamp and aggregated file changes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">commit_events</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">event</span><span class="p">:</span> <span class="n">event</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">periods</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">current_end_time</span> <span class="o">=</span> <span class="n">commit_events</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">current_changes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">commit_events</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">event_time</span><span class="p">,</span> <span class="n">event_changes</span> <span class="ow">in</span> <span class="n">commit_events</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="n">event_time</span> <span class="o">-</span> <span class="n">current_end_time</span> <span class="o">&gt;</span> <span class="n">quiet_time_seconds</span><span class="p">:</span>
+            <span class="n">periods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_end_time</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">current_changes</span><span class="p">)))</span>
+            <span class="n">current_changes</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">event_changes</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">changed</span> <span class="ow">in</span> <span class="n">event_changes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">current_changes</span><span class="p">[</span><span class="n">file_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">changed</span>
+        <span class="n">current_end_time</span> <span class="o">=</span> <span class="n">event_time</span>
+
+    <span class="n">periods</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">current_end_time</span><span class="p">,</span> <span class="nb">dict</span><span class="p">(</span><span class="n">current_changes</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">periods</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_history_complexity_with_decay">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy.calculate_history_complexity_with_decay">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_history_complexity_with_decay</span><span class="p">(</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">source_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
+    <span class="n">target_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
+    <span class="n">file_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">HistoryComplexityConfig</span> <span class="o">=</span> <span class="n">HistoryComplexityConfig</span><span class="p">(),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate decay-weighted history complexity for each tracked file.</span>
+
+<span class="sd">    For each burst period, this computes each file&#39;s Shannon entropy</span>
+<span class="sd">    contribution `-(p_i * log2(p_i))` from file-level changed-line</span>
+<span class="sd">    probabilities, then applies exponential decay by period age.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_path: Path to the local Git repository.</span>
+<span class="sd">        source_commit: Commit object or reference string for range start.</span>
+<span class="sd">        target_commit: Commit object or reference string for range end.</span>
+<span class="sd">        file_names: Repository-relative file paths to score.</span>
+<span class="sd">        config: Decay and period-grouping configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Mapping of file path to decay-weighted history complexity score.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        ValueError: If `config.decay_factor` is less than or equal to zero.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        Hassan, A. E. (2009). Predicting faults using the complexity of code</span>
+<span class="sd">        changes. 2009 IEEE 31st International Conference on Software</span>
+<span class="sd">        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">decay_factor</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;decay_factor must be greater than zero.&quot;</span><span class="p">)</span>
+
+    <span class="n">repo</span> <span class="o">=</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+    <span class="n">source</span> <span class="o">=</span> <span class="n">_resolve_commit</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">source_commit</span><span class="p">)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">_resolve_commit</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">target_commit</span><span class="p">)</span>
+
+    <span class="n">period_changes</span> <span class="o">=</span> <span class="n">_collect_period_file_changes</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+        <span class="n">source_commit</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+        <span class="n">target_commit</span><span class="o">=</span><span class="n">target</span><span class="p">,</span>
+        <span class="n">tracked_files</span><span class="o">=</span><span class="nb">set</span><span class="p">(</span><span class="n">file_names</span><span class="p">),</span>
+        <span class="n">quiet_time_seconds</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">quiet_time_seconds</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">history_complexity</span> <span class="o">=</span> <span class="p">{</span><span class="n">file_name</span><span class="p">:</span> <span class="mf">0.0</span> <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">period_changes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">history_complexity</span>
+
+    <span class="n">current_time</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">period_end</span> <span class="k">for</span> <span class="n">period_end</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">period_changes</span><span class="p">)</span>
+    <span class="n">seconds_per_hour</span> <span class="o">=</span> <span class="mf">3600.0</span>
+
+    <span class="k">for</span> <span class="n">period_end_time</span><span class="p">,</span> <span class="n">file_changes</span> <span class="ow">in</span> <span class="n">period_changes</span><span class="p">:</span>
+        <span class="n">total_changes</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">file_changes</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">total_changes</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">age_in_hours</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="n">period_end_time</span><span class="p">)</span> <span class="o">/</span> <span class="n">seconds_per_hour</span>
+        <span class="n">decay_weight</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">age_in_hours</span> <span class="o">/</span> <span class="n">config</span><span class="o">.</span><span class="n">decay_factor</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">file_name</span><span class="p">,</span> <span class="n">changed</span> <span class="ow">in</span> <span class="n">file_changes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">file_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">history_complexity</span> <span class="ow">or</span> <span class="n">changed</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">probability</span> <span class="o">=</span> <span class="n">changed</span> <span class="o">/</span> <span class="n">total_changes</span>
+            <span class="n">file_entropy_contribution</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">probability</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">probability</span><span class="p">))</span>
+            <span class="n">history_complexity</span><span class="p">[</span><span class="n">file_name</span><span class="p">]</span> <span class="o">+=</span> <span class="n">decay_weight</span> <span class="o">*</span> <span class="n">file_entropy_contribution</span>
+
+    <span class="k">return</span> <span class="n">history_complexity</span></div>
+
+
+
+<div class="viewcode-block" id="calculate_aggregate_history_complexity_with_decay">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy.calculate_aggregate_history_complexity_with_decay">[docs]</a>
+<span class="k">def</span> <span class="nf">calculate_aggregate_history_complexity_with_decay</span><span class="p">(</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
+    <span class="n">source_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
+    <span class="n">target_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
+    <span class="n">file_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">HistoryComplexityConfig</span> <span class="o">=</span> <span class="n">HistoryComplexityConfig</span><span class="p">(),</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate the mean decay-weighted history complexity across files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo_path: Path to the local Git repository.</span>
+<span class="sd">        source_commit: Commit object or reference string for range start.</span>
+<span class="sd">        target_commit: Commit object or reference string for range end.</span>
+<span class="sd">        file_names: Repository-relative file paths to include in the mean.</span>
+<span class="sd">        config: Decay and period-grouping configuration.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Mean file-level history complexity score, or `0.0` for no files.</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        Hassan, A. E. (2009). Predicting faults using the complexity of code</span>
+<span class="sd">        changes. 2009 IEEE 31st International Conference on Software</span>
+<span class="sd">        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">history_complexity</span> <span class="o">=</span> <span class="n">calculate_history_complexity_with_decay</span><span class="p">(</span>
+        <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+        <span class="n">source_commit</span><span class="o">=</span><span class="n">source_commit</span><span class="p">,</span>
+        <span class="n">target_commit</span><span class="o">=</span><span class="n">target_commit</span><span class="p">,</span>
+        <span class="n">file_names</span><span class="o">=</span><span class="n">file_names</span><span class="p">,</span>
+        <span class="n">config</span><span class="o">=</span><span class="n">config</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">num_files</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">file_names</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">history_complexity</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="n">num_files</span> <span class="k">if</span> <span class="n">num_files</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span></div>
+
+
+
 <div class="viewcode-block" id="calculate_aggregate_entropy">
 <a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.entropy.calculate_entropy.calculate_aggregate_entropy">[docs]</a>
 <span class="k">def</span> <span class="nf">calculate_aggregate_entropy</span><span class="p">(</span>
     <span class="n">repo_path</span><span class="p">:</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">,</span>
-    <span class="n">source_commit</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">,</span>
-    <span class="n">target_commit</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">,</span>
+    <span class="n">source_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
+    <span class="n">target_commit</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Commit</span><span class="p">],</span>
     <span class="n">file_names</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Computes the aggregated normalized entropy score from the output of</span>
-<span class="sd">    calculate_normalized_entropy for specified a Git repository.</span>
-<span class="sd">    Inspired by Shannon&#39;s information theory entropy formula.</span>
-<span class="sd">    We follow an approach described by Hassan (2009) (see references).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Calculate mean normalized entropy across the provided files.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        repo_path (str): The file path to the git repository.</span>
-<span class="sd">        source_commit (pygit2.Commit): The git hash of the source commit.</span>
-<span class="sd">        target_commit (pygit2.Commit): The git hash of the target commit.</span>
-<span class="sd">        file_names (list[str]): List of file names to calculate entropy for.</span>
+<span class="sd">        repo_path: Path to the local Git repository.</span>
+<span class="sd">        source_commit: Commit object or reference string for range start.</span>
+<span class="sd">        target_commit: Commit object or reference string for range end.</span>
+<span class="sd">        file_names: Repository-relative file paths to include in the calculation.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        float: Normalized entropy calculation.</span>
+<span class="sd">        Mean of per-file normalized entropy values, or `0.0` for no files.</span>
 
 <span class="sd">    References:</span>
-<span class="sd">        * Hassan, A. E. (2009). Predicting faults using the complexity of code changes.</span>
-<span class="sd">            2009 IEEE 31st International Conference on Software Engineering, 78-88.</span>
-<span class="sd">            https://doi.org/10.1109/ICSE.2009.5070510</span>
+<span class="sd">        Hassan, A. E. (2009). Predicting faults using the complexity of code</span>
+<span class="sd">        changes. 2009 IEEE 31st International Conference on Software</span>
+<span class="sd">        Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get the entropy for each file</span>
     <span class="n">entropy_calculation</span> <span class="o">=</span> <span class="n">calculate_normalized_entropy</span><span class="p">(</span>

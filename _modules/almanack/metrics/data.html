@@ -380,6 +380,7 @@ document.write(`
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.entropy.calculate_entropy</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">calculate_aggregate_entropy</span><span class="p">,</span>
+    <span class="n">calculate_history_complexity_with_decay</span><span class="p">,</span>
     <span class="n">calculate_normalized_entropy</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.garden_lattice.connectedness</span> <span class="kn">import</span> <span class="p">(</span>
@@ -492,8 +493,18 @@ document.write(`
         <span class="p">]:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid ignore keys: </span><span class="si">{</span><span class="n">invalid_ignore_keys</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+    <span class="n">required_metric_names</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics_table</span>
+        <span class="k">if</span> <span class="n">ignore</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">metric</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ignore</span>
+    <span class="p">}</span>
+
     <span class="c1"># gather data for use in the metrics table</span>
-    <span class="n">metrics_data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span><span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span> <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">)</span>
+    <span class="n">metrics_data</span> <span class="o">=</span> <span class="n">compute_repo_data</span><span class="p">(</span>
+        <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+        <span class="n">exclude_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
+        <span class="n">required_metric_names</span><span class="o">=</span><span class="n">required_metric_names</span><span class="p">,</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="s2">&quot;error&quot;</span> <span class="ow">in</span> <span class="n">metrics_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">raise</span> <span class="ne">ReferenceError</span><span class="p">(</span>
@@ -634,14 +645,19 @@ document.write(`
 
 <div class="viewcode-block" id="compute_repo_data">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.compute_repo_data">[docs]</a>
-<span class="k">def</span> <span class="nf">compute_repo_data</span><span class="p">(</span>
-    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">def</span> <span class="nf">compute_repo_data</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0912, PLR0915</span>
+    <span class="n">repo_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">exclude_paths</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">required_metric_names</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute comprehensive data for a GitHub repository.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        repo_path: The local path to the Git repository.</span>
 <span class="sd">        exclude_paths: Repository-relative paths or glob patterns to exclude from checks.</span>
+<span class="sd">        required_metric_names: Optional set of metric names that will be used by</span>
+<span class="sd">            downstream reporting. If provided, expensive data-collection blocks</span>
+<span class="sd">            are skipped unless one of their dependent metrics is requested.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        A dictionary containing data key-pairs.</span>
@@ -658,48 +674,118 @@ document.write(`
     <span class="n">repo_path</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
     <span class="n">repo</span> <span class="o">=</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
 
+    <span class="k">def</span> <span class="nf">needs</span><span class="p">(</span><span class="o">*</span><span class="n">metric_names</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return whether any of the given metric names should be collected.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">required_metric_names</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">metric_name</span> <span class="ow">in</span> <span class="n">required_metric_names</span> <span class="k">for</span> <span class="n">metric_name</span> <span class="ow">in</span> <span class="n">metric_names</span><span class="p">)</span>
+
     <span class="n">remote_url</span> <span class="o">=</span> <span class="n">get_remote_url</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
 
-    <span class="c1"># gather data from ecosystems repo api</span>
-    <span class="n">remote_repo_data</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
-        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">remote_url</span><span class="p">}</span> <span class="k">if</span> <span class="n">remote_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
-    <span class="p">)</span>
+    <span class="n">remote_repo_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-primary-language&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-primary-license&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-stargazers-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-uses-issues&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-issues-open-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-pull-requests-enabled&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-forks-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-subscribers-count&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># gather data from ecosystems repo api</span>
+        <span class="n">remote_repo_data</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+            <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">remote_url</span><span class="p">}</span> <span class="k">if</span> <span class="n">remote_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">)</span>
 
-    <span class="c1"># gather data from github repo workflows api</span>
-    <span class="n">gh_workflows_data</span> <span class="o">=</span> <span class="n">get_github_build_metrics</span><span class="p">(</span>
-        <span class="n">repo_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span> <span class="n">max_runs</span><span class="o">=</span><span class="mi">100</span>
-    <span class="p">)</span>
+    <span class="n">gh_workflows_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-gh-workflow-success-ratio&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-gh-workflow-succeeding-runs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-gh-workflow-failing-runs&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-gh-workflow-queried-total&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># gather data from github repo workflows api</span>
+        <span class="n">gh_workflows_data</span> <span class="o">=</span> <span class="n">get_github_build_metrics</span><span class="p">(</span>
+            <span class="n">repo_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">,</span> <span class="n">branch</span><span class="o">=</span><span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">shorthand</span><span class="p">,</span> <span class="n">max_runs</span><span class="o">=</span><span class="mi">100</span>
+        <span class="p">)</span>
 
-    <span class="c1"># gather data on code coverage</span>
-    <span class="n">code_coverage</span> <span class="o">=</span> <span class="n">measure_coverage</span><span class="p">(</span>
-        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">primary_language</span><span class="o">=</span><span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="c1"># gather data from ecosystems packages api</span>
-    <span class="n">packages_data</span> <span class="o">=</span> <span class="n">get_ecosystems_package_metrics</span><span class="p">(</span><span class="n">repo_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">)</span>
+    <span class="n">code_coverage</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-code-coverage-percent&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-date-of-last-coverage-run&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-days-between-last-coverage-run-latest-commit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-code-coverage-total-lines&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-code-coverage-executed-lines&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">remote_repo_data</span><span class="p">:</span>
+            <span class="n">remote_repo_data</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+                <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;url&quot;</span><span class="p">:</span> <span class="n">remote_url</span><span class="p">}</span> <span class="k">if</span> <span class="n">remote_url</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="c1"># gather data on code coverage</span>
+        <span class="n">code_coverage</span> <span class="o">=</span> <span class="n">measure_coverage</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">primary_language</span><span class="o">=</span><span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">packages_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-packages-ecosystems&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-packages-ecosystems-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-packages-versions-count&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># gather data from ecosystems packages api</span>
+        <span class="n">packages_data</span> <span class="o">=</span> <span class="n">get_ecosystems_package_metrics</span><span class="p">(</span><span class="n">repo_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">)</span>
 
     <span class="c1"># Retrieve the list of commits from the repository</span>
     <span class="n">commits</span> <span class="o">=</span> <span class="n">get_commits</span><span class="p">(</span><span class="n">repo</span><span class="p">)</span>
     <span class="n">most_recent_commit</span> <span class="o">=</span> <span class="n">commits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">first_commit</span> <span class="o">=</span> <span class="n">commits</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="c1"># Get a list of files that have been edited between the first and most recent commit</span>
-    <span class="n">edited_file_names</span> <span class="o">=</span> <span class="n">get_edited_files</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">first_commit</span><span class="p">,</span> <span class="n">most_recent_commit</span><span class="p">)</span>
+    <span class="n">normalized_total_entropy</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">file_entropy</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">file_history_complexity_decay</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">aggregate_history_complexity_decay</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-agg-history-complexity-decay&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-file-history-complexity-decay&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># Get a list of files that have been edited between the first and most recent commit</span>
+        <span class="n">edited_file_names</span> <span class="o">=</span> <span class="n">get_edited_files</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="n">first_commit</span><span class="p">,</span> <span class="n">most_recent_commit</span><span class="p">)</span>
 
-    <span class="c1"># Calculate the normalized total entropy for the repository</span>
-    <span class="n">normalized_total_entropy</span> <span class="o">=</span> <span class="n">calculate_aggregate_entropy</span><span class="p">(</span>
-        <span class="n">repo_path</span><span class="p">,</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-        <span class="n">edited_file_names</span><span class="p">,</span>
-    <span class="p">)</span>
+        <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">):</span>
+            <span class="c1"># Calculate the normalized total entropy for the repository</span>
+            <span class="n">normalized_total_entropy</span> <span class="o">=</span> <span class="n">calculate_aggregate_entropy</span><span class="p">(</span>
+                <span class="n">repo_path</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">edited_file_names</span><span class="p">,</span>
+            <span class="p">)</span>
 
-    <span class="c1"># Calculate the normalized entropy for the changes between the first and most recent commits</span>
-    <span class="n">file_entropy</span> <span class="o">=</span> <span class="n">calculate_normalized_entropy</span><span class="p">(</span>
-        <span class="n">repo_path</span><span class="p">,</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-        <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
-        <span class="n">edited_file_names</span><span class="p">,</span>
-    <span class="p">)</span>
+        <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">):</span>
+            <span class="c1"># Calculate the normalized entropy for the changes between the first and most recent commits</span>
+            <span class="n">file_entropy</span> <span class="o">=</span> <span class="n">calculate_normalized_entropy</span><span class="p">(</span>
+                <span class="n">repo_path</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">edited_file_names</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+            <span class="s2">&quot;repo-agg-history-complexity-decay&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-file-history-complexity-decay&quot;</span>
+        <span class="p">):</span>
+            <span class="n">file_history_complexity_decay</span> <span class="o">=</span> <span class="n">calculate_history_complexity_with_decay</span><span class="p">(</span>
+                <span class="n">repo_path</span><span class="p">,</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">first_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="n">most_recent_commit</span><span class="o">.</span><span class="n">id</span><span class="p">),</span>
+                <span class="n">edited_file_names</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">aggregate_history_complexity_decay</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">file_history_complexity_decay</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">edited_file_names</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">edited_file_names</span>
+                <span class="k">else</span> <span class="mf">0.0</span>
+            <span class="p">)</span>
     <span class="c1"># Convert commit times to UTC datetime objects, then format as date strings.</span>
     <span class="n">first_commit_date</span><span class="p">,</span> <span class="n">most_recent_commit_date</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">commit</span><span class="o">.</span><span class="n">commit_time</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
@@ -711,36 +797,66 @@ document.write(`
     <span class="n">readme_file</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;readme&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">readme_exists</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">readme_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
 
-    <span class="c1"># gather social media metrics</span>
-    <span class="n">social_media_metrics</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">detect_social_media_links</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">readme_file</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">readme_exists</span>
-        <span class="k">else</span> <span class="p">{}</span>
-    <span class="p">)</span>
+    <span class="n">social_media_metrics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-social-media-platforms&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-social-media-platforms-count&quot;</span><span class="p">):</span>
+        <span class="c1"># gather social media metrics</span>
+        <span class="n">social_media_metrics</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">detect_social_media_links</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">readme_file</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">readme_exists</span>
+            <span class="k">else</span> <span class="p">{}</span>
+        <span class="p">)</span>
 
-    <span class="c1"># gather doi citation data</span>
-    <span class="n">doi_citation_data</span> <span class="o">=</span> <span class="n">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+    <span class="n">doi_citation_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;valid_format_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;grants_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;grants&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-doi&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-publication-date&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-valid-format&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-https-resolvable&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-cited-by-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-fwci&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-is-not-retracted&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-grants-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-doi-grants&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-days-between-doi-publication-date-and-latest-commit&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># gather doi citation data</span>
+        <span class="n">doi_citation_data</span> <span class="o">=</span> <span class="n">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
 
     <span class="c1"># collect notebook cell data</span>
     <span class="n">ignore_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.venv&quot;</span><span class="p">]</span>
 
-    <span class="n">notebook_cells</span> <span class="o">=</span> <span class="n">get_nb_contents</span><span class="p">(</span>
-        <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
-        <span class="n">ignore_dirs</span><span class="o">=</span><span class="n">ignore_dirs</span><span class="p">,</span>
-        <span class="n">ignore_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
-    <span class="p">)</span>
     <span class="n">failed_notebook_exec_order</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">notebook_path</span><span class="p">,</span> <span class="n">cells</span> <span class="ow">in</span> <span class="n">notebook_cells</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">check_ipynb_code_exec_order</span><span class="p">(</span><span class="n">nb_cells</span><span class="o">=</span><span class="n">cells</span><span class="p">):</span>
-            <span class="k">continue</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">failed_notebook_exec_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">notebook_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">repo_path</span><span class="p">)))</span>
-        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-            <span class="n">failed_notebook_exec_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">notebook_path</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">failed_notebook_exec_order</span><span class="p">:</span>
-        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-            <span class="s2">&quot;Notebook execution order failures: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">failed_notebook_exec_order</span>
+    <span class="n">notebook_exec_order_checked</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-check-notebook-exec-order&quot;</span><span class="p">):</span>
+        <span class="n">notebook_exec_order_checked</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">notebook_cells</span> <span class="o">=</span> <span class="n">get_nb_contents</span><span class="p">(</span>
+            <span class="n">repo_path</span><span class="o">=</span><span class="n">repo_path</span><span class="p">,</span>
+            <span class="n">ignore_dirs</span><span class="o">=</span><span class="n">ignore_dirs</span><span class="p">,</span>
+            <span class="n">ignore_paths</span><span class="o">=</span><span class="n">exclude_paths</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="k">for</span> <span class="n">notebook_path</span><span class="p">,</span> <span class="n">cells</span> <span class="ow">in</span> <span class="n">notebook_cells</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">check_ipynb_code_exec_order</span><span class="p">(</span><span class="n">nb_cells</span><span class="o">=</span><span class="n">cells</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">failed_notebook_exec_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">notebook_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">repo_path</span><span class="p">))</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">failed_notebook_exec_order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">notebook_path</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">failed_notebook_exec_order</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Notebook execution order failures: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">failed_notebook_exec_order</span>
+            <span class="p">)</span>
 
     <span class="c1"># Return the data structure</span>
     <span class="k">return</span> <span class="p">{</span>
@@ -851,10 +967,14 @@ document.write(`
         <span class="s2">&quot;repo-code-coverage-executed-lines&quot;</span><span class="p">:</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;executed_lines&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="s2">&quot;repo-agg-info-entropy&quot;</span><span class="p">:</span> <span class="n">normalized_total_entropy</span><span class="p">,</span>
         <span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">:</span> <span class="n">file_entropy</span><span class="p">,</span>
+        <span class="s2">&quot;repo-agg-history-complexity-decay&quot;</span><span class="p">:</span> <span class="n">aggregate_history_complexity_decay</span><span class="p">,</span>
+        <span class="s2">&quot;repo-file-history-complexity-decay&quot;</span><span class="p">:</span> <span class="n">file_history_complexity_decay</span><span class="p">,</span>
         <span class="s2">&quot;repo-check-notebook-dir&quot;</span><span class="p">:</span> <span class="n">repo_dir_exists</span><span class="p">(</span>
             <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">directory_name</span><span class="o">=</span><span class="s2">&quot;notebooks&quot;</span>
         <span class="p">),</span>
-        <span class="s2">&quot;repo-check-notebook-exec-order&quot;</span><span class="p">:</span> <span class="ow">not</span> <span class="n">failed_notebook_exec_order</span><span class="p">,</span>
+        <span class="s2">&quot;repo-check-notebook-exec-order&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="p">(</span><span class="ow">not</span> <span class="n">failed_notebook_exec_order</span><span class="p">)</span> <span class="k">if</span> <span class="n">notebook_exec_order_checked</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
     <span class="p">}</span></div>
 
 
@@ -1017,7 +1137,9 @@ document.write(`
 <span class="k">def</span> <span class="nf">table_to_wide</span><span class="p">(</span><span class="n">table_rows</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Transpose Almanack table (name-&gt;result), compute checks summary, flatten nested.</span>
-<span class="sd">    `repo-file-info-entropy` is ignored due to scope and increased runtime for analysis.</span>
+<span class="sd">    `repo-file-info-entropy` and `repo-file-history-complexity-decay` are omitted from</span>
+<span class="sd">    the wide output because they are large, file-level metrics that are out of scope</span>
+<span class="sd">    for this flattened summary representation.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        table_rows (list[dict]):</span>
@@ -1054,6 +1176,7 @@ document.write(`
     <span class="p">)</span>
 
     <span class="n">wide</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;repo-file-info-entropy&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">wide</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;repo-file-history-complexity-decay&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="c1"># Flatten repo-almanack-score if present (avoid nested dict in parquet)</span>
     <span class="n">score</span> <span class="o">=</span> <span class="n">wide</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;repo-almanack-score&quot;</span><span class="p">)</span>
