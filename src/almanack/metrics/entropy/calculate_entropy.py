@@ -32,8 +32,9 @@ def calculate_normalized_entropy(
 ) -> dict[str, float]:
     """Calculate per-file normalized Shannon entropy for changed lines.
 
-    Entropy is computed from line-change proportions between `source_commit`
-    and `target_commit` for the provided files.
+    The function computes entropy using per-file change probabilities between
+    `source_commit` and `target_commit`, where each probability is:
+    `changed_lines_in_file / total_changed_lines_across_files`.
 
     Args:
         repo_path: Path to the local Git repository.
