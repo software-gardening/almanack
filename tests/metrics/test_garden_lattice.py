@@ -176,7 +176,7 @@ def test_find_software_mentions_openalex_no_query() -> None:
     assert result == {"query": None, "mentions_count": None, "references": None}
 
 
-def test_find_openalex_indirect_funding() -> None:
+def test_find_openalex_indirect_funding(monkeypatch) -> None:
     """Test OpenAlex indirect funding aggregation for citing works."""
 
     def _fake_get_api_data(api_endpoint="https://api.openalex.org/works", params=None):
@@ -202,14 +202,8 @@ def test_find_openalex_indirect_funding() -> None:
             ]
         }
 
-    original = connectedness.get_api_data
-    connectedness.get_api_data = _fake_get_api_data
-    try:
-        result = find_openalex_indirect_funding(
-            openalex_work_id="https://openalex.org/W123"
-        )
-    finally:
-        connectedness.get_api_data = original
+    monkeypatch.setattr(connectedness, "get_api_data", _fake_get_api_data)
+    result = find_openalex_indirect_funding(openalex_work_id="https://openalex.org/W123")
 
     assert result["source_work_id"] == "https://openalex.org/W123"
     assert result["citing_works_count_total"] == 0
