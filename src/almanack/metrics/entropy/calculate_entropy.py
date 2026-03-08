@@ -106,7 +106,7 @@ def _collect_period_file_changes(
     This function walks commits from `target_commit` backwards to
     `source_commit`, extracts tracked-file line changes from each commit, and
     then groups these commit events into burst periods. A commit event is one
-    commit timestamp plus its tracked-file changed-line totals. A new period
+    commit timestamp plus tracked-file counts of lines added and deleted. A new period
     starts when the elapsed time between consecutive commit events is greater than
     `quiet_time_seconds`.
 
@@ -119,7 +119,8 @@ def _collect_period_file_changes(
 
     Returns:
         Time-ordered list of periods. Each item contains the period end time
-        (Unix timestamp) and file-level changed-line total counts for that period.
+        (Unix timestamp) and file-level counts of lines added plus deleted for
+        that period.
     """
     commit_events: list[tuple[int, dict[str, int]]] = []
     walker = repo.walk(target_commit.id, pygit2.GIT_SORT_TIME)
@@ -167,8 +168,8 @@ def _group_commit_events_by_quiet_window(
     Args:
         commit_events: Sequence of commit events, where each event is
             `(event_time, file_changes)`. `event_time` is a commit timestamp,
-            and `file_changes` maps tracked file paths to changed-line totals
-            from that commit.
+            and `file_changes` maps tracked file paths to counts of lines added
+            plus deleted from that commit.
         quiet_time_seconds: Threshold that starts a new period when exceeded.
 
     Returns:
