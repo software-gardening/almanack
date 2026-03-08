@@ -203,7 +203,9 @@ def test_find_openalex_indirect_funding(monkeypatch) -> None:
         }
 
     monkeypatch.setattr(connectedness, "get_api_data", _fake_get_api_data)
-    result = find_openalex_indirect_funding(openalex_work_id="https://openalex.org/W123")
+    result = find_openalex_indirect_funding(
+        openalex_work_id="https://openalex.org/W123"
+    )
 
     assert result["source_work_id"] == "https://openalex.org/W123"
     assert result["citing_works_count_total"] == 0
