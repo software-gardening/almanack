@@ -30,8 +30,8 @@ class HistoryComplexityConfig:
 
 def calculate_normalized_entropy(
     repo_path: pathlib.Path,
-    source_commit: pygit2.Commit,
-    target_commit: pygit2.Commit,
+    source_commit: Union[str, pygit2.Commit],
+    target_commit: Union[str, pygit2.Commit],
     file_names: list[str],
 ) -> dict[str, float]:
     """Calculate per-file normalized Shannon entropy for changed lines.
@@ -42,8 +42,8 @@ def calculate_normalized_entropy(
 
     Args:
         repo_path: Path to the local Git repository.
-        source_commit: Commit that defines the start of the comparison range.
-        target_commit: Commit that defines the end of the comparison range.
+        source_commit: Commit object or reference string for range start.
+        target_commit: Commit object or reference string for range end.
         file_names: Repository-relative file paths to include in the calculation.
 
     Returns:
@@ -54,7 +54,16 @@ def calculate_normalized_entropy(
         changes. 2009 IEEE 31st International Conference on Software
         Engineering, 78-88. https://doi.org/10.1109/ICSE.2009.5070510
     """
-    loc_changes = get_loc_changed(repo_path, source_commit, target_commit, file_names)
+    source_commit_ref = (
+        str(source_commit.id) if isinstance(source_commit, pygit2.Commit) else source_commit
+    )
+    target_commit_ref = (
+        str(target_commit.id) if isinstance(target_commit, pygit2.Commit) else target_commit
+    )
+
+    loc_changes = get_loc_changed(
+        repo_path, source_commit_ref, target_commit_ref, file_names
+    )
     # Calculate total lines of code changes across all specified files
     total_changes = sum(loc_changes.values())
 
@@ -302,16 +311,16 @@ def calculate_aggregate_history_complexity_with_decay(
 
 def calculate_aggregate_entropy(
     repo_path: pathlib.Path,
-    source_commit: pygit2.Commit,
-    target_commit: pygit2.Commit,
+    source_commit: Union[str, pygit2.Commit],
+    target_commit: Union[str, pygit2.Commit],
     file_names: List[str],
 ) -> float:
     """Calculate mean normalized entropy across the provided files.
 
     Args:
         repo_path: Path to the local Git repository.
-        source_commit: Commit that defines the start of the comparison range.
-        target_commit: Commit that defines the end of the comparison range.
+        source_commit: Commit object or reference string for range start.
+        target_commit: Commit object or reference string for range end.
         file_names: Repository-relative file paths to include in the calculation.
 
     Returns:
