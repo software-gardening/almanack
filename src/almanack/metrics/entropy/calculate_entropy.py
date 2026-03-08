@@ -101,11 +101,11 @@ def _collect_period_file_changes(
     tracked_files: set[str],
     quiet_time_seconds: int = 3600,
 ) -> list[tuple[int, dict[str, int]]]:
-    """Collect per-period tracked-file change totals separated by quiet windows.
+    """Collect per-period tracked-file change totals separated by quiet windows (periods in a repository without commits).
 
     This function walks commits from `target_commit` backwards to
     `source_commit`, extracts tracked-file line changes from each commit, and
-    then groups commit events into burst periods. A new period starts when the
+    then groups these "commit events" into burst periods. A new period starts when the
     elapsed time between consecutive commit events is greater than
     `quiet_time_seconds`.
 
@@ -118,7 +118,7 @@ def _collect_period_file_changes(
 
     Returns:
         Time-ordered list of periods. Each item contains the period end time
-        (Unix timestamp) and file-level changed-line totals for that period.
+        (Unix timestamp) and file-level changed-line total counts for that period.
     """
     commit_events: list[tuple[int, dict[str, int]]] = []
     walker = repo.walk(target_commit.id, pygit2.GIT_SORT_TIME)
