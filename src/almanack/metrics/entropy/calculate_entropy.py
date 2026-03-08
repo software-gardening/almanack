@@ -211,8 +211,9 @@ def calculate_history_complexity_with_decay(
 ) -> dict[str, float]:
     """Calculate decay-weighted history complexity for each tracked file.
 
-    For each burst period, this computes Shannon entropy across file-level
-    changed-line probabilities, then applies exponential decay by period age.
+    For each burst period, this computes each file's Shannon entropy
+    contribution `-(p_i * log2(p_i))` from file-level changed-line
+    probabilities, then applies exponential decay by period age.
 
     Args:
         repo_path: Path to the local Git repository.
@@ -259,17 +260,15 @@ def calculate_history_complexity_with_decay(
         if total_changes <= 0:
             continue
 
-        period_entropy = -sum(
-            (changed / total_changes) * math.log2(changed / total_changes)
-            for changed in file_changes.values()
-            if changed > 0
-        )
         age_in_hours = (current_time - period_end_time) / seconds_per_hour
         decay_weight = math.exp(-(age_in_hours / config.decay_factor))
 
-        for file_name in file_changes:
-            if file_name in history_complexity and file_changes[file_name] > 0:
-                history_complexity[file_name] += decay_weight * period_entropy
+        for file_name, changed in file_changes.items():
+            if file_name not in history_complexity or changed <= 0:
+                continue
+            probability = changed / total_changes
+            file_entropy_contribution = -(probability * math.log2(probability))
+            history_complexity[file_name] += decay_weight * file_entropy_contribution
 
     return history_complexity
 
