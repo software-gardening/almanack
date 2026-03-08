@@ -76,14 +76,14 @@ def calculate_normalized_entropy(
 def _resolve_commit(
     repo: pygit2.Repository, commit_ref: Union[str, pygit2.Commit]
 ) -> pygit2.Commit:
-    """Resolve a commit reference into a concrete commit object.
+    """Convert a commit input into a concrete `pygit2.Commit`.
 
     Args:
-        repo: Open repository used to resolve commit strings.
-        commit_ref: Commit object or rev-parse compatible commit reference string.
+        repo: Open repository used to look up commit reference strings.
+        commit_ref: Existing commit object or rev-parse compatible commit string.
 
     Returns:
-        Resolved commit object.
+        Commit object for `commit_ref`.
     """
     if isinstance(commit_ref, pygit2.Commit):
         return commit_ref
