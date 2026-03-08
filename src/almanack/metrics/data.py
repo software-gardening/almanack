@@ -29,7 +29,6 @@ from almanack.git import (
 )
 from almanack.metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
-    calculate_aggregate_history_complexity_with_decay,
     calculate_history_complexity_with_decay,
     calculate_normalized_entropy,
 )
@@ -337,19 +336,16 @@ def compute_repo_data(
         str(most_recent_commit.id),
         edited_file_names,
     )
-    aggregate_history_complexity_decay = (
-        calculate_aggregate_history_complexity_with_decay(
-            repo_path,
-            str(first_commit.id),
-            str(most_recent_commit.id),
-            edited_file_names,
-        )
-    )
     file_history_complexity_decay = calculate_history_complexity_with_decay(
         repo_path,
         str(first_commit.id),
         str(most_recent_commit.id),
         edited_file_names,
+    )
+    aggregate_history_complexity_decay = (
+        sum(file_history_complexity_decay.values()) / len(edited_file_names)
+        if edited_file_names
+        else 0.0
     )
     # Convert commit times to UTC datetime objects, then format as date strings.
     first_commit_date, most_recent_commit_date = (
