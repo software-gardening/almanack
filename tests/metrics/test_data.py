@@ -262,6 +262,13 @@ def test_compute_repo_data_skips_entropy_collection_when_not_required(
     assert repo_data["repo-file-info-entropy"] is None
     assert repo_data["repo-agg-history-complexity-decay"] is None
     assert repo_data["repo-file-history-complexity-decay"] is None
+    assert repo_data["repo-openalex-direct-funding"]["direct_grants_count"] is None
+    assert (
+        repo_data["repo-openalex-indirect-funding"]["indirect_grants_count_sampled"]
+        is None
+    )
+    assert repo_data["repo-openalex-direct-funding-count"] is None
+    assert repo_data["repo-openalex-indirect-funding-count"] is None
     assert repo_data["repo-check-notebook-exec-order"] is None
 
 

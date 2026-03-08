@@ -5,9 +5,11 @@ frequency.
 """
 
 import logging
+import pathlib
 import re
 from datetime import datetime
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
 import pygit2
 import requests
@@ -194,6 +196,7 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
 
     result = {
         "doi": None,
+        "openalex_work_id": None,
         "valid_format_doi": None,
         "https_resolvable_doi": None,
         "publication_date": None,
@@ -274,6 +277,7 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
                 publication_date = openalex_result.get("publication_date", None)
                 result.update(
                     {
+                        "openalex_work_id": openalex_result.get("id", None),
                         "publication_date": (
                             # note: we caste to date for consistent use throughout
                             # the almanack as a "date" and not "datetime" type
@@ -300,4 +304,136 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
             except requests.RequestException as e:
                 LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
 
+    return result
+
+
+def find_software_mentions_openalex(
+    repo: pygit2.Repository,
+    remote_url: Optional[str],
+    max_references: int = 10,
+) -> Dict[str, Any]:
+    """Find OpenAlex works that mention a repository by software/project name.
+
+    Args:
+        repo: Repository used for software name discovery when no remote URL
+            is available.
+        remote_url: Remote repository URL used to derive the project name.
+        max_references: Maximum number of matching works to include in results.
+
+    Returns:
+        Dictionary containing the query name, aggregate mention count, and
+        a minimal list of matching works from OpenAlex.
+    """
+    project_name = None
+    if remote_url:
+        parsed = urlparse(remote_url)
+        path_name = pathlib.Path(parsed.path.rstrip("/")).name
+        project_name = path_name.removesuffix(".git") if path_name else None
+    if not project_name:
+        # Fallback for local-only repositories.
+        if getattr(repo, "workdir", None):
+            project_name = pathlib.Path(repo.workdir.rstrip("/")).name
+        elif getattr(repo, "path", None):
+            project_name = pathlib.Path(repo.path.rstrip("/")).parent.name
+        if project_name:
+            project_name = project_name.removesuffix(".git")
+
+    result = {
+        "query": project_name,
+        "mentions_count": None,
+        "references": None,
+    }
+    if not project_name:
+        return result
+
+    openalex_result = get_api_data(
+        api_endpoint="https://api.openalex.org/works",
+        params={
+            "search": project_name,
+            "per-page": str(max_references),
+            "sort": "cited_by_count:desc",
+        },
+    )
+    if not openalex_result:
+        return result
+
+    works = openalex_result.get("results", [])
+    references = [
+        {
+            "id": work.get("id"),
+            "title": work.get("display_name"),
+            "doi": work.get("doi"),
+            "publication_year": work.get("publication_year"),
+            "cited_by_count": work.get("cited_by_count"),
+        }
+        for work in works
+    ]
+    result["mentions_count"] = openalex_result.get("meta", {}).get("count", 0)
+    result["references"] = references
+    return result
+
+
+def find_openalex_indirect_funding(
+    openalex_work_id: Optional[str],
+    max_references: int = 25,
+) -> Dict[str, Any]:
+    """Find funding signals from OpenAlex works that cite the project work.
+
+    Args:
+        openalex_work_id: OpenAlex work identifier for the direct project work.
+        max_references: Maximum number of citing works to query from OpenAlex.
+
+    Returns:
+        Dictionary with sampled grant counts and sampled citing-work entries.
+    """
+    result = {
+        "source_work_id": openalex_work_id,
+        "citing_works_count_total": None,
+        "citing_works_count_sampled": None,
+        "citing_works_with_grants_count": None,
+        "indirect_grants_count_sampled": None,
+        "sample_limit": max_references,
+        "references": None,
+    }
+    if not openalex_work_id:
+        return result
+
+    cited_work_key = openalex_work_id.rstrip("/").split("/")[-1]
+    openalex_result = get_api_data(
+        api_endpoint="https://api.openalex.org/works",
+        params={
+            "filter": f"cites:{cited_work_key}",
+            "per-page": str(max_references),
+            "sort": "cited_by_count:desc",
+        },
+    )
+    if not openalex_result:
+        return result
+
+    works = openalex_result.get("results", [])
+    result["citing_works_count_total"] = openalex_result.get("meta", {}).get("count", 0)
+    references = []
+    grants_total = 0
+    works_with_grants = 0
+    for work in works:
+        grants = work.get("grants") or []
+        grants_count = len(grants)
+        grants_total += grants_count
+        if grants_count > 0:
+            works_with_grants += 1
+        references.append(
+            {
+                "id": work.get("id"),
+                "title": work.get("display_name"),
+                "doi": work.get("doi"),
+                "publication_year": work.get("publication_year"),
+                "cited_by_count": work.get("cited_by_count"),
+                "grants_count": grants_count,
+            }
+        )
+
+    result["citing_works_count_sampled"] = len(works)
+    result["citing_works_with_grants_count"] = works_with_grants
+    result["indirect_grants_count_sampled"] = grants_total
+    result["references"] = references
     return result

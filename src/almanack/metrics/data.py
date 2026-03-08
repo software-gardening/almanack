@@ -2,6 +2,7 @@
 This module computes data for GitHub Repositories
 """
 
+import importlib
 import json
 import logging
 import pathlib
@@ -37,6 +38,8 @@ from almanack.metrics.garden_lattice.connectedness import (
     default_branch_is_not_master,
     detect_social_media_links,
     find_doi_citation_data,
+    find_openalex_indirect_funding,
+    find_software_mentions_openalex,
     is_citable,
 )
 from almanack.metrics.garden_lattice.practicality import (
@@ -443,6 +446,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
 
     doi_citation_data: Dict[str, Any] = {
         "doi": None,
+        "openalex_work_id": None,
         "publication_date": None,
         "valid_format_doi": None,
         "https_resolvable_doi": None,
@@ -463,9 +467,47 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-doi-grants-count",
         "repo-doi-grants",
         "repo-days-between-doi-publication-date-and-latest-commit",
+        "repo-openalex-direct-funding",
+        "repo-openalex-direct-funding-count",
+        "repo-openalex-indirect-funding",
+        "repo-openalex-indirect-funding-count",
     ):
         # gather doi citation data
         doi_citation_data = find_doi_citation_data(repo=repo)
+
+    openalex_direct_funding: Dict[str, Any] = {
+        "doi": doi_citation_data["doi"],
+        "source_work_id": doi_citation_data["openalex_work_id"],
+        "direct_grants_count": doi_citation_data["grants_count"],
+        "grants": doi_citation_data["grants"],
+    }
+    openalex_indirect_funding: Dict[str, Any] = {
+        "source_work_id": doi_citation_data["openalex_work_id"],
+        "citing_works_count_total": None,
+        "citing_works_count_sampled": None,
+        "citing_works_with_grants_count": None,
+        "indirect_grants_count_sampled": None,
+        "sample_limit": None,
+        "references": None,
+    }
+    if needs("repo-openalex-indirect-funding", "repo-openalex-indirect-funding-count"):
+        openalex_indirect_funding = find_openalex_indirect_funding(
+            openalex_work_id=doi_citation_data["openalex_work_id"],
+        )
+
+    software_mentions_openalex: Dict[str, Any] = {
+        "query": None,
+        "mentions_count": None,
+        "references": None,
+    }
+    if needs(
+        "repo-openalex-software-mentions-count",
+        "repo-openalex-software-mentions",
+    ):
+        software_mentions_openalex = find_software_mentions_openalex(
+            repo=repo,
+            remote_url=remote_url,
+        )
 
     # collect notebook cell data
     ignore_dirs = [".venv"]
@@ -583,6 +625,18 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-doi-is-not-retracted": doi_citation_data["is_not_retracted"],
         "repo-doi-grants-count": doi_citation_data["grants_count"],
         "repo-doi-grants": doi_citation_data["grants"],
+        "repo-openalex-direct-funding": openalex_direct_funding,
+        "repo-openalex-direct-funding-count": openalex_direct_funding[
+            "direct_grants_count"
+        ],
+        "repo-openalex-indirect-funding": openalex_indirect_funding,
+        "repo-openalex-indirect-funding-count": openalex_indirect_funding[
+            "indirect_grants_count_sampled"
+        ],
+        "repo-openalex-software-mentions-count": software_mentions_openalex[
+            "mentions_count"
+        ],
+        "repo-openalex-software-mentions": software_mentions_openalex,
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
@@ -862,13 +916,13 @@ def _get_almanack_version() -> str:
     try:
         # attempt to gather the development version from dunamai
         # for scenarios where almanack from source is used.
-        import dunamai  # noqa: PLC0415
+        dunamai = importlib.import_module("dunamai")
 
         return dunamai.Version.from_any_vcs().serialize()
     except (RuntimeError, ModuleNotFoundError):
         # else grab a static version from __init__.py
         # for scenarios where the built/packaged almanack is used.
-        import almanack  # noqa: PLC0415
+        almanack = importlib.import_module("almanack")
 
         return almanack.__version__
 

@@ -617,6 +617,67 @@ metrics:
       execute all cells sequentially from top to bottom. This ensures that all
       variables and outputs are generated in the correct order, making the
       notebook reproducible and easier to understand for others.
+  - name: "repo-openalex-software-mentions-count"
+    id: "SGA-GL-0031"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregated count of OpenAlex works matching the repository software name.
+      This is based on OpenAlex work search using the project name.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-openalex-software-mentions"
+    id: "SGA-GL-0032"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Minimal OpenAlex reference details for works matching the repository
+      software name, including query metadata and sampled matching works.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-openalex-direct-funding"
+    id: "SGA-GL-0033"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Direct project funding metadata from OpenAlex for the software's
+      DOI-linked work, including grant count and grant entries.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-openalex-indirect-funding"
+    id: "SGA-GL-0034"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Indirect funding metadata from OpenAlex citing-work network, aggregating
+      sampled grant counts across queried works that cite the software's
+      DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-openalex-direct-funding-count"
+    id: "SGA-GL-0035"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of direct grant records on the OpenAlex work linked to the
+      software project's DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-openalex-indirect-funding-count"
+    id: "SGA-GL-0036"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Sampled count of grant records across queried OpenAlex works that cite
+      the software project's DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
