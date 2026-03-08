@@ -16,8 +16,12 @@ class HistoryComplexityConfig:
     """Configuration values for the decay-weighted history complexity metric.
 
     Attributes:
-        decay_factor: Exponential decay constant in hours.
-        quiet_time_seconds: Maximum gap between commits in a single burst period.
+        decay_factor: Time scale (in hours) for exponential down-weighting of
+            older burst periods. Larger values make older periods lose influence
+            more slowly; smaller values make them fade faster.
+        quiet_time_seconds: Maximum allowed time gap between adjacent commit
+            events in the same burst period. If the gap is larger than this
+            threshold, a new burst period starts.
     """
 
     decay_factor: float = 10.0
