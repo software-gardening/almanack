@@ -661,8 +661,9 @@ def process_repo_for_analysis(
 def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     """
     Transpose Almanack table (name->result), compute checks summary, flatten nested.
-    `repo-file-info-entropy` and `repo-file-history-complexity-decay` are ignored due
-    to scope and increased runtime for analysis.
+    `repo-file-info-entropy` and `repo-file-history-complexity-decay` are omitted from
+    the wide output because they are large, file-level metrics that are out of scope
+    for this flattened summary representation.
 
     Args:
         table_rows (list[dict]):
@@ -759,13 +760,13 @@ def _get_almanack_version() -> str:
     try:
         # attempt to gather the development version from dunamai
         # for scenarios where almanack from source is used.
-        import dunamai  # noqa: PLC0415
+        import dunamai
 
         return dunamai.Version.from_any_vcs().serialize()
     except (RuntimeError, ModuleNotFoundError):
         # else grab a static version from __init__.py
         # for scenarios where the built/packaged almanack is used.
-        import almanack  # noqa: PLC0415
+        import almanack
 
         return almanack.__version__
 
