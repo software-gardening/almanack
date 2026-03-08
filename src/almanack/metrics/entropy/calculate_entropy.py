@@ -101,12 +101,13 @@ def _collect_period_file_changes(
     tracked_files: set[str],
     quiet_time_seconds: int = 3600,
 ) -> list[tuple[int, dict[str, int]]]:
-    """Collect per-period tracked-file change totals separated by quiet windows (periods in a repository without commits).
+    """Collect per-period tracked-file change totals separated by quiet windows.
 
     This function walks commits from `target_commit` backwards to
     `source_commit`, extracts tracked-file line changes from each commit, and
-    then groups these "commit events" into burst periods. A new period starts when the
-    elapsed time between consecutive commit events is greater than
+    then groups these commit events into burst periods. A commit event is one
+    commit timestamp plus its tracked-file changed-line totals. A new period
+    starts when the elapsed time between consecutive commit events is greater than
     `quiet_time_seconds`.
 
     Args:
@@ -164,7 +165,10 @@ def _group_commit_events_by_quiet_window(
     """Group commit events into burst periods separated by quiet windows.
 
     Args:
-        commit_events: Sequence of `(event_time, file_changes)` tuples.
+        commit_events: Sequence of commit events, where each event is
+            `(event_time, file_changes)`. `event_time` is a commit timestamp,
+            and `file_changes` maps tracked file paths to changed-line totals
+            from that commit.
         quiet_time_seconds: Threshold that starts a new period when exceeded.
 
     Returns:
