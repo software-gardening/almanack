@@ -42,7 +42,7 @@ repos:
     -   id: pyproject-fmt
 
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: v2.4.2
     hooks:
       # Detects and corrects common typos in the codebase, improving
       # readability and reducing minor mistakes.
@@ -75,7 +75,7 @@ repos:
         exclude: pre-commit-config.yaml
 
 -   repo: https://github.com/psf/black
-    rev: 26.1.0
+    rev: 26.3.0
     hooks:
       # Formats Python code to follow the Black code style,
       # promoting consistency and readability across the codebase.
@@ -116,7 +116,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.4"
+    rev: "v0.15.5"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
@@ -137,7 +137,7 @@ repos:
     -   id: validate-cff
 
 -   repo: https://github.com/jendrikseipp/vulture
-    rev: 'v2.14'
+    rev: 'v2.15'
     hooks:
       # Detects unused code, helping identify dead code that can be removed
       # to keep the codebase lean and maintainable.

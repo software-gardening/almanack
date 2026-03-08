@@ -15,6 +15,7 @@ import pytest
 import yaml
 
 from almanack.git import get_remote_url
+from almanack.metrics import data as data_module
 from almanack.metrics.data import (
     METRICS_TABLE,
     _get_almanack_version,
@@ -197,6 +198,71 @@ def test_get_table(repo_files, tmp_path: pathlib.Path) -> None:
         )
         assert "SGA-GL-NONEXISTENT" in str(value_exc.value)
         assert "SGA-GL-0002" not in str(value_exc.value)
+
+
+def test_get_table_passes_required_metric_names(
+    monkeypatch, tmp_path: pathlib.Path
+) -> None:
+    """Test that get_table forwards only non-ignored metric names to data capture."""
+    with open(METRICS_TABLE, "r") as f:
+        metrics_table = yaml.safe_load(f)["metrics"]
+    all_metric_names = {metric["name"] for metric in metrics_table}
+    ignored_ids = {"SGA-GL-0002", "SGA-GL-0025"}
+    expected_required_names = {
+        metric["name"] for metric in metrics_table if metric["id"] not in ignored_ids
+    }
+
+    captured_required_names = {}
+
+    def _fake_compute_repo_data(
+        repo_path, exclude_paths=None, required_metric_names=None
+    ):
+        _ = repo_path, exclude_paths
+        captured_required_names["value"] = required_metric_names
+        return {name: None for name in all_metric_names}
+
+    monkeypatch.setattr(data_module, "compute_repo_data", _fake_compute_repo_data)
+
+    get_table(repo_path=str(tmp_path), ignore=list(ignored_ids))
+
+    assert captured_required_names["value"] == expected_required_names
+
+
+def test_compute_repo_data_skips_entropy_collection_when_not_required(
+    tmp_path: pathlib.Path, monkeypatch
+) -> None:
+    """Test that entropy collection is skipped when entropy metrics are not requested."""
+    repo_setup(
+        repo_path=tmp_path,
+        files=[
+            {"files": {"README.md": "initial\n"}, "commit-date": datetime(2024, 1, 1)},
+            {
+                "files": {"README.md": "initial\nnext\n"},
+                "commit-date": datetime(2024, 1, 2),
+            },
+        ],
+    )
+
+    def _raise_if_called(*_):
+        raise AssertionError("Entropy collection function should not be called.")
+
+    monkeypatch.setattr(data_module, "get_edited_files", _raise_if_called)
+    monkeypatch.setattr(data_module, "calculate_aggregate_entropy", _raise_if_called)
+    monkeypatch.setattr(data_module, "calculate_normalized_entropy", _raise_if_called)
+    monkeypatch.setattr(
+        data_module, "calculate_history_complexity_with_decay", _raise_if_called
+    )
+
+    repo_data = compute_repo_data(
+        str(tmp_path),
+        required_metric_names={"repo-path"},
+    )
+
+    assert repo_data["repo-agg-info-entropy"] is None
+    assert repo_data["repo-file-info-entropy"] is None
+    assert repo_data["repo-agg-history-complexity-decay"] is None
+    assert repo_data["repo-file-history-complexity-decay"] is None
+    assert repo_data["repo-check-notebook-exec-order"] is None
 
 
 def test_metrics_yaml():

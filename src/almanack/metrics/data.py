@@ -29,6 +29,7 @@ from almanack.git import (
 )
 from almanack.metrics.entropy.calculate_entropy import (
     calculate_aggregate_entropy,
+    calculate_history_complexity_with_decay,
     calculate_normalized_entropy,
 )
 from almanack.metrics.garden_lattice.connectedness import (
@@ -136,8 +137,18 @@ def get_table(
         ]:
             raise ValueError(f"Invalid ignore keys: {invalid_ignore_keys}")
 
+    required_metric_names = {
+        metric["name"]
+        for metric in metrics_table
+        if ignore is None or metric["id"] not in ignore
+    }
+
     # gather data for use in the metrics table
-    metrics_data = compute_repo_data(repo_path=repo_path, exclude_paths=exclude_paths)
+    metrics_data = compute_repo_data(
+        repo_path=repo_path,
+        exclude_paths=exclude_paths,
+        required_metric_names=required_metric_names,
+    )
 
     if "error" in metrics_data.keys():
         raise ReferenceError(
@@ -269,14 +280,19 @@ def days_of_development(repo: pygit2.Repository) -> float:
     return total_days
 
 
-def compute_repo_data(
-    repo_path: str, exclude_paths: Optional[List[str]] = None
+def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
+    repo_path: str,
+    exclude_paths: Optional[List[str]] = None,
+    required_metric_names: Optional[set[str]] = None,
 ) -> Dict[str, Any]:
     """Compute comprehensive data for a GitHub repository.
 
     Args:
         repo_path: The local path to the Git repository.
         exclude_paths: Repository-relative paths or glob patterns to exclude from checks.
+        required_metric_names: Optional set of metric names that will be used by
+            downstream reporting. If provided, expensive data-collection blocks
+            are skipped unless one of their dependent metrics is requested.
 
     Returns:
         A dictionary containing data key-pairs.
@@ -293,48 +309,118 @@ def compute_repo_data(
     repo_path = pathlib.Path(repo_path).resolve()
     repo = pygit2.Repository(str(repo_path))
 
+    def needs(*metric_names: str) -> bool:
+        """Return whether any of the given metric names should be collected."""
+        if required_metric_names is None:
+            return True
+        return any(metric_name in required_metric_names for metric_name in metric_names)
+
     remote_url = get_remote_url(repo=repo)
 
-    # gather data from ecosystems repo api
-    remote_repo_data = get_api_data(
-        params={"url": remote_url} if remote_url is not None else None
-    )
+    remote_repo_data: Dict[str, Any] = {}
+    if needs(
+        "repo-primary-language",
+        "repo-primary-license",
+        "repo-stargazers-count",
+        "repo-uses-issues",
+        "repo-issues-open-count",
+        "repo-pull-requests-enabled",
+        "repo-forks-count",
+        "repo-subscribers-count",
+    ):
+        # gather data from ecosystems repo api
+        remote_repo_data = get_api_data(
+            params={"url": remote_url} if remote_url is not None else None
+        )
 
-    # gather data from github repo workflows api
-    gh_workflows_data = get_github_build_metrics(
-        repo_url=remote_url, branch=repo.head.shorthand, max_runs=100
-    )
+    gh_workflows_data: Dict[str, Any] = {}
+    if needs(
+        "repo-gh-workflow-success-ratio",
+        "repo-gh-workflow-succeeding-runs",
+        "repo-gh-workflow-failing-runs",
+        "repo-gh-workflow-queried-total",
+    ):
+        # gather data from github repo workflows api
+        gh_workflows_data = get_github_build_metrics(
+            repo_url=remote_url, branch=repo.head.shorthand, max_runs=100
+        )
 
-    # gather data on code coverage
-    code_coverage = measure_coverage(
-        repo=repo, primary_language=remote_repo_data.get("language", None)
-    )
-    # gather data from ecosystems packages api
-    packages_data = get_ecosystems_package_metrics(repo_url=remote_url)
+    code_coverage: Dict[str, Any] = {}
+    if needs(
+        "repo-code-coverage-percent",
+        "repo-date-of-last-coverage-run",
+        "repo-days-between-last-coverage-run-latest-commit",
+        "repo-code-coverage-total-lines",
+        "repo-code-coverage-executed-lines",
+    ):
+        if not remote_repo_data:
+            remote_repo_data = get_api_data(
+                params={"url": remote_url} if remote_url is not None else None
+            )
+        # gather data on code coverage
+        code_coverage = measure_coverage(
+            repo=repo, primary_language=remote_repo_data.get("language", None)
+        )
+
+    packages_data: Dict[str, Any] = {}
+    if needs(
+        "repo-packages-ecosystems",
+        "repo-packages-ecosystems-count",
+        "repo-packages-versions-count",
+    ):
+        # gather data from ecosystems packages api
+        packages_data = get_ecosystems_package_metrics(repo_url=remote_url)
 
     # Retrieve the list of commits from the repository
     commits = get_commits(repo)
     most_recent_commit = commits[0]
     first_commit = commits[-1]
 
-    # Get a list of files that have been edited between the first and most recent commit
-    edited_file_names = get_edited_files(repo, first_commit, most_recent_commit)
+    normalized_total_entropy = None
+    file_entropy = None
+    file_history_complexity_decay = None
+    aggregate_history_complexity_decay = None
+    if needs(
+        "repo-agg-info-entropy",
+        "repo-file-info-entropy",
+        "repo-agg-history-complexity-decay",
+        "repo-file-history-complexity-decay",
+    ):
+        # Get a list of files that have been edited between the first and most recent commit
+        edited_file_names = get_edited_files(repo, first_commit, most_recent_commit)
 
-    # Calculate the normalized total entropy for the repository
-    normalized_total_entropy = calculate_aggregate_entropy(
-        repo_path,
-        str(first_commit.id),
-        str(most_recent_commit.id),
-        edited_file_names,
-    )
+        if needs("repo-agg-info-entropy"):
+            # Calculate the normalized total entropy for the repository
+            normalized_total_entropy = calculate_aggregate_entropy(
+                repo_path,
+                str(first_commit.id),
+                str(most_recent_commit.id),
+                edited_file_names,
+            )
 
-    # Calculate the normalized entropy for the changes between the first and most recent commits
-    file_entropy = calculate_normalized_entropy(
-        repo_path,
-        str(first_commit.id),
-        str(most_recent_commit.id),
-        edited_file_names,
-    )
+        if needs("repo-file-info-entropy"):
+            # Calculate the normalized entropy for the changes between the first and most recent commits
+            file_entropy = calculate_normalized_entropy(
+                repo_path,
+                str(first_commit.id),
+                str(most_recent_commit.id),
+                edited_file_names,
+            )
+
+        if needs(
+            "repo-agg-history-complexity-decay", "repo-file-history-complexity-decay"
+        ):
+            file_history_complexity_decay = calculate_history_complexity_with_decay(
+                repo_path,
+                str(first_commit.id),
+                str(most_recent_commit.id),
+                edited_file_names,
+            )
+            aggregate_history_complexity_decay = (
+                sum(file_history_complexity_decay.values()) / len(edited_file_names)
+                if edited_file_names
+                else 0.0
+            )
     # Convert commit times to UTC datetime objects, then format as date strings.
     first_commit_date, most_recent_commit_date = (
         datetime.fromtimestamp(commit.commit_time).date()
@@ -346,36 +432,66 @@ def compute_repo_data(
     readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
     readme_exists = True if readme_file is not None else False
 
-    # gather social media metrics
-    social_media_metrics = (
-        detect_social_media_links(content=read_file(repo=repo, entry=readme_file))
-        if readme_exists
-        else {}
-    )
+    social_media_metrics: Dict[str, Any] = {}
+    if needs("repo-social-media-platforms", "repo-social-media-platforms-count"):
+        # gather social media metrics
+        social_media_metrics = (
+            detect_social_media_links(content=read_file(repo=repo, entry=readme_file))
+            if readme_exists
+            else {}
+        )
 
-    # gather doi citation data
-    doi_citation_data = find_doi_citation_data(repo=repo)
+    doi_citation_data: Dict[str, Any] = {
+        "doi": None,
+        "publication_date": None,
+        "valid_format_doi": None,
+        "https_resolvable_doi": None,
+        "cited_by_count": None,
+        "fwci": None,
+        "is_not_retracted": None,
+        "grants_count": None,
+        "grants": None,
+    }
+    if needs(
+        "repo-doi",
+        "repo-doi-publication-date",
+        "repo-doi-valid-format",
+        "repo-doi-https-resolvable",
+        "repo-doi-cited-by-count",
+        "repo-doi-fwci",
+        "repo-doi-is-not-retracted",
+        "repo-doi-grants-count",
+        "repo-doi-grants",
+        "repo-days-between-doi-publication-date-and-latest-commit",
+    ):
+        # gather doi citation data
+        doi_citation_data = find_doi_citation_data(repo=repo)
 
     # collect notebook cell data
     ignore_dirs = [".venv"]
 
-    notebook_cells = get_nb_contents(
-        repo_path=repo_path,
-        ignore_dirs=ignore_dirs,
-        ignore_paths=exclude_paths,
-    )
     failed_notebook_exec_order = []
-    for notebook_path, cells in notebook_cells.items():
-        if check_ipynb_code_exec_order(nb_cells=cells):
-            continue
-        try:
-            failed_notebook_exec_order.append(str(notebook_path.relative_to(repo_path)))
-        except ValueError:
-            failed_notebook_exec_order.append(str(notebook_path))
-    if failed_notebook_exec_order:
-        LOGGER.debug(
-            "Notebook execution order failures: %s", failed_notebook_exec_order
+    notebook_exec_order_checked = False
+    if needs("repo-check-notebook-exec-order"):
+        notebook_exec_order_checked = True
+        notebook_cells = get_nb_contents(
+            repo_path=repo_path,
+            ignore_dirs=ignore_dirs,
+            ignore_paths=exclude_paths,
         )
+        for notebook_path, cells in notebook_cells.items():
+            if check_ipynb_code_exec_order(nb_cells=cells):
+                continue
+            try:
+                failed_notebook_exec_order.append(
+                    str(notebook_path.relative_to(repo_path))
+                )
+            except ValueError:
+                failed_notebook_exec_order.append(str(notebook_path))
+        if failed_notebook_exec_order:
+            LOGGER.debug(
+                "Notebook execution order failures: %s", failed_notebook_exec_order
+            )
 
     # Return the data structure
     return {
@@ -486,10 +602,14 @@ def compute_repo_data(
         "repo-code-coverage-executed-lines": code_coverage.get("executed_lines", None),
         "repo-agg-info-entropy": normalized_total_entropy,
         "repo-file-info-entropy": file_entropy,
+        "repo-agg-history-complexity-decay": aggregate_history_complexity_decay,
+        "repo-file-history-complexity-decay": file_history_complexity_decay,
         "repo-check-notebook-dir": repo_dir_exists(
             repo=repo, directory_name="notebooks"
         ),
-        "repo-check-notebook-exec-order": not failed_notebook_exec_order,
+        "repo-check-notebook-exec-order": (
+            (not failed_notebook_exec_order) if notebook_exec_order_checked else None
+        ),
     }
 
 
@@ -643,7 +763,9 @@ def process_repo_for_analysis(
 def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     """
     Transpose Almanack table (name->result), compute checks summary, flatten nested.
-    `repo-file-info-entropy` is ignored due to scope and increased runtime for analysis.
+    `repo-file-info-entropy` and `repo-file-history-complexity-decay` are omitted from
+    the wide output because they are large, file-level metrics that are out of scope
+    for this flattened summary representation.
 
     Args:
         table_rows (list[dict]):
@@ -680,6 +802,7 @@ def table_to_wide(table_rows: list[dict]) -> Dict[str, Any]:
     )
 
     wide.pop("repo-file-info-entropy", None)
+    wide.pop("repo-file-history-complexity-decay", None)
 
     # Flatten repo-almanack-score if present (avoid nested dict in parquet)
     score = wide.get("repo-almanack-score")

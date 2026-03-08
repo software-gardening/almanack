@@ -736,3 +736,25 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-agg-history-complexity-decay"
+    id: "SGA-VS-0003"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Aggregated history complexity with decay (HCM_1d) for all files within
+      a repository over a range between two commits (by default, the first and
+      latest commits). Uses one-hour burst periods and exponential decay.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-file-history-complexity-decay"
+    id: "SGA-VS-0004"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      File-level history complexity with decay (HCM_1d) over a range between
+      two commits (by default, the first and latest commits), using one-hour
+      burst periods and exponential decay.
+    correction_guidance:
+    fix_why:
+    fix_how:
