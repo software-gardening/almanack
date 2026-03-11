@@ -501,12 +501,15 @@ def find_openalex_indirect_funding(
 ) -> Dict[str, Any]:
     """Find funding signals from OpenAlex works that cite the project work.
 
+    "Indirect funding" here means funding attached to downstream citing works
+    in the OpenAlex network, not grant indirect cost rates/overhead.
+
     Args:
         openalex_work_id: OpenAlex work identifier for the direct project work.
         max_references: Maximum number of citing works to query from OpenAlex.
 
     Returns:
-        Dictionary with sampled grant counts and sampled citing-work entries.
+        Dictionary with sampled citing-work funding aggregates and references.
     """
     result = {
         "source_work_id": openalex_work_id,

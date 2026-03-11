@@ -478,7 +478,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-direct-award-amount-usd",
         "repo-direct-funding-sources-count",
         "repo-direct-unique-funders-count",
-        "repo-openalex-indirect-funding",
+        "repo-openalex-total-funding-of-cited-projects",
         "repo-openalex-indirect-funding-count",
         "repo-indirect-award-amount-usd",
         "repo-indirect-funding-sources-count",
@@ -517,7 +517,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "references": None,
     }
     if needs(
-        "repo-openalex-indirect-funding",
+        "repo-openalex-total-funding-of-cited-projects",
         "repo-openalex-indirect-funding-count",
         "repo-indirect-award-amount-usd",
         "repo-indirect-funding-sources-count",
@@ -673,7 +673,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-direct-unique-funders-count": openalex_direct_funding[
             "direct_unique_funders_count"
         ],
-        "repo-openalex-indirect-funding": openalex_indirect_funding,
+        "repo-openalex-total-funding-of-cited-projects": openalex_indirect_funding,
         "repo-openalex-indirect-funding-count": openalex_indirect_funding[
             "indirect_grants_count_sampled"
         ],

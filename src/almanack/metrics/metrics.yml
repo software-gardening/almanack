@@ -624,6 +624,8 @@ metrics:
     description: >-
       Aggregated count of OpenAlex works matching the repository software name.
       This is based on OpenAlex work search using the project name.
+      Unlike citation metrics, this includes name-based mentions that may not
+      directly cite the repository DOI-linked work.
     correction_guidance:
     fix_why:
     fix_how:
@@ -647,7 +649,7 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
-  - name: "repo-openalex-indirect-funding"
+  - name: "repo-openalex-total-funding-of-cited-projects"
     id: "SGA-GL-0034"
     result-type: "dict"
     sustainability_correlation: 0
