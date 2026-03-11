@@ -189,7 +189,10 @@ def test_find_openalex_indirect_funding(monkeypatch) -> None:
                     "doi": "https://doi.org/10.1000/a",
                     "publication_year": 2022,
                     "cited_by_count": 12,
-                    "grants": [{"funder": "f1"}, {"funder": "f2"}],
+                    "grants": [
+                        {"funder": "f1", "amount": 100},
+                        {"funder": "f2", "amount": 50, "currency": "USD"},
+                    ],
                 },
                 {
                     "id": "https://openalex.org/W11",
@@ -198,6 +201,7 @@ def test_find_openalex_indirect_funding(monkeypatch) -> None:
                     "publication_year": 2023,
                     "cited_by_count": 5,
                     "grants": [],
+                    "funders": [{"id": "https://openalex.org/F3"}],
                 },
             ]
         }
@@ -212,4 +216,13 @@ def test_find_openalex_indirect_funding(monkeypatch) -> None:
     assert result["citing_works_count_sampled"] == 2
     assert result["citing_works_with_grants_count"] == 1
     assert result["indirect_grants_count_sampled"] == 2
+    assert result["indirect_award_amount_usd_total_sampled"] == 150
+    assert result["indirect_funding_sources_count_sampled"] == 2
+    assert result["indirect_unique_funders_count_sampled"] == 3
+    assert result["indirect_unique_funders_sampled"] == [
+        "f1",
+        "f2",
+        "https://openalex.org/F3",
+    ]
     assert result["references"][0]["title"] == "Citing Work A"
+    assert result["references"][0]["award_amount_usd_total"] == 150

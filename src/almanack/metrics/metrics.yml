@@ -678,6 +678,98 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-direct-award-amount-usd"
+    id: "SGA-GL-0037"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Estimated direct award amount total in USD for the OpenAlex work linked
+      to the software project's DOI. OpenAlex records with missing currency are
+      treated as USD.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-indirect-award-amount-usd"
+    id: "SGA-GL-0038"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Estimated sampled indirect award amount total in USD across queried
+      OpenAlex citing works linked to the software project's DOI work.
+      OpenAlex records with missing currency are treated as USD.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-award-amount-usd-total"
+    id: "SGA-GL-0039"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Sum of direct and sampled indirect OpenAlex award totals in USD for the
+      software project's DOI-linked work and its citing-work sample.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-direct-funding-sources-count"
+    id: "SGA-GL-0040"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of direct funding source references discovered on the OpenAlex work
+      linked to the software project's DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-indirect-funding-sources-count"
+    id: "SGA-GL-0041"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of sampled indirect funding source references discovered across
+      queried OpenAlex citing works.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-sources-count-total"
+    id: "SGA-GL-0042"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Sum of direct and sampled indirect OpenAlex funding source reference
+      counts for the software project's DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-direct-unique-funders-count"
+    id: "SGA-GL-0043"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of unique direct funders discovered on the OpenAlex work linked to
+      the software project's DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-indirect-unique-funders-count"
+    id: "SGA-GL-0044"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of unique sampled indirect funders discovered across queried
+      OpenAlex citing works.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-unique-funders-count-total"
+    id: "SGA-GL-0045"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of unique funders across both direct and sampled indirect OpenAlex
+      funding data for the software project's DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"

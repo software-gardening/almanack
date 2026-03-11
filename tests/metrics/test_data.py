@@ -269,6 +269,15 @@ def test_compute_repo_data_skips_entropy_collection_when_not_required(
     )
     assert repo_data["repo-openalex-direct-funding-count"] is None
     assert repo_data["repo-openalex-indirect-funding-count"] is None
+    assert repo_data["repo-direct-award-amount-usd"] is None
+    assert repo_data["repo-indirect-award-amount-usd"] is None
+    assert repo_data["repo-award-amount-usd-total"] is None
+    assert repo_data["repo-direct-funding-sources-count"] is None
+    assert repo_data["repo-indirect-funding-sources-count"] is None
+    assert repo_data["repo-funding-sources-count-total"] is None
+    assert repo_data["repo-direct-unique-funders-count"] is None
+    assert repo_data["repo-indirect-unique-funders-count"] is None
+    assert repo_data["repo-unique-funders-count-total"] is None
     assert repo_data["repo-check-notebook-exec-order"] is None
 
 

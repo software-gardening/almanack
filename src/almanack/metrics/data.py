@@ -453,6 +453,12 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "cited_by_count": None,
         "fwci": None,
         "is_not_retracted": None,
+        "awards_count": None,
+        "awards": None,
+        "award_amount_usd_total": None,
+        "funding_sources_count": None,
+        "unique_funders_count": None,
+        "unique_funders": None,
         "grants_count": None,
         "grants": None,
     }
@@ -469,8 +475,17 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-days-between-doi-publication-date-and-latest-commit",
         "repo-openalex-direct-funding",
         "repo-openalex-direct-funding-count",
+        "repo-direct-award-amount-usd",
+        "repo-direct-funding-sources-count",
+        "repo-direct-unique-funders-count",
         "repo-openalex-indirect-funding",
         "repo-openalex-indirect-funding-count",
+        "repo-indirect-award-amount-usd",
+        "repo-indirect-funding-sources-count",
+        "repo-indirect-unique-funders-count",
+        "repo-award-amount-usd-total",
+        "repo-funding-sources-count-total",
+        "repo-unique-funders-count-total",
     ):
         # gather doi citation data
         doi_citation_data = find_doi_citation_data(repo=repo)
@@ -478,8 +493,15 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     openalex_direct_funding: Dict[str, Any] = {
         "doi": doi_citation_data["doi"],
         "source_work_id": doi_citation_data["openalex_work_id"],
-        "direct_grants_count": doi_citation_data["grants_count"],
-        "grants": doi_citation_data["grants"],
+        "direct_awards_count": doi_citation_data["awards_count"],
+        "direct_award_amount_usd_total": doi_citation_data["award_amount_usd_total"],
+        "direct_funding_sources_count": doi_citation_data["funding_sources_count"],
+        "direct_unique_funders_count": doi_citation_data["unique_funders_count"],
+        "direct_unique_funders": doi_citation_data["unique_funders"],
+        "awards": doi_citation_data["awards"],
+        # Legacy aliases retained for compatibility.
+        "direct_grants_count": doi_citation_data["awards_count"],
+        "grants": doi_citation_data["awards"],
     }
     openalex_indirect_funding: Dict[str, Any] = {
         "source_work_id": doi_citation_data["openalex_work_id"],
@@ -487,10 +509,23 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "citing_works_count_sampled": None,
         "citing_works_with_grants_count": None,
         "indirect_grants_count_sampled": None,
+        "indirect_award_amount_usd_total_sampled": None,
+        "indirect_funding_sources_count_sampled": None,
+        "indirect_unique_funders_count_sampled": None,
+        "indirect_unique_funders_sampled": None,
         "sample_limit": None,
         "references": None,
     }
-    if needs("repo-openalex-indirect-funding", "repo-openalex-indirect-funding-count"):
+    if needs(
+        "repo-openalex-indirect-funding",
+        "repo-openalex-indirect-funding-count",
+        "repo-indirect-award-amount-usd",
+        "repo-indirect-funding-sources-count",
+        "repo-indirect-unique-funders-count",
+        "repo-award-amount-usd-total",
+        "repo-funding-sources-count-total",
+        "repo-unique-funders-count-total",
+    ):
         openalex_indirect_funding = find_openalex_indirect_funding(
             openalex_work_id=doi_citation_data["openalex_work_id"],
         )
@@ -629,10 +664,55 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-openalex-direct-funding-count": openalex_direct_funding[
             "direct_grants_count"
         ],
+        "repo-direct-award-amount-usd": openalex_direct_funding[
+            "direct_award_amount_usd_total"
+        ],
+        "repo-direct-funding-sources-count": openalex_direct_funding[
+            "direct_funding_sources_count"
+        ],
+        "repo-direct-unique-funders-count": openalex_direct_funding[
+            "direct_unique_funders_count"
+        ],
         "repo-openalex-indirect-funding": openalex_indirect_funding,
         "repo-openalex-indirect-funding-count": openalex_indirect_funding[
             "indirect_grants_count_sampled"
         ],
+        "repo-indirect-award-amount-usd": openalex_indirect_funding[
+            "indirect_award_amount_usd_total_sampled"
+        ],
+        "repo-indirect-funding-sources-count": openalex_indirect_funding[
+            "indirect_funding_sources_count_sampled"
+        ],
+        "repo-indirect-unique-funders-count": openalex_indirect_funding[
+            "indirect_unique_funders_count_sampled"
+        ],
+        "repo-award-amount-usd-total": (
+            openalex_direct_funding["direct_award_amount_usd_total"]
+            + openalex_indirect_funding["indirect_award_amount_usd_total_sampled"]
+            if openalex_direct_funding["direct_award_amount_usd_total"] is not None
+            and openalex_indirect_funding["indirect_award_amount_usd_total_sampled"]
+            is not None
+            else None
+        ),
+        "repo-funding-sources-count-total": (
+            openalex_direct_funding["direct_funding_sources_count"]
+            + openalex_indirect_funding["indirect_funding_sources_count_sampled"]
+            if openalex_direct_funding["direct_funding_sources_count"] is not None
+            and openalex_indirect_funding["indirect_funding_sources_count_sampled"]
+            is not None
+            else None
+        ),
+        "repo-unique-funders-count-total": (
+            len(
+                set(openalex_direct_funding["direct_unique_funders"] or [])
+                | set(
+                    openalex_indirect_funding["indirect_unique_funders_sampled"] or []
+                )
+            )
+            if openalex_direct_funding["direct_unique_funders"] is not None
+            and openalex_indirect_funding["indirect_unique_funders_sampled"] is not None
+            else None
+        ),
         "repo-openalex-software-mentions-count": software_mentions_openalex[
             "mentions_count"
         ],

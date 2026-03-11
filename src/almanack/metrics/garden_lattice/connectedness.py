@@ -8,17 +8,165 @@ import logging
 import pathlib
 import re
 from datetime import datetime
+from functools import lru_cache
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 import pygit2
 import requests
 import yaml
+from currency_converter import CurrencyConverter
+from currency_converter.currency_converter import RateNotFoundError
 
 from almanack.git import file_exists_in_repo, find_file, read_file
 from almanack.metrics.remote import get_api_data, request_with_backoff
 
 LOGGER = logging.getLogger(__name__)
+
+
+@lru_cache(maxsize=1)
+def _get_currency_converter() -> CurrencyConverter:
+    """Return a cached currency converter for award amount normalization."""
+    return CurrencyConverter()
+
+
+def _get_work_awards(work_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Return award-like records from OpenAlex work payloads.
+
+    Supports both modern `awards` and legacy `grants` fields.
+    """
+    awards = work_data.get("awards")
+    if awards is None:
+        awards = work_data.get("grants")
+    return awards if isinstance(awards, list) else []
+
+
+def _extract_funder_key(funder: Any) -> Optional[str]:
+    """Extract a stable funder key from known OpenAlex funder shapes."""
+    if isinstance(funder, str):
+        return funder
+    if isinstance(funder, dict):
+        return (
+            funder.get("id")
+            or funder.get("funder")
+            or funder.get("display_name")
+            or funder.get("name")
+        )
+    return None
+
+
+def _award_amount_to_usd(amount: Any, currency: Optional[str]) -> Optional[float]:
+    """Convert an award amount to USD; assume USD when currency is unavailable."""
+    if amount is None:
+        return None
+    try:
+        numeric_amount = float(amount)
+    except (TypeError, ValueError):
+        return None
+
+    source_currency = (currency or "USD").upper()
+    if source_currency == "USD":
+        return numeric_amount
+
+    try:
+        return float(
+            _get_currency_converter().convert(numeric_amount, source_currency, "USD")
+        )
+    except (RateNotFoundError, ValueError):
+        LOGGER.debug(
+            "Could not convert award amount to USD for currency '%s'.",
+            source_currency,
+        )
+        return None
+
+
+def _summarize_openalex_funding(work_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Summarize OpenAlex funding payloads for one work record."""
+    if not isinstance(work_data, dict):
+        work_data = {}
+    awards = _get_work_awards(work_data)
+    unique_funders = set()
+    funding_sources_count = 0
+    awards_with_amount_count = 0
+    award_amount_usd_total = 0.0
+
+    for award in awards:
+        if not isinstance(award, dict):
+            continue
+
+        funder_key = _extract_funder_key(award.get("funder"))
+        if funder_key:
+            funding_sources_count += 1
+            unique_funders.add(funder_key)
+
+        usd_amount = _award_amount_to_usd(award.get("amount"), award.get("currency"))
+        if usd_amount is not None:
+            awards_with_amount_count += 1
+            award_amount_usd_total += usd_amount
+
+    for funder in work_data.get("funders") or []:
+        funder_key = _extract_funder_key(funder)
+        if funder_key:
+            unique_funders.add(funder_key)
+
+    return {
+        "awards": awards,
+        "awards_count": len(awards),
+        "awards_with_amount_count": awards_with_amount_count,
+        "award_amount_usd_total": award_amount_usd_total,
+        "funding_sources_count": funding_sources_count,
+        "unique_funders_count": len(unique_funders),
+        "unique_funders": sorted(unique_funders),
+    }
+
+
+def _extract_doi_from_citation_data(citation_data: Dict[str, Any]) -> Optional[str]:
+    """Extract a DOI value from parsed CITATION.cff payload."""
+    if "doi" in citation_data:
+        return citation_data.get("doi")
+    if "identifiers" in citation_data:
+        return next(
+            (
+                identifier["value"]
+                for identifier in citation_data.get("identifiers", [])
+                if identifier.get("type") == "doi"
+            ),
+            None,
+        )
+    return None
+
+
+def _build_openalex_doi_metrics(openalex_result: Dict[str, Any]) -> Dict[str, Any]:
+    """Build DOI-linked OpenAlex metrics for storage in citation results."""
+    publication_date = openalex_result.get("publication_date")
+    funding_summary = _summarize_openalex_funding(openalex_result)
+    return {
+        "openalex_work_id": openalex_result.get("id", None),
+        "publication_date": (
+            # note: we cast to date for consistent use throughout
+            # the almanack as a "date" and not "datetime" type.
+            datetime.strptime(publication_date, "%Y-%m-%d").date()
+            if publication_date is not None
+            else None
+        ),
+        "cited_by_count": openalex_result.get("cited_by_count", None),
+        "fwci": openalex_result.get("fwci", None),
+        "is_not_retracted": (
+            None
+            if openalex_result.get("is_retracted") is None
+            else not openalex_result["is_retracted"]
+        ),
+        "awards": funding_summary["awards"],
+        "awards_count": funding_summary["awards_count"],
+        "awards_with_amount_count": funding_summary["awards_with_amount_count"],
+        "award_amount_usd_total": funding_summary["award_amount_usd_total"],
+        "funding_sources_count": funding_summary["funding_sources_count"],
+        "unique_funders_count": funding_summary["unique_funders_count"],
+        "unique_funders": funding_summary["unique_funders"],
+        # Legacy aliases retained for compatibility.
+        "grants": funding_summary["awards"],
+        "grants_count": funding_summary["awards_count"],
+    }
 
 
 def default_branch_is_not_master(repo: pygit2.Repository) -> bool:
@@ -203,6 +351,13 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
         "cited_by_count": None,
         "fwci": None,
         "is_not_retracted": None,
+        "awards": None,
+        "awards_count": None,
+        "awards_with_amount_count": None,
+        "award_amount_usd_total": None,
+        "funding_sources_count": None,
+        "unique_funders_count": None,
+        "unique_funders": None,
         "grants": None,
         "grants_count": None,
     }
@@ -214,20 +369,10 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
 
     try:
         # Read and parse the CITATION.cff file
-        citation_data = yaml.safe_load(read_file(repo=repo, entry=citationcff_file))
-
-        # Extract DOI from 'doi' or 'identifiers' field
-        if "doi" in citation_data.keys():
-            result["doi"] = citation_data.get("doi", None)
-        elif "identifiers" in citation_data.keys():
-            result["doi"] = next(
-                (
-                    identifier["value"]
-                    for identifier in citation_data.get("identifiers", [])
-                    if identifier.get("type") == "doi"
-                ),
-                None,
-            )
+        citation_data = (
+            yaml.safe_load(read_file(repo=repo, entry=citationcff_file)) or {}
+        )
+        result["doi"] = _extract_doi_from_citation_data(citation_data)
     except yaml.YAMLError as e:
         LOGGER.warning(f"Error reading YAML: {e}")
 
@@ -271,36 +416,13 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
 
             # Perform exact DOI lookup on OpenAlex
             try:
-                openalex_result = get_api_data(
-                    api_endpoint=f"https://api.openalex.org/works/doi:{result['doi']}"
+                openalex_result = (
+                    get_api_data(
+                        api_endpoint=f"https://api.openalex.org/works/doi:{result['doi']}"
+                    )
+                    or {}
                 )
-                publication_date = openalex_result.get("publication_date", None)
-                result.update(
-                    {
-                        "openalex_work_id": openalex_result.get("id", None),
-                        "publication_date": (
-                            # note: we caste to date for consistent use throughout
-                            # the almanack as a "date" and not "datetime" type
-                            # (which have differing methods and constraints).
-                            datetime.strptime(publication_date, "%Y-%m-%d").date()
-                            if publication_date is not None
-                            else None
-                        ),
-                        "cited_by_count": openalex_result.get("cited_by_count", None),
-                        "fwci": openalex_result.get("fwci", None),
-                        "is_not_retracted": (
-                            None
-                            if openalex_result.get("is_retracted") is None
-                            else not openalex_result["is_retracted"]
-                        ),
-                        "grants": openalex_result.get("grants", None),
-                        "grants_count": (
-                            len(openalex_result["grants"])
-                            if openalex_result.get("grants")
-                            else 0
-                        ),
-                    }
-                )
+                result.update(_build_openalex_doi_metrics(openalex_result))
             except requests.RequestException as e:
                 LOGGER.warning(f"Error during OpenAlex exact DOI lookup: {e}")
 
@@ -392,6 +514,10 @@ def find_openalex_indirect_funding(
         "citing_works_count_sampled": None,
         "citing_works_with_grants_count": None,
         "indirect_grants_count_sampled": None,
+        "indirect_award_amount_usd_total_sampled": None,
+        "indirect_funding_sources_count_sampled": None,
+        "indirect_unique_funders_count_sampled": None,
+        "indirect_unique_funders_sampled": None,
         "sample_limit": max_references,
         "references": None,
     }
@@ -415,12 +541,18 @@ def find_openalex_indirect_funding(
     references = []
     grants_total = 0
     works_with_grants = 0
+    funding_sources_total = 0
+    award_amount_usd_total = 0.0
+    unique_funders = set()
     for work in works:
-        grants = work.get("grants") or []
-        grants_count = len(grants)
+        funding_summary = _summarize_openalex_funding(work)
+        grants_count = funding_summary["awards_count"]
         grants_total += grants_count
         if grants_count > 0:
             works_with_grants += 1
+        funding_sources_total += funding_summary["funding_sources_count"]
+        award_amount_usd_total += funding_summary["award_amount_usd_total"]
+        unique_funders.update(funding_summary["unique_funders"])
         references.append(
             {
                 "id": work.get("id"),
@@ -429,11 +561,18 @@ def find_openalex_indirect_funding(
                 "publication_year": work.get("publication_year"),
                 "cited_by_count": work.get("cited_by_count"),
                 "grants_count": grants_count,
+                "award_amount_usd_total": funding_summary["award_amount_usd_total"],
+                "funding_sources_count": funding_summary["funding_sources_count"],
+                "unique_funders_count": funding_summary["unique_funders_count"],
             }
         )
 
     result["citing_works_count_sampled"] = len(works)
     result["citing_works_with_grants_count"] = works_with_grants
     result["indirect_grants_count_sampled"] = grants_total
+    result["indirect_award_amount_usd_total_sampled"] = award_amount_usd_total
+    result["indirect_funding_sources_count_sampled"] = funding_sources_total
+    result["indirect_unique_funders_count_sampled"] = len(unique_funders)
+    result["indirect_unique_funders_sampled"] = sorted(unique_funders)
     result["references"] = references
     return result
