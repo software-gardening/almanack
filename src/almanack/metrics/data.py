@@ -38,7 +38,7 @@ from almanack.metrics.garden_lattice.connectedness import (
     default_branch_is_not_master,
     detect_social_media_links,
     find_doi_citation_data,
-    find_openalex_indirect_funding,
+    find_openalex_citing_projects_funding,
     find_software_mentions_openalex,
     is_citable,
 )
@@ -473,16 +473,16 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-doi-grants-count",
         "repo-doi-grants",
         "repo-days-between-doi-publication-date-and-latest-commit",
-        "repo-openalex-direct-funding",
-        "repo-openalex-direct-funding-count",
-        "repo-direct-award-amount-usd",
-        "repo-direct-funding-sources-count",
-        "repo-direct-unique-funders-count",
-        "repo-openalex-total-funding-of-cited-projects",
-        "repo-openalex-indirect-funding-count",
-        "repo-indirect-award-amount-usd",
-        "repo-indirect-funding-sources-count",
-        "repo-indirect-unique-funders-count",
+        "repo-funding",
+        "repo-funding-count",
+        "repo-funding-amount-usd",
+        "repo-funding-sources-count",
+        "repo-unique-funders-count",
+        "repo-funding-of-citing-projects",
+        "repo-funding-count-of-citing-projects",
+        "repo-funding-amount-usd-of-citing-projects",
+        "repo-funding-sources-count-of-citing-projects",
+        "repo-unique-funders-count-of-citing-projects",
         "repo-award-amount-usd-total",
         "repo-funding-sources-count-total",
         "repo-unique-funders-count-total",
@@ -490,43 +490,43 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         # gather doi citation data
         doi_citation_data = find_doi_citation_data(repo=repo)
 
-    openalex_direct_funding: Dict[str, Any] = {
+    openalex_doi_work_funding: Dict[str, Any] = {
         "doi": doi_citation_data["doi"],
         "source_work_id": doi_citation_data["openalex_work_id"],
-        "direct_awards_count": doi_citation_data["awards_count"],
-        "direct_award_amount_usd_total": doi_citation_data["award_amount_usd_total"],
-        "direct_funding_sources_count": doi_citation_data["funding_sources_count"],
-        "direct_unique_funders_count": doi_citation_data["unique_funders_count"],
-        "direct_unique_funders": doi_citation_data["unique_funders"],
+        "doi_work_awards_count": doi_citation_data["awards_count"],
+        "doi_work_award_amount_usd_total": doi_citation_data["award_amount_usd_total"],
+        "doi_work_funding_sources_count": doi_citation_data["funding_sources_count"],
+        "doi_work_unique_funders_count": doi_citation_data["unique_funders_count"],
+        "doi_work_unique_funders": doi_citation_data["unique_funders"],
         "awards": doi_citation_data["awards"],
         # Legacy aliases retained for compatibility.
-        "direct_grants_count": doi_citation_data["awards_count"],
+        "doi_work_grants_count": doi_citation_data["awards_count"],
         "grants": doi_citation_data["awards"],
     }
-    openalex_indirect_funding: Dict[str, Any] = {
+    openalex_citing_projects_funding: Dict[str, Any] = {
         "source_work_id": doi_citation_data["openalex_work_id"],
         "citing_works_count_total": None,
         "citing_works_count_sampled": None,
         "citing_works_with_grants_count": None,
-        "indirect_grants_count_sampled": None,
-        "indirect_award_amount_usd_total_sampled": None,
-        "indirect_funding_sources_count_sampled": None,
-        "indirect_unique_funders_count_sampled": None,
-        "indirect_unique_funders_sampled": None,
+        "citing_projects_grants_count_sampled": None,
+        "citing_projects_award_amount_usd_total_sampled": None,
+        "citing_projects_funding_sources_count_sampled": None,
+        "citing_projects_unique_funders_count_sampled": None,
+        "citing_projects_unique_funders_sampled": None,
         "sample_limit": None,
         "references": None,
     }
     if needs(
-        "repo-openalex-total-funding-of-cited-projects",
-        "repo-openalex-indirect-funding-count",
-        "repo-indirect-award-amount-usd",
-        "repo-indirect-funding-sources-count",
-        "repo-indirect-unique-funders-count",
+        "repo-funding-of-citing-projects",
+        "repo-funding-count-of-citing-projects",
+        "repo-funding-amount-usd-of-citing-projects",
+        "repo-funding-sources-count-of-citing-projects",
+        "repo-unique-funders-count-of-citing-projects",
         "repo-award-amount-usd-total",
         "repo-funding-sources-count-total",
         "repo-unique-funders-count-total",
     ):
-        openalex_indirect_funding = find_openalex_indirect_funding(
+        openalex_citing_projects_funding = find_openalex_citing_projects_funding(
             openalex_work_id=doi_citation_data["openalex_work_id"],
         )
 
@@ -536,8 +536,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "references": None,
     }
     if needs(
-        "repo-openalex-software-mentions-count",
-        "repo-openalex-software-mentions",
+        "repo-software-mentions-count",
+        "repo-software-mentions",
     ):
         software_mentions_openalex = find_software_mentions_openalex(
             repo=repo,
@@ -660,63 +660,73 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-doi-is-not-retracted": doi_citation_data["is_not_retracted"],
         "repo-doi-grants-count": doi_citation_data["grants_count"],
         "repo-doi-grants": doi_citation_data["grants"],
-        "repo-openalex-direct-funding": openalex_direct_funding,
-        "repo-openalex-direct-funding-count": openalex_direct_funding[
-            "direct_grants_count"
+        "repo-funding": openalex_doi_work_funding,
+        "repo-funding-count": openalex_doi_work_funding["doi_work_grants_count"],
+        "repo-funding-amount-usd": openalex_doi_work_funding[
+            "doi_work_award_amount_usd_total"
         ],
-        "repo-direct-award-amount-usd": openalex_direct_funding[
-            "direct_award_amount_usd_total"
+        "repo-funding-sources-count": openalex_doi_work_funding[
+            "doi_work_funding_sources_count"
         ],
-        "repo-direct-funding-sources-count": openalex_direct_funding[
-            "direct_funding_sources_count"
+        "repo-unique-funders-count": openalex_doi_work_funding[
+            "doi_work_unique_funders_count"
         ],
-        "repo-direct-unique-funders-count": openalex_direct_funding[
-            "direct_unique_funders_count"
+        "repo-funding-of-citing-projects": openalex_citing_projects_funding,
+        "repo-funding-count-of-citing-projects": openalex_citing_projects_funding[
+            "citing_projects_grants_count_sampled"
         ],
-        "repo-openalex-total-funding-of-cited-projects": openalex_indirect_funding,
-        "repo-openalex-indirect-funding-count": openalex_indirect_funding[
-            "indirect_grants_count_sampled"
+        "repo-funding-amount-usd-of-citing-projects": openalex_citing_projects_funding[
+            "citing_projects_award_amount_usd_total_sampled"
         ],
-        "repo-indirect-award-amount-usd": openalex_indirect_funding[
-            "indirect_award_amount_usd_total_sampled"
+        "repo-funding-sources-count-of-citing-projects": openalex_citing_projects_funding[
+            "citing_projects_funding_sources_count_sampled"
         ],
-        "repo-indirect-funding-sources-count": openalex_indirect_funding[
-            "indirect_funding_sources_count_sampled"
-        ],
-        "repo-indirect-unique-funders-count": openalex_indirect_funding[
-            "indirect_unique_funders_count_sampled"
+        "repo-unique-funders-count-of-citing-projects": openalex_citing_projects_funding[
+            "citing_projects_unique_funders_count_sampled"
         ],
         "repo-award-amount-usd-total": (
-            openalex_direct_funding["direct_award_amount_usd_total"]
-            + openalex_indirect_funding["indirect_award_amount_usd_total_sampled"]
-            if openalex_direct_funding["direct_award_amount_usd_total"] is not None
-            and openalex_indirect_funding["indirect_award_amount_usd_total_sampled"]
+            openalex_doi_work_funding["doi_work_award_amount_usd_total"]
+            + openalex_citing_projects_funding[
+                "citing_projects_award_amount_usd_total_sampled"
+            ]
+            if openalex_doi_work_funding["doi_work_award_amount_usd_total"] is not None
+            and openalex_citing_projects_funding[
+                "citing_projects_award_amount_usd_total_sampled"
+            ]
             is not None
             else None
         ),
         "repo-funding-sources-count-total": (
-            openalex_direct_funding["direct_funding_sources_count"]
-            + openalex_indirect_funding["indirect_funding_sources_count_sampled"]
-            if openalex_direct_funding["direct_funding_sources_count"] is not None
-            and openalex_indirect_funding["indirect_funding_sources_count_sampled"]
+            openalex_doi_work_funding["doi_work_funding_sources_count"]
+            + openalex_citing_projects_funding[
+                "citing_projects_funding_sources_count_sampled"
+            ]
+            if openalex_doi_work_funding["doi_work_funding_sources_count"] is not None
+            and openalex_citing_projects_funding[
+                "citing_projects_funding_sources_count_sampled"
+            ]
             is not None
             else None
         ),
         "repo-unique-funders-count-total": (
             len(
-                set(openalex_direct_funding["direct_unique_funders"] or [])
+                set(openalex_doi_work_funding["doi_work_unique_funders"] or [])
                 | set(
-                    openalex_indirect_funding["indirect_unique_funders_sampled"] or []
+                    openalex_citing_projects_funding[
+                        "citing_projects_unique_funders_sampled"
+                    ]
+                    or []
                 )
             )
-            if openalex_direct_funding["direct_unique_funders"] is not None
-            and openalex_indirect_funding["indirect_unique_funders_sampled"] is not None
+            if openalex_doi_work_funding["doi_work_unique_funders"] is not None
+            and openalex_citing_projects_funding[
+                "citing_projects_unique_funders_sampled"
+            ]
+            is not None
             else None
         ),
-        "repo-openalex-software-mentions-count": software_mentions_openalex[
-            "mentions_count"
-        ],
-        "repo-openalex-software-mentions": software_mentions_openalex,
+        "repo-software-mentions-count": software_mentions_openalex["mentions_count"],
+        "repo-software-mentions": software_mentions_openalex,
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),

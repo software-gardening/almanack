@@ -262,23 +262,23 @@ def test_compute_repo_data_skips_entropy_collection_when_not_required(
     assert repo_data["repo-file-info-entropy"] is None
     assert repo_data["repo-agg-history-complexity-decay"] is None
     assert repo_data["repo-file-history-complexity-decay"] is None
-    assert repo_data["repo-openalex-direct-funding"]["direct_grants_count"] is None
+    assert repo_data["repo-funding"]["doi_work_grants_count"] is None
     assert (
-        repo_data["repo-openalex-total-funding-of-cited-projects"][
-            "indirect_grants_count_sampled"
+        repo_data["repo-funding-of-citing-projects"][
+            "citing_projects_grants_count_sampled"
         ]
         is None
     )
-    assert repo_data["repo-openalex-direct-funding-count"] is None
-    assert repo_data["repo-openalex-indirect-funding-count"] is None
-    assert repo_data["repo-direct-award-amount-usd"] is None
-    assert repo_data["repo-indirect-award-amount-usd"] is None
+    assert repo_data["repo-funding-count"] is None
+    assert repo_data["repo-funding-count-of-citing-projects"] is None
+    assert repo_data["repo-funding-amount-usd"] is None
+    assert repo_data["repo-funding-amount-usd-of-citing-projects"] is None
     assert repo_data["repo-award-amount-usd-total"] is None
-    assert repo_data["repo-direct-funding-sources-count"] is None
-    assert repo_data["repo-indirect-funding-sources-count"] is None
+    assert repo_data["repo-funding-sources-count"] is None
+    assert repo_data["repo-funding-sources-count-of-citing-projects"] is None
     assert repo_data["repo-funding-sources-count-total"] is None
-    assert repo_data["repo-direct-unique-funders-count"] is None
-    assert repo_data["repo-indirect-unique-funders-count"] is None
+    assert repo_data["repo-unique-funders-count"] is None
+    assert repo_data["repo-unique-funders-count-of-citing-projects"] is None
     assert repo_data["repo-unique-funders-count-total"] is None
     assert repo_data["repo-check-notebook-exec-order"] is None
 

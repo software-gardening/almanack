@@ -495,17 +495,14 @@ def find_software_mentions_openalex(
     return result
 
 
-def find_openalex_indirect_funding(
+def find_openalex_citing_projects_funding(
     openalex_work_id: Optional[str],
     max_references: int = 25,
 ) -> Dict[str, Any]:
     """Find funding signals from OpenAlex works that cite the project work.
 
-    "Indirect funding" here means funding attached to downstream citing works
-    in the OpenAlex network, not grant indirect cost rates/overhead.
-
     Args:
-        openalex_work_id: OpenAlex work identifier for the direct project work.
+        openalex_work_id: OpenAlex work identifier for the project's DOI-linked work.
         max_references: Maximum number of citing works to query from OpenAlex.
 
     Returns:
@@ -516,11 +513,11 @@ def find_openalex_indirect_funding(
         "citing_works_count_total": None,
         "citing_works_count_sampled": None,
         "citing_works_with_grants_count": None,
-        "indirect_grants_count_sampled": None,
-        "indirect_award_amount_usd_total_sampled": None,
-        "indirect_funding_sources_count_sampled": None,
-        "indirect_unique_funders_count_sampled": None,
-        "indirect_unique_funders_sampled": None,
+        "citing_projects_grants_count_sampled": None,
+        "citing_projects_award_amount_usd_total_sampled": None,
+        "citing_projects_funding_sources_count_sampled": None,
+        "citing_projects_unique_funders_count_sampled": None,
+        "citing_projects_unique_funders_sampled": None,
         "sample_limit": max_references,
         "references": None,
     }
@@ -572,10 +569,10 @@ def find_openalex_indirect_funding(
 
     result["citing_works_count_sampled"] = len(works)
     result["citing_works_with_grants_count"] = works_with_grants
-    result["indirect_grants_count_sampled"] = grants_total
-    result["indirect_award_amount_usd_total_sampled"] = award_amount_usd_total
-    result["indirect_funding_sources_count_sampled"] = funding_sources_total
-    result["indirect_unique_funders_count_sampled"] = len(unique_funders)
-    result["indirect_unique_funders_sampled"] = sorted(unique_funders)
+    result["citing_projects_grants_count_sampled"] = grants_total
+    result["citing_projects_award_amount_usd_total_sampled"] = award_amount_usd_total
+    result["citing_projects_funding_sources_count_sampled"] = funding_sources_total
+    result["citing_projects_unique_funders_count_sampled"] = len(unique_funders)
+    result["citing_projects_unique_funders_sampled"] = sorted(unique_funders)
     result["references"] = references
     return result

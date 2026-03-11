@@ -11,7 +11,7 @@ import pytest
 from almanack.metrics.garden_lattice import connectedness
 from almanack.metrics.garden_lattice.connectedness import (
     detect_social_media_links,
-    find_openalex_indirect_funding,
+    find_openalex_citing_projects_funding,
     find_software_mentions_openalex,
 )
 from tests.data.almanack.repo_setup.create_repo import repo_setup
@@ -176,8 +176,8 @@ def test_find_software_mentions_openalex_no_query() -> None:
     assert result == {"query": None, "mentions_count": None, "references": None}
 
 
-def test_find_openalex_indirect_funding(monkeypatch) -> None:
-    """Test OpenAlex indirect funding aggregation for citing works."""
+def test_find_openalex_citing_projects_funding(monkeypatch) -> None:
+    """Test OpenAlex funding aggregation for citing projects."""
 
     def _fake_get_api_data(api_endpoint="https://api.openalex.org/works", params=None):
         _ = api_endpoint, params
@@ -207,7 +207,7 @@ def test_find_openalex_indirect_funding(monkeypatch) -> None:
         }
 
     monkeypatch.setattr(connectedness, "get_api_data", _fake_get_api_data)
-    result = find_openalex_indirect_funding(
+    result = find_openalex_citing_projects_funding(
         openalex_work_id="https://openalex.org/W123"
     )
 
@@ -215,11 +215,11 @@ def test_find_openalex_indirect_funding(monkeypatch) -> None:
     assert result["citing_works_count_total"] == 0
     assert result["citing_works_count_sampled"] == 2
     assert result["citing_works_with_grants_count"] == 1
-    assert result["indirect_grants_count_sampled"] == 2
-    assert result["indirect_award_amount_usd_total_sampled"] == 150
-    assert result["indirect_funding_sources_count_sampled"] == 2
-    assert result["indirect_unique_funders_count_sampled"] == 3
-    assert result["indirect_unique_funders_sampled"] == [
+    assert result["citing_projects_grants_count_sampled"] == 2
+    assert result["citing_projects_award_amount_usd_total_sampled"] == 150
+    assert result["citing_projects_funding_sources_count_sampled"] == 2
+    assert result["citing_projects_unique_funders_count_sampled"] == 3
+    assert result["citing_projects_unique_funders_sampled"] == [
         "f1",
         "f2",
         "https://openalex.org/F3",
