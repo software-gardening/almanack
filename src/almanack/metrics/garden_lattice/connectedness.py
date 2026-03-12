@@ -26,19 +26,20 @@ LOGGER = logging.getLogger(__name__)
 
 @lru_cache(maxsize=1)
 def _get_currency_converter() -> CurrencyConverter:
-    """Return a cached currency converter for award amount normalization."""
+    """Return a cached currency converter for funding amount normalization."""
     return CurrencyConverter()
 
 
-def _get_work_awards(work_data: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Return award-like records from OpenAlex work payloads.
+def _get_work_funding_records(work_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Return funding records from OpenAlex work payloads.
 
     Supports both modern `awards` and legacy `grants` fields.
+    In Almanack outputs, these are normalized as "funding records".
     """
-    awards = work_data.get("awards")
-    if awards is None:
-        awards = work_data.get("grants")
-    return awards if isinstance(awards, list) else []
+    funding_records = work_data.get("awards")
+    if funding_records is None:
+        funding_records = work_data.get("grants")
+    return funding_records if isinstance(funding_records, list) else []
 
 
 def _extract_funder_key(funder: Any) -> Optional[str]:
@@ -55,8 +56,8 @@ def _extract_funder_key(funder: Any) -> Optional[str]:
     return None
 
 
-def _award_amount_to_usd(amount: Any, currency: Optional[str]) -> Optional[float]:
-    """Convert an award amount to USD; assume USD when currency is unavailable."""
+def _funding_amount_to_usd(amount: Any, currency: Optional[str]) -> Optional[float]:
+    """Convert a funding amount to USD; assume USD when currency is unavailable."""
     if amount is None:
         return None
     try:
@@ -74,7 +75,7 @@ def _award_amount_to_usd(amount: Any, currency: Optional[str]) -> Optional[float
         )
     except (RateNotFoundError, ValueError):
         LOGGER.debug(
-            "Could not convert award amount to USD for currency '%s'.",
+            "Could not convert funding amount to USD for currency '%s'.",
             source_currency,
         )
         return None
@@ -84,25 +85,27 @@ def _summarize_openalex_funding(work_data: Dict[str, Any]) -> Dict[str, Any]:
     """Summarize OpenAlex funding payloads for one work record."""
     if not isinstance(work_data, dict):
         work_data = {}
-    awards = _get_work_awards(work_data)
+    funding_records = _get_work_funding_records(work_data)
     unique_funders = set()
     funding_sources_count = 0
-    awards_with_amount_count = 0
-    award_amount_usd_total = 0.0
+    funding_records_with_amount_count = 0
+    funding_amount_usd_total = 0.0
 
-    for award in awards:
-        if not isinstance(award, dict):
+    for funding_record in funding_records:
+        if not isinstance(funding_record, dict):
             continue
 
-        funder_key = _extract_funder_key(award.get("funder"))
+        funder_key = _extract_funder_key(funding_record.get("funder"))
         if funder_key:
             funding_sources_count += 1
             unique_funders.add(funder_key)
 
-        usd_amount = _award_amount_to_usd(award.get("amount"), award.get("currency"))
+        usd_amount = _funding_amount_to_usd(
+            funding_record.get("amount"), funding_record.get("currency")
+        )
         if usd_amount is not None:
-            awards_with_amount_count += 1
-            award_amount_usd_total += usd_amount
+            funding_records_with_amount_count += 1
+            funding_amount_usd_total += usd_amount
 
     for funder in work_data.get("funders") or []:
         funder_key = _extract_funder_key(funder)
@@ -110,10 +113,10 @@ def _summarize_openalex_funding(work_data: Dict[str, Any]) -> Dict[str, Any]:
             unique_funders.add(funder_key)
 
     return {
-        "awards": awards,
-        "awards_count": len(awards),
-        "awards_with_amount_count": awards_with_amount_count,
-        "award_amount_usd_total": award_amount_usd_total,
+        "funding_records": funding_records,
+        "funding_records_count": len(funding_records),
+        "funding_records_with_amount_count": funding_records_with_amount_count,
+        "funding_amount_usd_total": funding_amount_usd_total,
         "funding_sources_count": funding_sources_count,
         "unique_funders_count": len(unique_funders),
         "unique_funders": sorted(unique_funders),
@@ -156,16 +159,15 @@ def _build_openalex_doi_metrics(openalex_result: Dict[str, Any]) -> Dict[str, An
             if openalex_result.get("is_retracted") is None
             else not openalex_result["is_retracted"]
         ),
-        "awards": funding_summary["awards"],
-        "awards_count": funding_summary["awards_count"],
-        "awards_with_amount_count": funding_summary["awards_with_amount_count"],
-        "award_amount_usd_total": funding_summary["award_amount_usd_total"],
+        "funding_records": funding_summary["funding_records"],
+        "funding_records_count": funding_summary["funding_records_count"],
+        "funding_records_with_amount_count": funding_summary[
+            "funding_records_with_amount_count"
+        ],
+        "funding_amount_usd_total": funding_summary["funding_amount_usd_total"],
         "funding_sources_count": funding_summary["funding_sources_count"],
         "unique_funders_count": funding_summary["unique_funders_count"],
         "unique_funders": funding_summary["unique_funders"],
-        # Legacy aliases retained for compatibility.
-        "grants": funding_summary["awards"],
-        "grants_count": funding_summary["awards_count"],
     }
 
 
@@ -351,15 +353,13 @@ def find_doi_citation_data(repo: pygit2.Repository) -> Dict[str, Any]:
         "cited_by_count": None,
         "fwci": None,
         "is_not_retracted": None,
-        "awards": None,
-        "awards_count": None,
-        "awards_with_amount_count": None,
-        "award_amount_usd_total": None,
+        "funding_records": None,
+        "funding_records_count": None,
+        "funding_records_with_amount_count": None,
+        "funding_amount_usd_total": None,
         "funding_sources_count": None,
         "unique_funders_count": None,
         "unique_funders": None,
-        "grants": None,
-        "grants_count": None,
     }
 
     # Find the CITATION.cff file
@@ -495,11 +495,16 @@ def find_software_mentions_openalex(
     return result
 
 
-def find_openalex_citing_projects_funding(
+def find_openalex_citing_works_funding(
     openalex_work_id: Optional[str],
     max_references: int = 25,
 ) -> Dict[str, Any]:
-    """Find funding signals from OpenAlex works that cite the project work.
+    """Find funding signals from OpenAlex works that cite the repository work.
+
+    In this context, "sampled" means the subset of citing works returned by
+    this query, limited by `max_references` and sorted by `cited_by_count`.
+    OpenAlex `awards` (and legacy `grants`) are normalized as
+    "funding records".
 
     Args:
         openalex_work_id: OpenAlex work identifier for the project's DOI-linked work.
@@ -512,12 +517,12 @@ def find_openalex_citing_projects_funding(
         "source_work_id": openalex_work_id,
         "citing_works_count_total": None,
         "citing_works_count_sampled": None,
-        "citing_works_with_grants_count": None,
-        "citing_projects_grants_count_sampled": None,
-        "citing_projects_award_amount_usd_total_sampled": None,
-        "citing_projects_funding_sources_count_sampled": None,
-        "citing_projects_unique_funders_count_sampled": None,
-        "citing_projects_unique_funders_sampled": None,
+        "citing_works_with_funding_count": None,
+        "citing_works_funding_records_count_sampled": None,
+        "citing_works_funding_amount_usd_total_sampled": None,
+        "citing_works_funding_sources_count_sampled": None,
+        "citing_works_unique_funders_count_sampled": None,
+        "citing_works_unique_funders_sampled": None,
         "sample_limit": max_references,
         "references": None,
     }
@@ -539,20 +544,24 @@ def find_openalex_citing_projects_funding(
     works = openalex_result.get("results", [])
     result["citing_works_count_total"] = openalex_result.get("meta", {}).get("count", 0)
     references = []
-    grants_total = 0
-    works_with_grants = 0
-    funding_sources_total = 0
-    award_amount_usd_total = 0.0
-    unique_funders = set()
+    citing_works_funding_records_count_sampled = 0
+    citing_works_with_funding_count = 0
+    citing_works_funding_sources_count_sampled = 0
+    citing_works_funding_amount_usd_total_sampled = 0.0
+    citing_works_unique_funders_sampled = set()
     for work in works:
         funding_summary = _summarize_openalex_funding(work)
-        grants_count = funding_summary["awards_count"]
-        grants_total += grants_count
-        if grants_count > 0:
-            works_with_grants += 1
-        funding_sources_total += funding_summary["funding_sources_count"]
-        award_amount_usd_total += funding_summary["award_amount_usd_total"]
-        unique_funders.update(funding_summary["unique_funders"])
+        funding_records_count = funding_summary["funding_records_count"]
+        citing_works_funding_records_count_sampled += funding_records_count
+        if funding_records_count > 0:
+            citing_works_with_funding_count += 1
+        citing_works_funding_sources_count_sampled += funding_summary[
+            "funding_sources_count"
+        ]
+        citing_works_funding_amount_usd_total_sampled += funding_summary[
+            "funding_amount_usd_total"
+        ]
+        citing_works_unique_funders_sampled.update(funding_summary["unique_funders"])
         references.append(
             {
                 "id": work.get("id"),
@@ -560,19 +569,29 @@ def find_openalex_citing_projects_funding(
                 "doi": work.get("doi"),
                 "publication_year": work.get("publication_year"),
                 "cited_by_count": work.get("cited_by_count"),
-                "grants_count": grants_count,
-                "award_amount_usd_total": funding_summary["award_amount_usd_total"],
+                "funding_records_count": funding_records_count,
+                "funding_amount_usd_total": funding_summary["funding_amount_usd_total"],
                 "funding_sources_count": funding_summary["funding_sources_count"],
                 "unique_funders_count": funding_summary["unique_funders_count"],
             }
         )
 
     result["citing_works_count_sampled"] = len(works)
-    result["citing_works_with_grants_count"] = works_with_grants
-    result["citing_projects_grants_count_sampled"] = grants_total
-    result["citing_projects_award_amount_usd_total_sampled"] = award_amount_usd_total
-    result["citing_projects_funding_sources_count_sampled"] = funding_sources_total
-    result["citing_projects_unique_funders_count_sampled"] = len(unique_funders)
-    result["citing_projects_unique_funders_sampled"] = sorted(unique_funders)
+    result["citing_works_with_funding_count"] = citing_works_with_funding_count
+    result["citing_works_funding_records_count_sampled"] = (
+        citing_works_funding_records_count_sampled
+    )
+    result["citing_works_funding_amount_usd_total_sampled"] = (
+        citing_works_funding_amount_usd_total_sampled
+    )
+    result["citing_works_funding_sources_count_sampled"] = (
+        citing_works_funding_sources_count_sampled
+    )
+    result["citing_works_unique_funders_count_sampled"] = len(
+        citing_works_unique_funders_sampled
+    )
+    result["citing_works_unique_funders_sampled"] = sorted(
+        citing_works_unique_funders_sampled
+    )
     result["references"] = references
     return result
