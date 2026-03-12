@@ -644,8 +644,8 @@ metrics:
     result-type: "dict"
     sustainability_correlation: 0
     description: >-
-      Structured funding detail object for the software's DOI-linked OpenAlex
-      work, including funding records and supporting metadata.
+      Funding details for the software's DOI-linked work, derived from
+      OpenAlex using the repository DOI.
     correction_guidance:
     fix_why:
     fix_how:
@@ -654,8 +654,8 @@ metrics:
     result-type: "dict"
     sustainability_correlation: 0
     description: >-
-      Structured funding detail object aggregated across sampled OpenAlex
-      citing works for the software's DOI-linked work.
+      Funding details from OpenAlex works that cite the software's
+      DOI-linked work.
     correction_guidance:
     fix_why:
     fix_how:
@@ -737,7 +737,8 @@ metrics:
     sustainability_correlation: 0
     description: >-
       Combined funder-reference count, computed as:
-      `repo-funder-references-count + repo-funder-references-count-of-citing-works`.
+      `repo-funder-references-count +
+      repo-funder-references-count-of-citing-works`.
     correction_guidance:
     fix_why:
     fix_how:
