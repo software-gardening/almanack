@@ -262,6 +262,24 @@ def test_compute_repo_data_skips_entropy_collection_when_not_required(
     assert repo_data["repo-file-info-entropy"] is None
     assert repo_data["repo-agg-history-complexity-decay"] is None
     assert repo_data["repo-file-history-complexity-decay"] is None
+    assert repo_data["repo-funding-details"]["doi_work_funding_records_count"] is None
+    assert (
+        repo_data["repo-funding-details-of-citing-works"][
+            "citing_works_funding_records_count_sampled"
+        ]
+        is None
+    )
+    assert repo_data["repo-funding-count"] is None
+    assert repo_data["repo-funding-count-of-citing-works"] is None
+    assert repo_data["repo-funding-amount-usd"] is None
+    assert repo_data["repo-funding-amount-usd-of-citing-works"] is None
+    assert repo_data["repo-funding-amount-usd-combined"] is None
+    assert repo_data["repo-funder-references-count"] is None
+    assert repo_data["repo-funder-references-count-of-citing-works"] is None
+    assert repo_data["repo-funder-references-count-combined"] is None
+    assert repo_data["repo-unique-funders-count"] is None
+    assert repo_data["repo-unique-funders-count-of-citing-works"] is None
+    assert repo_data["repo-unique-funders-count-combined"] is None
     assert repo_data["repo-check-notebook-exec-order"] is None
 
 

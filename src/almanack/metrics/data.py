@@ -2,6 +2,7 @@
 This module computes data for GitHub Repositories
 """
 
+import importlib
 import json
 import logging
 import pathlib
@@ -37,6 +38,8 @@ from almanack.metrics.garden_lattice.connectedness import (
     default_branch_is_not_master,
     detect_social_media_links,
     find_doi_citation_data,
+    find_openalex_citing_works_funding,
+    find_software_mentions_openalex,
     is_citable,
 )
 from almanack.metrics.garden_lattice.practicality import (
@@ -443,14 +446,19 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
 
     doi_citation_data: Dict[str, Any] = {
         "doi": None,
+        "openalex_work_id": None,
         "publication_date": None,
         "valid_format_doi": None,
         "https_resolvable_doi": None,
         "cited_by_count": None,
         "fwci": None,
         "is_not_retracted": None,
-        "grants_count": None,
-        "grants": None,
+        "funding_records_count": None,
+        "funding_records": None,
+        "funding_amount_usd_total": None,
+        "funding_sources_count": None,
+        "unique_funders_count": None,
+        "unique_funders": None,
     }
     if needs(
         "repo-doi",
@@ -463,9 +471,75 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-doi-grants-count",
         "repo-doi-grants",
         "repo-days-between-doi-publication-date-and-latest-commit",
+        "repo-funding-details",
+        "repo-funding-count",
+        "repo-funding-amount-usd",
+        "repo-funder-references-count",
+        "repo-unique-funders-count",
+        "repo-funding-details-of-citing-works",
+        "repo-funding-count-of-citing-works",
+        "repo-funding-amount-usd-of-citing-works",
+        "repo-funder-references-count-of-citing-works",
+        "repo-unique-funders-count-of-citing-works",
+        "repo-funding-amount-usd-combined",
+        "repo-funder-references-count-combined",
+        "repo-unique-funders-count-combined",
     ):
         # gather doi citation data
         doi_citation_data = find_doi_citation_data(repo=repo)
+
+    openalex_doi_work_funding: Dict[str, Any] = {
+        "doi": doi_citation_data["doi"],
+        "source_work_id": doi_citation_data["openalex_work_id"],
+        "doi_work_funding_records_count": doi_citation_data["funding_records_count"],
+        "doi_work_funding_amount_usd_total": doi_citation_data[
+            "funding_amount_usd_total"
+        ],
+        "doi_work_funding_sources_count": doi_citation_data["funding_sources_count"],
+        "doi_work_unique_funders_count": doi_citation_data["unique_funders_count"],
+        "doi_work_unique_funders": doi_citation_data["unique_funders"],
+        "funding_records": doi_citation_data["funding_records"],
+    }
+    openalex_citing_works_funding: Dict[str, Any] = {
+        "source_work_id": doi_citation_data["openalex_work_id"],
+        "citing_works_count_total": None,
+        "citing_works_count_sampled": None,
+        "citing_works_with_funding_count": None,
+        "citing_works_funding_records_count_sampled": None,
+        "citing_works_funding_amount_usd_total_sampled": None,
+        "citing_works_funding_sources_count_sampled": None,
+        "citing_works_unique_funders_count_sampled": None,
+        "citing_works_unique_funders_sampled": None,
+        "sample_limit": None,
+        "references": None,
+    }
+    if needs(
+        "repo-funding-details-of-citing-works",
+        "repo-funding-count-of-citing-works",
+        "repo-funding-amount-usd-of-citing-works",
+        "repo-funder-references-count-of-citing-works",
+        "repo-unique-funders-count-of-citing-works",
+        "repo-funding-amount-usd-combined",
+        "repo-funder-references-count-combined",
+        "repo-unique-funders-count-combined",
+    ):
+        openalex_citing_works_funding = find_openalex_citing_works_funding(
+            openalex_work_id=doi_citation_data["openalex_work_id"],
+        )
+
+    software_mentions_openalex: Dict[str, Any] = {
+        "query": None,
+        "mentions_count": None,
+        "references": None,
+    }
+    if needs(
+        "repo-software-mentions-count",
+        "repo-software-mentions",
+    ):
+        software_mentions_openalex = find_software_mentions_openalex(
+            repo=repo,
+            remote_url=remote_url,
+        )
 
     # collect notebook cell data
     ignore_dirs = [".venv"]
@@ -581,8 +655,74 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-doi-cited-by-count": doi_citation_data["cited_by_count"],
         "repo-doi-fwci": doi_citation_data["fwci"],
         "repo-doi-is-not-retracted": doi_citation_data["is_not_retracted"],
-        "repo-doi-grants-count": doi_citation_data["grants_count"],
-        "repo-doi-grants": doi_citation_data["grants"],
+        "repo-doi-grants-count": doi_citation_data["funding_records_count"],
+        "repo-doi-grants": doi_citation_data["funding_records"],
+        "repo-funding-details": openalex_doi_work_funding,
+        "repo-funding-count": openalex_doi_work_funding[
+            "doi_work_funding_records_count"
+        ],
+        "repo-funding-amount-usd": openalex_doi_work_funding[
+            "doi_work_funding_amount_usd_total"
+        ],
+        "repo-funder-references-count": openalex_doi_work_funding[
+            "doi_work_funding_sources_count"
+        ],
+        "repo-unique-funders-count": openalex_doi_work_funding[
+            "doi_work_unique_funders_count"
+        ],
+        "repo-funding-details-of-citing-works": openalex_citing_works_funding,
+        "repo-funding-count-of-citing-works": openalex_citing_works_funding[
+            "citing_works_funding_records_count_sampled"
+        ],
+        "repo-funding-amount-usd-of-citing-works": openalex_citing_works_funding[
+            "citing_works_funding_amount_usd_total_sampled"
+        ],
+        "repo-funder-references-count-of-citing-works": openalex_citing_works_funding[
+            "citing_works_funding_sources_count_sampled"
+        ],
+        "repo-unique-funders-count-of-citing-works": openalex_citing_works_funding[
+            "citing_works_unique_funders_count_sampled"
+        ],
+        "repo-funding-amount-usd-combined": (
+            openalex_doi_work_funding["doi_work_funding_amount_usd_total"]
+            + openalex_citing_works_funding[
+                "citing_works_funding_amount_usd_total_sampled"
+            ]
+            if openalex_doi_work_funding["doi_work_funding_amount_usd_total"]
+            is not None
+            and openalex_citing_works_funding[
+                "citing_works_funding_amount_usd_total_sampled"
+            ]
+            is not None
+            else None
+        ),
+        "repo-funder-references-count-combined": (
+            openalex_doi_work_funding["doi_work_funding_sources_count"]
+            + openalex_citing_works_funding[
+                "citing_works_funding_sources_count_sampled"
+            ]
+            if openalex_doi_work_funding["doi_work_funding_sources_count"] is not None
+            and openalex_citing_works_funding[
+                "citing_works_funding_sources_count_sampled"
+            ]
+            is not None
+            else None
+        ),
+        "repo-unique-funders-count-combined": (
+            len(
+                set(openalex_doi_work_funding["doi_work_unique_funders"] or [])
+                | set(
+                    openalex_citing_works_funding["citing_works_unique_funders_sampled"]
+                    or []
+                )
+            )
+            if openalex_doi_work_funding["doi_work_unique_funders"] is not None
+            and openalex_citing_works_funding["citing_works_unique_funders_sampled"]
+            is not None
+            else None
+        ),
+        "repo-software-mentions-count": software_mentions_openalex["mentions_count"],
+        "repo-software-mentions": software_mentions_openalex,
         "repo-gh-workflow-success-ratio": gh_workflows_data.get("success_ratio", None),
         "repo-gh-workflow-succeeding-runs": gh_workflows_data.get("total_runs", None),
         "repo-gh-workflow-failing-runs": gh_workflows_data.get("successful_runs", None),
@@ -862,13 +1002,13 @@ def _get_almanack_version() -> str:
     try:
         # attempt to gather the development version from dunamai
         # for scenarios where almanack from source is used.
-        import dunamai  # noqa: PLC0415
+        dunamai = importlib.import_module("dunamai")
 
         return dunamai.Version.from_any_vcs().serialize()
     except (RuntimeError, ModuleNotFoundError):
         # else grab a static version from __init__.py
         # for scenarios where the built/packaged almanack is used.
-        import almanack  # noqa: PLC0415
+        almanack = importlib.import_module("almanack")
 
         return almanack.__version__
 

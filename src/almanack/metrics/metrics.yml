@@ -617,6 +617,161 @@ metrics:
       execute all cells sequentially from top to bottom. This ensures that all
       variables and outputs are generated in the correct order, making the
       notebook reproducible and easier to understand for others.
+  - name: "repo-software-mentions-count"
+    id: "SGA-GL-0031"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregated count of OpenAlex works matching the repository software name.
+      This is based on OpenAlex work search using the project name.
+      Unlike citation metrics, this includes name-based mentions that may not
+      directly cite the repository DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-software-mentions"
+    id: "SGA-GL-0032"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Minimal OpenAlex reference details for works matching the repository
+      software name, including query metadata and sampled matching works.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-details"
+    id: "SGA-GL-0033"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Funding details for the software's DOI-linked work, derived from
+      OpenAlex using the repository DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-details-of-citing-works"
+    id: "SGA-GL-0034"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Funding details from OpenAlex works that cite the software's
+      DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-count"
+    id: "SGA-GL-0035"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of funding records on the OpenAlex work linked to the
+      software project's DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-count-of-citing-works"
+    id: "SGA-GL-0036"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Sampled count of funding records across queried OpenAlex works that cite
+      the software project's DOI-linked work.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-amount-usd"
+    id: "SGA-GL-0037"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Estimated funding amount total in USD for the OpenAlex work linked
+      to the software project's DOI. OpenAlex records with missing currency are
+      treated as USD.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-amount-usd-of-citing-works"
+    id: "SGA-GL-0038"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Estimated sampled funding amount total in USD across queried OpenAlex
+      citing works linked to the software project's DOI work.
+      OpenAlex records with missing currency are treated as USD.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funding-amount-usd-combined"
+    id: "SGA-GL-0039"
+    result-type: "float"
+    sustainability_correlation: 0
+    description: >-
+      Combined funding amount in USD, computed as:
+      `repo-funding-amount-usd + repo-funding-amount-usd-of-citing-works`.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funder-references-count"
+    id: "SGA-GL-0040"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of funder references discovered on the OpenAlex work
+      linked to the software project's DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funder-references-count-of-citing-works"
+    id: "SGA-GL-0041"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of sampled funder references discovered across
+      queried OpenAlex citing works.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-funder-references-count-combined"
+    id: "SGA-GL-0042"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Combined funder-reference count, computed as:
+      `repo-funder-references-count +
+      repo-funder-references-count-of-citing-works`.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-unique-funders-count"
+    id: "SGA-GL-0043"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of unique funders discovered on the OpenAlex work linked to
+      the software project's DOI.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-unique-funders-count-of-citing-works"
+    id: "SGA-GL-0044"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of unique sampled funders discovered across queried
+      OpenAlex citing works.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-unique-funders-count-combined"
+    id: "SGA-GL-0045"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Combined unique-funder count across DOI work and sampled citing works
+      (set-union cardinality, not a simple sum).
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-gh-workflow-success-ratio"
     id: "SGA-SF-0001"
     result-type: "float"
