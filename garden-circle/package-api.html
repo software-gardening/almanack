@@ -473,10 +473,19 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.connectedness">Connectedness</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._build_openalex_doi_metrics"><code class="docutils literal notranslate"><span class="pre">_build_openalex_doi_metrics()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._extract_doi_from_citation_data"><code class="docutils literal notranslate"><span class="pre">_extract_doi_from_citation_data()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._extract_funder_key"><code class="docutils literal notranslate"><span class="pre">_extract_funder_key()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._funding_amount_to_usd"><code class="docutils literal notranslate"><span class="pre">_funding_amount_to_usd()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._get_currency_converter"><code class="docutils literal notranslate"><span class="pre">_get_currency_converter()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._get_work_funding_records"><code class="docutils literal notranslate"><span class="pre">_get_work_funding_records()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._summarize_openalex_funding"><code class="docutils literal notranslate"><span class="pre">_summarize_openalex_funding()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors"><code class="docutils literal notranslate"><span class="pre">count_unique_contributors()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master"><code class="docutils literal notranslate"><span class="pre">default_branch_is_not_master()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.detect_social_media_links"><code class="docutils literal notranslate"><span class="pre">detect_social_media_links()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data"><code class="docutils literal notranslate"><span class="pre">find_doi_citation_data()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_openalex_citing_works_funding"><code class="docutils literal notranslate"><span class="pre">find_openalex_citing_works_funding()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_software_mentions_openalex"><code class="docutils literal notranslate"><span class="pre">find_software_mentions_openalex()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.is_citable"><code class="docutils literal notranslate"><span class="pre">is_citable()</span></code></a></li>
 </ul>
 </li>
@@ -1666,6 +1675,50 @@ are found, False otherwise.</p>
 in software projects such as contributor activity, collaboration
 frequency.</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._build_openalex_doi_metrics">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_build_openalex_doi_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">openalex_result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_build_openalex_doi_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._build_openalex_doi_metrics" title="Link to this definition">#</a></dt>
+<dd><p>Build DOI-linked OpenAlex metrics for storage in citation results.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._extract_doi_from_citation_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_extract_doi_from_citation_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">citation_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_extract_doi_from_citation_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._extract_doi_from_citation_data" title="Link to this definition">#</a></dt>
+<dd><p>Extract a DOI value from parsed CITATION.cff payload.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._extract_funder_key">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_extract_funder_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">funder</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_extract_funder_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._extract_funder_key" title="Link to this definition">#</a></dt>
+<dd><p>Extract a stable funder key from known OpenAlex funder shapes.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._funding_amount_to_usd">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_funding_amount_to_usd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">amount</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">currency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_funding_amount_to_usd"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._funding_amount_to_usd" title="Link to this definition">#</a></dt>
+<dd><p>Convert a funding amount to USD; assume USD when currency is unavailable.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._get_currency_converter">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_get_currency_converter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CurrencyConverter</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_get_currency_converter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._get_currency_converter" title="Link to this definition">#</a></dt>
+<dd><p>Return a cached currency converter for funding amount normalization.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._get_work_funding_records">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_get_work_funding_records</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_get_work_funding_records"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._get_work_funding_records" title="Link to this definition">#</a></dt>
+<dd><p>Return funding records from OpenAlex work payloads.</p>
+<p>Supports both modern <cite>awards</cite> and legacy <cite>grants</cite> fields.
+In Almanack outputs, these are normalized as “funding records”.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness._summarize_openalex_funding">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">_summarize_openalex_funding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">work_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#_summarize_openalex_funding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness._summarize_openalex_funding" title="Link to this definition">#</a></dt>
+<dd><p>Summarize OpenAlex funding payloads for one work record.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness.count_unique_contributors">
 <span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">count_unique_contributors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">since</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#count_unique_contributors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors" title="Link to this definition">#</a></dt>
 <dd><p>Counts the number of unique contributors to a repository.</p>
@@ -1743,6 +1796,47 @@ resolvability via HTTP, and performs an exact DOI lookup on the OpenAlex API.</p
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness.find_openalex_citing_works_funding">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">find_openalex_citing_works_funding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">openalex_work_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_references</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">25</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#find_openalex_citing_works_funding"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness.find_openalex_citing_works_funding" title="Link to this definition">#</a></dt>
+<dd><p>Find funding signals from OpenAlex works that cite the repository work.</p>
+<p>In this context, “sampled” means the subset of citing works returned by
+this query, limited by <cite>max_references</cite> and sorted by <cite>cited_by_count</cite>.
+OpenAlex <cite>awards</cite> (and legacy <cite>grants</cite>) are normalized as
+“funding records”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>openalex_work_id</strong> – OpenAlex work identifier for the project’s DOI-linked work.</p></li>
+<li><p><strong>max_references</strong> – Maximum number of citing works to query from OpenAlex.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary with sampled citing-work funding aggregates and references.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.garden_lattice.connectedness.find_software_mentions_openalex">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.garden_lattice.connectedness.</span></span><span class="sig-name descname"><span class="pre">find_software_mentions_openalex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_references</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/garden_lattice/connectedness.html#find_software_mentions_openalex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.garden_lattice.connectedness.find_software_mentions_openalex" title="Link to this definition">#</a></dt>
+<dd><p>Find OpenAlex works that mention a repository by software/project name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> – Repository used for software name discovery when no remote URL
+is available.</p></li>
+<li><p><strong>remote_url</strong> – Remote repository URL used to derive the project name.</p></li>
+<li><p><strong>max_references</strong> – Maximum number of matching works to include in results.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dictionary containing the query name, aggregate mention count, and
+a minimal list of matching works from OpenAlex.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1955,10 +2049,19 @@ related to the repository.</p>
 </ul>
 </li>
 <li class="toc-h5 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.garden_lattice.connectedness">Connectedness</a><ul class="nav section-nav flex-column">
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._build_openalex_doi_metrics"><code class="docutils literal notranslate"><span class="pre">_build_openalex_doi_metrics()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._extract_doi_from_citation_data"><code class="docutils literal notranslate"><span class="pre">_extract_doi_from_citation_data()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._extract_funder_key"><code class="docutils literal notranslate"><span class="pre">_extract_funder_key()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._funding_amount_to_usd"><code class="docutils literal notranslate"><span class="pre">_funding_amount_to_usd()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._get_currency_converter"><code class="docutils literal notranslate"><span class="pre">_get_currency_converter()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._get_work_funding_records"><code class="docutils literal notranslate"><span class="pre">_get_work_funding_records()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness._summarize_openalex_funding"><code class="docutils literal notranslate"><span class="pre">_summarize_openalex_funding()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.count_unique_contributors"><code class="docutils literal notranslate"><span class="pre">count_unique_contributors()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.default_branch_is_not_master"><code class="docutils literal notranslate"><span class="pre">default_branch_is_not_master()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.detect_social_media_links"><code class="docutils literal notranslate"><span class="pre">detect_social_media_links()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_doi_citation_data"><code class="docutils literal notranslate"><span class="pre">find_doi_citation_data()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_openalex_citing_works_funding"><code class="docutils literal notranslate"><span class="pre">find_openalex_citing_works_funding()</span></code></a></li>
+<li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.find_software_mentions_openalex"><code class="docutils literal notranslate"><span class="pre">find_software_mentions_openalex()</span></code></a></li>
 <li class="toc-h6 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.garden_lattice.connectedness.is_citable"><code class="docutils literal notranslate"><span class="pre">is_citable()</span></code></a></li>
 </ul>
 </li>

@@ -354,6 +354,7 @@ document.write(`
 <span class="sd">This module computes data for GitHub Repositories</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
@@ -389,6 +390,8 @@ document.write(`
     <span class="n">default_branch_is_not_master</span><span class="p">,</span>
     <span class="n">detect_social_media_links</span><span class="p">,</span>
     <span class="n">find_doi_citation_data</span><span class="p">,</span>
+    <span class="n">find_openalex_citing_works_funding</span><span class="p">,</span>
+    <span class="n">find_software_mentions_openalex</span><span class="p">,</span>
     <span class="n">is_citable</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.garden_lattice.practicality</span> <span class="kn">import</span> <span class="p">(</span>
@@ -809,14 +812,19 @@ document.write(`
 
     <span class="n">doi_citation_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;openalex_work_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;valid_format_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;grants_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;grants&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_records_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_records&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_sources_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;unique_funders_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;unique_funders&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
         <span class="s2">&quot;repo-doi&quot;</span><span class="p">,</span>
@@ -829,9 +837,75 @@ document.write(`
         <span class="s2">&quot;repo-doi-grants-count&quot;</span><span class="p">,</span>
         <span class="s2">&quot;repo-doi-grants&quot;</span><span class="p">,</span>
         <span class="s2">&quot;repo-days-between-doi-publication-date-and-latest-commit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-details&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-amount-usd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funder-references-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-unique-funders-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-details-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-count-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-amount-usd-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funder-references-count-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-unique-funders-count-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-amount-usd-combined&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funder-references-count-combined&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-unique-funders-count-combined&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># gather doi citation data</span>
         <span class="n">doi_citation_data</span> <span class="o">=</span> <span class="n">find_doi_citation_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+
+    <span class="n">openalex_doi_work_funding</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;source_work_id&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;openalex_work_id&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doi_work_funding_records_count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;funding_records_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doi_work_funding_amount_usd_total&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span>
+            <span class="s2">&quot;funding_amount_usd_total&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;doi_work_funding_sources_count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;funding_sources_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doi_work_unique_funders_count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;unique_funders_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doi_work_unique_funders&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;unique_funders&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;funding_records&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;funding_records&quot;</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="n">openalex_citing_works_funding</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;source_work_id&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;openalex_work_id&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;citing_works_count_total&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_with_funding_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_funding_records_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_funding_amount_usd_total_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_funding_sources_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_unique_funders_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_unique_funders_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;sample_limit&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-funding-details-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-count-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-amount-usd-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funder-references-count-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-unique-funders-count-of-citing-works&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-amount-usd-combined&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funder-references-count-combined&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-unique-funders-count-combined&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">openalex_citing_works_funding</span> <span class="o">=</span> <span class="n">find_openalex_citing_works_funding</span><span class="p">(</span>
+            <span class="n">openalex_work_id</span><span class="o">=</span><span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;openalex_work_id&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+
+    <span class="n">software_mentions_openalex</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;mentions_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-software-mentions-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-software-mentions&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">software_mentions_openalex</span> <span class="o">=</span> <span class="n">find_software_mentions_openalex</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+            <span class="n">remote_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">,</span>
+        <span class="p">)</span>
 
     <span class="c1"># collect notebook cell data</span>
     <span class="n">ignore_dirs</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;.venv&quot;</span><span class="p">]</span>
@@ -947,8 +1021,74 @@ document.write(`
         <span class="s2">&quot;repo-doi-cited-by-count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">],</span>
         <span class="s2">&quot;repo-doi-fwci&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;fwci&quot;</span><span class="p">],</span>
         <span class="s2">&quot;repo-doi-is-not-retracted&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;is_not_retracted&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;repo-doi-grants-count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;grants_count&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;repo-doi-grants&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;grants&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-doi-grants-count&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;funding_records_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-doi-grants&quot;</span><span class="p">:</span> <span class="n">doi_citation_data</span><span class="p">[</span><span class="s2">&quot;funding_records&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-funding-details&quot;</span><span class="p">:</span> <span class="n">openalex_doi_work_funding</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-count&quot;</span><span class="p">:</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span>
+            <span class="s2">&quot;doi_work_funding_records_count&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-funding-amount-usd&quot;</span><span class="p">:</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span>
+            <span class="s2">&quot;doi_work_funding_amount_usd_total&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-funder-references-count&quot;</span><span class="p">:</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span>
+            <span class="s2">&quot;doi_work_funding_sources_count&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-unique-funders-count&quot;</span><span class="p">:</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span>
+            <span class="s2">&quot;doi_work_unique_funders_count&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-funding-details-of-citing-works&quot;</span><span class="p">:</span> <span class="n">openalex_citing_works_funding</span><span class="p">,</span>
+        <span class="s2">&quot;repo-funding-count-of-citing-works&quot;</span><span class="p">:</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+            <span class="s2">&quot;citing_works_funding_records_count_sampled&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-funding-amount-usd-of-citing-works&quot;</span><span class="p">:</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+            <span class="s2">&quot;citing_works_funding_amount_usd_total_sampled&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-funder-references-count-of-citing-works&quot;</span><span class="p">:</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+            <span class="s2">&quot;citing_works_funding_sources_count_sampled&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-unique-funders-count-of-citing-works&quot;</span><span class="p">:</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+            <span class="s2">&quot;citing_works_unique_funders_count_sampled&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;repo-funding-amount-usd-combined&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">openalex_doi_work_funding</span><span class="p">[</span><span class="s2">&quot;doi_work_funding_amount_usd_total&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+                <span class="s2">&quot;citing_works_funding_amount_usd_total_sampled&quot;</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span><span class="s2">&quot;doi_work_funding_amount_usd_total&quot;</span><span class="p">]</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+                <span class="s2">&quot;citing_works_funding_amount_usd_total_sampled&quot;</span>
+            <span class="p">]</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-funder-references-count-combined&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">openalex_doi_work_funding</span><span class="p">[</span><span class="s2">&quot;doi_work_funding_sources_count&quot;</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+                <span class="s2">&quot;citing_works_funding_sources_count_sampled&quot;</span>
+            <span class="p">]</span>
+            <span class="k">if</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span><span class="s2">&quot;doi_work_funding_sources_count&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span>
+                <span class="s2">&quot;citing_works_funding_sources_count_sampled&quot;</span>
+            <span class="p">]</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-unique-funders-count-combined&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span>
+                <span class="nb">set</span><span class="p">(</span><span class="n">openalex_doi_work_funding</span><span class="p">[</span><span class="s2">&quot;doi_work_unique_funders&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="p">[])</span>
+                <span class="o">|</span> <span class="nb">set</span><span class="p">(</span>
+                    <span class="n">openalex_citing_works_funding</span><span class="p">[</span><span class="s2">&quot;citing_works_unique_funders_sampled&quot;</span><span class="p">]</span>
+                    <span class="ow">or</span> <span class="p">[]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="n">openalex_doi_work_funding</span><span class="p">[</span><span class="s2">&quot;doi_work_unique_funders&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="n">openalex_citing_works_funding</span><span class="p">[</span><span class="s2">&quot;citing_works_unique_funders_sampled&quot;</span><span class="p">]</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;repo-software-mentions-count&quot;</span><span class="p">:</span> <span class="n">software_mentions_openalex</span><span class="p">[</span><span class="s2">&quot;mentions_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;repo-software-mentions&quot;</span><span class="p">:</span> <span class="n">software_mentions_openalex</span><span class="p">,</span>
         <span class="s2">&quot;repo-gh-workflow-success-ratio&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;success_ratio&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="s2">&quot;repo-gh-workflow-succeeding-runs&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;total_runs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
         <span class="s2">&quot;repo-gh-workflow-failing-runs&quot;</span><span class="p">:</span> <span class="n">gh_workflows_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;successful_runs&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
@@ -1243,13 +1383,13 @@ document.write(`
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># attempt to gather the development version from dunamai</span>
         <span class="c1"># for scenarios where almanack from source is used.</span>
-        <span class="kn">import</span> <span class="nn">dunamai</span>  <span class="c1"># noqa: PLC0415</span>
+        <span class="n">dunamai</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;dunamai&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dunamai</span><span class="o">.</span><span class="n">Version</span><span class="o">.</span><span class="n">from_any_vcs</span><span class="p">()</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
     <span class="k">except</span> <span class="p">(</span><span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">ModuleNotFoundError</span><span class="p">):</span>
         <span class="c1"># else grab a static version from __init__.py</span>
         <span class="c1"># for scenarios where the built/packaged almanack is used.</span>
-        <span class="kn">import</span> <span class="nn">almanack</span>  <span class="c1"># noqa: PLC0415</span>
+        <span class="n">almanack</span> <span class="o">=</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;almanack&quot;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">almanack</span><span class="o">.</span><span class="n">__version__</span></div>
 

@@ -357,18 +357,191 @@ document.write(`
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">lru_cache</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
 <span class="kn">import</span> <span class="nn">pygit2</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">from</span> <span class="nn">currency_converter</span> <span class="kn">import</span> <span class="n">CurrencyConverter</span>
+<span class="kn">from</span> <span class="nn">currency_converter.currency_converter</span> <span class="kn">import</span> <span class="n">RateNotFoundError</span>
 
 <span class="kn">from</span> <span class="nn">almanack.git</span> <span class="kn">import</span> <span class="n">file_exists_in_repo</span><span class="p">,</span> <span class="n">find_file</span><span class="p">,</span> <span class="n">read_file</span>
 <span class="kn">from</span> <span class="nn">almanack.metrics.remote</span> <span class="kn">import</span> <span class="n">get_api_data</span><span class="p">,</span> <span class="n">request_with_backoff</span>
 
 <span class="n">LOGGER</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="_get_currency_converter">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._get_currency_converter">[docs]</a>
+<span class="nd">@lru_cache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">_get_currency_converter</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">CurrencyConverter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return a cached currency converter for funding amount normalization.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">CurrencyConverter</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="_get_work_funding_records">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._get_work_funding_records">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_work_funding_records</span><span class="p">(</span><span class="n">work_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return funding records from OpenAlex work payloads.</span>
+
+<span class="sd">    Supports both modern `awards` and legacy `grants` fields.</span>
+<span class="sd">    In Almanack outputs, these are normalized as &quot;funding records&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">funding_records</span> <span class="o">=</span> <span class="n">work_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;awards&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">funding_records</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">funding_records</span> <span class="o">=</span> <span class="n">work_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grants&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">funding_records</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funding_records</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="p">[]</span></div>
+
+
+
+<div class="viewcode-block" id="_extract_funder_key">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._extract_funder_key">[docs]</a>
+<span class="k">def</span> <span class="nf">_extract_funder_key</span><span class="p">(</span><span class="n">funder</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a stable funder key from known OpenAlex funder shapes.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funder</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">funder</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funder</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">funder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">funder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funder&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">funder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;display_name&quot;</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">funder</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="_funding_amount_to_usd">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._funding_amount_to_usd">[docs]</a>
+<span class="k">def</span> <span class="nf">_funding_amount_to_usd</span><span class="p">(</span><span class="n">amount</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">currency</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a funding amount to USD; assume USD when currency is unavailable.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">amount</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">numeric_amount</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">amount</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">source_currency</span> <span class="o">=</span> <span class="p">(</span><span class="n">currency</span> <span class="ow">or</span> <span class="s2">&quot;USD&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">source_currency</span> <span class="o">==</span> <span class="s2">&quot;USD&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">numeric_amount</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span>
+            <span class="n">_get_currency_converter</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">numeric_amount</span><span class="p">,</span> <span class="n">source_currency</span><span class="p">,</span> <span class="s2">&quot;USD&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">RateNotFoundError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Could not convert funding amount to USD for currency &#39;</span><span class="si">%s</span><span class="s2">&#39;.&quot;</span><span class="p">,</span>
+            <span class="n">source_currency</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="_summarize_openalex_funding">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._summarize_openalex_funding">[docs]</a>
+<span class="k">def</span> <span class="nf">_summarize_openalex_funding</span><span class="p">(</span><span class="n">work_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Summarize OpenAlex funding payloads for one work record.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">work_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="n">work_data</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">funding_records</span> <span class="o">=</span> <span class="n">_get_work_funding_records</span><span class="p">(</span><span class="n">work_data</span><span class="p">)</span>
+    <span class="n">unique_funders</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">funding_sources_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">funding_records_with_amount_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">funding_amount_usd_total</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+    <span class="k">for</span> <span class="n">funding_record</span> <span class="ow">in</span> <span class="n">funding_records</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">funding_record</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">continue</span>
+
+        <span class="n">funder_key</span> <span class="o">=</span> <span class="n">_extract_funder_key</span><span class="p">(</span><span class="n">funding_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funder&quot;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">funder_key</span><span class="p">:</span>
+            <span class="n">funding_sources_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">unique_funders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">funder_key</span><span class="p">)</span>
+
+        <span class="n">usd_amount</span> <span class="o">=</span> <span class="n">_funding_amount_to_usd</span><span class="p">(</span>
+            <span class="n">funding_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;amount&quot;</span><span class="p">),</span> <span class="n">funding_record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;currency&quot;</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">usd_amount</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">funding_records_with_amount_count</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">funding_amount_usd_total</span> <span class="o">+=</span> <span class="n">usd_amount</span>
+
+    <span class="k">for</span> <span class="n">funder</span> <span class="ow">in</span> <span class="n">work_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;funders&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="n">funder_key</span> <span class="o">=</span> <span class="n">_extract_funder_key</span><span class="p">(</span><span class="n">funder</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">funder_key</span><span class="p">:</span>
+            <span class="n">unique_funders</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">funder_key</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;funding_records&quot;</span><span class="p">:</span> <span class="n">funding_records</span><span class="p">,</span>
+        <span class="s2">&quot;funding_records_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">funding_records</span><span class="p">),</span>
+        <span class="s2">&quot;funding_records_with_amount_count&quot;</span><span class="p">:</span> <span class="n">funding_records_with_amount_count</span><span class="p">,</span>
+        <span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">:</span> <span class="n">funding_amount_usd_total</span><span class="p">,</span>
+        <span class="s2">&quot;funding_sources_count&quot;</span><span class="p">:</span> <span class="n">funding_sources_count</span><span class="p">,</span>
+        <span class="s2">&quot;unique_funders_count&quot;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">unique_funders</span><span class="p">),</span>
+        <span class="s2">&quot;unique_funders&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">unique_funders</span><span class="p">),</span>
+    <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="_extract_doi_from_citation_data">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._extract_doi_from_citation_data">[docs]</a>
+<span class="k">def</span> <span class="nf">_extract_doi_from_citation_data</span><span class="p">(</span><span class="n">citation_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract a DOI value from parsed CITATION.cff payload.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s2">&quot;doi&quot;</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;identifiers&quot;</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">next</span><span class="p">(</span>
+            <span class="p">(</span>
+                <span class="n">identifier</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;identifiers&quot;</span><span class="p">,</span> <span class="p">[])</span>
+                <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;doi&quot;</span>
+            <span class="p">),</span>
+            <span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="_build_openalex_doi_metrics">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness._build_openalex_doi_metrics">[docs]</a>
+<span class="k">def</span> <span class="nf">_build_openalex_doi_metrics</span><span class="p">(</span><span class="n">openalex_result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build DOI-linked OpenAlex metrics for storage in citation results.&quot;&quot;&quot;</span>
+    <span class="n">publication_date</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;publication_date&quot;</span><span class="p">)</span>
+    <span class="n">funding_summary</span> <span class="o">=</span> <span class="n">_summarize_openalex_funding</span><span class="p">(</span><span class="n">openalex_result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;openalex_work_id&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="c1"># note: we cast to date for consistent use throughout</span>
+            <span class="c1"># the almanack as a &quot;date&quot; and not &quot;datetime&quot; type.</span>
+            <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">publication_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="kc">None</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwci&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="p">(</span>
+            <span class="kc">None</span>
+            <span class="k">if</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_retracted&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="ow">not</span> <span class="n">openalex_result</span><span class="p">[</span><span class="s2">&quot;is_retracted&quot;</span><span class="p">]</span>
+        <span class="p">),</span>
+        <span class="s2">&quot;funding_records&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_records&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;funding_records_count&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_records_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;funding_records_with_amount_count&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span>
+            <span class="s2">&quot;funding_records_with_amount_count&quot;</span>
+        <span class="p">],</span>
+        <span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;funding_sources_count&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_sources_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;unique_funders_count&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;unique_funders_count&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;unique_funders&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;unique_funders&quot;</span><span class="p">],</span>
+    <span class="p">}</span></div>
+
 
 
 <div class="viewcode-block" id="default_branch_is_not_master">
@@ -560,14 +733,20 @@ document.write(`
 
     <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;openalex_work_id&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;valid_format_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;https_resolvable_doi&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;grants&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;grants_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_records&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_records_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_records_with_amount_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;funding_sources_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;unique_funders_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;unique_funders&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">}</span>
 
     <span class="c1"># Find the CITATION.cff file</span>
@@ -577,20 +756,10 @@ document.write(`
 
     <span class="k">try</span><span class="p">:</span>
         <span class="c1"># Read and parse the CITATION.cff file</span>
-        <span class="n">citation_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">citationcff_file</span><span class="p">))</span>
-
-        <span class="c1"># Extract DOI from &#39;doi&#39; or &#39;identifiers&#39; field</span>
-        <span class="k">if</span> <span class="s2">&quot;doi&quot;</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="s2">&quot;identifiers&quot;</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
-                <span class="p">(</span>
-                    <span class="n">identifier</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">identifier</span> <span class="ow">in</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;identifiers&quot;</span><span class="p">,</span> <span class="p">[])</span>
-                    <span class="k">if</span> <span class="n">identifier</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;doi&quot;</span>
-                <span class="p">),</span>
-                <span class="kc">None</span><span class="p">,</span>
-            <span class="p">)</span>
+        <span class="n">citation_data</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">citationcff_file</span><span class="p">))</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;doi&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_extract_doi_from_citation_data</span><span class="p">(</span><span class="n">citation_data</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
         <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading YAML: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -634,38 +803,190 @@ document.write(`
 
             <span class="c1"># Perform exact DOI lookup on OpenAlex</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">openalex_result</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
-                    <span class="n">api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.openalex.org/works/doi:</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">openalex_result</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">get_api_data</span><span class="p">(</span>
+                        <span class="n">api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.openalex.org/works/doi:</span><span class="si">{</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;doi&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="p">)</span>
+                    <span class="ow">or</span> <span class="p">{}</span>
                 <span class="p">)</span>
-                <span class="n">publication_date</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;publication_date&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-                <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
-                    <span class="p">{</span>
-                        <span class="s2">&quot;publication_date&quot;</span><span class="p">:</span> <span class="p">(</span>
-                            <span class="c1"># note: we caste to date for consistent use throughout</span>
-                            <span class="c1"># the almanack as a &quot;date&quot; and not &quot;datetime&quot; type</span>
-                            <span class="c1"># (which have differing methods and constraints).</span>
-                            <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">publication_date</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-                            <span class="k">if</span> <span class="n">publication_date</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-                            <span class="k">else</span> <span class="kc">None</span>
-                        <span class="p">),</span>
-                        <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                        <span class="s2">&quot;fwci&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;fwci&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                        <span class="s2">&quot;is_not_retracted&quot;</span><span class="p">:</span> <span class="p">(</span>
-                            <span class="kc">None</span>
-                            <span class="k">if</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_retracted&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span>
-                            <span class="k">else</span> <span class="ow">not</span> <span class="n">openalex_result</span><span class="p">[</span><span class="s2">&quot;is_retracted&quot;</span><span class="p">]</span>
-                        <span class="p">),</span>
-                        <span class="s2">&quot;grants&quot;</span><span class="p">:</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grants&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-                        <span class="s2">&quot;grants_count&quot;</span><span class="p">:</span> <span class="p">(</span>
-                            <span class="nb">len</span><span class="p">(</span><span class="n">openalex_result</span><span class="p">[</span><span class="s2">&quot;grants&quot;</span><span class="p">])</span>
-                            <span class="k">if</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;grants&quot;</span><span class="p">)</span>
-                            <span class="k">else</span> <span class="mi">0</span>
-                        <span class="p">),</span>
-                    <span class="p">}</span>
-                <span class="p">)</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_build_openalex_doi_metrics</span><span class="p">(</span><span class="n">openalex_result</span><span class="p">))</span>
             <span class="k">except</span> <span class="n">requests</span><span class="o">.</span><span class="n">RequestException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
                 <span class="n">LOGGER</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error during OpenAlex exact DOI lookup: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="find_software_mentions_openalex">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.find_software_mentions_openalex">[docs]</a>
+<span class="k">def</span> <span class="nf">find_software_mentions_openalex</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span>
+    <span class="n">remote_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">max_references</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find OpenAlex works that mention a repository by software/project name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: Repository used for software name discovery when no remote URL</span>
+<span class="sd">            is available.</span>
+<span class="sd">        remote_url: Remote repository URL used to derive the project name.</span>
+<span class="sd">        max_references: Maximum number of matching works to include in results.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary containing the query name, aggregate mention count, and</span>
+<span class="sd">        a minimal list of matching works from OpenAlex.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">project_name</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">remote_url</span><span class="p">:</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
+        <span class="n">path_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">name</span>
+        <span class="n">project_name</span> <span class="o">=</span> <span class="n">path_name</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">path_name</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">project_name</span><span class="p">:</span>
+        <span class="c1"># Fallback for local-only repositories.</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s2">&quot;workdir&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">project_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">workdir</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">elif</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">repo</span><span class="p">,</span> <span class="s2">&quot;path&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">project_name</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">repo</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="n">project_name</span><span class="p">:</span>
+            <span class="n">project_name</span> <span class="o">=</span> <span class="n">project_name</span><span class="o">.</span><span class="n">removesuffix</span><span class="p">(</span><span class="s2">&quot;.git&quot;</span><span class="p">)</span>
+
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;query&quot;</span><span class="p">:</span> <span class="n">project_name</span><span class="p">,</span>
+        <span class="s2">&quot;mentions_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">project_name</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">openalex_result</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+        <span class="n">api_endpoint</span><span class="o">=</span><span class="s2">&quot;https://api.openalex.org/works&quot;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;search&quot;</span><span class="p">:</span> <span class="n">project_name</span><span class="p">,</span>
+            <span class="s2">&quot;per-page&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_references</span><span class="p">),</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="s2">&quot;cited_by_count:desc&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">openalex_result</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">works</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">references</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;display_name&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;publication_year&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;publication_year&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">),</span>
+        <span class="p">}</span>
+        <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">works</span>
+    <span class="p">]</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;mentions_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">references</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="find_openalex_citing_works_funding">
+<a class="viewcode-back" href="../../../../garden-circle/package-api.html#almanack.metrics.garden_lattice.connectedness.find_openalex_citing_works_funding">[docs]</a>
+<span class="k">def</span> <span class="nf">find_openalex_citing_works_funding</span><span class="p">(</span>
+    <span class="n">openalex_work_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">max_references</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">25</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find funding signals from OpenAlex works that cite the repository work.</span>
+
+<span class="sd">    In this context, &quot;sampled&quot; means the subset of citing works returned by</span>
+<span class="sd">    this query, limited by `max_references` and sorted by `cited_by_count`.</span>
+<span class="sd">    OpenAlex `awards` (and legacy `grants`) are normalized as</span>
+<span class="sd">    &quot;funding records&quot;.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        openalex_work_id: OpenAlex work identifier for the project&#39;s DOI-linked work.</span>
+<span class="sd">        max_references: Maximum number of citing works to query from OpenAlex.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dictionary with sampled citing-work funding aggregates and references.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;source_work_id&quot;</span><span class="p">:</span> <span class="n">openalex_work_id</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_count_total&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_with_funding_count&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_funding_records_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_funding_amount_usd_total_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_funding_sources_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_unique_funders_count_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;citing_works_unique_funders_sampled&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;sample_limit&quot;</span><span class="p">:</span> <span class="n">max_references</span><span class="p">,</span>
+        <span class="s2">&quot;references&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">openalex_work_id</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">cited_work_key</span> <span class="o">=</span> <span class="n">openalex_work_id</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">openalex_result</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+        <span class="n">api_endpoint</span><span class="o">=</span><span class="s2">&quot;https://api.openalex.org/works&quot;</span><span class="p">,</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+            <span class="s2">&quot;filter&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;cites:</span><span class="si">{</span><span class="n">cited_work_key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;per-page&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">max_references</span><span class="p">),</span>
+            <span class="s2">&quot;sort&quot;</span><span class="p">:</span> <span class="s2">&quot;cited_by_count:desc&quot;</span><span class="p">,</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">openalex_result</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="n">works</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;results&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_count_total&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">openalex_result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;meta&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">references</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">citing_works_funding_records_count_sampled</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">citing_works_with_funding_count</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">citing_works_funding_sources_count_sampled</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">citing_works_funding_amount_usd_total_sampled</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">citing_works_unique_funders_sampled</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">work</span> <span class="ow">in</span> <span class="n">works</span><span class="p">:</span>
+        <span class="n">funding_summary</span> <span class="o">=</span> <span class="n">_summarize_openalex_funding</span><span class="p">(</span><span class="n">work</span><span class="p">)</span>
+        <span class="n">funding_records_count</span> <span class="o">=</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_records_count&quot;</span><span class="p">]</span>
+        <span class="n">citing_works_funding_records_count_sampled</span> <span class="o">+=</span> <span class="n">funding_records_count</span>
+        <span class="k">if</span> <span class="n">funding_records_count</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">citing_works_with_funding_count</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">citing_works_funding_sources_count_sampled</span> <span class="o">+=</span> <span class="n">funding_summary</span><span class="p">[</span>
+            <span class="s2">&quot;funding_sources_count&quot;</span>
+        <span class="p">]</span>
+        <span class="n">citing_works_funding_amount_usd_total_sampled</span> <span class="o">+=</span> <span class="n">funding_summary</span><span class="p">[</span>
+            <span class="s2">&quot;funding_amount_usd_total&quot;</span>
+        <span class="p">]</span>
+        <span class="n">citing_works_unique_funders_sampled</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;unique_funders&quot;</span><span class="p">])</span>
+        <span class="n">references</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;title&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;display_name&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;doi&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;doi&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;publication_year&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;publication_year&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;cited_by_count&quot;</span><span class="p">:</span> <span class="n">work</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cited_by_count&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;funding_records_count&quot;</span><span class="p">:</span> <span class="n">funding_records_count</span><span class="p">,</span>
+                <span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_amount_usd_total&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;funding_sources_count&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;funding_sources_count&quot;</span><span class="p">],</span>
+                <span class="s2">&quot;unique_funders_count&quot;</span><span class="p">:</span> <span class="n">funding_summary</span><span class="p">[</span><span class="s2">&quot;unique_funders_count&quot;</span><span class="p">],</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_count_sampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">works</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_with_funding_count&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">citing_works_with_funding_count</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_funding_records_count_sampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">citing_works_funding_records_count_sampled</span>
+    <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_funding_amount_usd_total_sampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">citing_works_funding_amount_usd_total_sampled</span>
+    <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_funding_sources_count_sampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">citing_works_funding_sources_count_sampled</span>
+    <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_unique_funders_count_sampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span>
+        <span class="n">citing_works_unique_funders_sampled</span>
+    <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;citing_works_unique_funders_sampled&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+        <span class="n">citing_works_unique_funders_sampled</span>
+    <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;references&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">references</span>
     <span class="k">return</span> <span class="n">result</span></div>
 
 </pre></div>
