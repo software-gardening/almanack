@@ -228,6 +228,27 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-topics"
+    id: "SGA-META-0031"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of descriptive topics, labels, or tags associated with the
+      software project as reported by the hosting platform (for example,
+      GitHub repository topics) or mirrored metadata.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-topics-count"
+    id: "SGA-META-0032"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of descriptive topics, labels, or tags associated with the
+      software project.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"

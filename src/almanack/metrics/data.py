@@ -335,6 +335,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-docs-homepage-url",
         "repo-source-code-url",
         "repo-issue-tracker-url",
+        "repo-topics",
+        "repo-topics-count",
     ):
         # gather data from ecosystems repo api
         remote_repo_data = get_api_data(
@@ -449,6 +451,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     has_cli: Optional[bool] = None
     cli_entrypoints: Optional[List[str]] = None
     primary_cli_entrypoint: Optional[str] = None
+    topics: Optional[List[str]] = None
+    topics_count: Optional[int] = None
 
     if needs(
         "repo-languages-line-counts",
@@ -649,6 +653,21 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             has_cli = True
         else:
             has_cli = False
+
+    if needs("repo-topics", "repo-topics-count"):
+        remote_topics: List[str] = []
+        if remote_repo_data:
+            # ecosyste.ms and GitHub both commonly expose a 'topics' field.
+            raw_topics = remote_repo_data.get("topics")
+            if isinstance(raw_topics, list):
+                remote_topics = [
+                    str(t).strip()
+                    for t in raw_topics
+                    if isinstance(t, str) and str(t).strip()
+                ]
+        if remote_topics:
+            topics = sorted(set(remote_topics))
+            topics_count = len(topics)
 
     software_description: Optional[str] = None
     docs_homepage_url: Optional[str] = None
@@ -888,6 +907,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-has-cli": has_cli,
         "repo-cli-entrypoints": cli_entrypoints,
         "repo-primary-cli-entrypoint": primary_cli_entrypoint,
+        "repo-topics": topics,
+        "repo-topics-count": topics_count,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [
