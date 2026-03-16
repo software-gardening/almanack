@@ -130,224 +130,6 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
-  - name: "repo-languages-line-counts"
-    id: "SGA-META-0022"
-    result-type: "dict"
-    sustainability_correlation: 0
-    description: >-
-      Mapping from detected programming language name to an approximate line or
-      byte count of source code for that language. Values are derived from
-      repository hosting language statistics (for example, the GitHub
-      languages API or ecosyste.ms mirrors).
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-languages-total-lines"
-    id: "SGA-META-0023"
-    result-type: "int"
-    sustainability_correlation: 0
-    description: >-
-      Aggregate total of language line/byte counts across all detected
-      programming languages in the repository.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-languages-count"
-    id: "SGA-META-0024"
-    result-type: "int"
-    sustainability_correlation: 0
-    description: >-
-      Number of distinct programming languages detected for the repository
-      based on hosting platform language statistics.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-noncode-extension-line-counts"
-    id: "SGA-META-0025"
-    result-type: "dict"
-    sustainability_correlation: 0
-    description: >-
-      Mapping from non-programming file extension (for example, .md, .txt,
-      .csv, .png) to an approximate line or size count for repository files
-      with that extension. For text-like files this is a line count; for
-      binary or undecodable files this is estimated from their byte size.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-noncode-total-lines"
-    id: "SGA-META-0026"
-    result-type: "int"
-    sustainability_correlation: 0
-    description: >-
-      Aggregate total of approximate line or size counts across all detected
-      non-programming-language files in the repository.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-noncode-extensions-count"
-    id: "SGA-META-0027"
-    result-type: "int"
-    sustainability_correlation: 0
-    description: >-
-      Number of distinct non-programming file extensions detected when
-      scanning the repository tree.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-has-cli"
-    id: "SGA-META-0028"
-    result-type: "bool"
-    sustainability_correlation: 0
-    description: >-
-      Indicates whether the software exposes at least one command-line
-      interface (CLI) entrypoint, as detected from packaging metadata
-      and common configuration files (for example, pyproject.toml or
-      setup.cfg console_scripts).
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-cli-entrypoints"
-    id: "SGA-META-0029"
-    result-type: "list"
-    sustainability_correlation: 0
-    description: >-
-      List of CLI commands used to invoke the software, as inferred from
-      packaging metadata (for example, [project.scripts],
-      [tool.poetry.scripts], or console_scripts in setup.cfg).
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-primary-cli-entrypoint"
-    id: "SGA-META-0030"
-    result-type: "str"
-    sustainability_correlation: 0
-    description: >-
-      Primary CLI command for invoking the software. When multiple
-      commands are present, this is a stable, arbitrary choice (for
-      example, the first discovered in sorted order).
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-topics"
-    id: "SGA-META-0031"
-    result-type: "list"
-    sustainability_correlation: 0
-    description: >-
-      List of descriptive topics, labels, or tags associated with the
-      software project as reported by the hosting platform (for example,
-      GitHub repository topics) or mirrored metadata.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-topics-count"
-    id: "SGA-META-0032"
-    result-type: "int"
-    sustainability_correlation: 0
-    description: >-
-      Count of descriptive topics, labels, or tags associated with the
-      software project.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-environment-managers"
-    id: "SGA-META-0033"
-    result-type: "list"
-    sustainability_correlation: 0
-    description: >-
-      List of detected environment management tools configured for the
-      software project (for example, Poetry, Conda, virtualenv, Pipenv,
-      Nix, or language-specific environment managers).
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-has-managed-environment"
-    id: "SGA-META-0034"
-    result-type: "bool"
-    sustainability_correlation: 0
-    description: >-
-      Indicates whether the software project appears to use at least one
-      explicit environment manager rather than relying solely on baseline
-      language imports.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-declared-python-versions"
-    id: "SGA-META-0035"
-    result-type: "list"
-    sustainability_correlation: 0
-    description: >-
-      Python version constraints declared by the project in packaging or
-      environment configuration files (for example, pyproject.toml,
-      environment.yml, or runtime.txt), normalized to a list of strings.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-cost-model"
-    id: "SGA-META-0036"
-    result-type: "str"
-    sustainability_correlation: 0
-    description: >-
-      High-level cost model for the software project (for example, free,
-      open-source with paid support, freemium, or paid), as reported by
-      external catalog or hosting metadata when available. A null value
-      indicates that no cost model information was found.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-has-edam-owl"
-    id: "SGA-META-0037"
-    result-type: "bool"
-    sustainability_correlation: 0
-    description: >-
-      Indicates whether the repository contains an EDAM ontology file
-      (for example, edam.owl) used to describe software semantics or
-      interoperability.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-has-biotools-json"
-    id: "SGA-META-0038"
-    result-type: "bool"
-    sustainability_correlation: 0
-    description: >-
-      Indicates whether the repository includes a bio.tools JSON metadata
-      file (for example, biotools.json) describing the software.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-has-codemeta-json"
-    id: "SGA-META-0039"
-    result-type: "bool"
-    sustainability_correlation: 0
-    description: >-
-      Indicates whether the repository includes a CodeMeta JSON file
-      (for example, codemeta.json) providing machine-readable software
-      metadata.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-has-ro-crate-metadata-json"
-    id: "SGA-META-0040"
-    result-type: "bool"
-    sustainability_correlation: 0
-    description: >-
-      Indicates whether the repository includes an RO-Crate metadata file
-      (for example, ro-crate-metadata.json) describing the research object
-      or software package.
-    correction_guidance:
-    fix_why:
-    fix_how:
-  - name: "repo-software-metadata-files-count"
-    id: "SGA-META-0041"
-    result-type: "int"
-    sustainability_correlation: 0
-    description: >-
-      Count of distinct software description metadata specifications
-      detected in the repository (for example, EDAM, bio.tools, CodeMeta,
-      RO-Crate).
-    correction_guidance:
-    fix_why:
-    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
@@ -1031,6 +813,224 @@ metrics:
     description: >-
       Combined unique-funder count across DOI work and sampled citing works
       (set-union cardinality, not a simple sum).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-line-counts"
+    id: "SGA-META-0022"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Mapping from detected programming language name to an approximate line or
+      byte count of source code for that language. Values are derived from
+      repository hosting language statistics (for example, the GitHub
+      languages API or ecosyste.ms mirrors).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-total-lines"
+    id: "SGA-META-0023"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregate total of language line/byte counts across all detected
+      programming languages in the repository.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-count"
+    id: "SGA-META-0024"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Number of distinct programming languages detected for the repository
+      based on hosting platform language statistics.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-extension-line-counts"
+    id: "SGA-META-0025"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Mapping from non-programming file extension (for example, .md, .txt,
+      .csv, .png) to an approximate line or size count for repository files
+      with that extension. For text-like files this is a line count; for
+      binary or undecodable files this is estimated from their byte size.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-total-lines"
+    id: "SGA-META-0026"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregate total of approximate line or size counts across all detected
+      non-programming-language files in the repository.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-extensions-count"
+    id: "SGA-META-0027"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Number of distinct non-programming file extensions detected when
+      scanning the repository tree.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-cli"
+    id: "SGA-META-0028"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software exposes at least one command-line
+      interface (CLI) entrypoint, as detected from packaging metadata
+      and common configuration files (for example, pyproject.toml or
+      setup.cfg console_scripts).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-cli-entrypoints"
+    id: "SGA-META-0029"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of CLI commands used to invoke the software, as inferred from
+      packaging metadata (for example, [project.scripts],
+      [tool.poetry.scripts], or console_scripts in setup.cfg).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-primary-cli-entrypoint"
+    id: "SGA-META-0030"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      Primary CLI command for invoking the software. When multiple
+      commands are present, this is a stable, arbitrary choice (for
+      example, the first discovered in sorted order).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-topics"
+    id: "SGA-META-0031"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of descriptive topics, labels, or tags associated with the
+      software project as reported by the hosting platform (for example,
+      GitHub repository topics) or mirrored metadata.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-topics-count"
+    id: "SGA-META-0032"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of descriptive topics, labels, or tags associated with the
+      software project.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-environment-managers"
+    id: "SGA-META-0033"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of detected environment management tools configured for the
+      software project (for example, Poetry, Conda, virtualenv, Pipenv,
+      Nix, or language-specific environment managers).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-managed-environment"
+    id: "SGA-META-0034"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software project appears to use at least one
+      explicit environment manager rather than relying solely on baseline
+      language imports.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-declared-python-versions"
+    id: "SGA-META-0035"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      Python version constraints declared by the project in packaging or
+      environment configuration files (for example, pyproject.toml,
+      environment.yml, or runtime.txt), normalized to a list of strings.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-cost-model"
+    id: "SGA-META-0036"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      High-level cost model for the software project (for example, free,
+      open-source with paid support, freemium, or paid), as reported by
+      external catalog or hosting metadata when available. A null value
+      indicates that no cost model information was found.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-edam-owl"
+    id: "SGA-META-0037"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository contains an EDAM ontology file
+      (for example, edam.owl) used to describe software semantics or
+      interoperability.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-biotools-json"
+    id: "SGA-META-0038"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes a bio.tools JSON metadata
+      file (for example, biotools.json) describing the software.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-codemeta-json"
+    id: "SGA-META-0039"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes a CodeMeta JSON file
+      (for example, codemeta.json) providing machine-readable software
+      metadata.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-ro-crate-metadata-json"
+    id: "SGA-META-0040"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes an RO-Crate metadata file
+      (for example, ro-crate-metadata.json) describing the research object
+      or software package.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-software-metadata-files-count"
+    id: "SGA-META-0041"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of distinct software description metadata specifications
+      detected in the repository (for example, EDAM, bio.tools, CodeMeta,
+      RO-Crate).
     correction_guidance:
     fix_why:
     fix_how:

@@ -1249,3 +1249,64 @@ def test_gather_failed_almanack_metric_checks(tmp_path, files):
     )
 
     assert len(failed_metrics_with_ignore) == len(failed_metrics) - 1
+
+
+@pytest.mark.parametrize(
+    "files, expect_cli, expected_commands",
+    [
+        (
+            {
+                "files": {
+                    "pyproject.toml": """
+[project]
+name = "example"
+version = "0.1.0"
+
+[project.scripts]
+example-cli = "example.module:main"
+""",
+                }
+            },
+            True,
+            ["example-cli"],
+        ),
+        (
+            {
+                "files": {
+                    "setup.cfg": """
+[options.entry_points]
+console_scripts =
+    tool-one = pkg.one:main
+    tool-two = pkg.two:main
+""",
+                }
+            },
+            True,
+            ["tool-one", "tool-two"],
+        ),
+        (
+            {
+                "files": {
+                    "README.md": "# no cli here",
+                }
+            },
+            False,
+            None,
+        ),
+    ],
+)
+def test_compute_repo_data_cli_detection(tmp_path, files, expect_cli, expected_commands):
+    """
+    Test CLI entrypoint detection from pyproject.toml and setup.cfg metadata.
+    """
+    repo = repo_setup(repo_path=tmp_path, files=[files])
+
+    repo_data = compute_repo_data(str(tmp_path))
+
+    assert repo_data["repo-has-cli"] is expect_cli
+    if expected_commands is None:
+        assert repo_data["repo-cli-entrypoints"] is None
+        assert repo_data["repo-primary-cli-entrypoint"] is None
+    else:
+        assert sorted(repo_data["repo-cli-entrypoints"]) == sorted(expected_commands)
+        assert repo_data["repo-primary-cli-entrypoint"] in expected_commands
