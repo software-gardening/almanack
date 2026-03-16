@@ -577,7 +577,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                     blob_data: bytes = tree.data  # type: ignore[assignment]
                     try:
                         text = blob_data.decode("utf-8")
-                        value = text.count("\n") + (1 if text and not text.endswith("\n") else 0)
+                        value = text.count("\n") + (
+                            1 if text and not text.endswith("\n") else 0
+                        )
                     except UnicodeDecodeError:
                         value = len(blob_data)
                 except Exception:
@@ -616,7 +618,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         discovered_commands: set[str] = set()
 
         # Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]
-        pyproject_content = read_file(repo=repo, filepath="pyproject.toml", case_insensitive=False)
+        pyproject_content = read_file(
+            repo=repo, filepath="pyproject.toml", case_insensitive=False
+        )
         if isinstance(pyproject_content, str):
             current_section: Optional[str] = None
             for raw_line in pyproject_content.splitlines():
@@ -626,7 +630,10 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                 if line.startswith("[") and line.endswith("]"):
                     current_section = line.strip("[]").strip()
                     continue
-                if current_section in {"project.scripts", "tool.poetry.scripts"} and "=" in line:
+                if (
+                    current_section in {"project.scripts", "tool.poetry.scripts"}
+                    and "=" in line
+                ):
                     # Expect lines like: name = "module:func"
                     name_part, _value_part = line.split("=", 1)
                     cmd = name_part.strip().strip('"').strip("'")
@@ -634,7 +641,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                         discovered_commands.add(cmd)
 
         # Inspect setup.cfg for console_scripts entry points
-        setup_cfg_content = read_file(repo=repo, filepath="setup.cfg", case_insensitive=False)
+        setup_cfg_content = read_file(
+            repo=repo, filepath="setup.cfg", case_insensitive=False
+        )
         if isinstance(setup_cfg_content, str):
             parser = configparser.ConfigParser()
             try:
@@ -655,7 +664,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                                 discovered_commands.add(cmd)
             except (configparser.Error, ValueError):
                 # If parsing fails, we silently ignore setup.cfg-based detection.
-                LOGGER.debug("Unable to parse setup.cfg for CLI entrypoints.", exc_info=True)
+                LOGGER.debug(
+                    "Unable to parse setup.cfg for CLI entrypoints.", exc_info=True
+                )
 
         if discovered_commands:
             cli_entrypoints = sorted(discovered_commands)
@@ -707,7 +718,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         py_versions: set[str] = set()
 
         # Detect Poetry / generic pyproject-managed environments and Python version.
-        pyproject_content = read_file(repo=repo, filepath="pyproject.toml", case_insensitive=False)
+        pyproject_content = read_file(
+            repo=repo, filepath="pyproject.toml", case_insensitive=False
+        )
         if isinstance(pyproject_content, str):
             # Always record that a pyproject-based configuration exists.
             managers.add("pyproject")
@@ -726,7 +739,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                         py_versions.add(v)
 
         # Detect Conda environment files and Python version.
-        env_yml = read_file(repo=repo, filepath="environment.yml", case_insensitive=False)
+        env_yml = read_file(
+            repo=repo, filepath="environment.yml", case_insensitive=False
+        )
         if isinstance(env_yml, str):
             managers.add("conda")
             for raw_line in env_yml.splitlines():
@@ -739,12 +754,16 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                         py_versions.add(v)
 
         # Detect Pipenv.
-        pipfile_content = read_file(repo=repo, filepath="Pipfile", case_insensitive=False)
+        pipfile_content = read_file(
+            repo=repo, filepath="Pipfile", case_insensitive=False
+        )
         if isinstance(pipfile_content, str):
             managers.add("pipenv")
 
         # Detect virtualenv via requirements.txt presence.
-        requirements_txt = read_file(repo=repo, filepath="requirements.txt", case_insensitive=False)
+        requirements_txt = read_file(
+            repo=repo, filepath="requirements.txt", case_insensitive=False
+        )
         if isinstance(requirements_txt, str):
             managers.add("virtualenv/requirements")
 
@@ -755,7 +774,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             managers.add("nix")
 
         # Detect Python runtime hints (Heroku-style runtime.txt).
-        runtime_txt = read_file(repo=repo, filepath="runtime.txt", case_insensitive=False)
+        runtime_txt = read_file(
+            repo=repo, filepath="runtime.txt", case_insensitive=False
+        )
         if isinstance(runtime_txt, str):
             for raw_line in runtime_txt.splitlines():
                 line = raw_line.strip()
@@ -781,7 +802,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-software-metadata-files-count",
     ):
         has_edam_owl = bool(
-            find_file(repo=repo, filepath="edam.owl", case_insensitive=False) is not None
+            find_file(repo=repo, filepath="edam.owl", case_insensitive=False)
+            is not None
         )
         has_biotools_json = bool(
             find_file(repo=repo, filepath="biotools.json", case_insensitive=False)
@@ -826,12 +848,16 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     ):
         # prefer remote host description when available
         description_candidates: list[str] = []
-        remote_description = remote_repo_data.get("description") if remote_repo_data else None
+        remote_description = (
+            remote_repo_data.get("description") if remote_repo_data else None
+        )
         if isinstance(remote_description, str) and remote_description.strip():
             description_candidates.append(remote_description.strip())
 
         # CITATION.cff abstract from repository root (if present)
-        citation_text = read_file(repo=repo, filepath="CITATION.cff", case_insensitive=False)
+        citation_text = read_file(
+            repo=repo, filepath="CITATION.cff", case_insensitive=False
+        )
         if citation_text:
             try:
                 citation_data = yaml.safe_load(citation_text) or {}
@@ -839,7 +865,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                 if isinstance(abstract, str) and abstract.strip():
                     description_candidates.append(abstract.strip())
             except yaml.YAMLError:
-                LOGGER.debug("Unable to parse CITATION.cff when deriving software description.")
+                LOGGER.debug(
+                    "Unable to parse CITATION.cff when deriving software description."
+                )
 
         # README first paragraph as a fallback
         if readme_exists:

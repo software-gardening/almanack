@@ -1295,7 +1295,9 @@ console_scripts =
         ),
     ],
 )
-def test_compute_repo_data_cli_detection(tmp_path, files, expect_cli, expected_commands):
+def test_compute_repo_data_cli_detection(
+    tmp_path, files, expect_cli, expected_commands
+):
     """
     Test CLI entrypoint detection from pyproject.toml and setup.cfg metadata.
     """
