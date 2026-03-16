@@ -249,6 +249,39 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-environment-managers"
+    id: "SGA-META-0033"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of detected environment management tools configured for the
+      software project (for example, Poetry, Conda, virtualenv, Pipenv,
+      Nix, or language-specific environment managers).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-managed-environment"
+    id: "SGA-META-0034"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software project appears to use at least one
+      explicit environment manager rather than relying solely on baseline
+      language imports.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-declared-python-versions"
+    id: "SGA-META-0035"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      Python version constraints declared by the project in packaging or
+      environment configuration files (for example, pyproject.toml,
+      environment.yml, or runtime.txt), normalized to a list of strings.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"

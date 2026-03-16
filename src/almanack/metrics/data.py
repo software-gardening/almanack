@@ -453,6 +453,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     primary_cli_entrypoint: Optional[str] = None
     topics: Optional[List[str]] = None
     topics_count: Optional[int] = None
+    environment_managers: Optional[List[str]] = None
+    has_managed_environment: Optional[bool] = None
+    declared_python_versions: Optional[List[str]] = None
 
     if needs(
         "repo-languages-line-counts",
@@ -668,6 +671,75 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         if remote_topics:
             topics = sorted(set(remote_topics))
             topics_count = len(topics)
+
+    if needs(
+        "repo-environment-managers",
+        "repo-has-managed-environment",
+        "repo-declared-python-versions",
+    ):
+        managers: set[str] = set()
+        py_versions: set[str] = set()
+
+        # Detect Poetry / pyproject-managed environments and Python version.
+        pyproject_content = read_file(repo=repo, filepath="pyproject.toml", case_insensitive=False)
+        if isinstance(pyproject_content, str):
+            managers.add("poetry")
+            for raw_line in pyproject_content.splitlines():
+                line = raw_line.strip()
+                if line.startswith("python") and "=" in line:
+                    # Example: python = ">=3.10,<3.14"
+                    _key, value = line.split("=", 1)
+                    v = value.strip().strip('"').strip("'")
+                    if v:
+                        py_versions.add(v)
+
+        # Detect Conda environment files and Python version.
+        env_yml = read_file(repo=repo, filepath="environment.yml", case_insensitive=False)
+        if isinstance(env_yml, str):
+            managers.add("conda")
+            for raw_line in env_yml.splitlines():
+                line = raw_line.strip()
+                if line.startswith("- python=") or line.startswith("python="):
+                    # Example: - python=3.11
+                    _, v = line.split("=", 1)
+                    v = v.strip()
+                    if v:
+                        py_versions.add(v)
+
+        # Detect Pipenv.
+        pipfile_content = read_file(repo=repo, filepath="Pipfile", case_insensitive=False)
+        if isinstance(pipfile_content, str):
+            managers.add("pipenv")
+
+        # Detect virtualenv via requirements.txt presence.
+        requirements_txt = read_file(repo=repo, filepath="requirements.txt", case_insensitive=False)
+        if isinstance(requirements_txt, str):
+            managers.add("virtualenv/requirements")
+
+        # Detect Nix.
+        if read_file(repo=repo, filepath="flake.nix", case_insensitive=False):
+            managers.add("nix")
+        if read_file(repo=repo, filepath="default.nix", case_insensitive=False):
+            managers.add("nix")
+
+        # Detect Python runtime hints (Heroku-style runtime.txt).
+        runtime_txt = read_file(repo=repo, filepath="runtime.txt", case_insensitive=False)
+        if isinstance(runtime_txt, str):
+            for raw_line in runtime_txt.splitlines():
+                line = raw_line.strip()
+                if line.lower().startswith("python-"):
+                    v = line.split("-", 1)[1].strip()
+                    if v:
+                        py_versions.add(v)
+
+        if managers:
+            environment_managers = sorted(managers)
+            has_managed_environment = True
+        elif managers == set():
+            has_managed_environment = False
+
+        if py_versions:
+            declared_python_versions = sorted(py_versions)
 
     software_description: Optional[str] = None
     docs_homepage_url: Optional[str] = None
@@ -909,6 +981,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-primary-cli-entrypoint": primary_cli_entrypoint,
         "repo-topics": topics,
         "repo-topics-count": topics_count,
+        "repo-environment-managers": environment_managers,
+        "repo-has-managed-environment": has_managed_environment,
+        "repo-declared-python-versions": declared_python_versions,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [
