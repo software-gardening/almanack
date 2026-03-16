@@ -439,6 +439,51 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
     readme_exists = True if readme_file is not None else False
 
+    language_line_counts: Optional[Dict[str, int]] = None
+    language_total_lines: Optional[int] = None
+    language_count: Optional[int] = None
+
+    if needs(
+        "repo-languages-line-counts",
+        "repo-languages-total-lines",
+        "repo-languages-count",
+    ):
+        languages_data: Dict[str, Any] = {}
+
+        # Prefer ecosyste.ms or hosting metadata if it already exposes language stats.
+        if remote_repo_data:
+            for key in ("languages_lines", "languages_loc", "languages"):
+                value = remote_repo_data.get(key)
+                if isinstance(value, dict) and value:
+                    languages_data = {
+                        str(lang): int(count) if count is not None else 0
+                        for lang, count in value.items()
+                        if isinstance(lang, str)
+                    }
+                    break
+
+        # Fallback to GitHub languages API when the repository is hosted on GitHub.
+        if not languages_data and remote_url:
+            parsed = urlparse(remote_url)
+            if parsed.netloc == "github.com":
+                parts = parsed.path.strip("/").split("/")
+                if len(parts) >= 2:
+                    owner, repo_name = parts[0], parts[1]
+                    github_languages = get_api_data(
+                        api_endpoint=f"https://api.github.com/repos/{owner}/{repo_name}/languages"
+                    )
+                    if isinstance(github_languages, dict) and github_languages:
+                        languages_data = {
+                            str(lang): int(count) if count is not None else 0
+                            for lang, count in github_languages.items()
+                            if isinstance(lang, str)
+                        }
+
+        if languages_data:
+            language_line_counts = languages_data
+            language_total_lines = int(sum(languages_data.values()))
+            language_count = len(languages_data)
+
     software_description: Optional[str] = None
     docs_homepage_url: Optional[str] = None
     source_code_url: Optional[str] = None
@@ -668,6 +713,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-docs-homepage-url": docs_homepage_url,
         "repo-source-code-url": source_code_url,
         "repo-issue-tracker-url": issue_tracker_url,
+        "repo-languages-line-counts": language_line_counts,
+        "repo-languages-total-lines": language_total_lines,
+        "repo-languages-count": language_count,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [

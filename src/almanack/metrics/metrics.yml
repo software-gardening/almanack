@@ -130,6 +130,38 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-languages-line-counts"
+    id: "SGA-META-0022"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Mapping from detected programming language name to an approximate line or
+      byte count of source code for that language. Values are derived from
+      repository hosting language statistics (for example, the GitHub
+      languages API or ecosyste.ms mirrors).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-total-lines"
+    id: "SGA-META-0023"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregate total of language line/byte counts across all detected
+      programming languages in the repository.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-count"
+    id: "SGA-META-0024"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Number of distinct programming languages detected for the repository
+      based on hosting platform language statistics.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
