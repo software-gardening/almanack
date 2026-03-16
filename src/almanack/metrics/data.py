@@ -442,6 +442,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     language_line_counts: Optional[Dict[str, int]] = None
     language_total_lines: Optional[int] = None
     language_count: Optional[int] = None
+    noncode_extension_line_counts: Optional[Dict[str, int]] = None
+    noncode_total_lines: Optional[int] = None
+    noncode_extensions_count: Optional[int] = None
 
     if needs(
         "repo-languages-line-counts",
@@ -483,6 +486,113 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             language_line_counts = languages_data
             language_total_lines = int(sum(languages_data.values()))
             language_count = len(languages_data)
+
+    if needs(
+        "repo-noncode-extension-line-counts",
+        "repo-noncode-total-lines",
+        "repo-noncode-extensions-count",
+    ):
+        # Heuristic set of common programming-language file extensions.
+        programming_exts = {
+            ".py",
+            ".ipynb",
+            ".R",
+            ".r",
+            ".js",
+            ".jsx",
+            ".ts",
+            ".tsx",
+            ".java",
+            ".c",
+            ".h",
+            ".hpp",
+            ".cc",
+            ".cpp",
+            ".go",
+            ".rs",
+            ".rb",
+            ".php",
+            ".cs",
+            ".swift",
+            ".kt",
+            ".m",
+            ".mm",
+            ".scala",
+            ".hs",
+            ".jl",
+            ".sh",
+            ".bash",
+            ".zsh",
+            ".ps1",
+            ".psm1",
+            ".pl",
+            ".pm",
+            ".sql",
+            ".dart",
+            ".lua",
+            ".clj",
+            ".cljs",
+            ".ex",
+            ".exs",
+        }
+
+        def _walk_tree_collect_noncode(
+            tree: Union[pygit2.Tree, pygit2.Blob],
+            prefix: str = "",
+        ) -> Dict[str, int]:
+            counts: Dict[str, int] = {}
+
+            if isinstance(tree, pygit2.Blob):
+                path = prefix
+                suffix = pathlib.Path(path).suffix or ""
+
+                # Skip obvious VCS/config internals.
+                if "/.git/" in path or path.startswith(".git/"):
+                    return counts
+
+                # Skip programming language files; we only want non-code here.
+                if suffix in programming_exts:
+                    return counts
+
+                # Try to treat as text and count lines; fall back to byte size.
+                try:
+                    blob_data: bytes = tree.data  # type: ignore[assignment]
+                    try:
+                        text = blob_data.decode("utf-8")
+                        value = text.count("\n") + (1 if text and not text.endswith("\n") else 0)
+                    except UnicodeDecodeError:
+                        value = len(blob_data)
+                except Exception:
+                    # If anything goes wrong, conservatively use zero.
+                    value = 0
+
+                ext_key = suffix or "<no_ext>"
+                counts[ext_key] = counts.get(ext_key, 0) + int(value)
+                return counts
+
+            if isinstance(tree, pygit2.Tree):
+                for entry in tree:
+                    entry_path = f"{prefix}/{entry.name}" if prefix else entry.name
+                    try:
+                        subtree_or_blob = repo[entry.id]
+                    except (KeyError, pygit2.GitError):
+                        continue
+                    child_counts = _walk_tree_collect_noncode(
+                        subtree_or_blob,
+                        prefix=entry_path,
+                    )
+                    for ext, val in child_counts.items():
+                        counts[ext] = counts.get(ext, 0) + val
+                return counts
+
+            return {}
+
+        root_tree = repo.head.peel().tree
+        ext_counts = _walk_tree_collect_noncode(root_tree)
+        if ext_counts:
+            noncode_extension_line_counts = ext_counts
+            noncode_total_lines = int(sum(ext_counts.values()))
+            noncode_extensions_count = len(ext_counts)
 
     software_description: Optional[str] = None
     docs_homepage_url: Optional[str] = None
@@ -716,6 +826,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-languages-line-counts": language_line_counts,
         "repo-languages-total-lines": language_total_lines,
         "repo-languages-count": language_count,
+        "repo-noncode-extension-line-counts": noncode_extension_line_counts,
+        "repo-noncode-total-lines": noncode_total_lines,
+        "repo-noncode-extensions-count": noncode_extensions_count,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [

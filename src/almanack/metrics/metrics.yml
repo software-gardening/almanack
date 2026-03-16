@@ -162,6 +162,38 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-noncode-extension-line-counts"
+    id: "SGA-META-0025"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Mapping from non-programming file extension (for example, .md, .txt,
+      .csv, .png) to an approximate line or size count for repository files
+      with that extension. For text-like files this is a line count; for
+      binary or undecodable files this is estimated from their byte size.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-total-lines"
+    id: "SGA-META-0026"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregate total of approximate line or size counts across all detected
+      non-programming-language files in the repository.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-extensions-count"
+    id: "SGA-META-0027"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Number of distinct non-programming file extensions detected when
+      scanning the repository tree.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
