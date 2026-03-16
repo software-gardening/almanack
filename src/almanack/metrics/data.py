@@ -337,6 +337,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-issue-tracker-url",
         "repo-topics",
         "repo-topics-count",
+        "repo-cost-model",
     ):
         # gather data from ecosystems repo api
         remote_repo_data = get_api_data(
@@ -453,6 +454,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     primary_cli_entrypoint: Optional[str] = None
     topics: Optional[List[str]] = None
     topics_count: Optional[int] = None
+    cost_model: Optional[str] = None
     environment_managers: Optional[List[str]] = None
     has_managed_environment: Optional[bool] = None
     declared_python_versions: Optional[List[str]] = None
@@ -671,6 +673,25 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         if remote_topics:
             topics = sorted(set(remote_topics))
             topics_count = len(topics)
+
+    if needs("repo-cost-model"):
+        if remote_repo_data:
+            raw_cost = (
+                remote_repo_data.get("cost_model")
+                or remote_repo_data.get("pricing_model")
+                or remote_repo_data.get("pricing")
+            )
+            if isinstance(raw_cost, str) and raw_cost.strip():
+                cost_model = raw_cost.strip()
+            elif isinstance(raw_cost, list) and raw_cost:
+                first = raw_cost[0]
+                if isinstance(first, str) and first.strip():
+                    cost_model = first.strip()
+            elif isinstance(raw_cost, dict):
+                # Prefer explicit "model" key if present.
+                model_val = raw_cost.get("model")
+                if isinstance(model_val, str) and model_val.strip():
+                    cost_model = model_val.strip()
 
     if needs(
         "repo-environment-managers",
@@ -984,6 +1005,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-environment-managers": environment_managers,
         "repo-has-managed-environment": has_managed_environment,
         "repo-declared-python-versions": declared_python_versions,
+        "repo-cost-model": cost_model,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [

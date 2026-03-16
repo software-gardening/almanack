@@ -282,6 +282,18 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-cost-model"
+    id: "SGA-META-0036"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      High-level cost model for the software project (for example, free,
+      open-source with paid support, freemium, or paid), as reported by
+      external catalog or hosting metadata when available. A null value
+      indicates that no cost model information was found.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
