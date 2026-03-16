@@ -194,6 +194,40 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-has-cli"
+    id: "SGA-META-0028"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software exposes at least one command-line
+      interface (CLI) entrypoint, as detected from packaging metadata
+      and common configuration files (for example, pyproject.toml or
+      setup.cfg console_scripts).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-cli-entrypoints"
+    id: "SGA-META-0029"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of CLI commands used to invoke the software, as inferred from
+      packaging metadata (for example, [project.scripts],
+      [tool.poetry.scripts], or console_scripts in setup.cfg).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-primary-cli-entrypoint"
+    id: "SGA-META-0030"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      Primary CLI command for invoking the software. When multiple
+      commands are present, this is a stable, arbitrary choice (for
+      example, the first discovered in sorted order).
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"
