@@ -706,10 +706,16 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         managers: set[str] = set()
         py_versions: set[str] = set()
 
-        # Detect Poetry / pyproject-managed environments and Python version.
+        # Detect Poetry / generic pyproject-managed environments and Python version.
         pyproject_content = read_file(repo=repo, filepath="pyproject.toml", case_insensitive=False)
         if isinstance(pyproject_content, str):
-            managers.add("poetry")
+            # Always record that a pyproject-based configuration exists.
+            managers.add("pyproject")
+
+            # Only label Poetry when a [tool.poetry] table is present.
+            if "[tool.poetry]" in pyproject_content:
+                managers.add("poetry")
+
             for raw_line in pyproject_content.splitlines():
                 line = raw_line.strip()
                 if line.startswith("python") and "=" in line:
@@ -761,7 +767,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         if managers:
             environment_managers = sorted(managers)
             has_managed_environment = True
-        elif managers == set():
+        else:
             has_managed_environment = False
 
         if py_versions:
