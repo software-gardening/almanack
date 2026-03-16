@@ -294,6 +294,60 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-has-edam-owl"
+    id: "SGA-META-0037"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository contains an EDAM ontology file
+      (for example, edam.owl) used to describe software semantics or
+      interoperability.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-biotools-json"
+    id: "SGA-META-0038"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes a bio.tools JSON metadata
+      file (for example, biotools.json) describing the software.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-codemeta-json"
+    id: "SGA-META-0039"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes a CodeMeta JSON file
+      (for example, codemeta.json) providing machine-readable software
+      metadata.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-ro-crate-metadata-json"
+    id: "SGA-META-0040"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes an RO-Crate metadata file
+      (for example, ro-crate-metadata.json) describing the research object
+      or software package.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-software-metadata-files-count"
+    id: "SGA-META-0041"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of distinct software description metadata specifications
+      detected in the repository (for example, EDAM, bio.tools, CodeMeta,
+      RO-Crate).
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-license"
     id: "SGA-META-0010"
     result-type: "str"

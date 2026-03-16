@@ -458,6 +458,11 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     environment_managers: Optional[List[str]] = None
     has_managed_environment: Optional[bool] = None
     declared_python_versions: Optional[List[str]] = None
+    has_edam_owl: Optional[bool] = None
+    has_biotools_json: Optional[bool] = None
+    has_codemeta_json: Optional[bool] = None
+    has_ro_crate_metadata_json: Optional[bool] = None
+    software_metadata_files_count: Optional[int] = None
 
     if needs(
         "repo-languages-line-counts",
@@ -762,6 +767,46 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         if py_versions:
             declared_python_versions = sorted(py_versions)
 
+    if needs(
+        "repo-has-edam-owl",
+        "repo-has-biotools-json",
+        "repo-has-codemeta-json",
+        "repo-has-ro-crate-metadata-json",
+        "repo-software-metadata-files-count",
+    ):
+        has_edam_owl = bool(
+            find_file(repo=repo, filepath="edam.owl", case_insensitive=False) is not None
+        )
+        has_biotools_json = bool(
+            find_file(repo=repo, filepath="biotools.json", case_insensitive=False)
+            is not None
+        )
+        has_codemeta_json = bool(
+            find_file(repo=repo, filepath="codemeta.json", case_insensitive=False)
+            is not None
+        )
+        has_ro_crate_metadata_json = bool(
+            find_file(
+                repo=repo,
+                filepath="ro-crate-metadata.json",
+                case_insensitive=False,
+            )
+            is not None
+        )
+
+        software_metadata_files_count = int(
+            sum(
+                int(flag)
+                for flag in (
+                    has_edam_owl,
+                    has_biotools_json,
+                    has_codemeta_json,
+                    has_ro_crate_metadata_json,
+                )
+                if flag is not None
+            )
+        )
+
     software_description: Optional[str] = None
     docs_homepage_url: Optional[str] = None
     source_code_url: Optional[str] = None
@@ -1006,6 +1051,11 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-has-managed-environment": has_managed_environment,
         "repo-declared-python-versions": declared_python_versions,
         "repo-cost-model": cost_model,
+        "repo-has-edam-owl": has_edam_owl,
+        "repo-has-biotools-json": has_biotools_json,
+        "repo-has-codemeta-json": has_codemeta_json,
+        "repo-has-ro-crate-metadata-json": has_ro_crate_metadata_json,
+        "repo-software-metadata-files-count": software_metadata_files_count,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [
