@@ -330,6 +330,10 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-pull-requests-enabled",
         "repo-forks-count",
         "repo-subscribers-count",
+        "repo-software-description",
+        "repo-docs-homepage-url",
+        "repo-source-code-url",
+        "repo-issue-tracker-url",
     ):
         # gather data from ecosystems repo api
         remote_repo_data = get_api_data(
@@ -434,6 +438,84 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     date_of_last_coverage_run = code_coverage.get("date_of_last_coverage_run", None)
     readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
     readme_exists = True if readme_file is not None else False
+
+    software_description: Optional[str] = None
+    docs_homepage_url: Optional[str] = None
+    source_code_url: Optional[str] = None
+    issue_tracker_url: Optional[str] = None
+
+    if needs(
+        "repo-software-description",
+        "repo-docs-homepage-url",
+        "repo-source-code-url",
+        "repo-issue-tracker-url",
+    ):
+        # prefer remote host description when available
+        description_candidates: list[str] = []
+        remote_description = remote_repo_data.get("description") if remote_repo_data else None
+        if isinstance(remote_description, str) and remote_description.strip():
+            description_candidates.append(remote_description.strip())
+
+        # CITATION.cff abstract from repository root (if present)
+        citation_text = read_file(repo=repo, filepath="CITATION.cff", case_insensitive=False)
+        if citation_text:
+            try:
+                citation_data = yaml.safe_load(citation_text) or {}
+                abstract = citation_data.get("abstract")
+                if isinstance(abstract, str) and abstract.strip():
+                    description_candidates.append(abstract.strip())
+            except yaml.YAMLError:
+                LOGGER.debug("Unable to parse CITATION.cff when deriving software description.")
+
+        # README first paragraph as a fallback
+        if readme_exists:
+            readme_content = read_file(repo=repo, entry=readme_file)
+            if isinstance(readme_content, str):
+                # take the first non-empty line or paragraph
+                for block in readme_content.split("\n\n"):
+                    candidate = block.strip()
+                    if candidate:
+                        # avoid capturing badges / pure markdown image blocks
+                        if not candidate.lower().startswith("!["):
+                            description_candidates.append(candidate)
+                        break
+
+        software_description = next(
+            (candidate for candidate in description_candidates if candidate), None
+        )
+
+        # documentation / homepage URL from remote metadata where possible
+        if remote_repo_data:
+            for key in ("homepage", "homepage_url", "website"):
+                value = remote_repo_data.get(key)
+                if isinstance(value, str) and value.strip():
+                    docs_homepage_url = value.strip()
+                    break
+
+            # source code URL: prefer HTML URL, then generic URL, then remote_url
+            for key in ("html_url", "url"):
+                value = remote_repo_data.get(key)
+                if isinstance(value, str) and value.strip():
+                    source_code_url = value.strip()
+                    break
+
+        if source_code_url is None:
+            source_code_url = remote_url
+
+        # issue tracker URL: use API metadata when present, otherwise infer common patterns
+        if remote_repo_data:
+            issues_value = remote_repo_data.get("issues_url")
+            if isinstance(issues_value, str) and issues_value.strip():
+                issue_tracker_url = issues_value.strip()
+
+        if issue_tracker_url is None and remote_url:
+            parsed = urlparse(remote_url)
+            netloc = parsed.netloc.lower()
+            base = remote_url.rstrip("/")
+            if "github.com" in netloc:
+                issue_tracker_url = f"{base}/issues"
+            elif "gitlab.com" in netloc:
+                issue_tracker_url = f"{base}/-/issues"
 
     social_media_metrics: Dict[str, Any] = {}
     if needs("repo-social-media-platforms", "repo-social-media-platforms-count"):
@@ -582,6 +664,10 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         ),
         "repo-commits-per-day": commits_count / days_of_development,
         "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "repo-software-description": software_description,
+        "repo-docs-homepage-url": docs_homepage_url,
+        "repo-source-code-url": source_code_url,
+        "repo-issue-tracker-url": issue_tracker_url,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [

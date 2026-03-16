@@ -77,6 +77,50 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-software-description"
+    id: "SGA-META-0018"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      Short free-text description of the software project, assembled from
+      repository hosting metadata (for example, GitHub or GitLab description),
+      CITATION.cff abstract, or README content when available.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-docs-homepage-url"
+    id: "SGA-META-0019"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      URL of the primary documentation or project homepage, when available.
+      Derived from repository hosting metadata (for example, homepage field on
+      Git hosting platform APIs).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-source-code-url"
+    id: "SGA-META-0020"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      Canonical URL pointing to the primary source code repository for the
+      software project (for example, the Git hosting HTML URL).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-issue-tracker-url"
+    id: "SGA-META-0021"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      URL for the primary issue tracker associated with the software project.
+      This may be on the code hosting platform (for example, /issues on GitHub)
+      or a separate tracker URL. A value of null indicates that no issue tracker
+      URL was detected.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-language"
     id: "SGA-META-0009"
     result-type: "str"
