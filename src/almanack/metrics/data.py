@@ -322,6 +322,64 @@ def _get_repository_languages_data(
     return languages_data
 
 
+def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
+    """Return sorted CLI entrypoint names discovered from pyproject.toml and setup.cfg."""
+    discovered_commands: set[str] = set()
+
+    # Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]
+    pyproject_content = read_file(
+        repo=repo, filepath="pyproject.toml", case_insensitive=False
+    )
+    if isinstance(pyproject_content, str):
+        current_section: Optional[str] = None
+        for raw_line in pyproject_content.splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith("[") and line.endswith("]"):
+                current_section = line.strip("[]").strip()
+                continue
+            if (
+                current_section in {"project.scripts", "tool.poetry.scripts"}
+                and "=" in line
+            ):
+                # Expect lines like: name = "module:func"
+                name_part, _value_part = line.split("=", 1)
+                cmd = name_part.strip().strip('"').strip("'")
+                if cmd:
+                    discovered_commands.add(cmd)
+
+    # Inspect setup.cfg for console_scripts entry points
+    setup_cfg_content = read_file(
+        repo=repo, filepath="setup.cfg", case_insensitive=False
+    )
+    if isinstance(setup_cfg_content, str):
+        parser = configparser.ConfigParser()
+        try:
+            parser.read_string(setup_cfg_content)
+            if parser.has_section("options.entry_points") and parser.has_option(
+                "options.entry_points", "console_scripts"
+            ):
+                entries = parser.get("options.entry_points", "console_scripts")
+                for raw_entry in entries.splitlines():
+                    entry = raw_entry.strip()
+                    if not entry or entry.startswith("#"):
+                        continue
+                    # Expect lines like: name = package.module:func
+                    if "=" in entry:
+                        name_part, _target_part = entry.split("=", 1)
+                        cmd = name_part.strip()
+                        if cmd:
+                            discovered_commands.add(cmd)
+        except (configparser.Error, ValueError):
+            # If parsing fails, we silently ignore setup.cfg-based detection.
+            LOGGER.debug(
+                "Unable to parse setup.cfg for CLI entrypoints.", exc_info=True
+            )
+
+    return sorted(discovered_commands)
+
+
 def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     repo_path: str,
     exclude_paths: Optional[List[str]] = None,
@@ -627,62 +685,10 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             noncode_extensions_count = len(ext_counts)
 
     if needs("repo-has-cli", "repo-cli-entrypoints", "repo-primary-cli-entrypoint"):
-        discovered_commands: set[str] = set()
-
-        # Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]
-        pyproject_content = read_file(
-            repo=repo, filepath="pyproject.toml", case_insensitive=False
-        )
-        if isinstance(pyproject_content, str):
-            current_section: Optional[str] = None
-            for raw_line in pyproject_content.splitlines():
-                line = raw_line.strip()
-                if not line or line.startswith("#"):
-                    continue
-                if line.startswith("[") and line.endswith("]"):
-                    current_section = line.strip("[]").strip()
-                    continue
-                if (
-                    current_section in {"project.scripts", "tool.poetry.scripts"}
-                    and "=" in line
-                ):
-                    # Expect lines like: name = "module:func"
-                    name_part, _value_part = line.split("=", 1)
-                    cmd = name_part.strip().strip('"').strip("'")
-                    if cmd:
-                        discovered_commands.add(cmd)
-
-        # Inspect setup.cfg for console_scripts entry points
-        setup_cfg_content = read_file(
-            repo=repo, filepath="setup.cfg", case_insensitive=False
-        )
-        if isinstance(setup_cfg_content, str):
-            parser = configparser.ConfigParser()
-            try:
-                parser.read_string(setup_cfg_content)
-                if parser.has_section("options.entry_points") and parser.has_option(
-                    "options.entry_points", "console_scripts"
-                ):
-                    entries = parser.get("options.entry_points", "console_scripts")
-                    for raw_entry in entries.splitlines():
-                        entry = raw_entry.strip()
-                        if not entry or entry.startswith("#"):
-                            continue
-                        # Expect lines like: name = package.module:func
-                        if "=" in entry:
-                            name_part, _target_part = entry.split("=", 1)
-                            cmd = name_part.strip()
-                            if cmd:
-                                discovered_commands.add(cmd)
-            except (configparser.Error, ValueError):
-                # If parsing fails, we silently ignore setup.cfg-based detection.
-                LOGGER.debug(
-                    "Unable to parse setup.cfg for CLI entrypoints.", exc_info=True
-                )
-
-        if discovered_commands:
-            cli_entrypoints = sorted(discovered_commands)
-            primary_cli_entrypoint = cli_entrypoints[0]
+        discovered = _get_cli_entrypoints(repo=repo)
+        if discovered:
+            cli_entrypoints = discovered
+            primary_cli_entrypoint = discovered[0]
             has_cli = True
         else:
             has_cli = False
