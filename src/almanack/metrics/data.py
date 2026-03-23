@@ -2,6 +2,7 @@
 This module computes data for GitHub Repositories
 """
 
+import ast
 import configparser
 import importlib
 import json
@@ -611,8 +612,53 @@ def is_conda_environment_yaml(content: str) -> bool:
     return bool({"name", "channels", "dependencies"} & data.keys())
 
 
+def _parse_setup_py_console_scripts(content: str) -> set[str]:
+    """Return console_scripts command names declared in a setup.py string.
+
+    Parses the file as a Python AST and looks for a ``setup()`` or
+    ``setuptools.setup()`` call whose ``entry_points`` keyword argument
+    contains a ``console_scripts`` list. Returns an empty set if the file
+    cannot be parsed or contains no matching entries.
+    """
+    try:
+        tree = ast.parse(content)
+    except SyntaxError:
+        LOGGER.debug("Unable to parse setup.py for CLI entrypoints.", exc_info=True)
+        return set()
+
+    commands: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        func = node.func
+        is_setup_call = (isinstance(func, ast.Name) and func.id == "setup") or (
+            isinstance(func, ast.Attribute) and func.attr == "setup"
+        )
+        if not is_setup_call:
+            continue
+        for keyword in node.keywords:
+            if keyword.arg != "entry_points":
+                continue
+            if not isinstance(keyword.value, ast.Dict):
+                continue
+            for key, value in zip(keyword.value.keys, keyword.value.values):
+                if (
+                    isinstance(key, ast.Constant)
+                    and key.value == "console_scripts"
+                    and isinstance(value, ast.List)
+                ):
+                    for elt in value.elts:
+                        if isinstance(elt, ast.Constant) and isinstance(elt.value, str):
+                            # Expect entries like "name = pkg.mod:func"
+                            if "=" in elt.value:
+                                cmd = elt.value.split("=", 1)[0].strip()
+                                if cmd:
+                                    commands.add(cmd)
+    return commands
+
+
 def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
-    """Return sorted CLI entrypoint names discovered from pyproject.toml and setup.cfg."""
+    """Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py."""
     discovered_commands: set[str] = set()
 
     # Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]
@@ -659,6 +705,13 @@ def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
             LOGGER.debug(
                 "Unable to parse setup.cfg for CLI entrypoints.", exc_info=True
             )
+
+    # Inspect setup.py entry_points for console_scripts
+    setup_py_content = read_file(
+        repo=repo, filepath="setup.py", case_insensitive=False
+    )
+    if isinstance(setup_py_content, str):
+        discovered_commands.update(_parse_setup_py_console_scripts(setup_py_content))
 
     return sorted(discovered_commands)
 

@@ -1478,6 +1478,18 @@ def test_get_software_description(
             },
             ["cfg-tool"],
         ),
+        # setup.py entry_points console_scripts
+        (
+            {
+                "files": {
+                    "setup.py": (
+                        "from setuptools import setup\n"
+                        "setup(entry_points={'console_scripts': ['setup-tool = pkg.mod:main']})\n"
+                    )
+                }
+            },
+            ["setup-tool"],
+        ),
         # No entrypoints found
         (
             {"files": {"README.md": "nothing here"}},
@@ -1492,6 +1504,50 @@ def test_get_cli_entrypoints(tmp_path, files, expected_commands):
     repo = repo_setup(repo_path=tmp_path, files=[files])
     result = _get_cli_entrypoints(repo=repo)
     assert result == sorted(expected_commands)
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        # Standard setuptools.setup() call
+        (
+            "from setuptools import setup\n"
+            "setup(entry_points={'console_scripts': ['mycli = pkg.mod:main']})\n",
+            {"mycli"},
+        ),
+        # setup() with multiple commands
+        (
+            "setup(entry_points={'console_scripts': ['a = x:f', 'b = y:g']})\n",
+            {"a", "b"},
+        ),
+        # entry_points present but no console_scripts key
+        (
+            "setup(entry_points={'gui_scripts': ['app = pkg:main']})\n",
+            set(),
+        ),
+        # No setup() call at all
+        (
+            "print('hello')\n",
+            set(),
+        ),
+        # Invalid Python syntax returns empty set
+        (
+            "def (\n",
+            set(),
+        ),
+        # setuptools.setup() attribute-style call
+        (
+            "import setuptools\n"
+            "setuptools.setup(entry_points={'console_scripts': ['attr-cli = pkg:run']})\n",
+            {"attr-cli"},
+        ),
+    ],
+)
+def test_parse_setup_py_console_scripts(content, expected):
+    """Test _parse_setup_py_console_scripts extracts console_scripts via AST."""
+    from almanack.metrics.data import _parse_setup_py_console_scripts
+
+    assert _parse_setup_py_console_scripts(content) == expected
 
 
 def test_get_programming_extensions_returns_frozenset():
