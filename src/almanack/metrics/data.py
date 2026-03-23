@@ -284,6 +284,44 @@ def days_of_development(repo: pygit2.Repository) -> float:
     return total_days
 
 
+def _get_repository_languages_data(
+    remote_repo_data: Dict[str, Any], remote_url: Optional[str]
+) -> Dict[str, int]:
+    """Return repository language line counts from remote metadata or GitHub."""
+    languages_data: Dict[str, int] = {}
+
+    # Prefer ecosyste.ms or hosting metadata if it already exposes language stats.
+    if remote_repo_data:
+        for key in ("languages_lines", "languages_loc", "languages"):
+            value = remote_repo_data.get(key)
+            if isinstance(value, dict) and value:
+                languages_data = {
+                    str(lang): int(count) if count is not None else 0
+                    for lang, count in value.items()
+                    if isinstance(lang, str)
+                }
+                break
+
+    # Fallback to GitHub languages API when the repository is hosted on GitHub.
+    if not languages_data and remote_url:
+        parsed = urlparse(remote_url)
+        if parsed.netloc == "github.com":
+            parts = parsed.path.strip("/").split("/")
+            if len(parts) >= 2:
+                owner, repo_name = parts[0], parts[1]
+                github_languages = get_api_data(
+                    api_endpoint=f"https://api.github.com/repos/{owner}/{repo_name}/languages"
+                )
+                if isinstance(github_languages, dict) and github_languages:
+                    languages_data = {
+                        str(lang): int(count) if count is not None else 0
+                        for lang, count in github_languages.items()
+                        if isinstance(lang, str)
+                    }
+
+    return languages_data
+
+
 def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     repo_path: str,
     exclude_paths: Optional[List[str]] = None,
@@ -469,36 +507,10 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-languages-total-lines",
         "repo-languages-count",
     ):
-        languages_data: Dict[str, Any] = {}
-
-        # Prefer ecosyste.ms or hosting metadata if it already exposes language stats.
-        if remote_repo_data:
-            for key in ("languages_lines", "languages_loc", "languages"):
-                value = remote_repo_data.get(key)
-                if isinstance(value, dict) and value:
-                    languages_data = {
-                        str(lang): int(count) if count is not None else 0
-                        for lang, count in value.items()
-                        if isinstance(lang, str)
-                    }
-                    break
-
-        # Fallback to GitHub languages API when the repository is hosted on GitHub.
-        if not languages_data and remote_url:
-            parsed = urlparse(remote_url)
-            if parsed.netloc == "github.com":
-                parts = parsed.path.strip("/").split("/")
-                if len(parts) >= 2:
-                    owner, repo_name = parts[0], parts[1]
-                    github_languages = get_api_data(
-                        api_endpoint=f"https://api.github.com/repos/{owner}/{repo_name}/languages"
-                    )
-                    if isinstance(github_languages, dict) and github_languages:
-                        languages_data = {
-                            str(lang): int(count) if count is not None else 0
-                            for lang, count in github_languages.items()
-                            if isinstance(lang, str)
-                        }
+        languages_data = _get_repository_languages_data(
+            remote_repo_data=remote_repo_data,
+            remote_url=remote_url,
+        )
 
         if languages_data:
             language_line_counts = languages_data
