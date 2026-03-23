@@ -439,6 +439,23 @@ def _get_repository_languages_data(
     return languages_data
 
 
+def is_conda_environment_yaml(content: str) -> bool:
+    """Return True if *content* looks like a conda environment YAML file.
+
+    A conda environment file is a YAML document whose top-level value is a
+    mapping that contains at least one of the keys ``name``, ``channels``, or
+    ``dependencies``. This heuristic avoids false positives from arbitrary YAML
+    files that happen to share the same filename.
+    """
+    try:
+        data = yaml.safe_load(content)
+    except yaml.YAMLError:
+        return False
+    if not isinstance(data, dict):
+        return False
+    return bool({"name", "channels", "dependencies"} & data.keys())
+
+
 def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
     """Return sorted CLI entrypoint names discovered from pyproject.toml and setup.cfg."""
     discovered_commands: set[str] = set()
@@ -778,19 +795,39 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                 )
 
         # Detect Conda environment files and Python version.
-        env_yml = read_file(
-            repo=repo, filepath="environment.yml", case_insensitive=False
+        # Conda env files can use several common names; try each in turn.
+        _conda_candidate_names = (
+            "environment.yml",
+            "environment.yaml",
+            "conda.yml",
+            "conda.yaml",
+            "conda-environment.yml",
+            "conda-environment.yaml",
         )
-        if isinstance(env_yml, str):
+        for _conda_fname in _conda_candidate_names:
+            env_yml = read_file(
+                repo=repo, filepath=_conda_fname, case_insensitive=True
+            )
+            if not isinstance(env_yml, str) or not is_conda_environment_yaml(env_yml):
+                continue
             managers.add("conda")
-            for raw_line in env_yml.splitlines():
-                line = raw_line.strip()
-                if line.startswith("- python=") or line.startswith("python="):
-                    # Example: - python=3.11
-                    _, v = line.split("=", 1)
-                    v = v.strip()
-                    if v:
-                        py_versions.add(v)
+            try:
+                env_data = yaml.safe_load(env_yml)
+                if isinstance(env_data, dict):
+                    for dep in env_data.get("dependencies", []):
+                        if isinstance(dep, str) and dep.startswith("python"):
+                            # Expect entries like "python=3.11" or "python>=3.10"
+                            for sep in ("=", ">", "<", "~"):
+                                if sep in dep:
+                                    v = dep.split(sep, 1)[1].strip()
+                                    if v:
+                                        py_versions.add(v)
+                                    break
+            except yaml.YAMLError:
+                LOGGER.debug(
+                    "Unable to parse %s for Python version.", _conda_fname, exc_info=True
+                )
+            break  # stop after the first valid conda env file is found
 
         # Detect Pipenv.
         pipfile_content = read_file(
