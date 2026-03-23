@@ -65,6 +65,117 @@ LOGGER = logging.getLogger(__name__)
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
+# File extensions considered programming/code files. Used to separate non-code
+# assets (docs, data, config) from source code when counting file line totals.
+_PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
+    {
+        ".py",
+        ".ipynb",
+        ".R",
+        ".r",
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".java",
+        ".c",
+        ".h",
+        ".hpp",
+        ".cc",
+        ".cpp",
+        ".go",
+        ".rs",
+        ".rb",
+        ".php",
+        ".cs",
+        ".swift",
+        ".kt",
+        ".m",
+        ".mm",
+        ".scala",
+        ".hs",
+        ".jl",
+        ".sh",
+        ".bash",
+        ".zsh",
+        ".ps1",
+        ".psm1",
+        ".pl",
+        ".pm",
+        ".sql",
+        ".dart",
+        ".lua",
+        ".clj",
+        ".cljs",
+        ".ex",
+        ".exs",
+    }
+)
+
+
+def _walk_tree_collect_noncode(
+    tree: Union["pygit2.Tree", "pygit2.Blob"],
+    repo: "pygit2.Repository",
+    prefix: str = "",
+) -> Dict[str, int]:
+    """Recursively walk a git tree and count lines per non-code file extension.
+
+    For each blob (file) in the tree, the file is skipped if its extension
+    appears in ``_PROGRAMMING_EXTENSIONS`` or if it lives inside a ``.git/``
+    directory. Text files are counted by newline; binary files fall back to
+    byte length. Results are aggregated into a ``{extension: line_count}`` dict
+    where files with no extension use the key ``"<no_ext>"``.
+    """
+    counts: Dict[str, int] = {}
+
+    if isinstance(tree, pygit2.Blob):
+        path = prefix
+        suffix = pathlib.Path(path).suffix or ""
+
+        # Skip obvious VCS/config internals.
+        if "/.git/" in path or path.startswith(".git/"):
+            return counts
+
+        # Skip programming language files; we only want non-code here.
+        if suffix in _PROGRAMMING_EXTENSIONS:
+            return counts
+
+        # Try to treat as text and count lines; fall back to byte size.
+        try:
+            blob_data: bytes = tree.data  # type: ignore[assignment]
+            try:
+                text = blob_data.decode("utf-8")
+                value = text.count("\n") + (
+                    1 if text and not text.endswith("\n") else 0
+                )
+            except UnicodeDecodeError:
+                value = len(blob_data)
+        except Exception:
+            # If anything goes wrong, conservatively use zero.
+            value = 0
+
+        ext_key = suffix or "<no_ext>"
+        counts[ext_key] = counts.get(ext_key, 0) + int(value)
+        return counts
+
+    if isinstance(tree, pygit2.Tree):
+        for entry in tree:
+            entry_path = f"{prefix}/{entry.name}" if prefix else entry.name
+            try:
+                subtree_or_blob = repo[entry.id]
+            except (KeyError, pygit2.GitError):
+                continue
+            child_counts = _walk_tree_collect_noncode(
+                subtree_or_blob,
+                repo=repo,
+                prefix=entry_path,
+            )
+            for ext, val in child_counts.items():
+                counts[ext] = counts.get(ext, 0) + val
+        return counts
+
+    return {}
+
 
 def _normalize_exclude_paths(
     exclude_paths: Optional[Union[str, List[str], Tuple[str, ...]]],
@@ -580,105 +691,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-noncode-total-lines",
         "repo-noncode-extensions-count",
     ):
-        # Heuristic set of common programming-language file extensions.
-        programming_exts = {
-            ".py",
-            ".ipynb",
-            ".R",
-            ".r",
-            ".js",
-            ".jsx",
-            ".ts",
-            ".tsx",
-            ".java",
-            ".c",
-            ".h",
-            ".hpp",
-            ".cc",
-            ".cpp",
-            ".go",
-            ".rs",
-            ".rb",
-            ".php",
-            ".cs",
-            ".swift",
-            ".kt",
-            ".m",
-            ".mm",
-            ".scala",
-            ".hs",
-            ".jl",
-            ".sh",
-            ".bash",
-            ".zsh",
-            ".ps1",
-            ".psm1",
-            ".pl",
-            ".pm",
-            ".sql",
-            ".dart",
-            ".lua",
-            ".clj",
-            ".cljs",
-            ".ex",
-            ".exs",
-        }
-
-        def _walk_tree_collect_noncode(
-            tree: Union[pygit2.Tree, pygit2.Blob],
-            prefix: str = "",
-        ) -> Dict[str, int]:
-            counts: Dict[str, int] = {}
-
-            if isinstance(tree, pygit2.Blob):
-                path = prefix
-                suffix = pathlib.Path(path).suffix or ""
-
-                # Skip obvious VCS/config internals.
-                if "/.git/" in path or path.startswith(".git/"):
-                    return counts
-
-                # Skip programming language files; we only want non-code here.
-                if suffix in programming_exts:
-                    return counts
-
-                # Try to treat as text and count lines; fall back to byte size.
-                try:
-                    blob_data: bytes = tree.data  # type: ignore[assignment]
-                    try:
-                        text = blob_data.decode("utf-8")
-                        value = text.count("\n") + (
-                            1 if text and not text.endswith("\n") else 0
-                        )
-                    except UnicodeDecodeError:
-                        value = len(blob_data)
-                except Exception:
-                    # If anything goes wrong, conservatively use zero.
-                    value = 0
-
-                ext_key = suffix or "<no_ext>"
-                counts[ext_key] = counts.get(ext_key, 0) + int(value)
-                return counts
-
-            if isinstance(tree, pygit2.Tree):
-                for entry in tree:
-                    entry_path = f"{prefix}/{entry.name}" if prefix else entry.name
-                    try:
-                        subtree_or_blob = repo[entry.id]
-                    except (KeyError, pygit2.GitError):
-                        continue
-                    child_counts = _walk_tree_collect_noncode(
-                        subtree_or_blob,
-                        prefix=entry_path,
-                    )
-                    for ext, val in child_counts.items():
-                        counts[ext] = counts.get(ext, 0) + val
-                return counts
-
-            return {}
-
         root_tree = repo.head.peel().tree
-        ext_counts = _walk_tree_collect_noncode(root_tree)
+        ext_counts = _walk_tree_collect_noncode(root_tree, repo=repo)
         if ext_counts:
             noncode_extension_line_counts = ext_counts
             noncode_total_lines = int(sum(ext_counts.values()))
