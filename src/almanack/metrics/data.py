@@ -1015,6 +1015,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
                 issue_tracker_url = f"{base}/issues"
             elif "gitlab.com" in netloc:
                 issue_tracker_url = f"{base}/-/issues"
+            elif "gitea.com" in netloc:
+                issue_tracker_url = f"{base}/issues"
 
     social_media_metrics: Dict[str, Any] = {}
     if needs("repo-social-media-platforms", "repo-social-media-platforms-count"):
