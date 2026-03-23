@@ -8,10 +8,16 @@ import json
 import logging
 import pathlib
 import shutil
+import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
+
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 import defusedxml.ElementTree as ET
 import pandas as pd
@@ -331,23 +337,17 @@ def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
         repo=repo, filepath="pyproject.toml", case_insensitive=False
     )
     if isinstance(pyproject_content, str):
-        current_section: Optional[str] = None
-        for raw_line in pyproject_content.splitlines():
-            line = raw_line.strip()
-            if not line or line.startswith("#"):
-                continue
-            if line.startswith("[") and line.endswith("]"):
-                current_section = line.strip("[]").strip()
-                continue
-            if (
-                current_section in {"project.scripts", "tool.poetry.scripts"}
-                and "=" in line
+        try:
+            pyproject = tomllib.loads(pyproject_content)
+            for scripts_table in (
+                pyproject.get("project", {}).get("scripts", {}),
+                pyproject.get("tool", {}).get("poetry", {}).get("scripts", {}),
             ):
-                # Expect lines like: name = "module:func"
-                name_part, _value_part = line.split("=", 1)
-                cmd = name_part.strip().strip('"').strip("'")
-                if cmd:
-                    discovered_commands.add(cmd)
+                discovered_commands.update(scripts_table.keys())
+        except tomllib.TOMLDecodeError:
+            LOGGER.debug(
+                "Unable to parse pyproject.toml for CLI entrypoints.", exc_info=True
+            )
 
     # Inspect setup.cfg for console_scripts entry points
     setup_cfg_content = read_file(
@@ -742,19 +742,26 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         if isinstance(pyproject_content, str):
             # Always record that a pyproject-based configuration exists.
             managers.add("pyproject")
-
-            # Only label Poetry when a [tool.poetry] table is present.
-            if "[tool.poetry]" in pyproject_content:
-                managers.add("poetry")
-
-            for raw_line in pyproject_content.splitlines():
-                line = raw_line.strip()
-                if line.startswith("python") and "=" in line:
-                    # Example: python = ">=3.10,<3.14"
-                    _key, value = line.split("=", 1)
-                    v = value.strip().strip('"').strip("'")
-                    if v:
-                        py_versions.add(v)
+            try:
+                pyproject = tomllib.loads(pyproject_content)
+                # Only label Poetry when a [tool.poetry] table is present.
+                if "poetry" in pyproject.get("tool", {}):
+                    managers.add("poetry")
+                # Extract declared Python version from [tool.poetry.dependencies]
+                # or [project] requires-python.
+                python_ver = pyproject.get("tool", {}).get("poetry", {}).get(
+                    "dependencies", {}
+                ).get("python")
+                if isinstance(python_ver, str) and python_ver.strip():
+                    py_versions.add(python_ver.strip())
+                requires_python = pyproject.get("project", {}).get("requires-python")
+                if isinstance(requires_python, str) and requires_python.strip():
+                    py_versions.add(requires_python.strip())
+            except tomllib.TOMLDecodeError:
+                LOGGER.debug(
+                    "Unable to parse pyproject.toml for environment managers.",
+                    exc_info=True,
+                )
 
         # Detect Conda environment files and Python version.
         env_yml = read_file(
