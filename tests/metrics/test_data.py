@@ -1768,3 +1768,107 @@ def test_get_programming_extensions_parses_linguist(monkeypatch):
     # prose/data types must not be included
     assert ".md" not in exts
     assert ".yml" not in exts
+
+
+@pytest.mark.parametrize(
+    "files, expected_dep_managers, expected_has_deps, expected_env_managers, expected_has_env",
+    [
+        # requirements.txt only → dependency management, no environment management
+        (
+            {"files": {"requirements.txt": "numpy==1.26\npandas\n"}},
+            ["pip"],
+            True,
+            [],
+            False,
+        ),
+        # setup.py only → dependency management, no environment management
+        (
+            {
+                "files": {
+                    "setup.py": (
+                        "from setuptools import setup\n"
+                        "setup(name='pkg', install_requires=['numpy'])\n"
+                    )
+                }
+            },
+            ["pip"],
+            True,
+            [],
+            False,
+        ),
+        # setup.cfg only → dependency management, no environment management
+        (
+            {
+                "files": {
+                    "setup.cfg": (
+                        "[metadata]\nname = pkg\n"
+                        "[options]\ninstall_requires =\n    numpy\n"
+                    )
+                }
+            },
+            ["pip"],
+            True,
+            [],
+            False,
+        ),
+        # conda env only → environment management, no dependency-only management
+        (
+            {
+                "files": {
+                    "environment.yml": (
+                        "name: myenv\ndependencies:\n  - python=3.11\n  - numpy\n"
+                    )
+                }
+            },
+            [],
+            False,
+            ["conda"],
+            True,
+        ),
+        # both requirements.txt and conda → both flags True
+        (
+            {
+                "files": {
+                    "requirements.txt": "requests\n",
+                    "environment.yml": "name: myenv\ndependencies:\n  - python=3.11\n",
+                }
+            },
+            ["pip"],
+            True,
+            ["conda"],
+            True,
+        ),
+        # nothing → both False
+        (
+            {"files": {"README.md": "# project\n"}},
+            [],
+            False,
+            [],
+            False,
+        ),
+    ],
+)
+def test_dependency_vs_environment_managers(
+    tmp_path,
+    files,
+    expected_dep_managers,
+    expected_has_deps,
+    expected_env_managers,
+    expected_has_env,
+):
+    """Test that dependency management and environment management are correctly separated."""
+    repo_setup(repo_path=tmp_path, files=[files])
+    repo_data = compute_repo_data(
+        str(tmp_path),
+        required_metric_names={
+            "repo-dependency-managers",
+            "repo-has-declared-dependencies",
+            "repo-environment-managers",
+            "repo-has-managed-environment",
+        },
+    )
+
+    assert (repo_data["repo-dependency-managers"] or []) == expected_dep_managers
+    assert repo_data["repo-has-declared-dependencies"] is expected_has_deps
+    assert (repo_data["repo-environment-managers"] or []) == expected_env_managers
+    assert repo_data["repo-has-managed-environment"] is expected_has_env

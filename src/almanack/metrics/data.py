@@ -889,6 +889,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     cost_model: Optional[str] = None
     environment_managers: Optional[List[str]] = None
     has_managed_environment: Optional[bool] = None
+    dependency_managers: Optional[List[str]] = None
+    has_declared_dependencies: Optional[bool] = None
     declared_python_versions: Optional[List[str]] = None
     has_edam_owl: Optional[bool] = None
     has_biotools_json: Optional[bool] = None
@@ -969,9 +971,12 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     if needs(
         "repo-environment-managers",
         "repo-has-managed-environment",
+        "repo-dependency-managers",
+        "repo-has-declared-dependencies",
         "repo-declared-python-versions",
     ):
         managers: set[str] = set()
+        dep_managers: set[str] = set()
         py_versions: set[str] = set()
 
         # Detect Poetry / generic pyproject-managed environments and Python version.
@@ -1023,12 +1028,15 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         if isinstance(pipfile_content, str):
             managers.add("pipenv")
 
-        # Detect virtualenv via requirements.txt presence.
-        requirements_txt = read_file(
-            repo=repo, filepath="requirements.txt", case_insensitive=False
-        )
-        if isinstance(requirements_txt, str):
-            managers.add("virtualenv/requirements")
+        # Detect pip-based dependency management (requirements files).
+        if read_file(repo=repo, filepath="requirements.txt", case_insensitive=True):
+            dep_managers.add("pip")
+
+        # Detect setup.py / setup.cfg install_requires as dependency management.
+        if read_file(repo=repo, filepath="setup.py", case_insensitive=False):
+            dep_managers.add("pip")
+        if read_file(repo=repo, filepath="setup.cfg", case_insensitive=False):
+            dep_managers.add("pip")
 
         # Detect Nix.
         if read_file(repo=repo, filepath="flake.nix", case_insensitive=False):
@@ -1053,6 +1061,12 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             has_managed_environment = True
         else:
             has_managed_environment = False
+
+        if dep_managers:
+            dependency_managers = sorted(dep_managers)
+            has_declared_dependencies = True
+        else:
+            has_declared_dependencies = False
 
         if py_versions:
             declared_python_versions = sorted(py_versions)
@@ -1315,6 +1329,8 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-topics-count": topics_count,
         "repo-environment-managers": environment_managers,
         "repo-has-managed-environment": has_managed_environment,
+        "repo-dependency-managers": dependency_managers,
+        "repo-has-declared-dependencies": has_declared_dependencies,
         "repo-declared-python-versions": declared_python_versions,
         "repo-cost-model": cost_model,
         "repo-has-edam-owl": has_edam_owl,

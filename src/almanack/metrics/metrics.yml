@@ -941,8 +941,10 @@ metrics:
     sustainability_correlation: 0
     description: >-
       List of detected environment management tools configured for the
-      software project (for example, Poetry, Conda, virtualenv, Pipenv,
-      Nix, or language-specific environment managers).
+      software project (for example, Poetry, Conda, Pipenv, or Nix).
+      These tools manage the full environment including Python version
+      pinning and isolated environment creation, as distinct from
+      dependency-only tools captured in repo-dependency-managers.
     correction_guidance:
     fix_why:
     fix_how:
@@ -954,6 +956,31 @@ metrics:
       Indicates whether the software project appears to use at least one
       explicit environment manager rather than relying solely on baseline
       language imports.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-dependency-managers"
+    id: "SGA-SF-0010"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of detected dependency management tools configured for the
+      software project (for example, pip via requirements.txt, setup.py,
+      or setup.cfg). Unlike environment managers, these tools declare
+      dependencies but do not fully control the Python version or
+      isolated environment creation.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-declared-dependencies"
+    id: "SGA-SF-0011"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software project declares its dependencies
+      via at least one dependency management file (for example,
+      requirements.txt, setup.py, or setup.cfg), even if a full
+      environment manager is not present.
     correction_guidance:
     fix_why:
     fix_how:
