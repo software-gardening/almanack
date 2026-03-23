@@ -65,9 +65,11 @@ LOGGER = logging.getLogger(__name__)
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
-# File extensions considered programming/code files. Used to separate non-code
-# assets (docs, data, config) from source code when counting file line totals.
-_PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
+_LINGUIST_LANGUAGES_URL = "https://raw.githubusercontent.com/github-linguist/linguist/main/lib/linguist/languages.yml"
+
+# Fallback set used when the Linguist YAML cannot be fetched or parsed.
+# Kept intentionally small — the live Linguist data is the authoritative source.
+_FALLBACK_PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
     {
         ".py",
         ".ipynb",
@@ -112,6 +114,47 @@ _PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
     }
 )
 
+# Module-level cache; populated on first call to _get_programming_extensions().
+_programming_extensions_cache: Optional[frozenset[str]] = None
+
+
+def _get_programming_extensions() -> frozenset[str]:
+    """Return file extensions that belong to programming languages per GitHub Linguist.
+
+    Fetches and parses the Linguist ``languages.yml`` on the first call, then
+    caches the result for the lifetime of the process. Falls back to
+    ``_FALLBACK_PROGRAMMING_EXTENSIONS`` if the fetch or parse fails.
+    """
+    global _programming_extensions_cache  # noqa: PLW0603
+    if _programming_extensions_cache is not None:
+        return _programming_extensions_cache
+
+    try:
+        import requests as _requests
+
+        response = _requests.get(_LINGUIST_LANGUAGES_URL, timeout=10)
+        response.raise_for_status()
+        languages = yaml.safe_load(response.text) or {}
+        exts: set[str] = set()
+        for lang_meta in languages.values():
+            if not isinstance(lang_meta, dict):
+                continue
+            if lang_meta.get("type") == "programming":
+                for ext in lang_meta.get("extensions", []):
+                    if isinstance(ext, str):
+                        exts.add(ext)
+        if exts:
+            _programming_extensions_cache = frozenset(exts)
+            return _programming_extensions_cache
+    except Exception:
+        LOGGER.debug(
+            "Unable to fetch Linguist languages.yml; falling back to built-in extension list.",
+            exc_info=True,
+        )
+
+    _programming_extensions_cache = _FALLBACK_PROGRAMMING_EXTENSIONS
+    return _programming_extensions_cache
+
 
 def _walk_tree_collect_noncode(
     tree: Union["pygit2.Tree", "pygit2.Blob"],
@@ -121,7 +164,7 @@ def _walk_tree_collect_noncode(
     """Recursively walk a git tree and count lines per non-code file extension.
 
     For each blob (file) in the tree, the file is skipped if its extension
-    appears in ``_PROGRAMMING_EXTENSIONS`` or if it lives inside a ``.git/``
+    appears in ``_get_programming_extensions()`` or if it lives inside a ``.git/``
     directory. Text files are counted by newline; binary files fall back to
     byte length. Results are aggregated into a ``{extension: line_count}`` dict
     where files with no extension use the key ``"<no_ext>"``.
@@ -137,7 +180,7 @@ def _walk_tree_collect_noncode(
             return counts
 
         # Skip programming language files; we only want non-code here.
-        if suffix in _PROGRAMMING_EXTENSIONS:
+        if suffix in _get_programming_extensions():
             return counts
 
         # Try to treat as text and count lines; fall back to byte size.
