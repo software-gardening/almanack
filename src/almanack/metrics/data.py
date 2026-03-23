@@ -528,12 +528,70 @@ def _get_software_description(
             for block in readme_content.split("\n\n"):
                 candidate = block.strip()
                 if candidate:
-                    # Avoid capturing badges / pure markdown image blocks.
+                    # Avoid capturing badges / pure markdown image blocks;
+                    # keep scanning paragraphs until a real one is found.
                     if not candidate.lower().startswith("!["):
                         candidates.append(candidate)
-                    break
+                        break
 
     return next((c for c in candidates if c), None)
+
+
+def _get_pyproject_python_version(content: str) -> Optional[str]:
+    """Return the declared Python version constraint from a pyproject.toml string.
+
+    Checks ``tool.poetry.dependencies.python`` first (Poetry convention), then
+    ``project.requires-python`` (PEP 621). Returns ``None`` if neither is present
+    or if the TOML cannot be parsed.
+    """
+    try:
+        pyproject = tomllib.loads(content)
+    except tomllib.TOMLDecodeError:
+        LOGGER.debug(
+            "Unable to parse pyproject.toml for Python version.", exc_info=True
+        )
+        return None
+
+    poetry_python = (
+        pyproject.get("tool", {}).get("poetry", {}).get("dependencies", {}).get("python")
+    )
+    if isinstance(poetry_python, str) and poetry_python.strip():
+        return poetry_python.strip()
+
+    requires_python = pyproject.get("project", {}).get("requires-python")
+    if isinstance(requires_python, str) and requires_python.strip():
+        return requires_python.strip()
+
+    return None
+
+
+def _get_conda_python_version(content: str) -> Optional[str]:
+    """Return the Python version constraint declared in a conda environment YAML string.
+
+    Scans the ``dependencies`` list for an entry that starts with ``python``
+    followed by a version separator (``=``, ``>``, ``<``, ``~``).
+    Returns ``None`` if no Python dependency is found or the YAML cannot be parsed.
+    """
+    try:
+        env_data = yaml.safe_load(content)
+    except yaml.YAMLError:
+        LOGGER.debug(
+            "Unable to parse conda environment YAML for Python version.", exc_info=True
+        )
+        return None
+
+    if not isinstance(env_data, dict):
+        return None
+
+    for dep in env_data.get("dependencies", []):
+        if isinstance(dep, str) and dep.startswith("python"):
+            for sep in ("=", ">", "<", "~"):
+                if sep in dep:
+                    v = dep.split(sep, 1)[1].strip()
+                    if v:
+                        return v
+                    break
+    return None
 
 
 def is_conda_environment_yaml(content: str) -> bool:
@@ -872,24 +930,16 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             managers.add("pyproject")
             try:
                 pyproject = tomllib.loads(pyproject_content)
-                # Only label Poetry when a [tool.poetry] table is present.
                 if "poetry" in pyproject.get("tool", {}):
                     managers.add("poetry")
-                # Extract declared Python version from [tool.poetry.dependencies]
-                # or [project] requires-python.
-                python_ver = pyproject.get("tool", {}).get("poetry", {}).get(
-                    "dependencies", {}
-                ).get("python")
-                if isinstance(python_ver, str) and python_ver.strip():
-                    py_versions.add(python_ver.strip())
-                requires_python = pyproject.get("project", {}).get("requires-python")
-                if isinstance(requires_python, str) and requires_python.strip():
-                    py_versions.add(requires_python.strip())
             except tomllib.TOMLDecodeError:
                 LOGGER.debug(
                     "Unable to parse pyproject.toml for environment managers.",
                     exc_info=True,
                 )
+            pyproject_python_ver = _get_pyproject_python_version(pyproject_content)
+            if pyproject_python_ver:
+                py_versions.add(pyproject_python_ver)
 
         # Detect Conda environment files and Python version.
         # Conda env files can use several common names; try each in turn.
@@ -908,22 +958,9 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             if not isinstance(env_yml, str) or not is_conda_environment_yaml(env_yml):
                 continue
             managers.add("conda")
-            try:
-                env_data = yaml.safe_load(env_yml)
-                if isinstance(env_data, dict):
-                    for dep in env_data.get("dependencies", []):
-                        if isinstance(dep, str) and dep.startswith("python"):
-                            # Expect entries like "python=3.11" or "python>=3.10"
-                            for sep in ("=", ">", "<", "~"):
-                                if sep in dep:
-                                    v = dep.split(sep, 1)[1].strip()
-                                    if v:
-                                        py_versions.add(v)
-                                    break
-            except yaml.YAMLError:
-                LOGGER.debug(
-                    "Unable to parse %s for Python version.", _conda_fname, exc_info=True
-                )
+            conda_python_ver = _get_conda_python_version(env_yml)
+            if conda_python_ver:
+                py_versions.add(conda_python_ver)
             break  # stop after the first valid conda env file is found
 
         # Detect Pipenv.

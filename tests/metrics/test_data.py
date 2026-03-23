@@ -1312,3 +1312,403 @@ def test_compute_repo_data_cli_detection(
     else:
         assert sorted(repo_data["repo-cli-entrypoints"]) == sorted(expected_commands)
         assert repo_data["repo-primary-cli-entrypoint"] in expected_commands
+
+
+# ---------------------------------------------------------------------------
+# Unit tests for extracted helper functions
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        # Minimal valid conda env with just a name key
+        ("name: myenv\n", True),
+        # Full conda env with channels and dependencies
+        (
+            "name: myenv\nchannels:\n  - defaults\ndependencies:\n  - python=3.11\n",
+            True,
+        ),
+        # Only dependencies key
+        ("dependencies:\n  - numpy\n", True),
+        # Arbitrary YAML with no conda keys
+        ("title: My Project\nauthor: someone\n", False),
+        # Non-mapping YAML (list at root)
+        ("- item1\n- item2\n", False),
+        # Invalid YAML
+        ("key: [unclosed", False),
+        # Empty string
+        ("", False),
+    ],
+)
+def test_is_conda_environment_yaml(content, expected):
+    """Test is_conda_environment_yaml correctly identifies conda env files."""
+    from almanack.metrics.data import is_conda_environment_yaml
+
+    assert is_conda_environment_yaml(content) is expected
+
+
+@pytest.mark.parametrize(
+    "remote_repo_data, expected",
+    [
+        # Prefer languages_lines key
+        ({"languages_lines": {"Python": 1000, "Shell": 200}}, {"Python": 1000, "Shell": 200}),
+        # Fall through to languages_loc when languages_lines absent
+        ({"languages_loc": {"R": 500}}, {"R": 500}),
+        # Fall through to languages key last
+        ({"languages": {"Go": 300}}, {"Go": 300}),
+        # None values are coerced to 0
+        ({"languages": {"Python": None}}, {"Python": 0}),
+        # Empty remote data returns empty dict
+        ({}, {}),
+        # None remote data returns empty dict
+        (None, {}),
+    ],
+)
+def test_get_repository_languages_data_from_remote(remote_repo_data, expected):
+    """Test _get_repository_languages_data uses remote metadata when available."""
+    from almanack.metrics.data import _get_repository_languages_data
+
+    result = _get_repository_languages_data(
+        remote_repo_data=remote_repo_data or {}, remote_url=None
+    )
+    assert result == expected
+
+
+@pytest.mark.parametrize(
+    "files, remote_repo_data, readme_exists, expected_description",
+    [
+        # Remote description is preferred
+        (
+            {"files": {"README.md": "A readme paragraph.\n\nAnother paragraph."}},
+            {"description": "Remote description"},
+            True,
+            "Remote description",
+        ),
+        # CITATION.cff abstract used when no remote description
+        (
+            {
+                "files": {
+                    "CITATION.cff": "abstract: A citation abstract.\n",
+                    "README.md": "A readme paragraph.",
+                }
+            },
+            None,
+            True,
+            "A citation abstract.",
+        ),
+        # README first non-badge paragraph used as fallback
+        (
+            {"files": {"README.md": "First paragraph.\n\nSecond paragraph."}},
+            None,
+            True,
+            "First paragraph.",
+        ),
+        # Badge-only first paragraph is skipped
+        (
+            {"files": {"README.md": "![badge](url)\n\nReal content."}},
+            None,
+            True,
+            "Real content.",
+        ),
+        # Nothing available returns None
+        (
+            {"files": {"setup.py": "pass"}},
+            None,
+            False,
+            None,
+        ),
+    ],
+)
+def test_get_software_description(
+    tmp_path, files, remote_repo_data, readme_exists, expected_description
+):
+    """Test _get_software_description priority order across sources."""
+    from almanack.git import find_file
+    from almanack.metrics.data import _get_software_description
+
+    repo = repo_setup(repo_path=tmp_path, files=[files])
+    readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
+
+    result = _get_software_description(
+        repo=repo,
+        remote_repo_data=remote_repo_data,
+        readme_exists=readme_exists and readme_file is not None,
+        readme_file=readme_file,
+    )
+    assert result == expected_description
+
+
+@pytest.mark.parametrize(
+    "files, expected_commands",
+    [
+        # poetry scripts
+        (
+            {
+                "files": {
+                    "pyproject.toml": (
+                        "[tool.poetry]\nname = 'pkg'\n"
+                        "[tool.poetry.scripts]\nmycli = 'pkg.mod:main'\n"
+                    )
+                }
+            },
+            ["mycli"],
+        ),
+        # project.scripts (PEP 621)
+        (
+            {
+                "files": {
+                    "pyproject.toml": (
+                        "[project]\nname = 'pkg'\n"
+                        "[project.scripts]\ntool-a = 'pkg.a:run'\ntool-b = 'pkg.b:run'\n"
+                    )
+                }
+            },
+            ["tool-a", "tool-b"],
+        ),
+        # setup.cfg console_scripts
+        (
+            {
+                "files": {
+                    "setup.cfg": (
+                        "[options.entry_points]\nconsole_scripts =\n"
+                        "    cfg-tool = pkg.mod:main\n"
+                    )
+                }
+            },
+            ["cfg-tool"],
+        ),
+        # No entrypoints found
+        (
+            {"files": {"README.md": "nothing here"}},
+            [],
+        ),
+    ],
+)
+def test_get_cli_entrypoints(tmp_path, files, expected_commands):
+    """Test _get_cli_entrypoints discovers commands from pyproject.toml and setup.cfg."""
+    from almanack.metrics.data import _get_cli_entrypoints
+
+    repo = repo_setup(repo_path=tmp_path, files=[files])
+    result = _get_cli_entrypoints(repo=repo)
+    assert result == sorted(expected_commands)
+
+
+def test_get_programming_extensions_returns_frozenset():
+    """Test _get_programming_extensions returns a non-empty frozenset of dot-prefixed strings."""
+    from almanack.metrics.data import _get_programming_extensions
+
+    exts = _get_programming_extensions()
+    assert isinstance(exts, frozenset)
+    assert len(exts) > 0
+    assert all(isinstance(e, str) and e.startswith(".") for e in exts)
+
+
+def test_get_programming_extensions_cached(monkeypatch):
+    """Test _get_programming_extensions returns the same object on repeated calls (cached)."""
+    import almanack.metrics.data as data_mod
+    from almanack.metrics.data import _get_programming_extensions
+
+    # Reset the cache to force a fresh fetch/fallback cycle.
+    monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
+
+    first = _get_programming_extensions()
+    second = _get_programming_extensions()
+    assert first is second
+
+
+def test_get_programming_extensions_falls_back_on_network_error(monkeypatch):
+    """Test _get_programming_extensions falls back to the static set when fetch fails."""
+    import almanack.metrics.data as data_mod
+    from almanack.metrics.data import (
+        _FALLBACK_PROGRAMMING_EXTENSIONS,
+        _get_programming_extensions,
+    )
+
+    monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
+
+    import requests
+
+    def _raise(*_args, **_kwargs):
+        raise requests.ConnectionError("simulated offline")
+
+    monkeypatch.setattr(requests, "get", _raise)
+
+    result = _get_programming_extensions()
+    assert result == _FALLBACK_PROGRAMMING_EXTENSIONS
+
+
+def test_walk_tree_collect_noncode(tmp_path):
+    """Test _walk_tree_collect_noncode counts non-code file lines and skips code files."""
+    from almanack.metrics.data import _walk_tree_collect_noncode
+
+    repo = repo_setup(
+        repo_path=tmp_path,
+        files=[
+            {
+                "files": {
+                    # non-code: 3 lines
+                    "docs/notes.txt": "line one\nline two\nline three",
+                    # code file — must be skipped
+                    "src/main.py": "import os\nprint('hello')\n",
+                    # another non-code file
+                    "data/info.csv": "a,b\n1,2\n",
+                }
+            }
+        ],
+    )
+
+    root_tree = repo.head.peel().tree
+    counts = _walk_tree_collect_noncode(root_tree, repo=repo)
+
+    assert ".txt" in counts
+    assert ".csv" in counts
+    # Python files must not appear in the output
+    assert ".py" not in counts
+
+
+def test_get_repository_languages_data_github_fallback(monkeypatch):
+    """Test _get_repository_languages_data falls back to the GitHub API when remote data is empty."""
+    import almanack.metrics.data as data_mod
+    from almanack.metrics.data import _get_repository_languages_data
+
+    monkeypatch.setattr(
+        data_mod,
+        "get_api_data",
+        lambda api_endpoint: {"Python": 5000, "Shell": 300},
+    )
+
+    result = _get_repository_languages_data(
+        remote_repo_data={},
+        remote_url="https://github.com/example/repo",
+    )
+    assert result == {"Python": 5000, "Shell": 300}
+
+
+def test_get_repository_languages_data_github_fallback_non_github_skipped(monkeypatch):
+    """Test _get_repository_languages_data does not call the API for non-GitHub URLs."""
+    import almanack.metrics.data as data_mod
+    from almanack.metrics.data import _get_repository_languages_data
+
+    called = []
+    monkeypatch.setattr(data_mod, "get_api_data", lambda **_: called.append(1) or {})
+
+    result = _get_repository_languages_data(
+        remote_repo_data={},
+        remote_url="https://gitlab.com/example/repo",
+    )
+    assert result == {}
+    assert called == []
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        # Poetry convention
+        (
+            "[tool.poetry.dependencies]\npython = '>=3.10,<3.14'\n",
+            ">=3.10,<3.14",
+        ),
+        # PEP 621
+        (
+            "[project]\nrequires-python = '>=3.11'\n",
+            ">=3.11",
+        ),
+        # Poetry takes precedence over PEP 621
+        (
+            "[project]\nrequires-python = '>=3.11'\n[tool.poetry.dependencies]\npython = '>=3.10'\n",
+            ">=3.10",
+        ),
+        # No Python version declared
+        (
+            "[project]\nname = 'mypkg'\n",
+            None,
+        ),
+        # Invalid TOML returns None
+        (
+            "key = [unclosed",
+            None,
+        ),
+    ],
+)
+def test_get_pyproject_python_version(content, expected):
+    """Test _get_pyproject_python_version extracts the declared Python version."""
+    from almanack.metrics.data import _get_pyproject_python_version
+
+    assert _get_pyproject_python_version(content) == expected
+
+
+@pytest.mark.parametrize(
+    "content, expected",
+    [
+        # Pinned version with =
+        ("name: myenv\ndependencies:\n  - python=3.11\n", "3.11"),
+        # Constraint with >=
+        ("name: myenv\ndependencies:\n  - python>=3.10\n", "3.10"),
+        # No python dep
+        ("name: myenv\ndependencies:\n  - numpy\n", None),
+        # Empty dependencies
+        ("name: myenv\ndependencies: []\n", None),
+        # Invalid YAML returns None
+        ("key: [unclosed", None),
+    ],
+)
+def test_get_conda_python_version(content, expected):
+    """Test _get_conda_python_version extracts the Python version from a conda env YAML."""
+    from almanack.metrics.data import _get_conda_python_version
+
+    assert _get_conda_python_version(content) == expected
+
+
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "environment.yml",
+        "environment.yaml",
+        "conda.yml",
+        "conda.yaml",
+        "conda-environment.yml",
+        "conda-environment.yaml",
+    ],
+)
+def test_conda_detection_alternate_filenames(tmp_path, filename):
+    """Test that conda is detected regardless of which conventional filename is used."""
+    repo = repo_setup(
+        repo_path=tmp_path,
+        files=[{"files": {filename: "name: myenv\ndependencies:\n  - python=3.11\n"}}],
+    )
+    repo_data = compute_repo_data(
+        str(tmp_path),
+        required_metric_names={"repo-environment-managers", "repo-declared-python-versions"},
+    )
+    assert "conda" in repo_data["repo-environment-managers"]
+    assert "3.11" in repo_data["repo-declared-python-versions"]
+
+
+def test_get_programming_extensions_parses_linguist(monkeypatch):
+    """Test _get_programming_extensions correctly parses a Linguist-shaped YAML response."""
+    import almanack.metrics.data as data_mod
+    import requests
+
+    monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
+
+    minimal_languages_yml = (
+        "Python:\n  type: programming\n  extensions:\n    - .py\n    - .pyw\n"
+        "Markdown:\n  type: prose\n  extensions:\n    - .md\n"
+        "YAML:\n  type: data\n  extensions:\n    - .yml\n    - .yaml\n"
+    )
+
+    class _FakeResponse:
+        text = minimal_languages_yml
+        def raise_for_status(self): pass
+
+    monkeypatch.setattr(requests, "get", lambda *_a, **_kw: _FakeResponse())
+
+    from almanack.metrics.data import _get_programming_extensions
+
+    exts = _get_programming_extensions()
+    assert ".py" in exts
+    assert ".pyw" in exts
+    # prose/data types must not be included
+    assert ".md" not in exts
+    assert ".yml" not in exts
