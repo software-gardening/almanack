@@ -439,6 +439,60 @@ def _get_repository_languages_data(
     return languages_data
 
 
+def _get_software_description(
+    repo: pygit2.Repository,
+    remote_repo_data: Optional[Dict[str, Any]],
+    readme_exists: bool,
+    readme_file: Optional[pygit2.Object],
+) -> Optional[str]:
+    """Return the best available plain-text description for the repository.
+
+    Candidates are tried in priority order:
+    1. The description field from remote hosting metadata (e.g. ecosyste.ms / GitHub).
+    2. The ``abstract`` field from a ``CITATION.cff`` file in the repo root.
+    3. The first non-badge paragraph of the README.
+
+    Returns the first non-empty candidate, or ``None`` if none is found.
+    """
+    candidates: list[str] = []
+
+    # Prefer remote host description when available.
+    remote_description = (
+        remote_repo_data.get("description") if remote_repo_data else None
+    )
+    if isinstance(remote_description, str) and remote_description.strip():
+        candidates.append(remote_description.strip())
+
+    # CITATION.cff abstract from repository root (if present).
+    citation_text = read_file(
+        repo=repo, filepath="CITATION.cff", case_insensitive=False
+    )
+    if citation_text:
+        try:
+            citation_data = yaml.safe_load(citation_text) or {}
+            abstract = citation_data.get("abstract")
+            if isinstance(abstract, str) and abstract.strip():
+                candidates.append(abstract.strip())
+        except yaml.YAMLError:
+            LOGGER.debug(
+                "Unable to parse CITATION.cff when deriving software description."
+            )
+
+    # README first paragraph as a fallback.
+    if readme_exists:
+        readme_content = read_file(repo=repo, entry=readme_file)
+        if isinstance(readme_content, str):
+            for block in readme_content.split("\n\n"):
+                candidate = block.strip()
+                if candidate:
+                    # Avoid capturing badges / pure markdown image blocks.
+                    if not candidate.lower().startswith("!["):
+                        candidates.append(candidate)
+                    break
+
+    return next((c for c in candidates if c), None)
+
+
 def is_conda_environment_yaml(content: str) -> bool:
     """Return True if *content* looks like a conda environment YAML file.
 
@@ -922,44 +976,11 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-source-code-url",
         "repo-issue-tracker-url",
     ):
-        # prefer remote host description when available
-        description_candidates: list[str] = []
-        remote_description = (
-            remote_repo_data.get("description") if remote_repo_data else None
-        )
-        if isinstance(remote_description, str) and remote_description.strip():
-            description_candidates.append(remote_description.strip())
-
-        # CITATION.cff abstract from repository root (if present)
-        citation_text = read_file(
-            repo=repo, filepath="CITATION.cff", case_insensitive=False
-        )
-        if citation_text:
-            try:
-                citation_data = yaml.safe_load(citation_text) or {}
-                abstract = citation_data.get("abstract")
-                if isinstance(abstract, str) and abstract.strip():
-                    description_candidates.append(abstract.strip())
-            except yaml.YAMLError:
-                LOGGER.debug(
-                    "Unable to parse CITATION.cff when deriving software description."
-                )
-
-        # README first paragraph as a fallback
-        if readme_exists:
-            readme_content = read_file(repo=repo, entry=readme_file)
-            if isinstance(readme_content, str):
-                # take the first non-empty line or paragraph
-                for block in readme_content.split("\n\n"):
-                    candidate = block.strip()
-                    if candidate:
-                        # avoid capturing badges / pure markdown image blocks
-                        if not candidate.lower().startswith("!["):
-                            description_candidates.append(candidate)
-                        break
-
-        software_description = next(
-            (candidate for candidate in description_candidates if candidate), None
+        software_description = _get_software_description(
+            repo=repo,
+            remote_repo_data=remote_repo_data,
+            readme_exists=readme_exists,
+            readme_file=readme_file,
         )
 
         # documentation / homepage URL from remote metadata where possible
