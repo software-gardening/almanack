@@ -72,52 +72,16 @@ DATETIME_NOW = datetime.now(timezone.utc)
 # Update this hash intentionally when pulling in upstream Linguist changes.
 _LINGUIST_LANGUAGES_URL = "https://raw.githubusercontent.com/github-linguist/linguist/240bf9233bbfe82209e9c5437ab8ec06ba648c91/lib/linguist/languages.yml"
 
-# Fallback set used when the Linguist YAML cannot be fetched or parsed.
-# Kept intentionally small — the live Linguist data is the authoritative source.
-_FALLBACK_PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
-    {
-        ".py",
-        ".ipynb",
-        ".R",
-        ".r",
-        ".js",
-        ".jsx",
-        ".ts",
-        ".tsx",
-        ".java",
-        ".c",
-        ".h",
-        ".hpp",
-        ".cc",
-        ".cpp",
-        ".go",
-        ".rs",
-        ".rb",
-        ".php",
-        ".cs",
-        ".swift",
-        ".kt",
-        ".m",
-        ".mm",
-        ".scala",
-        ".hs",
-        ".jl",
-        ".sh",
-        ".bash",
-        ".zsh",
-        ".ps1",
-        ".psm1",
-        ".pl",
-        ".pm",
-        ".sql",
-        ".dart",
-        ".lua",
-        ".clj",
-        ".cljs",
-        ".ex",
-        ".exs",
-    }
+_PROGRAMMING_EXTENSIONS_FILE = (
+    pathlib.Path(__file__).parent / "programming_extensions.yml"
 )
+
+# Fallback set loaded from programming_extensions.yml. Used when the live
+# Linguist languages.yml cannot be fetched or parsed.
+with open(_PROGRAMMING_EXTENSIONS_FILE, "r") as _f:
+    _FALLBACK_PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
+        yaml.safe_load(_f).get("extensions", [])
+    )
 
 # Module-level cache; populated on first call to _get_programming_extensions().
 _programming_extensions_cache: Optional[frozenset[str]] = None
