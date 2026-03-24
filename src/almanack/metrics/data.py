@@ -623,12 +623,12 @@ def is_conda_environment_yaml(content: str) -> bool:
 
 
 def _parse_setup_py_console_scripts(content: str) -> set[str]:
-    """Return console_scripts command names declared in a setup.py string.
+    """Extract console_scripts command names from a setup.py string.
 
-    Parses the file as a Python AST and looks for a ``setup()`` or
-    ``setuptools.setup()`` call whose ``entry_points`` keyword argument
-    contains a ``console_scripts`` list. Returns an empty set if the file
-    cannot be parsed or contains no matching entries.
+    Parses the content as a Python Abstract Syntax Tree (AST) and looks for a
+    ``setup()`` or ``setuptools.setup()`` call whose ``entry_points`` keyword
+    argument contains a ``console_scripts`` list. Returns an empty set if the
+    file cannot be parsed or contains no matching entries.
     """
     try:
         tree = ast.parse(content)
