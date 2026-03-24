@@ -168,11 +168,13 @@ def _walk_tree_collect_noncode(
 ) -> Dict[str, int]:
     """Recursively walk a git tree and count lines per non-code file extension.
 
-    For each blob (file) in the tree, the file is skipped if its extension
+    The function iterates through each blob (file) in the tree, and counts new lines for
+    non-code files. Specifically, the function will skip a file if the extension
     appears in ``_get_programming_extensions()`` or if it lives inside a ``.git/``
-    directory. Text files are counted by newline; binary files fall back to
-    byte length. Results are aggregated into a ``{extension: line_count}`` dict
-    where files with no extension use the key ``"<no_ext>"``.
+    directory. The function counts non-code, text-based files by newline and counts
+    binary files based on byte length. Lastly, the function computes a sum per file
+    extension and writes into a ``{extension: line_count}`` dict where files missing an extension
+    use the key ``"<no_ext>"``.
     """
     counts: Dict[str, int] = {}
 
