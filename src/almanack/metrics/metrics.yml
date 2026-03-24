@@ -320,7 +320,7 @@ metrics:
       or some other means of indicating how to cite the work.
     correction_guidance: >-
       Consider adding a CITATION file to the repository
-      (e.g. citation.cff, etc.).
+      (for example, citation.cff, etc.).
     fix_why: >-
       A CITATION file is important for providing a standardized way
       to cite the work, making it easier for others to reference and
@@ -330,7 +330,7 @@ metrics:
     fix_how: >-
       Create a CITATION file in the root directory of your repository.
       Include information on how to cite the work, such as the authors,
-      title, publication date, and any relevant identifiers (e.g., DOI).
+      title, publication date, and any relevant identifiers (for example, DOI).
       You can use the Citation File Format (CFF) standard to structure
       the CITATION file for better compatibility with citation tools.
       For example, you can start with a text editor or use an online
@@ -355,7 +355,7 @@ metrics:
       with the term.
     fix_how: >-
       Change the default branch name in your
-      source control platform (e.g., GitHub, GitLab,
+      source control platform (for example, GitHub, GitLab,
       Bitbucket) to a more inclusive term like 'main',
       'develop', or any other preferred name.
       This can usually be done through the repository
@@ -474,7 +474,7 @@ metrics:
       a clear record of project development, facilitates collaboration,
       and allows for better prioritization of tasks.
     fix_how: >-
-      Enable issues on your repository hosting platform (e.g., GitHub,
+      Enable issues on your repository hosting platform (for example, GitHub,
       GitLab, Bitbucket) if not already enabled. This can usually be done
       through the repository settings or by creating an issue template.
       Encourage contributors to use issues for reporting bugs, suggesting
@@ -580,8 +580,8 @@ metrics:
       resolved and used to reference the work correctly.
     fix_how: >-
       Ensure that the DOI in the CITATION.cff file follows the standard
-      DOI format, which typically includes a prefix (e.g., 10.1234) and a
-      suffix (e.g., 56789/abcde). The DOI should be in the format:
+      DOI format, which typically includes a prefix (for example, 10.1234) and a
+      suffix (for example, 56789/abcde). The DOI should be in the format:
       `10.<prefix>/<suffix>`. If the DOI is missing or incorrectly formatted,
       update it to match the correct structure.
   - name: "repo-doi-https-resolvable"
