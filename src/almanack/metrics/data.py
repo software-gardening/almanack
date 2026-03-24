@@ -202,6 +202,9 @@ def _walk_tree_measure_size_of_noncode_files(
                 value = len(blob_data)
         except Exception:
             # If anything goes wrong, conservatively use zero.
+            LOGGER.debug(
+                "Unable to read blob data for %s; defaulting size to 0.", prefix, exc_info=True
+            )
             value = 0
 
         ext_key = suffix or "<no_ext>"
