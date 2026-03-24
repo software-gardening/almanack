@@ -506,7 +506,7 @@ def _get_software_description(
     2. The ``abstract`` field from a ``CITATION.cff`` file in the repo root.
     3. The first non-badge paragraph of the README.
 
-    Returns the first non-empty candidate, or ``None`` if none is found.
+    Returns the first non-empty candidate, or ``None`` if the repo doesn't include any priority entry.
     """
     candidates: list[str] = []
 
