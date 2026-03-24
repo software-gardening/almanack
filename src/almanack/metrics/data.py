@@ -15,6 +15,8 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
+# tomllib was added to the standard library in Python 3.11; for 3.10 we fall
+# back to the third-party tomli backport which exposes the same API.
 if sys.version_info >= (3, 11):
     import tomllib
 else:
