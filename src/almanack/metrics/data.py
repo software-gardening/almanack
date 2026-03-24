@@ -501,7 +501,7 @@ def _get_software_description(
 ) -> Optional[str]:
     """Return the best available plain-text description for the repository.
 
-    Candidates are tried in priority order:
+    The function uses the following priority order:
     1. The description field from remote hosting metadata (e.g. ecosyste.ms / GitHub).
     2. The ``abstract`` field from a ``CITATION.cff`` file in the repo root.
     3. The first non-badge paragraph of the README.
