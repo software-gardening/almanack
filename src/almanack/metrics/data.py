@@ -68,7 +68,9 @@ LOGGER = logging.getLogger(__name__)
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
 
-_LINGUIST_LANGUAGES_URL = "https://raw.githubusercontent.com/github-linguist/linguist/main/lib/linguist/languages.yml"
+# Pinned to a specific commit to ensure reproducible extension data.
+# Update this hash intentionally when pulling in upstream Linguist changes.
+_LINGUIST_LANGUAGES_URL = "https://raw.githubusercontent.com/github-linguist/linguist/240bf9233bbfe82209e9c5437ab8ec06ba648c91/lib/linguist/languages.yml"
 
 # Fallback set used when the Linguist YAML cannot be fetched or parsed.
 # Kept intentionally small — the live Linguist data is the authoritative source.
