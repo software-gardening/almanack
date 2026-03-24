@@ -1594,9 +1594,9 @@ def test_get_programming_extensions_falls_back_on_network_error(monkeypatch):
     assert result == _FALLBACK_PROGRAMMING_EXTENSIONS
 
 
-def test_walk_tree_collect_noncode(tmp_path):
-    """Test _walk_tree_collect_noncode counts non-code file lines and skips code files."""
-    from almanack.metrics.data import _walk_tree_collect_noncode
+def test_walk_tree_measure_size_of_noncode_files(tmp_path):
+    """Test _walk_tree_measure_size_of_noncode_files counts non-code file lines and skips code files."""
+    from almanack.metrics.data import _walk_tree_measure_size_of_noncode_files
 
     repo = repo_setup(
         repo_path=tmp_path,
@@ -1615,7 +1615,7 @@ def test_walk_tree_collect_noncode(tmp_path):
     )
 
     root_tree = repo.head.peel().tree
-    counts = _walk_tree_collect_noncode(root_tree, repo=repo)
+    counts = _walk_tree_measure_size_of_noncode_files(root_tree, repo=repo)
 
     assert ".txt" in counts
     assert ".csv" in counts

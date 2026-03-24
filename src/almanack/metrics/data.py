@@ -161,7 +161,7 @@ def _get_programming_extensions() -> frozenset[str]:
     return _programming_extensions_cache
 
 
-def _walk_tree_collect_noncode(
+def _walk_tree_measure_size_of_noncode_files(
     tree: Union["pygit2.Tree", "pygit2.Blob"],
     repo: "pygit2.Repository",
     prefix: str = "",
@@ -213,7 +213,7 @@ def _walk_tree_collect_noncode(
                 subtree_or_blob = repo[entry.id]
             except (KeyError, pygit2.GitError):
                 continue
-            child_counts = _walk_tree_collect_noncode(
+            child_counts = _walk_tree_measure_size_of_noncode_files(
                 subtree_or_blob,
                 repo=repo,
                 prefix=entry_path,
@@ -923,7 +923,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-noncode-extensions-count",
     ):
         root_tree = repo.head.peel().tree
-        ext_counts = _walk_tree_collect_noncode(root_tree, repo=repo)
+        ext_counts = _walk_tree_measure_size_of_noncode_files(root_tree, repo=repo)
         if ext_counts:
             noncode_extension_line_counts = ext_counts
             noncode_total_lines = int(sum(ext_counts.values()))
