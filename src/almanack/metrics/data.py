@@ -217,6 +217,7 @@ def _walk_tree_measure_size_of_noncode_files(
             try:
                 subtree_or_blob = repo[entry.id]
             except (KeyError, pygit2.GitError):
+                LOGGER.debug("Unable to resolve git object for %s; skipping.", entry_path)
                 continue
             child_counts = _walk_tree_measure_size_of_noncode_files(
                 subtree_or_blob,
