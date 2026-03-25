@@ -167,7 +167,9 @@ def _walk_tree_measure_size_of_noncode_files(
         except Exception:
             # If anything goes wrong, conservatively use zero.
             LOGGER.debug(
-                "Unable to read blob data for %s; defaulting size to 0.", prefix, exc_info=True
+                "Unable to read blob data for %s; defaulting size to 0.",
+                prefix,
+                exc_info=True,
             )
             value = 0
 
@@ -181,7 +183,9 @@ def _walk_tree_measure_size_of_noncode_files(
             try:
                 subtree_or_blob = repo[entry.id]
             except (KeyError, pygit2.GitError):
-                LOGGER.debug("Unable to resolve git object for %s; skipping.", entry_path)
+                LOGGER.debug(
+                    "Unable to resolve git object for %s; skipping.", entry_path
+                )
                 continue
             child_counts = _walk_tree_measure_size_of_noncode_files(
                 subtree_or_blob,
@@ -528,7 +532,10 @@ def _get_pyproject_python_version(content: str) -> Optional[str]:
         return None
 
     poetry_python = (
-        pyproject.get("tool", {}).get("poetry", {}).get("dependencies", {}).get("python")
+        pyproject.get("tool", {})
+        .get("poetry", {})
+        .get("dependencies", {})
+        .get("python")
     )
     if isinstance(poetry_python, str) and poetry_python.strip():
         return poetry_python.strip()
@@ -681,9 +688,7 @@ def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
             )
 
     # Inspect setup.py entry_points for console_scripts
-    setup_py_content = read_file(
-        repo=repo, filepath="setup.py", case_insensitive=False
-    )
+    setup_py_content = read_file(repo=repo, filepath="setup.py", case_insensitive=False)
     if isinstance(setup_py_content, str):
         discovered_commands.update(_parse_setup_py_console_scripts(setup_py_content))
 
@@ -984,9 +989,7 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             "conda-environment.yaml",
         )
         for _conda_fname in _conda_candidate_names:
-            env_yml = read_file(
-                repo=repo, filepath=_conda_fname, case_insensitive=True
-            )
+            env_yml = read_file(repo=repo, filepath=_conda_fname, case_insensitive=True)
             if not isinstance(env_yml, str) or not is_conda_environment_yaml(env_yml):
                 continue
             managers.add("conda")

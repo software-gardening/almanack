@@ -1352,7 +1352,10 @@ def test_is_conda_environment_yaml(content, expected):
     "remote_repo_data, expected",
     [
         # Prefer languages_lines key
-        ({"languages_lines": {"Python": 1000, "Shell": 200}}, {"Python": 1000, "Shell": 200}),
+        (
+            {"languages_lines": {"Python": 1000, "Shell": 200}},
+            {"Python": 1000, "Shell": 200},
+        ),
         # Fall through to languages_loc when languages_lines absent
         ({"languages_loc": {"R": 500}}, {"R": 500}),
         # Fall through to languages key last
@@ -1735,7 +1738,10 @@ def test_conda_detection_alternate_filenames(tmp_path, filename):
     )
     repo_data = compute_repo_data(
         str(tmp_path),
-        required_metric_names={"repo-environment-managers", "repo-declared-python-versions"},
+        required_metric_names={
+            "repo-environment-managers",
+            "repo-declared-python-versions",
+        },
     )
     assert "conda" in repo_data["repo-environment-managers"]
     assert "3.11" in repo_data["repo-declared-python-versions"]
@@ -1743,8 +1749,9 @@ def test_conda_detection_alternate_filenames(tmp_path, filename):
 
 def test_get_programming_extensions_parses_linguist(monkeypatch):
     """Test _get_programming_extensions correctly parses a Linguist-shaped YAML response."""
-    import almanack.metrics.data as data_mod
     import requests
+
+    import almanack.metrics.data as data_mod
 
     monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
 
@@ -1756,7 +1763,9 @@ def test_get_programming_extensions_parses_linguist(monkeypatch):
 
     class _FakeResponse:
         text = minimal_languages_yml
-        def raise_for_status(self): pass
+
+        def raise_for_status(self):
+            pass
 
     monkeypatch.setattr(requests, "get", lambda *_a, **_kw: _FakeResponse())
 
