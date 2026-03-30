@@ -139,6 +139,19 @@ def _walk_tree_measure_size_of_noncode_files(
     binary files based on byte length. Lastly, the function computes a sum per file
     extension and writes into a ``{extension: line_count}`` dict where files missing an extension
     use the key ``"<no_ext>"``.
+
+    Args:
+        tree: A pygit2 Tree or Blob to walk. Top-level callers pass the root
+            tree; recursive calls pass subtrees or blobs.
+        repo: The pygit2 Repository used to dereference object IDs when
+            traversing subtrees.
+        prefix: Relative file path accumulated during recursion. Defaults to
+            an empty string for the root call.
+
+    Returns:
+        A dictionary mapping each non-code file extension (for example,
+        ``.md``, ``.csv``) to its approximate line or byte count. Files
+        without an extension are keyed as ``"<no_ext>"``.
     """
     counts: Dict[str, int] = {}
 
