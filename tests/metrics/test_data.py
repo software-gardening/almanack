@@ -12,19 +12,30 @@ import jsonschema
 import pandas as pd
 import pygit2
 import pytest
+import requests
 import yaml
 
-from almanack.git import get_remote_url
+from almanack.git import find_file, get_remote_url
 from almanack.metrics import data as data_module
 from almanack.metrics.data import (
     METRICS_TABLE,
+    _FALLBACK_PROGRAMMING_EXTENSIONS,
     _get_almanack_version,
+    _get_cli_entrypoints,
+    _get_conda_python_version,
+    _get_programming_extensions,
+    _get_pyproject_python_version,
+    _get_repository_languages_data,
+    _get_software_description,
+    _parse_setup_py_console_scripts,
+    _walk_tree_measure_size_of_noncode_files,
     compute_almanack_score,
     compute_repo_data,
     gather_failed_almanack_metric_checks,
     get_api_data,
     get_github_build_metrics,
     get_table,
+    is_conda_environment_yaml,
     measure_coverage,
 )
 from almanack.metrics.garden_lattice.connectedness import (
@@ -1301,7 +1312,7 @@ def test_compute_repo_data_cli_detection(
     """
     Test CLI entrypoint detection from pyproject.toml and setup.cfg metadata.
     """
-    repo = repo_setup(repo_path=tmp_path, files=[files])
+    repo_setup(repo_path=tmp_path, files=[files])
 
     repo_data = compute_repo_data(str(tmp_path))
 
@@ -1341,8 +1352,6 @@ def test_compute_repo_data_cli_detection(
 )
 def test_is_conda_environment_yaml(content, expected):
     """Test is_conda_environment_yaml correctly identifies conda env files."""
-    from almanack.metrics.data import is_conda_environment_yaml
-
     assert is_conda_environment_yaml(content) is expected
 
 
@@ -1368,8 +1377,6 @@ def test_is_conda_environment_yaml(content, expected):
 )
 def test_get_repository_languages_data_from_remote(remote_repo_data, expected):
     """Test _get_repository_languages_data uses remote metadata when available."""
-    from almanack.metrics.data import _get_repository_languages_data
-
     result = _get_repository_languages_data(
         remote_repo_data=remote_repo_data or {}, remote_url=None
     )
@@ -1425,9 +1432,6 @@ def test_get_software_description(
     tmp_path, files, remote_repo_data, readme_exists, expected_description
 ):
     """Test _get_software_description priority order across sources."""
-    from almanack.git import find_file
-    from almanack.metrics.data import _get_software_description
-
     repo = repo_setup(repo_path=tmp_path, files=[files])
     readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
 
@@ -1500,8 +1504,6 @@ def test_get_software_description(
 )
 def test_get_cli_entrypoints(tmp_path, files, expected_commands):
     """Test _get_cli_entrypoints discovers commands from pyproject.toml and setup.cfg."""
-    from almanack.metrics.data import _get_cli_entrypoints
-
     repo = repo_setup(repo_path=tmp_path, files=[files])
     result = _get_cli_entrypoints(repo=repo)
     assert result == sorted(expected_commands)
@@ -1546,15 +1548,11 @@ def test_get_cli_entrypoints(tmp_path, files, expected_commands):
 )
 def test_parse_setup_py_console_scripts(content, expected):
     """Test _parse_setup_py_console_scripts extracts console_scripts via AST."""
-    from almanack.metrics.data import _parse_setup_py_console_scripts
-
     assert _parse_setup_py_console_scripts(content) == expected
 
 
 def test_get_programming_extensions_returns_frozenset():
     """Test _get_programming_extensions returns a non-empty frozenset of dot-prefixed strings."""
-    from almanack.metrics.data import _get_programming_extensions
-
     exts = _get_programming_extensions()
     assert isinstance(exts, frozenset)
     assert len(exts) > 0
@@ -1563,11 +1561,8 @@ def test_get_programming_extensions_returns_frozenset():
 
 def test_get_programming_extensions_cached(monkeypatch):
     """Test _get_programming_extensions returns the same object on repeated calls (cached)."""
-    import almanack.metrics.data as data_mod
-    from almanack.metrics.data import _get_programming_extensions
-
     # Reset the cache to force a fresh fetch/fallback cycle.
-    monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
+    monkeypatch.setattr(data_module, "_programming_extensions_cache", None)
 
     first = _get_programming_extensions()
     second = _get_programming_extensions()
@@ -1576,15 +1571,7 @@ def test_get_programming_extensions_cached(monkeypatch):
 
 def test_get_programming_extensions_falls_back_on_network_error(monkeypatch):
     """Test _get_programming_extensions falls back to the static set when fetch fails."""
-    import almanack.metrics.data as data_mod
-    from almanack.metrics.data import (
-        _FALLBACK_PROGRAMMING_EXTENSIONS,
-        _get_programming_extensions,
-    )
-
-    monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
-
-    import requests
+    monkeypatch.setattr(data_module, "_programming_extensions_cache", None)
 
     def _raise(*_args, **_kwargs):
         raise requests.ConnectionError("simulated offline")
@@ -1597,8 +1584,6 @@ def test_get_programming_extensions_falls_back_on_network_error(monkeypatch):
 
 def test_walk_tree_measure_size_of_noncode_files(tmp_path):
     """Test _walk_tree_measure_size_of_noncode_files counts non-code file lines and skips code files."""
-    from almanack.metrics.data import _walk_tree_measure_size_of_noncode_files
-
     repo = repo_setup(
         repo_path=tmp_path,
         files=[
@@ -1626,11 +1611,8 @@ def test_walk_tree_measure_size_of_noncode_files(tmp_path):
 
 def test_get_repository_languages_data_github_fallback(monkeypatch):
     """Test _get_repository_languages_data falls back to the GitHub API when remote data is empty."""
-    import almanack.metrics.data as data_mod
-    from almanack.metrics.data import _get_repository_languages_data
-
     monkeypatch.setattr(
-        data_mod,
+        data_module,
         "get_api_data",
         lambda api_endpoint: {"Python": 5000, "Shell": 300},
     )
@@ -1644,11 +1626,8 @@ def test_get_repository_languages_data_github_fallback(monkeypatch):
 
 def test_get_repository_languages_data_github_fallback_non_github_skipped(monkeypatch):
     """Test _get_repository_languages_data does not call the API for non-GitHub URLs."""
-    import almanack.metrics.data as data_mod
-    from almanack.metrics.data import _get_repository_languages_data
-
     called = []
-    monkeypatch.setattr(data_mod, "get_api_data", lambda **_: called.append(1) or {})
+    monkeypatch.setattr(data_module, "get_api_data", lambda **_: called.append(1) or {})
 
     result = _get_repository_languages_data(
         remote_repo_data={},
@@ -1690,8 +1669,6 @@ def test_get_repository_languages_data_github_fallback_non_github_skipped(monkey
 )
 def test_get_pyproject_python_version(content, expected):
     """Test _get_pyproject_python_version extracts the declared Python version."""
-    from almanack.metrics.data import _get_pyproject_python_version
-
     assert _get_pyproject_python_version(content) == expected
 
 
@@ -1712,8 +1689,6 @@ def test_get_pyproject_python_version(content, expected):
 )
 def test_get_conda_python_version(content, expected):
     """Test _get_conda_python_version extracts the Python version from a conda env YAML."""
-    from almanack.metrics.data import _get_conda_python_version
-
     assert _get_conda_python_version(content) == expected
 
 
@@ -1730,7 +1705,7 @@ def test_get_conda_python_version(content, expected):
 )
 def test_conda_detection_alternate_filenames(tmp_path, filename):
     """Test that conda is detected regardless of which conventional filename is used."""
-    repo = repo_setup(
+    repo_setup(
         repo_path=tmp_path,
         files=[{"files": {filename: "name: myenv\ndependencies:\n  - python=3.11\n"}}],
     )
@@ -1747,11 +1722,7 @@ def test_conda_detection_alternate_filenames(tmp_path, filename):
 
 def test_get_programming_extensions_parses_linguist(monkeypatch):
     """Test _get_programming_extensions correctly parses a Linguist-shaped YAML response."""
-    import requests
-
-    import almanack.metrics.data as data_mod
-
-    monkeypatch.setattr(data_mod, "_programming_extensions_cache", None)
+    monkeypatch.setattr(data_module, "_programming_extensions_cache", None)
 
     minimal_languages_yml = (
         "Python:\n  type: programming\n  extensions:\n    - .py\n    - .pyw\n"
@@ -1766,8 +1737,6 @@ def test_get_programming_extensions_parses_linguist(monkeypatch):
             pass
 
     monkeypatch.setattr(requests, "get", lambda *_a, **_kw: _FakeResponse())
-
-    from almanack.metrics.data import _get_programming_extensions
 
     exts = _get_programming_extensions()
     assert ".py" in exts
@@ -1855,7 +1824,7 @@ def test_get_programming_extensions_parses_linguist(monkeypatch):
         ),
     ],
 )
-def test_dependency_vs_environment_managers(
+def test_dependency_vs_environment_managers(  # noqa: PLR0913
     tmp_path,
     files,
     expected_dep_managers,

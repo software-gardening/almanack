@@ -99,7 +99,7 @@ def _get_programming_extensions() -> frozenset[str]:
         return _programming_extensions_cache
 
     try:
-        import requests as _requests
+        import requests as _requests  # noqa: PLC0415
 
         # fetch the upstream Linguist languages.yml
         response = _requests.get(_LINGUIST_LANGUAGES_URL, timeout=10)
@@ -474,7 +474,7 @@ def _get_repository_languages_data(
         parsed = urlparse(remote_url)
         if parsed.netloc == "github.com":
             parts = parsed.path.strip("/").split("/")
-            if len(parts) >= 2:
+            if len(parts) >= 2:  # noqa: PLR2004
                 owner, repo_name = parts[0], parts[1]
                 github_languages = get_api_data(
                     api_endpoint=f"https://api.github.com/repos/{owner}/{repo_name}/languages"
@@ -655,7 +655,7 @@ def is_conda_environment_yaml(content: str) -> bool:
     return bool({"name", "channels", "dependencies"} & data.keys())
 
 
-def _parse_setup_py_console_scripts(content: str) -> set[str]:
+def _parse_setup_py_console_scripts(content: str) -> set[str]:  # noqa: C901, PLR0912
     """Extract console_scripts command names from a setup.py string.
 
     Parses the content as a Python Abstract Syntax Tree (AST) and looks for a
@@ -707,7 +707,7 @@ def _parse_setup_py_console_scripts(content: str) -> set[str]:
     return commands
 
 
-def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
+def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:  # noqa: C901
     """Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py.
 
     Args:
@@ -772,7 +772,7 @@ def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
     return sorted(discovered_commands)
 
 
-def _get_python_environment_data(
+def _get_python_environment_data(  # noqa: C901, PLR0912
     repo: pygit2.Repository,
 ) -> Dict[str, Any]:
     """Detect Python environment and dependency management tools in the repository.
