@@ -77,6 +77,50 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
+  - name: "repo-software-description"
+    id: "SGA-META-0018"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      Short free-text description of the software project, assembled from
+      repository hosting metadata (for example, GitHub or GitLab description),
+      CITATION.cff abstract, or README content when available.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-docs-homepage-url"
+    id: "SGA-META-0019"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      URL of the primary documentation or project homepage, when available.
+      Derived from repository hosting metadata (for example, homepage field on
+      Git hosting platform APIs).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-source-code-url"
+    id: "SGA-META-0020"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      Canonical URL pointing to the primary source code repository for the
+      software project (for example, the Git hosting HTML URL).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-issue-tracker-url"
+    id: "SGA-META-0021"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      URL for the primary issue tracker associated with the software project.
+      This may be on the code hosting platform (for example, /issues on GitHub)
+      or a separate tracker URL. A value of null indicates that no issue tracker
+      URL was detected.
+    correction_guidance:
+    fix_why:
+    fix_how:
   - name: "repo-primary-language"
     id: "SGA-META-0009"
     result-type: "str"
@@ -276,7 +320,7 @@ metrics:
       or some other means of indicating how to cite the work.
     correction_guidance: >-
       Consider adding a CITATION file to the repository
-      (e.g. citation.cff, etc.).
+      (for example, citation.cff, etc.).
     fix_why: >-
       A CITATION file is important for providing a standardized way
       to cite the work, making it easier for others to reference and
@@ -286,7 +330,7 @@ metrics:
     fix_how: >-
       Create a CITATION file in the root directory of your repository.
       Include information on how to cite the work, such as the authors,
-      title, publication date, and any relevant identifiers (e.g., DOI).
+      title, publication date, and any relevant identifiers (for example, DOI).
       You can use the Citation File Format (CFF) standard to structure
       the CITATION file for better compatibility with citation tools.
       For example, you can start with a text editor or use an online
@@ -311,7 +355,7 @@ metrics:
       with the term.
     fix_how: >-
       Change the default branch name in your
-      source control platform (e.g., GitHub, GitLab,
+      source control platform (for example, GitHub, GitLab,
       Bitbucket) to a more inclusive term like 'main',
       'develop', or any other preferred name.
       This can usually be done through the repository
@@ -430,7 +474,7 @@ metrics:
       a clear record of project development, facilitates collaboration,
       and allows for better prioritization of tasks.
     fix_how: >-
-      Enable issues on your repository hosting platform (e.g., GitHub,
+      Enable issues on your repository hosting platform (for example, GitHub,
       GitLab, Bitbucket) if not already enabled. This can usually be done
       through the repository settings or by creating an issue template.
       Encourage contributors to use issues for reporting bugs, suggesting
@@ -536,8 +580,8 @@ metrics:
       resolved and used to reference the work correctly.
     fix_how: >-
       Ensure that the DOI in the CITATION.cff file follows the standard
-      DOI format, which typically includes a prefix (e.g., 10.1234) and a
-      suffix (e.g., 56789/abcde). The DOI should be in the format:
+      DOI format, which typically includes a prefix (for example, 10.1234) and a
+      suffix (for example, 56789/abcde). The DOI should be in the format:
       `10.<prefix>/<suffix>`. If the DOI is missing or incorrectly formatted,
       update it to match the correct structure.
   - name: "repo-doi-https-resolvable"
@@ -769,6 +813,240 @@ metrics:
     description: >-
       Combined unique-funder count across DOI work and sampled citing works
       (set-union cardinality, not a simple sum).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-line-counts"
+    id: "SGA-SF-0012"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Mapping from detected programming language name to an approximate line or
+      byte count of source code for that language. Values are derived from
+      repository hosting language statistics (for example, the GitHub
+      languages API or ecosyste.ms mirrors).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-total-lines"
+    id: "SGA-SF-0013"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregate total of language line/byte counts across all detected
+      programming languages in the repository.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-languages-count"
+    id: "SGA-SF-0014"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Number of distinct programming languages detected for the repository
+      based on hosting platform language statistics.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-extension-line-counts"
+    id: "SGA-SF-0015"
+    result-type: "dict"
+    sustainability_correlation: 0
+    description: >-
+      Mapping from non-programming file extension (for example, .md, .txt,
+      .csv, .png) to an approximate line or size count for repository files
+      with that extension. For text-like files this is a line count; for
+      binary or undecodable files this is estimated from their byte size.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-total-lines"
+    id: "SGA-SF-0016"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Aggregate total of approximate line or size counts across all detected
+      non-programming-language files in the repository.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-noncode-extensions-count"
+    id: "SGA-SF-0017"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Number of distinct non-programming file extensions detected when
+      scanning the repository tree.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-cli"
+    id: "SGA-SF-0018"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software exposes at least one command-line
+      interface (CLI) entrypoint, as detected from packaging metadata
+      and common configuration files (for example, pyproject.toml or
+      setup.cfg console_scripts).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-cli-entrypoints"
+    id: "SGA-SF-0019"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of CLI commands used to invoke the software, as inferred from
+      packaging metadata (for example, [project.scripts],
+      [tool.poetry.scripts], or console_scripts in setup.cfg).
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-topics"
+    id: "SGA-GL-0046"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of descriptive topics, labels, or tags associated with the
+      software project as reported by the hosting platform (for example,
+      GitHub repository topics) or mirrored metadata.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-topics-count"
+    id: "SGA-GL-0047"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of descriptive topics, labels, or tags associated with the
+      software project.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-environment-managers"
+    id: "SGA-SF-0021"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of detected environment management tools configured for the
+      software project (for example, Poetry, Conda, Pipenv, or Nix).
+      These tools manage the full environment including Python version
+      pinning and isolated environment creation, as distinct from
+      dependency-only tools captured in repo-dependency-managers.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-managed-environment"
+    id: "SGA-SF-0022"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software project appears to use at least one
+      explicit environment manager rather than relying solely on baseline
+      language imports.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-dependency-managers"
+    id: "SGA-SF-0010"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      List of detected dependency management tools configured for the
+      software project (for example, pip via requirements.txt, setup.py,
+      or setup.cfg). Unlike environment managers, these tools declare
+      dependencies but do not fully control the Python version or
+      isolated environment creation.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-declared-dependencies"
+    id: "SGA-SF-0011"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the software project declares its dependencies
+      via at least one dependency management file (for example,
+      requirements.txt, setup.py, or setup.cfg), even if a full
+      environment manager is not present.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-declared-python-versions"
+    id: "SGA-SF-0023"
+    result-type: "list"
+    sustainability_correlation: 0
+    description: >-
+      Python version constraints declared by the project in packaging or
+      environment configuration files (for example, pyproject.toml,
+      environment.yml, or runtime.txt), normalized to a list of strings.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-cost-model"
+    id: "SGA-GL-0048"
+    result-type: "str"
+    sustainability_correlation: 0
+    description: >-
+      High-level cost model for the software project (for example, free,
+      open-source with paid support, freemium, or paid), as reported by
+      external catalog or hosting metadata when available. A null value
+      indicates that no cost model information was found.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-edam-owl"
+    id: "SGA-SF-0024"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository contains an EDAM ontology file
+      (for example, edam.owl) used to describe software semantics or
+      interoperability.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-biotools-json"
+    id: "SGA-SF-0025"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes a bio.tools JSON metadata
+      file (for example, biotools.json) describing the software.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-codemeta-json"
+    id: "SGA-SF-0026"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes a CodeMeta JSON file
+      (for example, codemeta.json) providing machine-readable software
+      metadata.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-has-ro-crate-metadata-json"
+    id: "SGA-SF-0027"
+    result-type: "bool"
+    sustainability_correlation: 0
+    description: >-
+      Indicates whether the repository includes an RO-Crate metadata file
+      (for example, ro-crate-metadata.json) describing the research object
+      or software package.
+    correction_guidance:
+    fix_why:
+    fix_how:
+  - name: "repo-software-metadata-files-count"
+    id: "SGA-SF-0028"
+    result-type: "int"
+    sustainability_correlation: 0
+    description: >-
+      Count of distinct software description metadata specifications
+      detected in the repository (for example, EDAM, bio.tools, CodeMeta,
+      RO-Crate).
     correction_guidance:
     fix_why:
     fix_how:

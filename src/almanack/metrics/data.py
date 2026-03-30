@@ -2,15 +2,25 @@
 This module computes data for GitHub Repositories
 """
 
+import ast
+import configparser
 import importlib
 import json
 import logging
 import pathlib
 import shutil
+import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
+
+# tomllib was added to the standard library in Python 3.11; for 3.10 we fall
+# back to the third-party tomli backport which exposes the same API.
+if sys.version_info >= (3, 11):
+    import tomllib
+else:
+    import tomli as tomllib
 
 import defusedxml.ElementTree as ET
 import pandas as pd
@@ -57,6 +67,152 @@ LOGGER = logging.getLogger(__name__)
 
 METRICS_TABLE = f"{pathlib.Path(__file__).parent!s}/metrics.yml"
 DATETIME_NOW = datetime.now(timezone.utc)
+
+# Pinned to a specific commit to ensure reproducible extension data.
+# Update this hash intentionally when pulling in upstream Linguist changes.
+_LINGUIST_LANGUAGES_URL = "https://raw.githubusercontent.com/github-linguist/linguist/240bf9233bbfe82209e9c5437ab8ec06ba648c91/lib/linguist/languages.yml"
+
+_PROGRAMMING_EXTENSIONS_FILE = (
+    pathlib.Path(__file__).parent / "programming_extensions.yml"
+)
+
+# Fallback set loaded from programming_extensions.yml. Used when the live
+# Linguist languages.yml cannot be fetched or parsed.
+with open(_PROGRAMMING_EXTENSIONS_FILE, "r") as _f:
+    _FALLBACK_PROGRAMMING_EXTENSIONS: frozenset[str] = frozenset(
+        yaml.safe_load(_f).get("extensions", [])
+    )
+
+# Module-level cache; populated on first call to _get_programming_extensions().
+_programming_extensions_cache: Optional[frozenset[str]] = None
+
+
+def _get_programming_extensions() -> frozenset[str]:
+    """Return file extensions that belong to programming languages per GitHub Linguist.
+
+    Fetches and parses the Linguist ``languages.yml`` on the first call, then
+    caches the result for the lifetime of the process. Falls back to
+    ``_FALLBACK_PROGRAMMING_EXTENSIONS`` if the fetch or parse fails.
+    """
+    global _programming_extensions_cache  # noqa: PLW0603
+    if _programming_extensions_cache is not None:
+        return _programming_extensions_cache
+
+    try:
+        import requests as _requests  # noqa: PLC0415
+
+        # fetch the upstream Linguist languages.yml
+        response = _requests.get(_LINGUIST_LANGUAGES_URL, timeout=10)
+        response.raise_for_status()
+        languages = yaml.safe_load(response.text) or {}
+        # collect file extensions for programming languages only
+        exts: set[str] = set()
+        for lang_meta in languages.values():
+            if not isinstance(lang_meta, dict):
+                continue
+            if lang_meta.get("type") == "programming":
+                for ext in lang_meta.get("extensions", []):
+                    if isinstance(ext, str):
+                        exts.add(ext)
+        # cache and return if we got a non-empty result
+        if exts:
+            _programming_extensions_cache = frozenset(exts)
+            return _programming_extensions_cache
+    except Exception:
+        LOGGER.debug(
+            "Unable to fetch Linguist languages.yml; falling back to built-in extension list.",
+            exc_info=True,
+        )
+
+    _programming_extensions_cache = _FALLBACK_PROGRAMMING_EXTENSIONS
+    return _programming_extensions_cache
+
+
+def _walk_tree_measure_size_of_noncode_files(
+    tree: Union["pygit2.Tree", "pygit2.Blob"],
+    repo: "pygit2.Repository",
+    prefix: str = "",
+) -> Dict[str, int]:
+    """Recursively walk a git tree and count lines per non-code file extension.
+
+    The function iterates through each blob (file) in the tree, and counts new lines for
+    non-code files. Specifically, the function will skip a file if the extension
+    appears in ``_get_programming_extensions()`` or if it lives inside a ``.git/``
+    directory. The function counts non-code, text-based files by newline and counts
+    binary files based on byte length. Lastly, the function computes a sum per file
+    extension and writes into a ``{extension: line_count}`` dict where files missing an extension
+    use the key ``"<no_ext>"``.
+
+    Args:
+        tree: A pygit2 Tree or Blob to walk. Top-level callers pass the root
+            tree; recursive calls pass subtrees or blobs.
+        repo: The pygit2 Repository used to dereference object IDs when
+            traversing subtrees.
+        prefix: Relative file path accumulated during recursion. Defaults to
+            an empty string for the root call.
+
+    Returns:
+        A dictionary mapping each non-code file extension (for example,
+        ``.md``, ``.csv``) to its approximate line or byte count. Files
+        without an extension are keyed as ``"<no_ext>"``.
+    """
+    counts: Dict[str, int] = {}
+
+    if isinstance(tree, pygit2.Blob):
+        path = prefix
+        suffix = pathlib.Path(path).suffix or ""
+
+        # Skip obvious VCS/config internals.
+        if "/.git/" in path or path.startswith(".git/"):
+            return counts
+
+        # Skip programming language files; we only want non-code here.
+        if suffix in _get_programming_extensions():
+            return counts
+
+        # Try to treat as text and count lines; fall back to byte size.
+        try:
+            blob_data: bytes = tree.data  # type: ignore[assignment]
+            try:
+                text = blob_data.decode("utf-8")
+                value = text.count("\n") + (
+                    1 if text and not text.endswith("\n") else 0
+                )
+            except UnicodeDecodeError:
+                value = len(blob_data)
+        except Exception:
+            # If anything goes wrong, conservatively use zero.
+            LOGGER.debug(
+                "Unable to read blob data for %s; defaulting size to 0.",
+                prefix,
+                exc_info=True,
+            )
+            value = 0
+
+        ext_key = suffix or "<no_ext>"
+        counts[ext_key] = counts.get(ext_key, 0) + int(value)
+        return counts
+
+    if isinstance(tree, pygit2.Tree):
+        for entry in tree:
+            entry_path = f"{prefix}/{entry.name}" if prefix else entry.name
+            try:
+                subtree_or_blob = repo[entry.id]
+            except (KeyError, pygit2.GitError):
+                LOGGER.debug(
+                    "Unable to resolve git object for %s; skipping.", entry_path
+                )
+                continue
+            child_counts = _walk_tree_measure_size_of_noncode_files(
+                subtree_or_blob,
+                repo=repo,
+                prefix=entry_path,
+            )
+            for ext, val in child_counts.items():
+                counts[ext] = counts.get(ext, 0) + val
+        return counts
+
+    return {}
 
 
 def _normalize_exclude_paths(
@@ -283,6 +439,451 @@ def days_of_development(repo: pygit2.Repository) -> float:
     return total_days
 
 
+def _get_repository_languages_data(
+    remote_repo_data: Dict[str, Any], remote_url: Optional[str]
+) -> Dict[str, int]:
+    """Return repository language line counts from remote metadata or GitHub.
+
+    Args:
+        remote_repo_data: Metadata dict from a hosting platform or ecosyste.ms
+            mirror. May contain a ``languages_lines``, ``languages_loc``, or
+            ``languages`` key with per-language counts.
+        remote_url: Remote URL of the repository, used to fall back to the
+            GitHub languages API when hosting metadata is unavailable.
+
+    Returns:
+        A dictionary mapping programming language name to an approximate line
+        or byte count. Returns an empty dict if no language data is found.
+    """
+    languages_data: Dict[str, int] = {}
+
+    # Prefer ecosyste.ms or hosting metadata if it already exposes language stats.
+    if remote_repo_data:
+        for key in ("languages_lines", "languages_loc", "languages"):
+            value = remote_repo_data.get(key)
+            if isinstance(value, dict) and value:
+                languages_data = {
+                    str(lang): int(count) if count is not None else 0
+                    for lang, count in value.items()
+                    if isinstance(lang, str)
+                }
+                break
+
+    # Fallback to GitHub languages API when the repository is hosted on GitHub.
+    if not languages_data and remote_url:
+        parsed = urlparse(remote_url)
+        if parsed.netloc == "github.com":
+            parts = parsed.path.strip("/").split("/")
+            if len(parts) >= 2:  # noqa: PLR2004
+                owner, repo_name = parts[0], parts[1]
+                github_languages = get_api_data(
+                    api_endpoint=f"https://api.github.com/repos/{owner}/{repo_name}/languages"
+                )
+                if isinstance(github_languages, dict) and github_languages:
+                    languages_data = {
+                        str(lang): int(count) if count is not None else 0
+                        for lang, count in github_languages.items()
+                        if isinstance(lang, str)
+                    }
+
+    return languages_data
+
+
+def _get_software_description(
+    repo: pygit2.Repository,
+    remote_repo_data: Optional[Dict[str, Any]],
+    readme_exists: bool,
+    readme_file: Optional[pygit2.Object],
+) -> Optional[str]:
+    """Return the best available plain-text description for the repository.
+
+    The function uses the following priority order:
+    1. The description field from remote hosting metadata (e.g. ecosyste.ms / GitHub).
+    2. The ``abstract`` field from a ``CITATION.cff`` file in the repo root.
+    3. The first non-badge paragraph of the README.
+
+    Returns the first non-empty candidate, or ``None`` if the repo doesn't include any priority entry.
+
+    Args:
+        repo: The pygit2 Repository to read local files from.
+        remote_repo_data: Metadata dict from a hosting platform or
+            ecosyste.ms mirror, used to retrieve the remote description field.
+        readme_exists: Whether a README file was detected in the repository.
+        readme_file: The pygit2 object for the README file, used to read its
+            contents when falling back to the first paragraph.
+
+    Returns:
+        The best available plain-text description string, or ``None`` if no
+        description could be found.
+    """
+    candidates: list[str] = []
+
+    # Prefer remote host description when available.
+    remote_description = (
+        remote_repo_data.get("description") if remote_repo_data else None
+    )
+    if isinstance(remote_description, str) and remote_description.strip():
+        candidates.append(remote_description.strip())
+
+    # CITATION.cff abstract from repository root (if present).
+    citation_text = read_file(
+        repo=repo, filepath="CITATION.cff", case_insensitive=False
+    )
+    if citation_text:
+        try:
+            citation_data = yaml.safe_load(citation_text) or {}
+            abstract = citation_data.get("abstract")
+            if isinstance(abstract, str) and abstract.strip():
+                candidates.append(abstract.strip())
+        except yaml.YAMLError:
+            LOGGER.debug(
+                "Unable to parse CITATION.cff when deriving software description."
+            )
+
+    # README first paragraph as a fallback.
+    if readme_exists:
+        readme_content = read_file(repo=repo, entry=readme_file)
+        if isinstance(readme_content, str):
+            for block in readme_content.split("\n\n"):
+                candidate = block.strip()
+                if candidate:
+                    # Avoid capturing badges / pure markdown image blocks;
+                    # keep scanning paragraphs until a real one is found.
+                    if not candidate.lower().startswith("!["):
+                        candidates.append(candidate)
+                        break
+
+    return next((c for c in candidates if c), None)
+
+
+def _get_pyproject_python_version(content: str) -> Optional[str]:
+    """Return the declared Python version constraint from a pyproject.toml string.
+
+    Checks ``tool.poetry.dependencies.python`` first (Poetry convention), then
+    ``project.requires-python`` (PEP 621). Returns ``None`` if neither is present
+    or if the TOML cannot be parsed.
+
+    Args:
+        content: The raw string contents of a ``pyproject.toml`` file.
+
+    Returns:
+        The Python version constraint string (for example, ``">=3.9"``), or
+        ``None`` if no constraint is declared or the file cannot be parsed.
+    """
+    try:
+        pyproject = tomllib.loads(content)
+    except tomllib.TOMLDecodeError:
+        LOGGER.debug(
+            "Unable to parse pyproject.toml for Python version.", exc_info=True
+        )
+        return None
+
+    poetry_python = (
+        pyproject.get("tool", {})
+        .get("poetry", {})
+        .get("dependencies", {})
+        .get("python")
+    )
+    if isinstance(poetry_python, str) and poetry_python.strip():
+        return poetry_python.strip()
+
+    requires_python = pyproject.get("project", {}).get("requires-python")
+    if isinstance(requires_python, str) and requires_python.strip():
+        return requires_python.strip()
+
+    return None
+
+
+def _get_conda_python_version(content: str) -> Optional[str]:
+    """Return the Python version constraint declared in a conda environment YAML string.
+
+    Scans the ``dependencies`` list for an entry that starts with ``python``
+    followed by a version separator (``=``, ``>``, ``<``, ``~``).
+    Returns ``None`` if no Python dependency is found or the YAML cannot be parsed.
+
+    Args:
+        content: The raw string contents of a conda ``environment.yml`` file.
+
+    Returns:
+        The Python version string extracted from the dependency entry (for
+        example, ``"3.11"``), or ``None`` if no Python version is declared or
+        the file cannot be parsed.
+    """
+    try:
+        env_data = yaml.safe_load(content)
+    except yaml.YAMLError:
+        LOGGER.debug(
+            "Unable to parse conda environment YAML for Python version.", exc_info=True
+        )
+        return None
+
+    if not isinstance(env_data, dict):
+        return None
+
+    for dep in env_data.get("dependencies", []):
+        if isinstance(dep, str) and dep.startswith("python"):
+            for sep in ("=", ">", "<", "~"):
+                if sep in dep:
+                    v = dep.split(sep, 1)[1].strip()
+                    if v:
+                        return v
+                    break
+    return None
+
+
+def is_conda_environment_yaml(content: str) -> bool:
+    """Return True if *content* looks like a conda environment YAML file.
+
+    A conda environment file is a YAML document whose top-level value is a
+    mapping that contains at least one of the keys ``name``, ``channels``, or
+    ``dependencies``. This heuristic avoids false positives from arbitrary YAML
+    files that happen to share the same filename.
+
+    Args:
+        content: The raw string contents of a YAML file to inspect.
+
+    Returns:
+        ``True`` if the content matches the conda environment YAML heuristic,
+        ``False`` otherwise.
+    """
+    try:
+        data = yaml.safe_load(content)
+    except yaml.YAMLError:
+        return False
+    if not isinstance(data, dict):
+        return False
+    return bool({"name", "channels", "dependencies"} & data.keys())
+
+
+def _parse_setup_py_console_scripts(content: str) -> set[str]:  # noqa: C901, PLR0912
+    """Extract console_scripts command names from a setup.py string.
+
+    Parses the content as a Python Abstract Syntax Tree (AST) and looks for a
+    ``setup()`` or ``setuptools.setup()`` call whose ``entry_points`` keyword
+    argument contains a ``console_scripts`` list. Returns an empty set if the
+    file cannot be parsed or contains no matching entries.
+
+    Args:
+        content: The raw string contents of a ``setup.py`` file.
+
+    Returns:
+        A set of CLI command names declared in ``console_scripts``. Returns an
+        empty set if none are found or the file cannot be parsed.
+    """
+    try:
+        tree = ast.parse(content)
+    except (SyntaxError, MemoryError, RecursionError, Exception):
+        LOGGER.debug("Unable to parse setup.py for CLI entrypoints.", exc_info=True)
+        return set()
+
+    commands: set[str] = set()
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        func = node.func
+        is_setup_call = (isinstance(func, ast.Name) and func.id == "setup") or (
+            isinstance(func, ast.Attribute) and func.attr == "setup"
+        )
+        if not is_setup_call:
+            continue
+        for keyword in node.keywords:
+            if keyword.arg != "entry_points":
+                continue
+            if not isinstance(keyword.value, ast.Dict):
+                continue
+            for key, value in zip(keyword.value.keys, keyword.value.values):
+                if (
+                    isinstance(key, ast.Constant)
+                    and key.value == "console_scripts"
+                    and isinstance(value, ast.List)
+                ):
+                    for elt in value.elts:
+                        if isinstance(elt, ast.Constant) and isinstance(elt.value, str):
+                            # Expect entries like "name = pkg.mod:func"
+                            if "=" in elt.value:
+                                cmd = elt.value.split("=", 1)[0].strip()
+                                if cmd:
+                                    commands.add(cmd)
+    return commands
+
+
+def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:  # noqa: C901
+    """Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py.
+
+    Args:
+        repo: The pygit2 Repository to read packaging files from.
+
+    Returns:
+        A sorted list of unique CLI command names. Returns an empty list if no
+        entrypoints are found.
+    """
+    discovered_commands: set[str] = set()
+
+    # Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]
+    pyproject_content = read_file(
+        repo=repo, filepath="pyproject.toml", case_insensitive=False
+    )
+    if isinstance(pyproject_content, str):
+        try:
+            pyproject = tomllib.loads(pyproject_content)
+            for scripts_table in (
+                pyproject.get("project", {}).get("scripts", {}),
+                pyproject.get("tool", {}).get("poetry", {}).get("scripts", {}),
+            ):
+                discovered_commands.update(scripts_table.keys())
+        except tomllib.TOMLDecodeError:
+            LOGGER.debug(
+                "Unable to parse pyproject.toml for CLI entrypoints.", exc_info=True
+            )
+
+    # Inspect setup.cfg for console_scripts entry points
+    setup_cfg_content = read_file(
+        repo=repo, filepath="setup.cfg", case_insensitive=False
+    )
+    if isinstance(setup_cfg_content, str):
+        parser = configparser.ConfigParser()
+        try:
+            parser.read_string(setup_cfg_content)
+            if parser.has_section("options.entry_points") and parser.has_option(
+                "options.entry_points", "console_scripts"
+            ):
+                entries = parser.get("options.entry_points", "console_scripts")
+                for raw_entry in entries.splitlines():
+                    entry = raw_entry.strip()
+                    if not entry or entry.startswith("#"):
+                        continue
+                    # Expect lines like: name = package.module:func
+                    if "=" in entry:
+                        name_part, _target_part = entry.split("=", 1)
+                        cmd = name_part.strip()
+                        if cmd:
+                            discovered_commands.add(cmd)
+        except (configparser.Error, ValueError):
+            # If parsing fails, we silently ignore setup.cfg-based detection.
+            LOGGER.debug(
+                "Unable to parse setup.cfg for CLI entrypoints.", exc_info=True
+            )
+
+    # Inspect setup.py entry_points for console_scripts
+    setup_py_content = read_file(repo=repo, filepath="setup.py", case_insensitive=False)
+    if isinstance(setup_py_content, str):
+        discovered_commands.update(_parse_setup_py_console_scripts(setup_py_content))
+
+    return sorted(discovered_commands)
+
+
+def _get_python_environment_data(  # noqa: C901, PLR0912
+    repo: pygit2.Repository,
+) -> Dict[str, Any]:
+    """Detect Python environment and dependency management tools in the repository.
+
+    Scans common Python packaging and environment configuration files to
+    identify which tools are in use and what Python versions are declared.
+    This function is intended for Python-primary repositories; call sites
+    should guard invocation with a primary-language check.
+
+    Args:
+        repo: The pygit2 Repository to scan for environment configuration files.
+
+    Returns:
+        A dictionary with the following keys:
+
+        - ``environment_managers``: sorted list of detected environment manager
+          names (for example, ``["conda", "poetry"]``), or ``None`` if none
+          are found.
+        - ``has_managed_environment``: ``True`` if at least one environment
+          manager is detected, ``False`` otherwise.
+        - ``dependency_managers``: sorted list of detected dependency manager
+          names (for example, ``["pip"]``), or ``None`` if none are found.
+        - ``has_declared_dependencies``: ``True`` if at least one dependency
+          manager is detected, ``False`` otherwise.
+        - ``declared_python_versions``: sorted list of declared Python version
+          strings, or ``None`` if none are found.
+    """
+    managers: set[str] = set()
+    dep_managers: set[str] = set()
+    py_versions: set[str] = set()
+
+    # Detect Poetry / generic pyproject-managed environments and Python version.
+    pyproject_content = read_file(
+        repo=repo, filepath="pyproject.toml", case_insensitive=False
+    )
+    if isinstance(pyproject_content, str):
+        # Always record that a pyproject-based configuration exists.
+        managers.add("pyproject")
+        try:
+            pyproject = tomllib.loads(pyproject_content)
+            if "poetry" in pyproject.get("tool", {}):
+                managers.add("poetry")
+        except tomllib.TOMLDecodeError:
+            LOGGER.debug(
+                "Unable to parse pyproject.toml for environment managers.",
+                exc_info=True,
+            )
+        pyproject_python_ver = _get_pyproject_python_version(pyproject_content)
+        if pyproject_python_ver:
+            py_versions.add(pyproject_python_ver)
+
+    # Detect Conda environment files and Python version.
+    # Conda env files can use several common names; try each in turn.
+    _conda_candidate_names = (
+        "environment.yml",
+        "environment.yaml",
+        "conda.yml",
+        "conda.yaml",
+        "conda-environment.yml",
+        "conda-environment.yaml",
+    )
+    for _conda_fname in _conda_candidate_names:
+        env_yml = read_file(repo=repo, filepath=_conda_fname, case_insensitive=True)
+        if not isinstance(env_yml, str) or not is_conda_environment_yaml(env_yml):
+            continue
+        managers.add("conda")
+        conda_python_ver = _get_conda_python_version(env_yml)
+        if conda_python_ver:
+            py_versions.add(conda_python_ver)
+        break  # stop after the first valid conda env file is found
+
+    # Detect Pipenv.
+    pipfile_content = read_file(repo=repo, filepath="Pipfile", case_insensitive=False)
+    if isinstance(pipfile_content, str):
+        managers.add("pipenv")
+
+    # Detect pip-based dependency management (requirements files).
+    if read_file(repo=repo, filepath="requirements.txt", case_insensitive=True):
+        dep_managers.add("pip")
+
+    # Detect setup.py / setup.cfg install_requires as dependency management.
+    if read_file(repo=repo, filepath="setup.py", case_insensitive=False):
+        dep_managers.add("pip")
+    if read_file(repo=repo, filepath="setup.cfg", case_insensitive=False):
+        dep_managers.add("pip")
+
+    # Detect Nix.
+    if read_file(repo=repo, filepath="flake.nix", case_insensitive=False):
+        managers.add("nix")
+    if read_file(repo=repo, filepath="default.nix", case_insensitive=False):
+        managers.add("nix")
+
+    # Detect Python runtime hints (Heroku-style runtime.txt).
+    runtime_txt = read_file(repo=repo, filepath="runtime.txt", case_insensitive=False)
+    if isinstance(runtime_txt, str):
+        for raw_line in runtime_txt.splitlines():
+            line = raw_line.strip()
+            if line.lower().startswith("python-"):
+                v = line.split("-", 1)[1].strip()
+                if v:
+                    py_versions.add(v)
+
+    return {
+        "environment_managers": sorted(managers) if managers else None,
+        "has_managed_environment": bool(managers),
+        "dependency_managers": sorted(dep_managers) if dep_managers else None,
+        "has_declared_dependencies": bool(dep_managers),
+        "declared_python_versions": sorted(py_versions) if py_versions else None,
+    }
+
+
 def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     repo_path: str,
     exclude_paths: Optional[List[str]] = None,
@@ -330,6 +931,13 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-pull-requests-enabled",
         "repo-forks-count",
         "repo-subscribers-count",
+        "repo-software-description",
+        "repo-docs-homepage-url",
+        "repo-source-code-url",
+        "repo-issue-tracker-url",
+        "repo-topics",
+        "repo-topics-count",
+        "repo-cost-model",
     ):
         # gather data from ecosystems repo api
         remote_repo_data = get_api_data(
@@ -434,6 +1042,209 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     date_of_last_coverage_run = code_coverage.get("date_of_last_coverage_run", None)
     readme_file = find_file(repo=repo, filepath="readme", case_insensitive=True)
     readme_exists = True if readme_file is not None else False
+
+    language_line_counts: Optional[Dict[str, int]] = None
+    language_total_lines: Optional[int] = None
+    language_count: Optional[int] = None
+    noncode_extension_line_counts: Optional[Dict[str, int]] = None
+    noncode_total_lines: Optional[int] = None
+    noncode_extensions_count: Optional[int] = None
+    has_cli: Optional[bool] = None
+    cli_entrypoints: Optional[List[str]] = None
+    topics: Optional[List[str]] = None
+    topics_count: Optional[int] = None
+    cost_model: Optional[str] = None
+    environment_managers: Optional[List[str]] = None
+    has_managed_environment: Optional[bool] = None
+    dependency_managers: Optional[List[str]] = None
+    has_declared_dependencies: Optional[bool] = None
+    declared_python_versions: Optional[List[str]] = None
+    has_edam_owl: Optional[bool] = None
+    has_biotools_json: Optional[bool] = None
+    has_codemeta_json: Optional[bool] = None
+    has_ro_crate_metadata_json: Optional[bool] = None
+    software_metadata_files_count: Optional[int] = None
+
+    if needs(
+        "repo-languages-line-counts",
+        "repo-languages-total-lines",
+        "repo-languages-count",
+    ):
+        languages_data = _get_repository_languages_data(
+            remote_repo_data=remote_repo_data,
+            remote_url=remote_url,
+        )
+
+        if languages_data:
+            language_line_counts = languages_data
+            language_total_lines = int(sum(languages_data.values()))
+            language_count = len(languages_data)
+
+    if needs(
+        "repo-noncode-extension-line-counts",
+        "repo-noncode-total-lines",
+        "repo-noncode-extensions-count",
+    ):
+        root_tree = repo.head.peel().tree
+        ext_counts = _walk_tree_measure_size_of_noncode_files(root_tree, repo=repo)
+        if ext_counts:
+            noncode_extension_line_counts = ext_counts
+            noncode_total_lines = int(sum(ext_counts.values()))
+            noncode_extensions_count = len(ext_counts)
+
+    if needs("repo-has-cli", "repo-cli-entrypoints"):
+        discovered = _get_cli_entrypoints(repo=repo)
+        if discovered:
+            cli_entrypoints = discovered
+            has_cli = True
+        else:
+            has_cli = False
+
+    if needs("repo-topics", "repo-topics-count"):
+        remote_topics: List[str] = []
+        if remote_repo_data:
+            # ecosyste.ms and GitHub both commonly expose a 'topics' field.
+            raw_topics = remote_repo_data.get("topics")
+            if isinstance(raw_topics, list):
+                remote_topics = [
+                    str(t).strip()
+                    for t in raw_topics
+                    if isinstance(t, str) and str(t).strip()
+                ]
+        if remote_topics:
+            topics = sorted(set(remote_topics))
+            topics_count = len(topics)
+
+    if needs("repo-cost-model"):
+        if remote_repo_data:
+            raw_cost = (
+                remote_repo_data.get("cost_model")
+                or remote_repo_data.get("pricing_model")
+                or remote_repo_data.get("pricing")
+            )
+            if isinstance(raw_cost, str) and raw_cost.strip():
+                cost_model = raw_cost.strip()
+            elif isinstance(raw_cost, list) and raw_cost:
+                first = raw_cost[0]
+                if isinstance(first, str) and first.strip():
+                    cost_model = first.strip()
+            elif isinstance(raw_cost, dict):
+                # Prefer explicit "model" key if present.
+                model_val = raw_cost.get("model")
+                if isinstance(model_val, str) and model_val.strip():
+                    cost_model = model_val.strip()
+
+    if needs(
+        "repo-environment-managers",
+        "repo-has-managed-environment",
+        "repo-dependency-managers",
+        "repo-has-declared-dependencies",
+        "repo-declared-python-versions",
+    ):
+        primary_language = remote_repo_data.get("language", None)
+        # Only run Python-specific environment detection for Python repos.
+        # When primary language is unknown (None), run detection by default.
+        if primary_language is None or primary_language.lower() == "python":
+            env_data = _get_python_environment_data(repo=repo)
+            environment_managers = env_data["environment_managers"]
+            has_managed_environment = env_data["has_managed_environment"]
+            dependency_managers = env_data["dependency_managers"]
+            has_declared_dependencies = env_data["has_declared_dependencies"]
+            declared_python_versions = env_data["declared_python_versions"]
+
+    if needs(
+        "repo-has-edam-owl",
+        "repo-has-biotools-json",
+        "repo-has-codemeta-json",
+        "repo-has-ro-crate-metadata-json",
+        "repo-software-metadata-files-count",
+    ):
+        has_edam_owl = bool(
+            find_file(repo=repo, filepath="edam.owl", case_insensitive=False)
+            is not None
+        )
+        has_biotools_json = bool(
+            find_file(repo=repo, filepath="biotools.json", case_insensitive=False)
+            is not None
+        )
+        has_codemeta_json = bool(
+            find_file(repo=repo, filepath="codemeta.json", case_insensitive=False)
+            is not None
+        )
+        has_ro_crate_metadata_json = bool(
+            find_file(
+                repo=repo,
+                filepath="ro-crate-metadata.json",
+                case_insensitive=False,
+            )
+            is not None
+        )
+
+        software_metadata_files_count = int(
+            sum(
+                int(flag)
+                for flag in (
+                    has_edam_owl,
+                    has_biotools_json,
+                    has_codemeta_json,
+                    has_ro_crate_metadata_json,
+                )
+                if flag is not None
+            )
+        )
+
+    software_description: Optional[str] = None
+    docs_homepage_url: Optional[str] = None
+    source_code_url: Optional[str] = None
+    issue_tracker_url: Optional[str] = None
+
+    if needs(
+        "repo-software-description",
+        "repo-docs-homepage-url",
+        "repo-source-code-url",
+        "repo-issue-tracker-url",
+    ):
+        software_description = _get_software_description(
+            repo=repo,
+            remote_repo_data=remote_repo_data,
+            readme_exists=readme_exists,
+            readme_file=readme_file,
+        )
+
+        # documentation / homepage URL from remote metadata where possible
+        if remote_repo_data:
+            for key in ("homepage", "homepage_url", "website"):
+                value = remote_repo_data.get(key)
+                if isinstance(value, str) and value.strip():
+                    docs_homepage_url = value.strip()
+                    break
+
+            # source code URL: prefer HTML URL, then generic URL, then remote_url
+            for key in ("html_url", "url"):
+                value = remote_repo_data.get(key)
+                if isinstance(value, str) and value.strip():
+                    source_code_url = value.strip()
+                    break
+
+        if source_code_url is None:
+            source_code_url = remote_url
+
+        # issue tracker URL: use API metadata when present, otherwise infer common patterns
+        if remote_repo_data:
+            issues_value = remote_repo_data.get("issues_url")
+            if isinstance(issues_value, str) and issues_value.strip():
+                issue_tracker_url = issues_value.strip()
+
+        if issue_tracker_url is None and remote_url:
+            parsed = urlparse(remote_url)
+            netloc = parsed.netloc.lower()
+            base = remote_url.rstrip("/")
+            if "github.com" in netloc:
+                issue_tracker_url = f"{base}/issues"
+            elif "gitlab.com" in netloc:
+                issue_tracker_url = f"{base}/-/issues"
+            elif "gitea.com" in netloc:
+                issue_tracker_url = f"{base}/issues"
 
     social_media_metrics: Dict[str, Any] = {}
     if needs("repo-social-media-platforms", "repo-social-media-platforms-count"):
@@ -582,6 +1393,31 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         ),
         "repo-commits-per-day": commits_count / days_of_development,
         "almanack-table-datetime": DATETIME_NOW.strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "repo-software-description": software_description,
+        "repo-docs-homepage-url": docs_homepage_url,
+        "repo-source-code-url": source_code_url,
+        "repo-issue-tracker-url": issue_tracker_url,
+        "repo-languages-line-counts": language_line_counts,
+        "repo-languages-total-lines": language_total_lines,
+        "repo-languages-count": language_count,
+        "repo-noncode-extension-line-counts": noncode_extension_line_counts,
+        "repo-noncode-total-lines": noncode_total_lines,
+        "repo-noncode-extensions-count": noncode_extensions_count,
+        "repo-has-cli": has_cli,
+        "repo-cli-entrypoints": cli_entrypoints,
+        "repo-topics": topics,
+        "repo-topics-count": topics_count,
+        "repo-environment-managers": environment_managers,
+        "repo-has-managed-environment": has_managed_environment,
+        "repo-dependency-managers": dependency_managers,
+        "repo-has-declared-dependencies": has_declared_dependencies,
+        "repo-declared-python-versions": declared_python_versions,
+        "repo-cost-model": cost_model,
+        "repo-has-edam-owl": has_edam_owl,
+        "repo-has-biotools-json": has_biotools_json,
+        "repo-has-codemeta-json": has_codemeta_json,
+        "repo-has-ro-crate-metadata-json": has_ro_crate_metadata_json,
+        "repo-software-metadata-files-count": software_metadata_files_count,
         "repo-includes-readme": readme_exists,
         "repo-includes-contributing": any(
             [
