@@ -1308,10 +1308,8 @@ def test_compute_repo_data_cli_detection(
     assert repo_data["repo-has-cli"] is expect_cli
     if expected_commands is None:
         assert repo_data["repo-cli-entrypoints"] is None
-        assert repo_data["repo-primary-cli-entrypoint"] is None
     else:
         assert sorted(repo_data["repo-cli-entrypoints"]) == sorted(expected_commands)
-        assert repo_data["repo-primary-cli-entrypoint"] in expected_commands
 
 
 # ---------------------------------------------------------------------------

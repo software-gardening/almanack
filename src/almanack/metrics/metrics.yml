@@ -903,17 +903,6 @@ metrics:
     correction_guidance:
     fix_why:
     fix_how:
-  - name: "repo-primary-cli-entrypoint"
-    id: "SGA-SF-0020"
-    result-type: "str"
-    sustainability_correlation: 0
-    description: >-
-      Primary CLI command for invoking the software. When multiple
-      commands are present, this is a stable, arbitrary choice (for
-      example, the first discovered in sorted order).
-    correction_guidance:
-    fix_why:
-    fix_how:
   - name: "repo-topics"
     id: "SGA-GL-0046"
     result-type: "list"

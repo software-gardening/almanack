@@ -862,7 +862,6 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     noncode_extensions_count: Optional[int] = None
     has_cli: Optional[bool] = None
     cli_entrypoints: Optional[List[str]] = None
-    primary_cli_entrypoint: Optional[str] = None
     topics: Optional[List[str]] = None
     topics_count: Optional[int] = None
     cost_model: Optional[str] = None
@@ -904,11 +903,10 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
             noncode_total_lines = int(sum(ext_counts.values()))
             noncode_extensions_count = len(ext_counts)
 
-    if needs("repo-has-cli", "repo-cli-entrypoints", "repo-primary-cli-entrypoint"):
+    if needs("repo-has-cli", "repo-cli-entrypoints"):
         discovered = _get_cli_entrypoints(repo=repo)
         if discovered:
             cli_entrypoints = discovered
-            primary_cli_entrypoint = discovered[0]
             has_cli = True
         else:
             has_cli = False
@@ -1301,7 +1299,6 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-noncode-extensions-count": noncode_extensions_count,
         "repo-has-cli": has_cli,
         "repo-cli-entrypoints": cli_entrypoints,
-        "repo-primary-cli-entrypoint": primary_cli_entrypoint,
         "repo-topics": topics,
         "repo-topics-count": topics_count,
         "repo-environment-managers": environment_managers,
