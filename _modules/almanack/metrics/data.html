@@ -354,15 +354,25 @@ document.write(`
 <span class="sd">This module computes data for GitHub Repositories</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
 <span class="kn">import</span> <span class="nn">importlib</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">pathlib</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span><span class="p">,</span> <span class="n">timezone</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
+
+<span class="c1"># tomllib was added to the standard library in Python 3.11; for 3.10 we fall</span>
+<span class="c1"># back to the third-party tomli backport which exposes the same API.</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
+    <span class="kn">import</span> <span class="nn">tomllib</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">tomli</span> <span class="k">as</span> <span class="nn">tomllib</span>
 
 <span class="kn">import</span> <span class="nn">defusedxml.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -409,6 +419,158 @@ document.write(`
 
 <span class="n">METRICS_TABLE</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="si">!s}</span><span class="s2">/metrics.yml&quot;</span>
 <span class="n">DATETIME_NOW</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+
+<span class="c1"># Pinned to a specific commit to ensure reproducible extension data.</span>
+<span class="c1"># Update this hash intentionally when pulling in upstream Linguist changes.</span>
+<span class="n">_LINGUIST_LANGUAGES_URL</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/github-linguist/linguist/240bf9233bbfe82209e9c5437ab8ec06ba648c91/lib/linguist/languages.yml&quot;</span>
+
+<span class="n">_PROGRAMMING_EXTENSIONS_FILE</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;programming_extensions.yml&quot;</span>
+<span class="p">)</span>
+
+<span class="c1"># Fallback set loaded from programming_extensions.yml. Used when the live</span>
+<span class="c1"># Linguist languages.yml cannot be fetched or parsed.</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">_PROGRAMMING_EXTENSIONS_FILE</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">_f</span><span class="p">:</span>
+    <span class="n">_FALLBACK_PROGRAMMING_EXTENSIONS</span><span class="p">:</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span>
+        <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">_f</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extensions&quot;</span><span class="p">,</span> <span class="p">[])</span>
+    <span class="p">)</span>
+
+<span class="c1"># Module-level cache; populated on first call to _get_programming_extensions().</span>
+<span class="n">_programming_extensions_cache</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+
+<div class="viewcode-block" id="_get_programming_extensions">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_programming_extensions">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_programming_extensions</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">frozenset</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return file extensions that belong to programming languages per GitHub Linguist.</span>
+
+<span class="sd">    Fetches and parses the Linguist ``languages.yml`` on the first call, then</span>
+<span class="sd">    caches the result for the lifetime of the process. Falls back to</span>
+<span class="sd">    ``_FALLBACK_PROGRAMMING_EXTENSIONS`` if the fetch or parse fails.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">_programming_extensions_cache</span>  <span class="c1"># noqa: PLW0603</span>
+    <span class="k">if</span> <span class="n">_programming_extensions_cache</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_programming_extensions_cache</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">requests</span> <span class="k">as</span> <span class="nn">_requests</span>  <span class="c1"># noqa: PLC0415</span>
+
+        <span class="c1"># fetch the upstream Linguist languages.yml</span>
+        <span class="n">response</span> <span class="o">=</span> <span class="n">_requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_LINGUIST_LANGUAGES_URL</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">raise_for_status</span><span class="p">()</span>
+        <span class="n">languages</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+        <span class="c1"># collect file extensions for programming languages only</span>
+        <span class="n">exts</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">lang_meta</span> <span class="ow">in</span> <span class="n">languages</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang_meta</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">lang_meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;programming&quot;</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">ext</span> <span class="ow">in</span> <span class="n">lang_meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extensions&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="n">exts</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">ext</span><span class="p">)</span>
+        <span class="c1"># cache and return if we got a non-empty result</span>
+        <span class="k">if</span> <span class="n">exts</span><span class="p">:</span>
+            <span class="n">_programming_extensions_cache</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">(</span><span class="n">exts</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">_programming_extensions_cache</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Unable to fetch Linguist languages.yml; falling back to built-in extension list.&quot;</span><span class="p">,</span>
+            <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">_programming_extensions_cache</span> <span class="o">=</span> <span class="n">_FALLBACK_PROGRAMMING_EXTENSIONS</span>
+    <span class="k">return</span> <span class="n">_programming_extensions_cache</span></div>
+
+
+
+<div class="viewcode-block" id="_walk_tree_measure_size_of_noncode_files">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._walk_tree_measure_size_of_noncode_files">[docs]</a>
+<span class="k">def</span> <span class="nf">_walk_tree_measure_size_of_noncode_files</span><span class="p">(</span>
+    <span class="n">tree</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s2">&quot;pygit2.Tree&quot;</span><span class="p">,</span> <span class="s2">&quot;pygit2.Blob&quot;</span><span class="p">],</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="s2">&quot;pygit2.Repository&quot;</span><span class="p">,</span>
+    <span class="n">prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Recursively walk a git tree and count lines per non-code file extension.</span>
+
+<span class="sd">    The function iterates through each blob (file) in the tree, and counts new lines for</span>
+<span class="sd">    non-code files. Specifically, the function will skip a file if the extension</span>
+<span class="sd">    appears in ``_get_programming_extensions()`` or if it lives inside a ``.git/``</span>
+<span class="sd">    directory. The function counts non-code, text-based files by newline and counts</span>
+<span class="sd">    binary files based on byte length. Lastly, the function computes a sum per file</span>
+<span class="sd">    extension and writes into a ``{extension: line_count}`` dict where files missing an extension</span>
+<span class="sd">    use the key ``&quot;&lt;no_ext&gt;&quot;``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tree: A pygit2 Tree or Blob to walk. Top-level callers pass the root</span>
+<span class="sd">            tree; recursive calls pass subtrees or blobs.</span>
+<span class="sd">        repo: The pygit2 Repository used to dereference object IDs when</span>
+<span class="sd">            traversing subtrees.</span>
+<span class="sd">        prefix: Relative file path accumulated during recursion. Defaults to</span>
+<span class="sd">            an empty string for the root call.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary mapping each non-code file extension (for example,</span>
+<span class="sd">        ``.md``, ``.csv``) to its approximate line or byte count. Files</span>
+<span class="sd">        without an extension are keyed as ``&quot;&lt;no_ext&gt;&quot;``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">counts</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Blob</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">prefix</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="c1"># Skip obvious VCS/config internals.</span>
+        <span class="k">if</span> <span class="s2">&quot;/.git/&quot;</span> <span class="ow">in</span> <span class="n">path</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;.git/&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">counts</span>
+
+        <span class="c1"># Skip programming language files; we only want non-code here.</span>
+        <span class="k">if</span> <span class="n">suffix</span> <span class="ow">in</span> <span class="n">_get_programming_extensions</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">counts</span>
+
+        <span class="c1"># Try to treat as text and count lines; fall back to byte size.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">blob_data</span><span class="p">:</span> <span class="nb">bytes</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">data</span>  <span class="c1"># type: ignore[assignment]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">text</span> <span class="o">=</span> <span class="n">blob_data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
+                    <span class="mi">1</span> <span class="k">if</span> <span class="n">text</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+                <span class="p">)</span>
+            <span class="k">except</span> <span class="ne">UnicodeDecodeError</span><span class="p">:</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">blob_data</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="c1"># If anything goes wrong, conservatively use zero.</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to read blob data for </span><span class="si">%s</span><span class="s2">; defaulting size to 0.&quot;</span><span class="p">,</span>
+                <span class="n">prefix</span><span class="p">,</span>
+                <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">ext_key</span> <span class="o">=</span> <span class="n">suffix</span> <span class="ow">or</span> <span class="s2">&quot;&lt;no_ext&gt;&quot;</span>
+        <span class="n">counts</span><span class="p">[</span><span class="n">ext_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext_key</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">counts</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Tree</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">tree</span><span class="p">:</span>
+            <span class="n">entry_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">entry</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">prefix</span> <span class="k">else</span> <span class="n">entry</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">subtree_or_blob</span> <span class="o">=</span> <span class="n">repo</span><span class="p">[</span><span class="n">entry</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">KeyError</span><span class="p">,</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">GitError</span><span class="p">):</span>
+                <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                    <span class="s2">&quot;Unable to resolve git object for </span><span class="si">%s</span><span class="s2">; skipping.&quot;</span><span class="p">,</span> <span class="n">entry_path</span>
+                <span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">child_counts</span> <span class="o">=</span> <span class="n">_walk_tree_measure_size_of_noncode_files</span><span class="p">(</span>
+                <span class="n">subtree_or_blob</span><span class="p">,</span>
+                <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+                <span class="n">prefix</span><span class="o">=</span><span class="n">entry_path</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">ext</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">child_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">counts</span><span class="p">[</span><span class="n">ext</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ext</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">+</span> <span class="n">val</span>
+        <span class="k">return</span> <span class="n">counts</span>
+
+    <span class="k">return</span> <span class="p">{}</span></div>
+
 
 
 <div class="viewcode-block" id="_normalize_exclude_paths">
@@ -647,6 +809,475 @@ document.write(`
 
 
 
+<div class="viewcode-block" id="_get_repository_languages_data">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_repository_languages_data">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_repository_languages_data</span><span class="p">(</span>
+    <span class="n">remote_repo_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">remote_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return repository language line counts from remote metadata or GitHub.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        remote_repo_data: Metadata dict from a hosting platform or ecosyste.ms</span>
+<span class="sd">            mirror. May contain a ``languages_lines``, ``languages_loc``, or</span>
+<span class="sd">            ``languages`` key with per-language counts.</span>
+<span class="sd">        remote_url: Remote URL of the repository, used to fall back to the</span>
+<span class="sd">            GitHub languages API when hosting metadata is unavailable.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary mapping programming language name to an approximate line</span>
+<span class="sd">        or byte count. Returns an empty dict if no language data is found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">languages_data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="c1"># Prefer ecosyste.ms or hosting metadata if it already exposes language stats.</span>
+    <span class="k">if</span> <span class="n">remote_repo_data</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;languages_lines&quot;</span><span class="p">,</span> <span class="s2">&quot;languages_loc&quot;</span><span class="p">,</span> <span class="s2">&quot;languages&quot;</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">languages_data</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">lang</span><span class="p">):</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="k">if</span> <span class="n">count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+                    <span class="k">for</span> <span class="n">lang</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                <span class="p">}</span>
+                <span class="k">break</span>
+
+    <span class="c1"># Fallback to GitHub languages API when the repository is hosted on GitHub.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">languages_data</span> <span class="ow">and</span> <span class="n">remote_url</span><span class="p">:</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span> <span class="o">==</span> <span class="s2">&quot;github.com&quot;</span><span class="p">:</span>
+            <span class="n">parts</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>  <span class="c1"># noqa: PLR2004</span>
+                <span class="n">owner</span><span class="p">,</span> <span class="n">repo_name</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">github_languages</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
+                    <span class="n">api_endpoint</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;https://api.github.com/repos/</span><span class="si">{</span><span class="n">owner</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">repo_name</span><span class="si">}</span><span class="s2">/languages&quot;</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">github_languages</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">github_languages</span><span class="p">:</span>
+                    <span class="n">languages_data</span> <span class="o">=</span> <span class="p">{</span>
+                        <span class="nb">str</span><span class="p">(</span><span class="n">lang</span><span class="p">):</span> <span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span> <span class="k">if</span> <span class="n">count</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span>
+                        <span class="k">for</span> <span class="n">lang</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">github_languages</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+                    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">languages_data</span></div>
+
+
+
+<div class="viewcode-block" id="_get_software_description">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_software_description">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_software_description</span><span class="p">(</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span>
+    <span class="n">remote_repo_data</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+    <span class="n">readme_exists</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+    <span class="n">readme_file</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pygit2</span><span class="o">.</span><span class="n">Object</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the best available plain-text description for the repository.</span>
+
+<span class="sd">    The function uses the following priority order:</span>
+<span class="sd">    1. The description field from remote hosting metadata (e.g. ecosyste.ms / GitHub).</span>
+<span class="sd">    2. The ``abstract`` field from a ``CITATION.cff`` file in the repo root.</span>
+<span class="sd">    3. The first non-badge paragraph of the README.</span>
+
+<span class="sd">    Returns the first non-empty candidate, or ``None`` if the repo doesn&#39;t include any priority entry.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: The pygit2 Repository to read local files from.</span>
+<span class="sd">        remote_repo_data: Metadata dict from a hosting platform or</span>
+<span class="sd">            ecosyste.ms mirror, used to retrieve the remote description field.</span>
+<span class="sd">        readme_exists: Whether a README file was detected in the repository.</span>
+<span class="sd">        readme_file: The pygit2 object for the README file, used to read its</span>
+<span class="sd">            contents when falling back to the first paragraph.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The best available plain-text description string, or ``None`` if no</span>
+<span class="sd">        description could be found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">candidates</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Prefer remote host description when available.</span>
+    <span class="n">remote_description</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">remote_repo_data</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">remote_description</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">remote_description</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">remote_description</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="c1"># CITATION.cff abstract from repository root (if present).</span>
+    <span class="n">citation_text</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;CITATION.cff&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">citation_text</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">citation_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">citation_text</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{}</span>
+            <span class="n">abstract</span> <span class="o">=</span> <span class="n">citation_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;abstract&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">abstract</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">abstract</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">abstract</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to parse CITATION.cff when deriving software description.&quot;</span>
+            <span class="p">)</span>
+
+    <span class="c1"># README first paragraph as a fallback.</span>
+    <span class="k">if</span> <span class="n">readme_exists</span><span class="p">:</span>
+        <span class="n">readme_content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">entry</span><span class="o">=</span><span class="n">readme_file</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">readme_content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">block</span> <span class="ow">in</span> <span class="n">readme_content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&quot;</span><span class="p">):</span>
+                <span class="n">candidate</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">candidate</span><span class="p">:</span>
+                    <span class="c1"># Avoid capturing badges / pure markdown image blocks;</span>
+                    <span class="c1"># keep scanning paragraphs until a real one is found.</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">candidate</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;![&quot;</span><span class="p">):</span>
+                        <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
+                        <span class="k">break</span>
+
+    <span class="k">return</span> <span class="nb">next</span><span class="p">((</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span> <span class="k">if</span> <span class="n">c</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_get_pyproject_python_version">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_pyproject_python_version">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_pyproject_python_version</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the declared Python version constraint from a pyproject.toml string.</span>
+
+<span class="sd">    Checks ``tool.poetry.dependencies.python`` first (Poetry convention), then</span>
+<span class="sd">    ``project.requires-python`` (PEP 621). Returns ``None`` if neither is present</span>
+<span class="sd">    or if the TOML cannot be parsed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        content: The raw string contents of a ``pyproject.toml`` file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The Python version constraint string (for example, ``&quot;&gt;=3.9&quot;``), or</span>
+<span class="sd">        ``None`` if no constraint is declared or the file cannot be parsed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">pyproject</span> <span class="o">=</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">TOMLDecodeError</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Unable to parse pyproject.toml for Python version.&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">poetry_python</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">pyproject</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;poetry&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">,</span> <span class="p">{})</span>
+        <span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">poetry_python</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">poetry_python</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">poetry_python</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="n">requires_python</span> <span class="o">=</span> <span class="n">pyproject</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;requires-python&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">requires_python</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">requires_python</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">requires_python</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="_get_conda_python_version">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_conda_python_version">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_conda_python_version</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the Python version constraint declared in a conda environment YAML string.</span>
+
+<span class="sd">    Scans the ``dependencies`` list for an entry that starts with ``python``</span>
+<span class="sd">    followed by a version separator (``=``, ``&gt;``, ``&lt;``, ``~``).</span>
+<span class="sd">    Returns ``None`` if no Python dependency is found or the YAML cannot be parsed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        content: The raw string contents of a conda ``environment.yml`` file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The Python version string extracted from the dependency entry (for</span>
+<span class="sd">        example, ``&quot;3.11&quot;``), or ``None`` if no Python version is declared or</span>
+<span class="sd">        the file cannot be parsed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">env_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">:</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+            <span class="s2">&quot;Unable to parse conda environment YAML for Python version.&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">dep</span> <span class="ow">in</span> <span class="n">env_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dependencies&quot;</span><span class="p">,</span> <span class="p">[]):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">dep</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">dep</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;python&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sep</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;&lt;&quot;</span><span class="p">,</span> <span class="s2">&quot;~&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">sep</span> <span class="ow">in</span> <span class="n">dep</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">dep</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">sep</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                        <span class="k">return</span> <span class="n">v</span>
+                    <span class="k">break</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="is_conda_environment_yaml">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.is_conda_environment_yaml">[docs]</a>
+<span class="k">def</span> <span class="nf">is_conda_environment_yaml</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return True if *content* looks like a conda environment YAML file.</span>
+
+<span class="sd">    A conda environment file is a YAML document whose top-level value is a</span>
+<span class="sd">    mapping that contains at least one of the keys ``name``, ``channels``, or</span>
+<span class="sd">    ``dependencies``. This heuristic avoids false positives from arbitrary YAML</span>
+<span class="sd">    files that happen to share the same filename.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        content: The raw string contents of a YAML file to inspect.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ``True`` if the content matches the conda environment YAML heuristic,</span>
+<span class="sd">        ``False`` otherwise.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">yaml</span><span class="o">.</span><span class="n">YAMLError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="nb">bool</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;channels&quot;</span><span class="p">,</span> <span class="s2">&quot;dependencies&quot;</span><span class="p">}</span> <span class="o">&amp;</span> <span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+
+
+<div class="viewcode-block" id="_parse_setup_py_console_scripts">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._parse_setup_py_console_scripts">[docs]</a>
+<span class="k">def</span> <span class="nf">_parse_setup_py_console_scripts</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># noqa: C901, PLR0912</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Extract console_scripts command names from a setup.py string.</span>
+
+<span class="sd">    Parses the content as a Python Abstract Syntax Tree (AST) and looks for a</span>
+<span class="sd">    ``setup()`` or ``setuptools.setup()`` call whose ``entry_points`` keyword</span>
+<span class="sd">    argument contains a ``console_scripts`` list. Returns an empty set if the</span>
+<span class="sd">    file cannot be parsed or contains no matching entries.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        content: The raw string contents of a ``setup.py`` file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A set of CLI command names declared in ``console_scripts``. Returns an</span>
+<span class="sd">        empty set if none are found or the file cannot be parsed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">SyntaxError</span><span class="p">,</span> <span class="ne">MemoryError</span><span class="p">,</span> <span class="ne">RecursionError</span><span class="p">,</span> <span class="ne">Exception</span><span class="p">):</span>
+        <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Unable to parse setup.py for CLI entrypoints.&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="n">commands</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">func</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">func</span>
+        <span class="n">is_setup_call</span> <span class="o">=</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">)</span> <span class="ow">and</span> <span class="n">func</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="s2">&quot;setup&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Attribute</span><span class="p">)</span> <span class="ow">and</span> <span class="n">func</span><span class="o">.</span><span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;setup&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_setup_call</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">for</span> <span class="n">keyword</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">keywords</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">keyword</span><span class="o">.</span><span class="n">arg</span> <span class="o">!=</span> <span class="s2">&quot;entry_points&quot;</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">keyword</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Dict</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">keyword</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">keys</span><span class="p">,</span> <span class="n">keyword</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">):</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">)</span>
+                    <span class="ow">and</span> <span class="n">key</span><span class="o">.</span><span class="n">value</span> <span class="o">==</span> <span class="s2">&quot;console_scripts&quot;</span>
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">List</span><span class="p">)</span>
+                <span class="p">):</span>
+                    <span class="k">for</span> <span class="n">elt</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">elts</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elt</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Constant</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">elt</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                            <span class="c1"># Expect entries like &quot;name = pkg.mod:func&quot;</span>
+                            <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">elt</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                                <span class="n">cmd</span> <span class="o">=</span> <span class="n">elt</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                                <span class="k">if</span> <span class="n">cmd</span><span class="p">:</span>
+                                    <span class="n">commands</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">commands</span></div>
+
+
+
+<div class="viewcode-block" id="_get_cli_entrypoints">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_cli_entrypoints">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_cli_entrypoints</span><span class="p">(</span><span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>  <span class="c1"># noqa: C901</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: The pygit2 Repository to read packaging files from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A sorted list of unique CLI command names. Returns an empty list if no</span>
+<span class="sd">        entrypoints are found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">discovered_commands</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]</span>
+    <span class="n">pyproject_content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;pyproject.toml&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pyproject_content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pyproject</span> <span class="o">=</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pyproject_content</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">scripts_table</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="n">pyproject</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;project&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scripts&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+                <span class="n">pyproject</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;poetry&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;scripts&quot;</span><span class="p">,</span> <span class="p">{}),</span>
+            <span class="p">):</span>
+                <span class="n">discovered_commands</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">scripts_table</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="k">except</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">TOMLDecodeError</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to parse pyproject.toml for CLI entrypoints.&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Inspect setup.cfg for console_scripts entry points</span>
+    <span class="n">setup_cfg_content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;setup.cfg&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setup_cfg_content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">parser</span><span class="o">.</span><span class="n">read_string</span><span class="p">(</span><span class="n">setup_cfg_content</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">parser</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="s2">&quot;options.entry_points&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">parser</span><span class="o">.</span><span class="n">has_option</span><span class="p">(</span>
+                <span class="s2">&quot;options.entry_points&quot;</span><span class="p">,</span> <span class="s2">&quot;console_scripts&quot;</span>
+            <span class="p">):</span>
+                <span class="n">entries</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;options.entry_points&quot;</span><span class="p">,</span> <span class="s2">&quot;console_scripts&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">raw_entry</span> <span class="ow">in</span> <span class="n">entries</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+                    <span class="n">entry</span> <span class="o">=</span> <span class="n">raw_entry</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">entry</span> <span class="ow">or</span> <span class="n">entry</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">):</span>
+                        <span class="k">continue</span>
+                    <span class="c1"># Expect lines like: name = package.module:func</span>
+                    <span class="k">if</span> <span class="s2">&quot;=&quot;</span> <span class="ow">in</span> <span class="n">entry</span><span class="p">:</span>
+                        <span class="n">name_part</span><span class="p">,</span> <span class="n">_target_part</span> <span class="o">=</span> <span class="n">entry</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="n">cmd</span> <span class="o">=</span> <span class="n">name_part</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">cmd</span><span class="p">:</span>
+                            <span class="n">discovered_commands</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">cmd</span><span class="p">)</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">configparser</span><span class="o">.</span><span class="n">Error</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="c1"># If parsing fails, we silently ignore setup.cfg-based detection.</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to parse setup.cfg for CLI entrypoints.&quot;</span><span class="p">,</span> <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span>
+            <span class="p">)</span>
+
+    <span class="c1"># Inspect setup.py entry_points for console_scripts</span>
+    <span class="n">setup_py_content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">setup_py_content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">discovered_commands</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">_parse_setup_py_console_scripts</span><span class="p">(</span><span class="n">setup_py_content</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">discovered_commands</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="_get_python_environment_data">
+<a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data._get_python_environment_data">[docs]</a>
+<span class="k">def</span> <span class="nf">_get_python_environment_data</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0912</span>
+    <span class="n">repo</span><span class="p">:</span> <span class="n">pygit2</span><span class="o">.</span><span class="n">Repository</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Detect Python environment and dependency management tools in the repository.</span>
+
+<span class="sd">    Scans common Python packaging and environment configuration files to</span>
+<span class="sd">    identify which tools are in use and what Python versions are declared.</span>
+<span class="sd">    This function is intended for Python-primary repositories; call sites</span>
+<span class="sd">    should guard invocation with a primary-language check.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        repo: The pygit2 Repository to scan for environment configuration files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A dictionary with the following keys:</span>
+
+<span class="sd">        - ``environment_managers``: sorted list of detected environment manager</span>
+<span class="sd">          names (for example, ``[&quot;conda&quot;, &quot;poetry&quot;]``), or ``None`` if none</span>
+<span class="sd">          are found.</span>
+<span class="sd">        - ``has_managed_environment``: ``True`` if at least one environment</span>
+<span class="sd">          manager is detected, ``False`` otherwise.</span>
+<span class="sd">        - ``dependency_managers``: sorted list of detected dependency manager</span>
+<span class="sd">          names (for example, ``[&quot;pip&quot;]``), or ``None`` if none are found.</span>
+<span class="sd">        - ``has_declared_dependencies``: ``True`` if at least one dependency</span>
+<span class="sd">          manager is detected, ``False`` otherwise.</span>
+<span class="sd">        - ``declared_python_versions``: sorted list of declared Python version</span>
+<span class="sd">          strings, or ``None`` if none are found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">managers</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">dep_managers</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    <span class="n">py_versions</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+    <span class="c1"># Detect Poetry / generic pyproject-managed environments and Python version.</span>
+    <span class="n">pyproject_content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span>
+        <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;pyproject.toml&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pyproject_content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Always record that a pyproject-based configuration exists.</span>
+        <span class="n">managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;pyproject&quot;</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">pyproject</span> <span class="o">=</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">pyproject_content</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;poetry&quot;</span> <span class="ow">in</span> <span class="n">pyproject</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;tool&quot;</span><span class="p">,</span> <span class="p">{}):</span>
+                <span class="n">managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;poetry&quot;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">tomllib</span><span class="o">.</span><span class="n">TOMLDecodeError</span><span class="p">:</span>
+            <span class="n">LOGGER</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+                <span class="s2">&quot;Unable to parse pyproject.toml for environment managers.&quot;</span><span class="p">,</span>
+                <span class="n">exc_info</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="n">pyproject_python_ver</span> <span class="o">=</span> <span class="n">_get_pyproject_python_version</span><span class="p">(</span><span class="n">pyproject_content</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">pyproject_python_ver</span><span class="p">:</span>
+            <span class="n">py_versions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">pyproject_python_ver</span><span class="p">)</span>
+
+    <span class="c1"># Detect Conda environment files and Python version.</span>
+    <span class="c1"># Conda env files can use several common names; try each in turn.</span>
+    <span class="n">_conda_candidate_names</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="s2">&quot;environment.yml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;environment.yaml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conda.yml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conda.yaml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conda-environment.yml&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;conda-environment.yaml&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">for</span> <span class="n">_conda_fname</span> <span class="ow">in</span> <span class="n">_conda_candidate_names</span><span class="p">:</span>
+        <span class="n">env_yml</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="n">_conda_fname</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">env_yml</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">is_conda_environment_yaml</span><span class="p">(</span><span class="n">env_yml</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;conda&quot;</span><span class="p">)</span>
+        <span class="n">conda_python_ver</span> <span class="o">=</span> <span class="n">_get_conda_python_version</span><span class="p">(</span><span class="n">env_yml</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">conda_python_ver</span><span class="p">:</span>
+            <span class="n">py_versions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">conda_python_ver</span><span class="p">)</span>
+        <span class="k">break</span>  <span class="c1"># stop after the first valid conda env file is found</span>
+
+    <span class="c1"># Detect Pipenv.</span>
+    <span class="n">pipfile_content</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;Pipfile&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pipfile_content</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="n">managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;pipenv&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Detect pip-based dependency management (requirements files).</span>
+    <span class="k">if</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;requirements.txt&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">dep_managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Detect setup.py / setup.cfg install_requires as dependency management.</span>
+    <span class="k">if</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;setup.py&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">dep_managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;setup.cfg&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">dep_managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;pip&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Detect Nix.</span>
+    <span class="k">if</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;flake.nix&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nix&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;default.nix&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">managers</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;nix&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Detect Python runtime hints (Heroku-style runtime.txt).</span>
+    <span class="n">runtime_txt</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;runtime.txt&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">runtime_txt</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">raw_line</span> <span class="ow">in</span> <span class="n">runtime_txt</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">raw_line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;python-&quot;</span><span class="p">):</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">v</span><span class="p">:</span>
+                    <span class="n">py_versions</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;environment_managers&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">managers</span><span class="p">)</span> <span class="k">if</span> <span class="n">managers</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;has_managed_environment&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">managers</span><span class="p">),</span>
+        <span class="s2">&quot;dependency_managers&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">dep_managers</span><span class="p">)</span> <span class="k">if</span> <span class="n">dep_managers</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;has_declared_dependencies&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">dep_managers</span><span class="p">),</span>
+        <span class="s2">&quot;declared_python_versions&quot;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">py_versions</span><span class="p">)</span> <span class="k">if</span> <span class="n">py_versions</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">}</span></div>
+
+
+
 <div class="viewcode-block" id="compute_repo_data">
 <a class="viewcode-back" href="../../../garden-circle/package-api.html#almanack.metrics.data.compute_repo_data">[docs]</a>
 <span class="k">def</span> <span class="nf">compute_repo_data</span><span class="p">(</span>  <span class="c1"># noqa: C901, PLR0912, PLR0915</span>
@@ -696,6 +1327,13 @@ document.write(`
         <span class="s2">&quot;repo-pull-requests-enabled&quot;</span><span class="p">,</span>
         <span class="s2">&quot;repo-forks-count&quot;</span><span class="p">,</span>
         <span class="s2">&quot;repo-subscribers-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-software-description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-docs-homepage-url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-source-code-url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-issue-tracker-url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-topics&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-topics-count&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-cost-model&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="c1"># gather data from ecosystems repo api</span>
         <span class="n">remote_repo_data</span> <span class="o">=</span> <span class="n">get_api_data</span><span class="p">(</span>
@@ -800,6 +1438,209 @@ document.write(`
     <span class="n">date_of_last_coverage_run</span> <span class="o">=</span> <span class="n">code_coverage</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;date_of_last_coverage_run&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
     <span class="n">readme_file</span> <span class="o">=</span> <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;readme&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">readme_exists</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">readme_file</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="n">language_line_counts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">language_total_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">language_count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">noncode_extension_line_counts</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">noncode_total_lines</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">noncode_extensions_count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_cli</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cli_entrypoints</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">topics</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">topics_count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">cost_model</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">environment_managers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_managed_environment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">dependency_managers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_declared_dependencies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">declared_python_versions</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_edam_owl</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_biotools_json</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_codemeta_json</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">has_ro_crate_metadata_json</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">software_metadata_files_count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-languages-line-counts&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-languages-total-lines&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-languages-count&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">languages_data</span> <span class="o">=</span> <span class="n">_get_repository_languages_data</span><span class="p">(</span>
+            <span class="n">remote_repo_data</span><span class="o">=</span><span class="n">remote_repo_data</span><span class="p">,</span>
+            <span class="n">remote_url</span><span class="o">=</span><span class="n">remote_url</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">languages_data</span><span class="p">:</span>
+            <span class="n">language_line_counts</span> <span class="o">=</span> <span class="n">languages_data</span>
+            <span class="n">language_total_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">languages_data</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="n">language_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">languages_data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-noncode-extension-line-counts&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-noncode-total-lines&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-noncode-extensions-count&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">root_tree</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">head</span><span class="o">.</span><span class="n">peel</span><span class="p">()</span><span class="o">.</span><span class="n">tree</span>
+        <span class="n">ext_counts</span> <span class="o">=</span> <span class="n">_walk_tree_measure_size_of_noncode_files</span><span class="p">(</span><span class="n">root_tree</span><span class="p">,</span> <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ext_counts</span><span class="p">:</span>
+            <span class="n">noncode_extension_line_counts</span> <span class="o">=</span> <span class="n">ext_counts</span>
+            <span class="n">noncode_total_lines</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">ext_counts</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="n">noncode_extensions_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ext_counts</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-has-cli&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-cli-entrypoints&quot;</span><span class="p">):</span>
+        <span class="n">discovered</span> <span class="o">=</span> <span class="n">_get_cli_entrypoints</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">discovered</span><span class="p">:</span>
+            <span class="n">cli_entrypoints</span> <span class="o">=</span> <span class="n">discovered</span>
+            <span class="n">has_cli</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">has_cli</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-topics&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-topics-count&quot;</span><span class="p">):</span>
+        <span class="n">remote_topics</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">remote_repo_data</span><span class="p">:</span>
+            <span class="c1"># ecosyste.ms and GitHub both commonly expose a &#39;topics&#39; field.</span>
+            <span class="n">raw_topics</span> <span class="o">=</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;topics&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_topics</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="n">remote_topics</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">raw_topics</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">str</span><span class="p">(</span><span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="p">]</span>
+        <span class="k">if</span> <span class="n">remote_topics</span><span class="p">:</span>
+            <span class="n">topics</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">remote_topics</span><span class="p">))</span>
+            <span class="n">topics_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">topics</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-cost-model&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">remote_repo_data</span><span class="p">:</span>
+            <span class="n">raw_cost</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;cost_model&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pricing_model&quot;</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pricing&quot;</span><span class="p">)</span>
+            <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_cost</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raw_cost</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">cost_model</span> <span class="o">=</span> <span class="n">raw_cost</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_cost</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="n">raw_cost</span><span class="p">:</span>
+                <span class="n">first</span> <span class="o">=</span> <span class="n">raw_cost</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">first</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">cost_model</span> <span class="o">=</span> <span class="n">first</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw_cost</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="c1"># Prefer explicit &quot;model&quot; key if present.</span>
+                <span class="n">model_val</span> <span class="o">=</span> <span class="n">raw_cost</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model_val</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">model_val</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">cost_model</span> <span class="o">=</span> <span class="n">model_val</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-environment-managers&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-managed-environment&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-dependency-managers&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-declared-dependencies&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-declared-python-versions&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">primary_language</span> <span class="o">=</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;language&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="c1"># Only run Python-specific environment detection for Python repos.</span>
+        <span class="c1"># When primary language is unknown (None), run detection by default.</span>
+        <span class="k">if</span> <span class="n">primary_language</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">primary_language</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;python&quot;</span><span class="p">:</span>
+            <span class="n">env_data</span> <span class="o">=</span> <span class="n">_get_python_environment_data</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">)</span>
+            <span class="n">environment_managers</span> <span class="o">=</span> <span class="n">env_data</span><span class="p">[</span><span class="s2">&quot;environment_managers&quot;</span><span class="p">]</span>
+            <span class="n">has_managed_environment</span> <span class="o">=</span> <span class="n">env_data</span><span class="p">[</span><span class="s2">&quot;has_managed_environment&quot;</span><span class="p">]</span>
+            <span class="n">dependency_managers</span> <span class="o">=</span> <span class="n">env_data</span><span class="p">[</span><span class="s2">&quot;dependency_managers&quot;</span><span class="p">]</span>
+            <span class="n">has_declared_dependencies</span> <span class="o">=</span> <span class="n">env_data</span><span class="p">[</span><span class="s2">&quot;has_declared_dependencies&quot;</span><span class="p">]</span>
+            <span class="n">declared_python_versions</span> <span class="o">=</span> <span class="n">env_data</span><span class="p">[</span><span class="s2">&quot;declared_python_versions&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-has-edam-owl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-biotools-json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-codemeta-json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-ro-crate-metadata-json&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-software-metadata-files-count&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">has_edam_owl</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;edam.owl&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">has_biotools_json</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;biotools.json&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">has_codemeta_json</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="n">find_file</span><span class="p">(</span><span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span> <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;codemeta.json&quot;</span><span class="p">,</span> <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">has_ro_crate_metadata_json</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span>
+            <span class="n">find_file</span><span class="p">(</span>
+                <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+                <span class="n">filepath</span><span class="o">=</span><span class="s2">&quot;ro-crate-metadata.json&quot;</span><span class="p">,</span>
+                <span class="n">case_insensitive</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">)</span>
+
+        <span class="n">software_metadata_files_count</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+            <span class="nb">sum</span><span class="p">(</span>
+                <span class="nb">int</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="p">(</span>
+                    <span class="n">has_edam_owl</span><span class="p">,</span>
+                    <span class="n">has_biotools_json</span><span class="p">,</span>
+                    <span class="n">has_codemeta_json</span><span class="p">,</span>
+                    <span class="n">has_ro_crate_metadata_json</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">flag</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">software_description</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">docs_homepage_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">source_code_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">issue_tracker_url</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">needs</span><span class="p">(</span>
+        <span class="s2">&quot;repo-software-description&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-docs-homepage-url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-source-code-url&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;repo-issue-tracker-url&quot;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">software_description</span> <span class="o">=</span> <span class="n">_get_software_description</span><span class="p">(</span>
+            <span class="n">repo</span><span class="o">=</span><span class="n">repo</span><span class="p">,</span>
+            <span class="n">remote_repo_data</span><span class="o">=</span><span class="n">remote_repo_data</span><span class="p">,</span>
+            <span class="n">readme_exists</span><span class="o">=</span><span class="n">readme_exists</span><span class="p">,</span>
+            <span class="n">readme_file</span><span class="o">=</span><span class="n">readme_file</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># documentation / homepage URL from remote metadata where possible</span>
+        <span class="k">if</span> <span class="n">remote_repo_data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;homepage&quot;</span><span class="p">,</span> <span class="s2">&quot;homepage_url&quot;</span><span class="p">,</span> <span class="s2">&quot;website&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">docs_homepage_url</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">break</span>
+
+            <span class="c1"># source code URL: prefer HTML URL, then generic URL, then remote_url</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">&quot;html_url&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">):</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">source_code_url</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                    <span class="k">break</span>
+
+        <span class="k">if</span> <span class="n">source_code_url</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">source_code_url</span> <span class="o">=</span> <span class="n">remote_url</span>
+
+        <span class="c1"># issue tracker URL: use API metadata when present, otherwise infer common patterns</span>
+        <span class="k">if</span> <span class="n">remote_repo_data</span><span class="p">:</span>
+            <span class="n">issues_value</span> <span class="o">=</span> <span class="n">remote_repo_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;issues_url&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">issues_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">issues_value</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">issue_tracker_url</span> <span class="o">=</span> <span class="n">issues_value</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">issue_tracker_url</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">remote_url</span><span class="p">:</span>
+            <span class="n">parsed</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">remote_url</span><span class="p">)</span>
+            <span class="n">netloc</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">netloc</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">remote_url</span><span class="o">.</span><span class="n">rstrip</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;github.com&quot;</span> <span class="ow">in</span> <span class="n">netloc</span><span class="p">:</span>
+                <span class="n">issue_tracker_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">/issues&quot;</span>
+            <span class="k">elif</span> <span class="s2">&quot;gitlab.com&quot;</span> <span class="ow">in</span> <span class="n">netloc</span><span class="p">:</span>
+                <span class="n">issue_tracker_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">/-/issues&quot;</span>
+            <span class="k">elif</span> <span class="s2">&quot;gitea.com&quot;</span> <span class="ow">in</span> <span class="n">netloc</span><span class="p">:</span>
+                <span class="n">issue_tracker_url</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">base</span><span class="si">}</span><span class="s2">/issues&quot;</span>
 
     <span class="n">social_media_metrics</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">if</span> <span class="n">needs</span><span class="p">(</span><span class="s2">&quot;repo-social-media-platforms&quot;</span><span class="p">,</span> <span class="s2">&quot;repo-social-media-platforms-count&quot;</span><span class="p">):</span>
@@ -948,6 +1789,31 @@ document.write(`
         <span class="p">),</span>
         <span class="s2">&quot;repo-commits-per-day&quot;</span><span class="p">:</span> <span class="n">commits_count</span> <span class="o">/</span> <span class="n">days_of_development</span><span class="p">,</span>
         <span class="s2">&quot;almanack-table-datetime&quot;</span><span class="p">:</span> <span class="n">DATETIME_NOW</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%S.</span><span class="si">%f</span><span class="s2">Z&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;repo-software-description&quot;</span><span class="p">:</span> <span class="n">software_description</span><span class="p">,</span>
+        <span class="s2">&quot;repo-docs-homepage-url&quot;</span><span class="p">:</span> <span class="n">docs_homepage_url</span><span class="p">,</span>
+        <span class="s2">&quot;repo-source-code-url&quot;</span><span class="p">:</span> <span class="n">source_code_url</span><span class="p">,</span>
+        <span class="s2">&quot;repo-issue-tracker-url&quot;</span><span class="p">:</span> <span class="n">issue_tracker_url</span><span class="p">,</span>
+        <span class="s2">&quot;repo-languages-line-counts&quot;</span><span class="p">:</span> <span class="n">language_line_counts</span><span class="p">,</span>
+        <span class="s2">&quot;repo-languages-total-lines&quot;</span><span class="p">:</span> <span class="n">language_total_lines</span><span class="p">,</span>
+        <span class="s2">&quot;repo-languages-count&quot;</span><span class="p">:</span> <span class="n">language_count</span><span class="p">,</span>
+        <span class="s2">&quot;repo-noncode-extension-line-counts&quot;</span><span class="p">:</span> <span class="n">noncode_extension_line_counts</span><span class="p">,</span>
+        <span class="s2">&quot;repo-noncode-total-lines&quot;</span><span class="p">:</span> <span class="n">noncode_total_lines</span><span class="p">,</span>
+        <span class="s2">&quot;repo-noncode-extensions-count&quot;</span><span class="p">:</span> <span class="n">noncode_extensions_count</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-cli&quot;</span><span class="p">:</span> <span class="n">has_cli</span><span class="p">,</span>
+        <span class="s2">&quot;repo-cli-entrypoints&quot;</span><span class="p">:</span> <span class="n">cli_entrypoints</span><span class="p">,</span>
+        <span class="s2">&quot;repo-topics&quot;</span><span class="p">:</span> <span class="n">topics</span><span class="p">,</span>
+        <span class="s2">&quot;repo-topics-count&quot;</span><span class="p">:</span> <span class="n">topics_count</span><span class="p">,</span>
+        <span class="s2">&quot;repo-environment-managers&quot;</span><span class="p">:</span> <span class="n">environment_managers</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-managed-environment&quot;</span><span class="p">:</span> <span class="n">has_managed_environment</span><span class="p">,</span>
+        <span class="s2">&quot;repo-dependency-managers&quot;</span><span class="p">:</span> <span class="n">dependency_managers</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-declared-dependencies&quot;</span><span class="p">:</span> <span class="n">has_declared_dependencies</span><span class="p">,</span>
+        <span class="s2">&quot;repo-declared-python-versions&quot;</span><span class="p">:</span> <span class="n">declared_python_versions</span><span class="p">,</span>
+        <span class="s2">&quot;repo-cost-model&quot;</span><span class="p">:</span> <span class="n">cost_model</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-edam-owl&quot;</span><span class="p">:</span> <span class="n">has_edam_owl</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-biotools-json&quot;</span><span class="p">:</span> <span class="n">has_biotools_json</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-codemeta-json&quot;</span><span class="p">:</span> <span class="n">has_codemeta_json</span><span class="p">,</span>
+        <span class="s2">&quot;repo-has-ro-crate-metadata-json&quot;</span><span class="p">:</span> <span class="n">has_ro_crate_metadata_json</span><span class="p">,</span>
+        <span class="s2">&quot;repo-software-metadata-files-count&quot;</span><span class="p">:</span> <span class="n">software_metadata_files_count</span><span class="p">,</span>
         <span class="s2">&quot;repo-includes-readme&quot;</span><span class="p">:</span> <span class="n">readme_exists</span><span class="p">,</span>
         <span class="s2">&quot;repo-includes-contributing&quot;</span><span class="p">:</span> <span class="nb">any</span><span class="p">(</span>
             <span class="p">[</span>

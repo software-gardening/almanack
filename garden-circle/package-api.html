@@ -430,7 +430,16 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_cli_entrypoints"><code class="docutils literal notranslate"><span class="pre">_get_cli_entrypoints()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_conda_python_version"><code class="docutils literal notranslate"><span class="pre">_get_conda_python_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_programming_extensions"><code class="docutils literal notranslate"><span class="pre">_get_programming_extensions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_pyproject_python_version"><code class="docutils literal notranslate"><span class="pre">_get_pyproject_python_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_python_environment_data"><code class="docutils literal notranslate"><span class="pre">_get_python_environment_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_repository_languages_data"><code class="docutils literal notranslate"><span class="pre">_get_repository_languages_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_software_description"><code class="docutils literal notranslate"><span class="pre">_get_software_description()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._normalize_exclude_paths"><code class="docutils literal notranslate"><span class="pre">_normalize_exclude_paths()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._parse_setup_py_console_scripts"><code class="docutils literal notranslate"><span class="pre">_parse_setup_py_console_scripts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._walk_tree_measure_size_of_noncode_files"><code class="docutils literal notranslate"><span class="pre">_walk_tree_measure_size_of_noncode_files()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_almanack_score"><code class="docutils literal notranslate"><span class="pre">compute_almanack_score()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_pr_data"><code class="docutils literal notranslate"><span class="pre">compute_pr_data()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_repo_data"><code class="docutils literal notranslate"><span class="pre">compute_repo_data()</span></code></a></li>
@@ -438,6 +447,7 @@ document.write(`
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.gather_failed_almanack_metric_checks"><code class="docutils literal notranslate"><span class="pre">gather_failed_almanack_metric_checks()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_github_build_metrics"><code class="docutils literal notranslate"><span class="pre">get_github_build_metrics()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.is_conda_environment_yaml"><code class="docutils literal notranslate"><span class="pre">is_conda_environment_yaml()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.measure_coverage"><code class="docutils literal notranslate"><span class="pre">measure_coverage()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.parse_python_coverage_data"><code class="docutils literal notranslate"><span class="pre">parse_python_coverage_data()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_almanack"><code class="docutils literal notranslate"><span class="pre">process_repo_for_almanack()</span></code></a></li>
@@ -1028,6 +1038,149 @@ or dunamai to determine the current version being used.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_cli_entrypoints">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_cli_entrypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_cli_entrypoints"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_cli_entrypoints" title="Link to this definition">#</a></dt>
+<dd><p>Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo</strong> – The pygit2 Repository to read packaging files from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A sorted list of unique CLI command names. Returns an empty list if no
+entrypoints are found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_conda_python_version">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_conda_python_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_conda_python_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_conda_python_version" title="Link to this definition">#</a></dt>
+<dd><p>Return the Python version constraint declared in a conda environment YAML string.</p>
+<p>Scans the <code class="docutils literal notranslate"><span class="pre">dependencies</span></code> list for an entry that starts with <code class="docutils literal notranslate"><span class="pre">python</span></code>
+followed by a version separator (<code class="docutils literal notranslate"><span class="pre">=</span></code>, <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>, <code class="docutils literal notranslate"><span class="pre">&lt;</span></code>, <code class="docutils literal notranslate"><span class="pre">~</span></code>).
+Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if no Python dependency is found or the YAML cannot be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>content</strong> – The raw string contents of a conda <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Python version string extracted from the dependency entry (for
+example, <code class="docutils literal notranslate"><span class="pre">&quot;3.11&quot;</span></code>), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no Python version is declared or
+the file cannot be parsed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_programming_extensions">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_programming_extensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">frozenset</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_programming_extensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_programming_extensions" title="Link to this definition">#</a></dt>
+<dd><p>Return file extensions that belong to programming languages per GitHub Linguist.</p>
+<p>Fetches and parses the Linguist <code class="docutils literal notranslate"><span class="pre">languages.yml</span></code> on the first call, then
+caches the result for the lifetime of the process. Falls back to
+<code class="docutils literal notranslate"><span class="pre">_FALLBACK_PROGRAMMING_EXTENSIONS</span></code> if the fetch or parse fails.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_pyproject_python_version">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_pyproject_python_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_pyproject_python_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_pyproject_python_version" title="Link to this definition">#</a></dt>
+<dd><p>Return the declared Python version constraint from a pyproject.toml string.</p>
+<p>Checks <code class="docutils literal notranslate"><span class="pre">tool.poetry.dependencies.python</span></code> first (Poetry convention), then
+<code class="docutils literal notranslate"><span class="pre">project.requires-python</span></code> (PEP 621). Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if neither is present
+or if the TOML cannot be parsed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>content</strong> – The raw string contents of a <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The Python version constraint string (for example, <code class="docutils literal notranslate"><span class="pre">&quot;&gt;=3.9&quot;</span></code>), or
+<code class="docutils literal notranslate"><span class="pre">None</span></code> if no constraint is declared or the file cannot be parsed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_python_environment_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_python_environment_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_python_environment_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_python_environment_data" title="Link to this definition">#</a></dt>
+<dd><p>Detect Python environment and dependency management tools in the repository.</p>
+<p>Scans common Python packaging and environment configuration files to
+identify which tools are in use and what Python versions are declared.
+This function is intended for Python-primary repositories; call sites
+should guard invocation with a primary-language check.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>repo</strong> – The pygit2 Repository to scan for environment configuration files.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">environment_managers</span></code>: sorted list of detected environment manager
+names (for example, <code class="docutils literal notranslate"><span class="pre">[&quot;conda&quot;,</span> <span class="pre">&quot;poetry&quot;]</span></code>), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if none
+are found.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">has_managed_environment</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code> if at least one environment
+manager is detected, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dependency_managers</span></code>: sorted list of detected dependency manager
+names (for example, <code class="docutils literal notranslate"><span class="pre">[&quot;pip&quot;]</span></code>), or <code class="docutils literal notranslate"><span class="pre">None</span></code> if none are found.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">has_declared_dependencies</span></code>: <code class="docutils literal notranslate"><span class="pre">True</span></code> if at least one dependency
+manager is detected, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">declared_python_versions</span></code>: sorted list of declared Python version
+strings, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if none are found.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary with the following keys</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_repository_languages_data">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_repository_languages_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">remote_repo_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_url</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_repository_languages_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_repository_languages_data" title="Link to this definition">#</a></dt>
+<dd><p>Return repository language line counts from remote metadata or GitHub.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>remote_repo_data</strong> – Metadata dict from a hosting platform or ecosyste.ms
+mirror. May contain a <code class="docutils literal notranslate"><span class="pre">languages_lines</span></code>, <code class="docutils literal notranslate"><span class="pre">languages_loc</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">languages</span></code> key with per-language counts.</p></li>
+<li><p><strong>remote_url</strong> – Remote URL of the repository, used to fall back to the
+GitHub languages API when hosting metadata is unavailable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping programming language name to an approximate line
+or byte count. Returns an empty dict if no language data is found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._get_software_description">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_get_software_description</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remote_repo_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readme_exists</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readme_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_get_software_description"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._get_software_description" title="Link to this definition">#</a></dt>
+<dd><p>Return the best available plain-text description for the repository.</p>
+<p>The function uses the following priority order:
+1. The description field from remote hosting metadata (e.g. ecosyste.ms / GitHub).
+2. The <code class="docutils literal notranslate"><span class="pre">abstract</span></code> field from a <code class="docutils literal notranslate"><span class="pre">CITATION.cff</span></code> file in the repo root.
+3. The first non-badge paragraph of the README.</p>
+<p>Returns the first non-empty candidate, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if the repo doesn’t include any priority entry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>repo</strong> – The pygit2 Repository to read local files from.</p></li>
+<li><p><strong>remote_repo_data</strong> – Metadata dict from a hosting platform or
+ecosyste.ms mirror, used to retrieve the remote description field.</p></li>
+<li><p><strong>readme_exists</strong> – Whether a README file was detected in the repository.</p></li>
+<li><p><strong>readme_file</strong> – The pygit2 object for the README file, used to read its
+contents when falling back to the first paragraph.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The best available plain-text description string, or <code class="docutils literal notranslate"><span class="pre">None</span></code> if no
+description could be found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="almanack.metrics.data._normalize_exclude_paths">
 <span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_normalize_exclude_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exclude_paths</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_normalize_exclude_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._normalize_exclude_paths" title="Link to this definition">#</a></dt>
 <dd><p>Normalize exclude path inputs into a list of strings.</p>
@@ -1038,6 +1191,55 @@ comma-separated strings and strips surrounding quotes.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A list of normalized exclude paths, or None if no paths are provided.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._parse_setup_py_console_scripts">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_parse_setup_py_console_scripts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">set</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_parse_setup_py_console_scripts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._parse_setup_py_console_scripts" title="Link to this definition">#</a></dt>
+<dd><p>Extract console_scripts command names from a setup.py string.</p>
+<p>Parses the content as a Python Abstract Syntax Tree (AST) and looks for a
+<code class="docutils literal notranslate"><span class="pre">setup()</span></code> or <code class="docutils literal notranslate"><span class="pre">setuptools.setup()</span></code> call whose <code class="docutils literal notranslate"><span class="pre">entry_points</span></code> keyword
+argument contains a <code class="docutils literal notranslate"><span class="pre">console_scripts</span></code> list. Returns an empty set if the
+file cannot be parsed or contains no matching entries.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>content</strong> – The raw string contents of a <code class="docutils literal notranslate"><span class="pre">setup.py</span></code> file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A set of CLI command names declared in <code class="docutils literal notranslate"><span class="pre">console_scripts</span></code>. Returns an
+empty set if none are found or the file cannot be parsed.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data._walk_tree_measure_size_of_noncode_files">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">_walk_tree_measure_size_of_noncode_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tree</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Blob</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Repository</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#_walk_tree_measure_size_of_noncode_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data._walk_tree_measure_size_of_noncode_files" title="Link to this definition">#</a></dt>
+<dd><p>Recursively walk a git tree and count lines per non-code file extension.</p>
+<p>The function iterates through each blob (file) in the tree, and counts new lines for
+non-code files. Specifically, the function will skip a file if the extension
+appears in <code class="docutils literal notranslate"><span class="pre">_get_programming_extensions()</span></code> or if it lives inside a <code class="docutils literal notranslate"><span class="pre">.git/</span></code>
+directory. The function counts non-code, text-based files by newline and counts
+binary files based on byte length. Lastly, the function computes a sum per file
+extension and writes into a <code class="docutils literal notranslate"><span class="pre">{extension:</span> <span class="pre">line_count}</span></code> dict where files missing an extension
+use the key <code class="docutils literal notranslate"><span class="pre">&quot;&lt;no_ext&gt;&quot;</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tree</strong> – A pygit2 Tree or Blob to walk. Top-level callers pass the root
+tree; recursive calls pass subtrees or blobs.</p></li>
+<li><p><strong>repo</strong> – The pygit2 Repository used to dereference object IDs when
+traversing subtrees.</p></li>
+<li><p><strong>prefix</strong> – Relative file path accumulated during recursion. Defaults to
+an empty string for the root call.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping each non-code file extension (for example,
+<code class="docutils literal notranslate"><span class="pre">.md</span></code>, <code class="docutils literal notranslate"><span class="pre">.csv</span></code>) to its approximate line or byte count. Files
+without an extension are keyed as <code class="docutils literal notranslate"><span class="pre">&quot;&lt;no_ext&gt;&quot;</span></code>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1210,6 +1412,25 @@ result under the key “result”.</p>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ReferenceError</strong> – If there is an error encountered while processing the data,
     providing context in the error message.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="almanack.metrics.data.is_conda_environment_yaml">
+<span class="sig-prename descclassname"><span class="pre">almanack.metrics.data.</span></span><span class="sig-name descname"><span class="pre">is_conda_environment_yaml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">content</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/almanack/metrics/data.html#is_conda_environment_yaml"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#almanack.metrics.data.is_conda_environment_yaml" title="Link to this definition">#</a></dt>
+<dd><p>Return True if <em>content</em> looks like a conda environment YAML file.</p>
+<p>A conda environment file is a YAML document whose top-level value is a
+mapping that contains at least one of the keys <code class="docutils literal notranslate"><span class="pre">name</span></code>, <code class="docutils literal notranslate"><span class="pre">channels</span></code>, or
+<code class="docutils literal notranslate"><span class="pre">dependencies</span></code>. This heuristic avoids false positives from arbitrary YAML
+files that happen to share the same filename.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>content</strong> – The raw string contents of a YAML file to inspect.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">True</span></code> if the content matches the conda environment YAML heuristic,
+<code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2006,7 +2227,16 @@ related to the repository.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics">Metrics</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#module-almanack.metrics.data">Data</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_almanack_version"><code class="docutils literal notranslate"><span class="pre">_get_almanack_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_cli_entrypoints"><code class="docutils literal notranslate"><span class="pre">_get_cli_entrypoints()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_conda_python_version"><code class="docutils literal notranslate"><span class="pre">_get_conda_python_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_programming_extensions"><code class="docutils literal notranslate"><span class="pre">_get_programming_extensions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_pyproject_python_version"><code class="docutils literal notranslate"><span class="pre">_get_pyproject_python_version()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_python_environment_data"><code class="docutils literal notranslate"><span class="pre">_get_python_environment_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_repository_languages_data"><code class="docutils literal notranslate"><span class="pre">_get_repository_languages_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._get_software_description"><code class="docutils literal notranslate"><span class="pre">_get_software_description()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._normalize_exclude_paths"><code class="docutils literal notranslate"><span class="pre">_normalize_exclude_paths()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._parse_setup_py_console_scripts"><code class="docutils literal notranslate"><span class="pre">_parse_setup_py_console_scripts()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data._walk_tree_measure_size_of_noncode_files"><code class="docutils literal notranslate"><span class="pre">_walk_tree_measure_size_of_noncode_files()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_almanack_score"><code class="docutils literal notranslate"><span class="pre">compute_almanack_score()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_pr_data"><code class="docutils literal notranslate"><span class="pre">compute_pr_data()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.compute_repo_data"><code class="docutils literal notranslate"><span class="pre">compute_repo_data()</span></code></a></li>
@@ -2014,6 +2244,7 @@ related to the repository.</p>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.gather_failed_almanack_metric_checks"><code class="docutils literal notranslate"><span class="pre">gather_failed_almanack_metric_checks()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_github_build_metrics"><code class="docutils literal notranslate"><span class="pre">get_github_build_metrics()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.get_table"><code class="docutils literal notranslate"><span class="pre">get_table()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.is_conda_environment_yaml"><code class="docutils literal notranslate"><span class="pre">is_conda_environment_yaml()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.measure_coverage"><code class="docutils literal notranslate"><span class="pre">measure_coverage()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.parse_python_coverage_data"><code class="docutils literal notranslate"><span class="pre">parse_python_coverage_data()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#almanack.metrics.data.process_repo_for_almanack"><code class="docutils literal notranslate"><span class="pre">process_repo_for_almanack()</span></code></a></li>
