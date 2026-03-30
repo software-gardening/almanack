@@ -101,9 +101,11 @@ def _get_programming_extensions() -> frozenset[str]:
     try:
         import requests as _requests
 
+        # fetch the upstream Linguist languages.yml
         response = _requests.get(_LINGUIST_LANGUAGES_URL, timeout=10)
         response.raise_for_status()
         languages = yaml.safe_load(response.text) or {}
+        # collect file extensions for programming languages only
         exts: set[str] = set()
         for lang_meta in languages.values():
             if not isinstance(lang_meta, dict):
@@ -112,6 +114,7 @@ def _get_programming_extensions() -> frozenset[str]:
                 for ext in lang_meta.get("extensions", []):
                     if isinstance(ext, str):
                         exts.add(ext)
+        # cache and return if we got a non-empty result
         if exts:
             _programming_extensions_cache = frozenset(exts)
             return _programming_extensions_cache
