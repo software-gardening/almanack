@@ -672,7 +672,7 @@ def _parse_setup_py_console_scripts(content: str) -> set[str]:
     """
     try:
         tree = ast.parse(content)
-    except SyntaxError:
+    except (SyntaxError, MemoryError, RecursionError, Exception):
         LOGGER.debug("Unable to parse setup.py for CLI entrypoints.", exc_info=True)
         return set()
 
