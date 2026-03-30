@@ -18,8 +18,8 @@ import yaml
 from almanack.git import find_file, get_remote_url
 from almanack.metrics import data as data_module
 from almanack.metrics.data import (
-    METRICS_TABLE,
     _FALLBACK_PROGRAMMING_EXTENSIONS,
+    METRICS_TABLE,
     _get_almanack_version,
     _get_cli_entrypoints,
     _get_conda_python_version,

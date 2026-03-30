@@ -845,9 +845,7 @@ def _get_python_environment_data(  # noqa: C901, PLR0912
         break  # stop after the first valid conda env file is found
 
     # Detect Pipenv.
-    pipfile_content = read_file(
-        repo=repo, filepath="Pipfile", case_insensitive=False
-    )
+    pipfile_content = read_file(repo=repo, filepath="Pipfile", case_insensitive=False)
     if isinstance(pipfile_content, str):
         managers.add("pipenv")
 
@@ -868,9 +866,7 @@ def _get_python_environment_data(  # noqa: C901, PLR0912
         managers.add("nix")
 
     # Detect Python runtime hints (Heroku-style runtime.txt).
-    runtime_txt = read_file(
-        repo=repo, filepath="runtime.txt", case_insensitive=False
-    )
+    runtime_txt = read_file(repo=repo, filepath="runtime.txt", case_insensitive=False)
     if isinstance(runtime_txt, str):
         for raw_line in runtime_txt.splitlines():
             line = raw_line.strip()

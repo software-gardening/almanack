@@ -28,7 +28,7 @@ repos:
     -   id: detect-private-key
 
 -   repo: https://github.com/python-poetry/poetry
-    rev: "2.3.2"
+    rev: "2.3.3"
     hooks:
       # Verifies that the `pyproject.toml` file is valid and follows Poetry's
       # expected syntax, which ensures consistent dependency management.
@@ -116,14 +116,14 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.7"
+    rev: "v0.15.8"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
     -   id: ruff-check
 
 -   repo: https://github.com/rhysd/actionlint
-    rev: v1.7.11
+    rev: v1.7.12
     hooks:
       # Lints GitHub Actions workflows, ensuring syntax correctness and
       # reducing errors in continuous integration and automation configurations.
@@ -137,7 +137,7 @@ repos:
     -   id: validate-cff
 
 -   repo: https://github.com/jendrikseipp/vulture
-    rev: 'v2.15'
+    rev: 'v2.16'
     hooks:
       # Detects unused code, helping identify dead code that can be removed
       # to keep the codebase lean and maintainable.
