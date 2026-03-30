@@ -442,7 +442,19 @@ def days_of_development(repo: pygit2.Repository) -> float:
 def _get_repository_languages_data(
     remote_repo_data: Dict[str, Any], remote_url: Optional[str]
 ) -> Dict[str, int]:
-    """Return repository language line counts from remote metadata or GitHub."""
+    """Return repository language line counts from remote metadata or GitHub.
+
+    Args:
+        remote_repo_data: Metadata dict from a hosting platform or ecosyste.ms
+            mirror. May contain a ``languages_lines``, ``languages_loc``, or
+            ``languages`` key with per-language counts.
+        remote_url: Remote URL of the repository, used to fall back to the
+            GitHub languages API when hosting metadata is unavailable.
+
+    Returns:
+        A dictionary mapping programming language name to an approximate line
+        or byte count. Returns an empty dict if no language data is found.
+    """
     languages_data: Dict[str, int] = {}
 
     # Prefer ecosyste.ms or hosting metadata if it already exposes language stats.
@@ -491,6 +503,18 @@ def _get_software_description(
     3. The first non-badge paragraph of the README.
 
     Returns the first non-empty candidate, or ``None`` if the repo doesn't include any priority entry.
+
+    Args:
+        repo: The pygit2 Repository to read local files from.
+        remote_repo_data: Metadata dict from a hosting platform or
+            ecosyste.ms mirror, used to retrieve the remote description field.
+        readme_exists: Whether a README file was detected in the repository.
+        readme_file: The pygit2 object for the README file, used to read its
+            contents when falling back to the first paragraph.
+
+    Returns:
+        The best available plain-text description string, or ``None`` if no
+        description could be found.
     """
     candidates: list[str] = []
 
@@ -538,6 +562,13 @@ def _get_pyproject_python_version(content: str) -> Optional[str]:
     Checks ``tool.poetry.dependencies.python`` first (Poetry convention), then
     ``project.requires-python`` (PEP 621). Returns ``None`` if neither is present
     or if the TOML cannot be parsed.
+
+    Args:
+        content: The raw string contents of a ``pyproject.toml`` file.
+
+    Returns:
+        The Python version constraint string (for example, ``">=3.9"``), or
+        ``None`` if no constraint is declared or the file cannot be parsed.
     """
     try:
         pyproject = tomllib.loads(content)
@@ -569,6 +600,14 @@ def _get_conda_python_version(content: str) -> Optional[str]:
     Scans the ``dependencies`` list for an entry that starts with ``python``
     followed by a version separator (``=``, ``>``, ``<``, ``~``).
     Returns ``None`` if no Python dependency is found or the YAML cannot be parsed.
+
+    Args:
+        content: The raw string contents of a conda ``environment.yml`` file.
+
+    Returns:
+        The Python version string extracted from the dependency entry (for
+        example, ``"3.11"``), or ``None`` if no Python version is declared or
+        the file cannot be parsed.
     """
     try:
         env_data = yaml.safe_load(content)
@@ -599,6 +638,13 @@ def is_conda_environment_yaml(content: str) -> bool:
     mapping that contains at least one of the keys ``name``, ``channels``, or
     ``dependencies``. This heuristic avoids false positives from arbitrary YAML
     files that happen to share the same filename.
+
+    Args:
+        content: The raw string contents of a YAML file to inspect.
+
+    Returns:
+        ``True`` if the content matches the conda environment YAML heuristic,
+        ``False`` otherwise.
     """
     try:
         data = yaml.safe_load(content)
@@ -616,6 +662,13 @@ def _parse_setup_py_console_scripts(content: str) -> set[str]:
     ``setup()`` or ``setuptools.setup()`` call whose ``entry_points`` keyword
     argument contains a ``console_scripts`` list. Returns an empty set if the
     file cannot be parsed or contains no matching entries.
+
+    Args:
+        content: The raw string contents of a ``setup.py`` file.
+
+    Returns:
+        A set of CLI command names declared in ``console_scripts``. Returns an
+        empty set if none are found or the file cannot be parsed.
     """
     try:
         tree = ast.parse(content)
@@ -655,7 +708,15 @@ def _parse_setup_py_console_scripts(content: str) -> set[str]:
 
 
 def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
-    """Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py."""
+    """Return sorted CLI entrypoint names discovered from pyproject.toml, setup.cfg, and setup.py.
+
+    Args:
+        repo: The pygit2 Repository to read packaging files from.
+
+    Returns:
+        A sorted list of unique CLI command names. Returns an empty list if no
+        entrypoints are found.
+    """
     discovered_commands: set[str] = set()
 
     # Inspect pyproject.toml for [project.scripts] and [tool.poetry.scripts]
