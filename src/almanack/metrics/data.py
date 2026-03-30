@@ -772,6 +772,122 @@ def _get_cli_entrypoints(repo: pygit2.Repository) -> List[str]:
     return sorted(discovered_commands)
 
 
+def _get_python_environment_data(
+    repo: pygit2.Repository,
+) -> Dict[str, Any]:
+    """Detect Python environment and dependency management tools in the repository.
+
+    Scans common Python packaging and environment configuration files to
+    identify which tools are in use and what Python versions are declared.
+    This function is intended for Python-primary repositories; call sites
+    should guard invocation with a primary-language check.
+
+    Args:
+        repo: The pygit2 Repository to scan for environment configuration files.
+
+    Returns:
+        A dictionary with the following keys:
+
+        - ``environment_managers``: sorted list of detected environment manager
+          names (for example, ``["conda", "poetry"]``), or ``None`` if none
+          are found.
+        - ``has_managed_environment``: ``True`` if at least one environment
+          manager is detected, ``False`` otherwise.
+        - ``dependency_managers``: sorted list of detected dependency manager
+          names (for example, ``["pip"]``), or ``None`` if none are found.
+        - ``has_declared_dependencies``: ``True`` if at least one dependency
+          manager is detected, ``False`` otherwise.
+        - ``declared_python_versions``: sorted list of declared Python version
+          strings, or ``None`` if none are found.
+    """
+    managers: set[str] = set()
+    dep_managers: set[str] = set()
+    py_versions: set[str] = set()
+
+    # Detect Poetry / generic pyproject-managed environments and Python version.
+    pyproject_content = read_file(
+        repo=repo, filepath="pyproject.toml", case_insensitive=False
+    )
+    if isinstance(pyproject_content, str):
+        # Always record that a pyproject-based configuration exists.
+        managers.add("pyproject")
+        try:
+            pyproject = tomllib.loads(pyproject_content)
+            if "poetry" in pyproject.get("tool", {}):
+                managers.add("poetry")
+        except tomllib.TOMLDecodeError:
+            LOGGER.debug(
+                "Unable to parse pyproject.toml for environment managers.",
+                exc_info=True,
+            )
+        pyproject_python_ver = _get_pyproject_python_version(pyproject_content)
+        if pyproject_python_ver:
+            py_versions.add(pyproject_python_ver)
+
+    # Detect Conda environment files and Python version.
+    # Conda env files can use several common names; try each in turn.
+    _conda_candidate_names = (
+        "environment.yml",
+        "environment.yaml",
+        "conda.yml",
+        "conda.yaml",
+        "conda-environment.yml",
+        "conda-environment.yaml",
+    )
+    for _conda_fname in _conda_candidate_names:
+        env_yml = read_file(repo=repo, filepath=_conda_fname, case_insensitive=True)
+        if not isinstance(env_yml, str) or not is_conda_environment_yaml(env_yml):
+            continue
+        managers.add("conda")
+        conda_python_ver = _get_conda_python_version(env_yml)
+        if conda_python_ver:
+            py_versions.add(conda_python_ver)
+        break  # stop after the first valid conda env file is found
+
+    # Detect Pipenv.
+    pipfile_content = read_file(
+        repo=repo, filepath="Pipfile", case_insensitive=False
+    )
+    if isinstance(pipfile_content, str):
+        managers.add("pipenv")
+
+    # Detect pip-based dependency management (requirements files).
+    if read_file(repo=repo, filepath="requirements.txt", case_insensitive=True):
+        dep_managers.add("pip")
+
+    # Detect setup.py / setup.cfg install_requires as dependency management.
+    if read_file(repo=repo, filepath="setup.py", case_insensitive=False):
+        dep_managers.add("pip")
+    if read_file(repo=repo, filepath="setup.cfg", case_insensitive=False):
+        dep_managers.add("pip")
+
+    # Detect Nix.
+    if read_file(repo=repo, filepath="flake.nix", case_insensitive=False):
+        managers.add("nix")
+    if read_file(repo=repo, filepath="default.nix", case_insensitive=False):
+        managers.add("nix")
+
+    # Detect Python runtime hints (Heroku-style runtime.txt).
+    runtime_txt = read_file(
+        repo=repo, filepath="runtime.txt", case_insensitive=False
+    )
+    if isinstance(runtime_txt, str):
+        for raw_line in runtime_txt.splitlines():
+            line = raw_line.strip()
+            if line.lower().startswith("python-"):
+                v = line.split("-", 1)[1].strip()
+                if v:
+                    py_versions.add(v)
+
+    return {
+        "environment_managers": sorted(managers) if managers else None,
+        "has_managed_environment": bool(managers),
+        "dependency_managers": sorted(dep_managers) if dep_managers else None,
+        "has_declared_dependencies": bool(dep_managers),
+        "declared_python_versions": sorted(py_versions) if py_versions else None,
+    }
+
+
 def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
     repo_path: str,
     exclude_paths: Optional[List[str]] = None,
@@ -1029,99 +1145,16 @@ def compute_repo_data(  # noqa: C901, PLR0912, PLR0915
         "repo-has-declared-dependencies",
         "repo-declared-python-versions",
     ):
-        managers: set[str] = set()
-        dep_managers: set[str] = set()
-        py_versions: set[str] = set()
-
-        # Detect Poetry / generic pyproject-managed environments and Python version.
-        pyproject_content = read_file(
-            repo=repo, filepath="pyproject.toml", case_insensitive=False
-        )
-        if isinstance(pyproject_content, str):
-            # Always record that a pyproject-based configuration exists.
-            managers.add("pyproject")
-            try:
-                pyproject = tomllib.loads(pyproject_content)
-                if "poetry" in pyproject.get("tool", {}):
-                    managers.add("poetry")
-            except tomllib.TOMLDecodeError:
-                LOGGER.debug(
-                    "Unable to parse pyproject.toml for environment managers.",
-                    exc_info=True,
-                )
-            pyproject_python_ver = _get_pyproject_python_version(pyproject_content)
-            if pyproject_python_ver:
-                py_versions.add(pyproject_python_ver)
-
-        # Detect Conda environment files and Python version.
-        # Conda env files can use several common names; try each in turn.
-        _conda_candidate_names = (
-            "environment.yml",
-            "environment.yaml",
-            "conda.yml",
-            "conda.yaml",
-            "conda-environment.yml",
-            "conda-environment.yaml",
-        )
-        for _conda_fname in _conda_candidate_names:
-            env_yml = read_file(repo=repo, filepath=_conda_fname, case_insensitive=True)
-            if not isinstance(env_yml, str) or not is_conda_environment_yaml(env_yml):
-                continue
-            managers.add("conda")
-            conda_python_ver = _get_conda_python_version(env_yml)
-            if conda_python_ver:
-                py_versions.add(conda_python_ver)
-            break  # stop after the first valid conda env file is found
-
-        # Detect Pipenv.
-        pipfile_content = read_file(
-            repo=repo, filepath="Pipfile", case_insensitive=False
-        )
-        if isinstance(pipfile_content, str):
-            managers.add("pipenv")
-
-        # Detect pip-based dependency management (requirements files).
-        if read_file(repo=repo, filepath="requirements.txt", case_insensitive=True):
-            dep_managers.add("pip")
-
-        # Detect setup.py / setup.cfg install_requires as dependency management.
-        if read_file(repo=repo, filepath="setup.py", case_insensitive=False):
-            dep_managers.add("pip")
-        if read_file(repo=repo, filepath="setup.cfg", case_insensitive=False):
-            dep_managers.add("pip")
-
-        # Detect Nix.
-        if read_file(repo=repo, filepath="flake.nix", case_insensitive=False):
-            managers.add("nix")
-        if read_file(repo=repo, filepath="default.nix", case_insensitive=False):
-            managers.add("nix")
-
-        # Detect Python runtime hints (Heroku-style runtime.txt).
-        runtime_txt = read_file(
-            repo=repo, filepath="runtime.txt", case_insensitive=False
-        )
-        if isinstance(runtime_txt, str):
-            for raw_line in runtime_txt.splitlines():
-                line = raw_line.strip()
-                if line.lower().startswith("python-"):
-                    v = line.split("-", 1)[1].strip()
-                    if v:
-                        py_versions.add(v)
-
-        if managers:
-            environment_managers = sorted(managers)
-            has_managed_environment = True
-        else:
-            has_managed_environment = False
-
-        if dep_managers:
-            dependency_managers = sorted(dep_managers)
-            has_declared_dependencies = True
-        else:
-            has_declared_dependencies = False
-
-        if py_versions:
-            declared_python_versions = sorted(py_versions)
+        primary_language = remote_repo_data.get("language", None)
+        # Only run Python-specific environment detection for Python repos.
+        # When primary language is unknown (None), run detection by default.
+        if primary_language is None or primary_language.lower() == "python":
+            env_data = _get_python_environment_data(repo=repo)
+            environment_managers = env_data["environment_managers"]
+            has_managed_environment = env_data["has_managed_environment"]
+            dependency_managers = env_data["dependency_managers"]
+            has_declared_dependencies = env_data["has_declared_dependencies"]
+            declared_python_versions = env_data["declared_python_versions"]
 
     if needs(
         "repo-has-edam-owl",
