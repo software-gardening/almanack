@@ -9,6 +9,10 @@
 
 The Software Gardening Almanack is an open-source handbook of applied guidance and tools for sustainable software development and maintenance.
 
+## Watch the Overview Video
+
+[![Watch the Software Gardening Almanack overview on YouTube](https://img.youtube.com/vi/1vsTc9QsV24/hqdefault.jpg)](https://www.youtube.com/watch?v=1vsTc9QsV24)
+
 The project entails two primary components:
 
 - The __Almanack handbook__: the content found here helps educate, demonstrate, and evolve the concepts of sustainable software development.
