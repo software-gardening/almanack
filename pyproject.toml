@@ -113,6 +113,9 @@ ignore-words = "styles/config/vocabularies/almanack/accept.txt"
 # add capabilities for inline ignore for codespell linting
 # referenced from: https://github.com/codespell-project/codespell/issues/1212
 ignore-regex = ".{1024}|.*codespell-ignore.*"
+# Skip lockfiles, JSON, bibliography, notebooks (formerly excluded via
+# pre-commit's `exclude:` field) and PDFs so `codespell` can be run directly.
+skip = "*.lock,*.json,*.bib,*.ipynb,*.pdf"
 
 [tool.pytest.ini_options]
 testpaths = "tests"
