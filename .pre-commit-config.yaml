@@ -46,14 +46,9 @@ repos:
     hooks:
       # Detects and corrects common typos in the codebase, improving
       # readability and reducing minor mistakes.
+      # Skip patterns are configured in [tool.codespell] in pyproject.toml
+      # so that `codespell` can be invoked directly with the same exclusions.
     -   id: codespell
-        exclude: |
-          (?x)^(
-              .*\.lock |
-              .*\.json |
-              .*\.bib |
-              .*\.ipynb
-          )$
         additional_dependencies:
         -   tomli
 
