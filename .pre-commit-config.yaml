@@ -35,7 +35,7 @@ repos:
     -   id: poetry-check
 
 -   repo: https://github.com/tox-dev/pyproject-fmt
-    rev: "v2.12.1"
+    rev: "v2.21.2"
     hooks:
       # Formats the `pyproject.toml` file to follow a consistent structure
       # and style, making it easier to read and maintain.
@@ -53,7 +53,7 @@ repos:
         -   tomli
 
 -   repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.22
+    rev: 1.0.0
     hooks:
       # Formats Markdown files to ensure a consistent style,
       # making the documentation easier to read and maintain.
