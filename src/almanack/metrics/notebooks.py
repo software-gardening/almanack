@@ -1,3 +1,4 @@
+import ast
 import fnmatch
 import json
 import logging
@@ -9,7 +10,7 @@ from typing import Dict, List, Optional, Sequence, Union
 @dataclass
 class JupyterCell:
     """Data class representing a Jupyter notebook cell, containing
-    information about its type and execution count.
+    information about its type, execution count, and source.
 
     Attributes
     ----------
@@ -18,30 +19,111 @@ class JupyterCell:
     execution_count : Union[int, None]
         The execution count of the cell, indicating the order in which
         the code cells were run.
+    source : str
+        The source content of the Jupyter notebook cell.
     """
 
     cell_type: str
     execution_count: Union[int, None]
+    source: str
+
+
+def _has_imports_in_cell(cell_source: str) -> bool:
+    """Check if a cell source contains import statements.
+
+    This function uses a two-stage approach to detect import statements:
+    1. Attempts to parse the cell source as valid Python using AST (Abstract
+       Syntax Tree) to accurately identify import nodes.
+    2. Fallback: If AST parsing fails (e.g., due to IPython magic commands, incomplete
+       code, or invalid syntax), falls back to a line-by-line heuristic that attempts
+       to identify import statements while skipping comments and docstrings.
+
+    Args:
+        cell_source: The source code of the cell to check for import statements.
+
+    Returns:
+        True if the cell contains import statements (either 'import' or
+        'from...import'), False otherwise.
+
+    Examples:
+        >>> _has_imports_in_cell("import numpy as np")
+        True
+        >>> _has_imports_in_cell("# import numpy as np")
+        False
+        >>> _has_imports_in_cell("x = 5")
+        False
+        >>> _has_imports_in_cell("%matplotlib inline\\nimport pandas")
+        True
+
+    Note:
+        The fallback heuristic has limitations and may not correctly handle all edge
+        cases, such as imports inside multi-line strings or complex nested code blocks.
+        It is designed primarily to handle common notebook patterns where IPython magic
+        commands or incomplete code cause AST parsing to fail.
+    """
+    # Try to parse as valid Python using AST for accurate detection
+    try:
+        parsed_tree = ast.parse(cell_source)
+        for node in ast.walk(parsed_tree):
+            is_import_node = isinstance(node, (ast.Import, ast.ImportFrom))
+            if is_import_node:
+                return True
+        return False
+    except SyntaxError:
+        # Fallback heuristic for cells with syntax errors
+        # (e.g., IPython magic commands, incomplete code)
+        lines = cell_source.splitlines()
+        is_inside_docstring = False
+
+        for line in lines:
+            stripped_line = line.strip()
+
+            # Skip comment-only lines
+            if stripped_line.startswith("#"):
+                continue
+
+            # Toggle docstring tracking when encountering triple quotes
+            has_triple_quotes = '"""' in stripped_line or "'''" in stripped_line
+            if has_triple_quotes:
+                is_inside_docstring = not is_inside_docstring
+                continue
+
+            # Skip lines that are inside docstrings
+            if is_inside_docstring:
+                continue
+
+            # Check if line starts with import keywords
+            is_import_statement = stripped_line.startswith(
+                "import "
+            ) or stripped_line.startswith("from ")
+            if is_import_statement:
+                return True
+
+        return False
 
 
 def _create_jupyter_cell(cell: dict) -> JupyterCell:
-    """
-    Create a JupyterCell object from a notebook cell dictionary.
+    """Create a JupyterCell object from a notebook cell dictionary.
 
     Parameters
     ----------
     cell : dict
         Dictionary containing notebook cell information from notebook JSON.
 
-    Returns
-    -------
-    JupyterCell
-        A JupyterCell object with cell type and execution count.
+    Returns:
+        JupyterCell: A JupyterCell object with cell type, execution count, and source.
     """
     cell_type = cell["cell_type"]
     execution_count = cell.get("execution_count") if cell_type == "code" else None
+    source = cell.get("source", "")
 
-    return JupyterCell(cell_type=cell_type, execution_count=execution_count)
+    # Convert source to string if it's a list (common in Jupyter notebooks)
+    if isinstance(source, list):
+        source = "".join(source)
+
+    return JupyterCell(
+        cell_type=cell_type, execution_count=execution_count, source=source
+    )
 
 
 @dataclass
@@ -60,16 +142,17 @@ class NotebookIgnoreMatchers:
 
 
 def _prepare_ignore_matchers(
-    ignore_paths: Optional[Sequence[str]],
+    ignore_paths: Union[str, Sequence[str], None],
 ) -> NotebookIgnoreMatchers:
     """Prepare ignore matchers for notebook discovery.
 
     Args:
-        ignore_paths: Repository-relative paths or glob patterns to ignore.
-            Paths can point to files or directories.
+        ignore_paths (Union[str, Sequence[str], None]): Repository-relative paths or
+        glob patterns to ignore. Paths can point to files or directories.
 
     Returns:
-        A NotebookIgnoreMatchers instance with prepared patterns.
+        NotebookIgnoreMatchers: A NotebookIgnoreMatchers instance with prepared
+        patterns.
     """
     if isinstance(ignore_paths, str):
         ignore_paths = [value.strip() for value in ignore_paths.split(",")]
@@ -113,13 +196,13 @@ def _should_ignore_notebook(
     """Determine whether a notebook should be ignored.
 
     Args:
-        notebook_file: Path to the notebook file.
-        resolved_repo_path: Absolute repository root.
-        ignore_dirs: Directory names to ignore.
-        ignore_matchers: Prepared ignore matchers.
+        notebook_file (pathlib.Path): Path to the notebook file.
+        resolved_repo_path (pathlib.Path): Absolute repository root.
+        ignore_dirs (Sequence[str]): Directory names to ignore.
+        ignore_matchers (NotebookIgnoreMatchers): Prepared ignore matchers.
 
     Returns:
-        True if the notebook should be ignored, False otherwise.
+        bool: True if the notebook should be ignored, False otherwise.
     """
     rel_path = notebook_file.relative_to(resolved_repo_path).as_posix()
 
@@ -148,21 +231,20 @@ def _should_ignore_notebook(
 
 def get_nb_contents(
     repo_path: Union[str, pathlib.Path],
-    ignore_dirs: Union[List[str], None] = None,
-    ignore_paths: Union[List[str], None] = None,
+    ignore_dirs: Optional[List[str]] = None,
+    ignore_paths: Optional[List[str]] = None,
 ) -> Dict[pathlib.Path, List[JupyterCell]]:
     """Load notebook contents and extract cell information.
 
     Args:
-        repo_path: Path to the repository directory.
-        ignore_dirs: Directory names to ignore when searching for notebooks.
-            Defaults to none when not provided.
-        ignore_paths: Repository-relative paths or glob patterns to ignore.
-            Paths can point to files or directories.
+        repo_path (Union[str, pathlib.Path]): Path to the repository directory.
+        ignore_dirs (Optional[List[str]]): Directory names to ignore when searching for
+        notebooks.  ignore_paths (Optional[List[str]]): Repository-relative paths or
+        glob patterns to ignore.
 
     Returns:
-        A mapping of notebook file paths to lists of JupyterCell objects. Markdown
-        cells have execution_count set to None.
+        Dict[pathlib.Path, List[JupyterCell]]: A mapping of notebook file paths to
+        lists of JupyterCell objects.  Markdown cells have execution_count set to None.
 
     Raises:
         TypeError: If repo_path is not a str or pathlib.Path.
@@ -224,26 +306,16 @@ def get_nb_contents(
 
 
 def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
-    """
-    Checks if code cells in a Jupyter notebook were executed in sequential order.
+    """Checks if code cells in a Jupyter notebook were executed in sequential order.
 
-    This function extracts the execution counts from all code cells in the notebook.
-    If any code cell has an execution count of None (indicating it was not executed),
-    the function returns False. If there are no code cells or all code cells are
-    unexecuted, it returns True. Otherwise, it checks if the execution counts form a
-    consecutive sequence starting from 1 (i.e., [1, 2, 3, ...]).
+    Args:
+        nb_cells (List[JupyterCell]): List of JupyterCell objects representing cells in
+        the notebook.
 
-    Parameters
-    ----------
-    nb_cells : List[JupyterCell]
-        List of JupyterCell objects representing cells in the notebook.
-
-    Returns
-    -------
-    bool
-        True if code cells were executed in sequential order starting from 1 with no
-        gaps or missing executions, False otherwise. Returns True for notebooks with
-        no executed code cells.
+    Returns:
+        bool: True if code cells were executed in sequential order starting from 1
+        with no gaps or missing executions, False otherwise. Returns True for notebooks
+        with no executed code cells.
     """
     # Extract execution counts from code cells, filtering out None values
     execution_counts = [
@@ -262,3 +334,33 @@ def check_ipynb_code_exec_order(nb_cells: List[JupyterCell]) -> bool:
     # Check if execution counts form a consecutive sequence starting from 1
     expected_sequence = list(range(1, len(execution_counts) + 1))
     return execution_counts == expected_sequence
+
+
+def check_ipynb_import_calls(nb_cells: List[JupyterCell]) -> bool:
+    """Checks whether all import statements in a Jupyter notebook are confined to the
+    first code cell.
+
+    The function ensure that notebooks follow PEP 8 guidelines, which recommend placing
+    all imports at the top of the file for clarity and consistency.
+
+    Args:
+        nb_cells (List[JupyterCell]): List of JupyterCell objects representing cells in
+        the notebook.
+
+    Returns:
+        bool: True if all import statements are in the first code cell and none
+        appear in later code cells, False otherwise.
+    """
+
+    code_cells = [cell for cell in nb_cells if cell.cell_type == "code"]
+    if not code_cells:
+        return True
+
+    # Check imports in each cell, ignoring docstrings/comments
+    import_flags = [_has_imports_in_cell(cell.source) for cell in code_cells]
+
+    # Only the first cell can have imports, and nowhere else
+    if import_flags[0]:
+        return all(flag is False for flag in import_flags[1:])
+    else:
+        return not any(import_flags[1:])
