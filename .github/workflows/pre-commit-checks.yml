@@ -23,7 +23,7 @@ jobs:
         run: |
           poetry run vale sync
       # run pre-commmit checks using prek for faster execution
-      - uses: j178/prek-action@v1
+      - uses: j178/prek-action@v2
         id: pre_commit
       # run pre-commit ci lite for automated fixes
       - uses: pre-commit-ci/lite-action@v1.1.0

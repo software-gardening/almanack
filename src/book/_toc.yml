@@ -20,7 +20,7 @@ parts:
               almanack-example.ipynb"
           - title: PubMed GitHub Repository Software Information Entropy
             file: "seed-bank/pubmed-github-repositories/\
-              visualize-pubmed-repo-sofware-entropy.ipynb"
+              understanding-pubmed-github-repos.ipynb"
       - title: Checks Index
         file: checks/index
         sections:
