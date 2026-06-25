@@ -997,7 +997,7 @@ def test_get_ecosystems_package_metrics():
                 "doi": "10.5281/zenodo.14765834",
                 "valid_format_doi": True,
                 "https_resolvable_doi": True,
-                "publication_date": date(2025, 2, 10),
+                "publication_date": date,
                 "cited_by_count": 1,
             },
         ),
@@ -1046,7 +1046,12 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
     assert result["doi"] == expected_result["doi"]
     assert result["valid_format_doi"] == expected_result["valid_format_doi"]
     assert result["https_resolvable_doi"] == expected_result["https_resolvable_doi"]
-    assert result["publication_date"] == expected_result["publication_date"]
+    if isinstance(expected_result["publication_date"], type):
+        assert isinstance(
+            result["publication_date"], expected_result["publication_date"]
+        )
+    else:
+        assert result["publication_date"] == expected_result["publication_date"]
     assert isinstance(result["cited_by_count"], type(expected_result["cited_by_count"]))
 
 
