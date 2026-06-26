@@ -50,7 +50,6 @@ from almanack.metrics.garden_lattice.practicality import (
     get_ecosystems_package_metrics,
 )
 from almanack.metrics.garden_lattice.understanding import includes_common_docs
-from almanack.metrics.remote import request_with_backoff
 from tests.data.almanack.repo_setup.create_repo import repo_setup
 
 DATETIME_NOW = datetime.now()
