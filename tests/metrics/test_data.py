@@ -38,6 +38,7 @@ from almanack.metrics.data import (
     is_conda_environment_yaml,
     measure_coverage,
 )
+from almanack.metrics.garden_lattice import connectedness
 from almanack.metrics.garden_lattice.connectedness import (
     count_unique_contributors,
     default_branch_is_not_master,
@@ -1003,7 +1004,7 @@ def test_get_ecosystems_package_metrics():
         ),
     ],
 )
-def test_find_doi_citation_data(tmp_path, files_data, expected_result):
+def test_find_doi_citation_data(tmp_path, monkeypatch, files_data, expected_result):
     """
     Tests find_doi_citation_data
 
@@ -1023,21 +1024,25 @@ def test_find_doi_citation_data(tmp_path, files_data, expected_result):
             files=files_data,
         )
 
-    # Skip if DOI endpoint is unavailable to avoid false negatives.
-    doi = expected_result.get("doi")
-    if doi:
-        response = request_with_backoff(
-            "HEAD",
-            f"https://doi.org/{doi}",
-            headers={"accept": "application/json"},
-            timeout=30,
-            allow_redirects=True,
-            max_retries=3,
-            base_backoff=1,
-            backoff_multiplier=2,
-        )
-        if response is None or response.status_code != 200:
-            pytest.skip(f"DOI endpoint unavailable for {doi}")
+    class _ResolvedDoiResponse:
+        status_code = 200
+
+    def _fake_get_api_data(api_endpoint="https://api.openalex.org/works", params=None):
+        publication_date = expected_result["publication_date"]
+        if isinstance(publication_date, type):
+            publication_date = date(2025, 5, 27)
+        return {
+            "id": f"https://openalex.org/{expected_result['doi']}",
+            "publication_date": publication_date.isoformat(),
+            "cited_by_count": expected_result["cited_by_count"],
+        }
+
+    monkeypatch.setattr(
+        connectedness,
+        "request_with_backoff",
+        lambda *args, **kwargs: _ResolvedDoiResponse(),
+    )
+    monkeypatch.setattr(connectedness, "get_api_data", _fake_get_api_data)
 
     # Run the function
     result = find_doi_citation_data(repo)
