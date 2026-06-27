@@ -1039,7 +1039,7 @@ def test_find_doi_citation_data(tmp_path, monkeypatch, files_data, expected_resu
     monkeypatch.setattr(
         connectedness,
         "request_with_backoff",
-        lambda *args, **kwargs: _ResolvedDoiResponse(),
+        lambda *_args, **_kwargs: _ResolvedDoiResponse(),
     )
     monkeypatch.setattr(connectedness, "get_api_data", _fake_get_api_data)
 
