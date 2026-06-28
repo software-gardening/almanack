@@ -5,9 +5,9 @@ Testing metrics/data functionality
 import builtins
 import pathlib
 from datetime import date, datetime, timedelta, timezone
+from importlib.metadata import version
 from typing import Dict, List, Union
 
-import dunamai
 import jsonschema
 import pandas as pd
 import pygit2
@@ -700,9 +700,7 @@ def test_get_almanack_version():
     Tests _get_almanack_version()
     """
 
-    # compare to the dev version from dunamai as we could only use
-    # this test in development.
-    assert _get_almanack_version() == dunamai.Version.from_any_vcs().serialize()
+    assert _get_almanack_version() == version("almanack")
 
 
 @pytest.mark.parametrize(
@@ -997,7 +995,7 @@ def test_get_ecosystems_package_metrics():
                 "doi": "10.5281/zenodo.14765834",
                 "valid_format_doi": True,
                 "https_resolvable_doi": True,
-                "publication_date": date(2025, 2, 10),
+                "publication_date": date(2025, 5, 27),
                 "cited_by_count": 1,
             },
         ),

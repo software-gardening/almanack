@@ -1,0 +1,60 @@
+include CITATION.cff
+include LICENSE.txt
+include README.md
+include pyproject.toml
+include uv.lock
+
+exclude .alexignore
+exclude .gitignore
+exclude .linkcheckerrc.ini
+exclude .pre-commit-config.yaml
+exclude .pre-commit-hooks.yaml
+exclude .vale.ini
+exclude CODE_OF_CONDUCT.md
+exclude CONTRIBUTING.md
+exclude coverage.xml
+exclude package-lock.json
+exclude package.json
+exclude pa11y.json
+
+recursive-include src/almanack *.py *.yml
+
+include src/book/*.md
+include src/book/*.yml
+include src/book/references.bib
+include src/book/_posters/2025/*.md
+include src/book/_static/*.css
+include src/book/_static/*.pdf
+include src/book/garden-circle/*.md
+include src/book/garden-lattice/*.md
+include src/book/seed-bank/*.md
+include src/book/seed-bank/almanack-example/almanack/*.md
+include src/book/seed-bank/almanack-example/almanack/docs/*.md
+include src/book/software-forest/*.md
+include src/book/verdant-sundial/*.md
+
+prune .github
+prune .pytest_cache
+prune .ruff_cache
+prune .venv
+prune docs
+prune dist
+prune media
+prune src/book/_ext
+prune src/book/_posters/2025/_extensions
+prune src/book/_posters/2025/images
+prune src/book/_build
+prune src/book/_templates
+prune src/book/assets
+prune src/book/seed-bank/pubmed-github-repositories
+prune styles
+prune tests
+
+exclude src/book/favicon.png
+exclude src/book/_posters/2025/*.pdf
+exclude src/book/_posters/2025/*.qmd
+exclude src/book/_static/*.odp
+
+global-exclude *.py[cod]
+global-exclude .DS_Store
+global-exclude poetry.lock

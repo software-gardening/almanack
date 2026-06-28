@@ -24,6 +24,7 @@ docsite
 OSSci
 Zenodo
 Typst
+uv
 Lato
 Vollkorn
 Dietmar

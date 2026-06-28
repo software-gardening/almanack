@@ -27,13 +27,6 @@ repos:
       # which helps prevent sensitive information from being exposed.
     -   id: detect-private-key
 
--   repo: https://github.com/python-poetry/poetry
-    rev: "2.4.1"
-    hooks:
-      # Verifies that the `pyproject.toml` file is valid and follows Poetry's
-      # expected syntax, which ensures consistent dependency management.
-    -   id: poetry-check
-
 -   repo: https://github.com/tox-dev/pyproject-fmt
     rev: "v2.21.2"
     hooks:
@@ -122,7 +115,7 @@ repos:
     hooks:
       # Lints GitHub Actions workflows, ensuring syntax correctness and
       # reducing errors in continuous integration and automation configurations.
-    -   id: actionlint-docker
+    -   id: actionlint
 
 -   repo: https://github.com/citation-file-format/cffconvert
     rev: b6045d78aac9e02b039703b030588d54d53262ac
@@ -160,14 +153,21 @@ repos:
       # and style errors in text files, improving the quality of documentation.
     -   id: vale.sh
         name: vale.sh writing checks
-        entry: poetry run poe vale-checks
+        entry: uv run --all-groups poe vale-checks
         language: system
         pass_filenames: false
       # Generage code coverage data
     -   id: code-cov-gen
         name: Generate code coverage data
         language: system
-        entry: poetry run poe code-coverage-report
+        entry: uv run --all-groups poe code-coverage-report
+        pass_filenames: false
+        always_run: true
+      # Generate code coverage badge without rewriting unchanged output.
+    -   id: coverage-badge
+        name: Generate coverage badge
+        entry: python scripts/update_coverage_badge.py
+        language: python
         pass_filenames: false
         always_run: true
       # Run the Almanack hook locally, skipping the tests directory.
@@ -179,11 +179,3 @@ repos:
         args:
         -   "--exclude_paths=tests,src/book/_build,src/book/seed-bank/almanack-example/almanack-example.ipynb"
         additional_dependencies: ["."]
--   repo: https://github.com/Weird-Sheep-Labs/coverage-pre-commit
-    rev: 0.1.1
-    hooks:
-      # generate code coverage badge
-    -   id: coverage-badge
-        args: ["-i", "coverage.xml", "-o", "media/coverage-badge.svg"]
-        # pkg_resources was removed in newer setuptools; genbadge still imports it.
-        additional_dependencies: ["setuptools<81"]
