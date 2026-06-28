@@ -43,6 +43,8 @@ updates:
       interval: "monthly"
     cooldown:
       default-days: 7
+    ignore:
+      - dependency-name: "https://github.com/tox-dev/pyproject-fmt"
     groups:
       pre-commit-hooks:
         patterns:
