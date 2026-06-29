@@ -87,7 +87,7 @@ When appropriate, reference issues (via `#` plus number) .
 
 ### Overview
 
-We write and develop the Software Gardening Almanack in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by Python [Poetry](https://python-poetry.org/).
+We write and develop the Software Gardening Almanack in [Python](https://www.python.org/) through [Jupyter Book](https://jupyterbook.org/) with related environments managed by [`uv`](https://docs.astral.sh/uv/).
 We use [Node](https://nodejs.org) and [NPM](https://www.npmjs.com/) dependencies to assist development activities (such as performing linting checks or other capabilities).
 We use [GitHub actions](https://docs.github.com/en/actions) for [CI/CD](https://en.wikipedia.org/wiki/CI/CD) procedures such as automated tests.
 
@@ -96,27 +96,27 @@ We use [GitHub actions](https://docs.github.com/en/actions) for [CI/CD](https://
 To enable local development, perform the following steps.
 
 1. [Install Python](https://www.python.org/downloads/) (suggested: use [`pyenv`](https://github.com/pyenv/pyenv) for managing Python versions)
-1. [Install Poetry](https://python-poetry.org/docs/#installation)
-1. [Install Poetry environment](https://python-poetry.org/docs/basic-usage/#installing-dependencies): `poetry install`
+1. [Install uv](https://docs.astral.sh/uv/getting-started/installation/)
+1. Install the uv environment: `uv sync --all-groups`
 1. [Install Node](https://nodejs.org/en/download) (suggested: use [`nvm`](https://github.com/nvm-sh/nvm) for managing Node versions)
 1. [Install Node environment](https://docs.npmjs.com/cli/v9/commands/npm-install): `npm install`
-1. [Install Vale dependencies](https://vale.sh/docs/cli): `poetry run vale sync`
-1. [Optional: install book PDF rendering dependencies](https://jupyterbook.org/en/stable/advanced/pdf.html): `poetry run playwright install --with-deps chromium`
+1. [Install Vale dependencies](https://vale.sh/docs/cli): `uv run --all-groups vale sync`
+1. [Optional: install book PDF rendering dependencies](https://jupyterbook.org/en/stable/advanced/pdf.html): `uv run --all-groups playwright install --with-deps chromium`
 
 ### Development Tasks
 
 We use [Poe the Poet](https://poethepoet.natn.io/) to define common development tasks, which simplifies repeated commands.
-We include Poe the Poet as a Python Poetry `dev` group dependency, which users access through the Poetry environment.
+We include Poe the Poet as a Python `dev` dependency group dependency, which users access through the uv environment.
 Please see the [`pyproject.toml`](https://github.com/software-gardening/almanack/blob/main/pyproject.toml) file's `[tool.poe.tasks]` table for a list of available tasks.
 
 For example:
 
 ```shell
 # example of how Poe the Poet commands may be used.
-poetry run poe <task_name>
+uv run --all-groups poe <task_name>
 
 # example of a task which runs jupyter-book build for the project
-poetry run poe build-book
+uv run --all-groups poe build-book
 ```
 
 ### Linting
@@ -155,7 +155,7 @@ See below for an overview of how this works.
 
 We follow [semantic version](https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning) (semver) specifications with this project through the following technologies.
 
-- [`poetry-dynamic-versioning`](https://github.com/mtkennerly/poetry-dynamic-versioning) leveraging [`dunamai`](https://github.com/mtkennerly/dunamai) creates version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
+- [`setuptools-scm`](https://setuptools-scm.readthedocs.io/) creates version data based on [git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging) and commits.
 - [GitHub Releases](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases) automatically create git tags and source code collections available from the GitHub repository.
 - [`release-drafter`](https://github.com/release-drafter/release-drafter) infers and describes changes since last release within automatically drafted GitHub Releases after pull requests are merged (draft releases are published as decided by maintainers).
 

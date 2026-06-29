@@ -16,3 +16,8 @@
 table.indextable tr.cap{
     background-color: transparent !important;
 }
+
+.search-button__kbd-shortcut,
+.search-button__kbd-shortcut kbd {
+    color: #fff !important;
+}

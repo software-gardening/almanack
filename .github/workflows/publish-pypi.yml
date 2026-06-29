@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0
       - name: Install python env
         uses: ./.github/actions/install-python-env
-      - name: poetry build distribution content
-        run: poetry build
+      - name: uv build distribution content
+        run: uv build
       - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
