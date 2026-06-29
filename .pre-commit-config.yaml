@@ -166,8 +166,8 @@ repos:
       # Generate code coverage badge without rewriting unchanged output.
     -   id: coverage-badge
         name: Generate coverage badge
-        entry: python scripts/update_coverage_badge.py
-        language: python
+        entry: uv run --all-groups python scripts/update_coverage_badge.py
+        language: system
         pass_filenames: false
         always_run: true
       # Run the Almanack hook locally, skipping the tests directory.

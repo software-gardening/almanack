@@ -3,21 +3,25 @@
 from __future__ import annotations
 
 import pathlib
-import xml.etree.ElementTree as ET
 
+import defusedxml.ElementTree as ET
 
 COVERAGE_XML = pathlib.Path("coverage.xml")
 BADGE_SVG = pathlib.Path("media/coverage-badge.svg")
+EXCELLENT_COVERAGE = 90
+GOOD_COVERAGE = 80
+FAIR_COVERAGE = 70
+LOW_COVERAGE = 60
 
 
 def _coverage_color(percent: float) -> str:
-    if percent >= 90:
+    if percent >= EXCELLENT_COVERAGE:
         return "#4c1"
-    if percent >= 80:
+    if percent >= GOOD_COVERAGE:
         return "#67ac09"
-    if percent >= 70:
+    if percent >= FAIR_COVERAGE:
         return "#dfb317"
-    if percent >= 60:
+    if percent >= LOW_COVERAGE:
         return "#fe7d37"
     return "#e05d44"
 

@@ -21,7 +21,7 @@ runs:
       with:
         python-version: ${{ inputs.python-version }}
     - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v8
+      uses: astral-sh/setup-uv@v8.2.0
     - name: Install uv dependencies
       shell: bash
       run: |

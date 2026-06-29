@@ -40,6 +40,7 @@ prune .venv
 prune docs
 prune dist
 prune media
+prune scripts
 prune src/book/_ext
 prune src/book/_posters/2025/_extensions
 prune src/book/_posters/2025/images
