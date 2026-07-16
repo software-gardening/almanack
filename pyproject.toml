@@ -179,7 +179,11 @@ PYTHON_FUNC="
 import xml.etree.ElementTree as ET
 def extract_relevant_attributes(file):
     attributes = ET.parse(file).getroot().attrib
-    return [v for k, v in attributes.items() if k != 'timestamp']
+    return [
+        attributes.get('version'),
+        round(float(attributes.get('line-rate', 0)), 2),
+        round(float(attributes.get('branch-rate', 0)), 2),
+    ]
 
 if __name__ == '__main__':
     import sys

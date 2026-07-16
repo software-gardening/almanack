@@ -59,6 +59,8 @@ def test_web_accessibility(build_jupyter_book: pathlib.Path) -> None:
                 [
                     "npx",
                     "pa11y",
+                    "--config",
+                    "pa11y.json",
                     html_page,
                 ],
                 stdout=subprocess.PIPE,
