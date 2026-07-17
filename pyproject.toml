@@ -46,7 +46,7 @@ dev = [
   "kaleido==1.3",
   "linkchecker>=10.4,<11",
   "playwright>=1.51,<2",
-  "poethepoet>=0.25,<0.47",
+  "poethepoet>=0.25,<0.48",
   "pygithub>=2.3,<3",
   "pytest>=8.1.1,<10",
   "requests>=2.32.3,<3",
