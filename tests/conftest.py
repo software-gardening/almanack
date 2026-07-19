@@ -30,12 +30,20 @@ def build_jupyter_book(tmp_path: pathlib.Path) -> pathlib.Path:
 
     # specify a source and target dir for jupyter book content with tests
     jupyter_book_test_source = pathlib.Path(tmp_path / "jupyter-book-test-source")
-    jupyter_book_test_target = pathlib.Path(tmp_path / "jupyter-book-test-target")
-
-    jupyter_book_test_target.mkdir()
-
     # copy the source and add development-only files for testing
-    shutil.copytree(".", jupyter_book_test_source)
+    shutil.copytree(
+        ".",
+        jupyter_book_test_source,
+        ignore=shutil.ignore_patterns(
+            ".git",
+            ".pytest_cache",
+            ".ruff_cache",
+            ".venv",
+            "build",
+            "dist",
+            "src/book/_build",
+        ),
+    )
     shutil.copy(
         "tests/data/jupyter-book/sandbox.md",
         jupyter_book_test_source / "src" / "book" / "sandbox.md",
@@ -49,8 +57,6 @@ def build_jupyter_book(tmp_path: pathlib.Path) -> pathlib.Path:
             "jupyter-book",
             "build",
             jupyter_book_test_source / "src" / "book",
-            "--path-output",
-            jupyter_book_test_target,
         ],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
@@ -59,7 +65,7 @@ def build_jupyter_book(tmp_path: pathlib.Path) -> pathlib.Path:
 
     check_subproc_run_for_nonzero(completed_proc=result)
 
-    return jupyter_book_test_target
+    return jupyter_book_test_source / "src" / "book"
 
 
 @pytest.fixture(scope="session")
