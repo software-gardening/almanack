@@ -14,44 +14,47 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=384b581d" />
-    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=3fce4d98" />
+    <link rel="stylesheet" type="text/css" href="../../_static/custom.css?v=bb2be437" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
-    <script src="../../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -67,6 +70,7 @@
     <link rel="prev" title="Software Gardening Almanack Example" href="../almanack-example/almanack-example.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -74,31 +78,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -106,7 +95,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -114,10 +102,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -126,7 +119,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -141,6 +135,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../../introduction.html">
   
@@ -154,21 +150,17 @@
     
     
     <img src="../../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
-    <script>document.write(`<img src="../../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+    <img src="../../_static/software-gardening-logo.png" class="logo__image only-dark pst-js-only" alt="The Software Gardening Almanack - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -180,27 +172,27 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-lattice/garden-lattice.html">1. Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-lattice/garden-lattice.html">1. Garden Lattice</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-lattice/understanding.html">Understanding</a></li>
 </ul>
-</li>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../software-forest/software-forest.html">2. Software Forest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="../seed-bank.html">Seed Bank</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../seed-bank.html">Seed Bank</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../checks/index.html">Checks Index</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-circle/garden-circle.html">Garden Circle</a><input class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../garden-circle/garden-circle.html">Garden Circle</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/contributing.html">Contributing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/garden-map.html">Garden Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/pavilion.html">Pavilion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../garden-circle/package-api.html">Almanack Package API</a></li>
 </ul>
-</li>
+</details></li>
 </ul>
 
     </div>
@@ -209,14 +201,19 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -225,14 +222,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -341,7 +338,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -355,27 +352,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -429,15 +418,15 @@ The code to perform data extractions may be found under the directory: <a class=
 We merge the data to form a table which includes PubMed, GitHub, and Almanack software entropy information on the repositories.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pathlib</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pathlib</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
-<span class="kn">import</span> <span class="nn">plotly.io</span> <span class="k">as</span> <span class="nn">pio</span>
-<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.express</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">px</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">plotly.io</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pio</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">Image</span><span class="p">,</span> <span class="n">display</span>
 
-<span class="kn">from</span> <span class="nn">almanack</span> <span class="kn">import</span> <span class="n">process_repositories_batch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">almanack</span><span class="w"> </span><span class="kn">import</span> <span class="n">process_repositories_batch</span>
 
 <span class="c1"># set plotly default theme</span>
 <span class="n">pio</span><span class="o">.</span><span class="n">templates</span><span class="o">.</span><span class="n">default</span> <span class="o">=</span> <span class="s2">&quot;plotly_white&quot;</span>
@@ -483,27 +472,27 @@ We merge the data to form a table which includes PubMed, GitHub, and Almanack so
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;class &#39;pandas.DataFrame&#39;&gt;
 RangeIndex: 9631 entries, 0 to 9630
 Data columns (total 62 columns):
  #   Column                                                    Non-Null Count  Dtype  
 ---  ------                                                    --------------  -----  
- 0   Repository URL                                            9631 non-null   object 
- 1   repo-path                                                 9631 non-null   object 
+ 0   Repository URL                                            9631 non-null   str    
+ 1   repo-path                                                 9631 non-null   str    
  2   repo-commits                                              9587 non-null   float64
  3   repo-file-count                                           9587 non-null   float64
- 4   repo-commit-time-range                                    9631 non-null   object 
+ 4   repo-commit-time-range                                    9631 non-null   str    
  5   repo-days-of-development                                  9587 non-null   float64
  6   repo-commits-per-day                                      9587 non-null   float64
- 7   almanack-table-datetime                                   9631 non-null   object 
- 8   almanack-version                                          9631 non-null   object 
- 9   repo-primary-language                                     5789 non-null   object 
- 10  repo-primary-license                                      3503 non-null   object 
+ 7   almanack-table-datetime                                   9631 non-null   str    
+ 8   almanack-version                                          9631 non-null   str    
+ 9   repo-primary-language                                     5789 non-null   str    
+ 10  repo-primary-license                                      3503 non-null   str    
  11  repo-doi                                                  125 non-null    object 
  12  repo-doi-publication-date                                 107 non-null    object 
- 13  repo-doi-fwci                                             46 non-null     float64
- 14  repo-doi-is-not-retracted                                 75 non-null     float64
- 15  repo-doi-grants-count                                     84 non-null     float64
+ 13  repo-doi-fwci                                             46 non-null     object 
+ 14  repo-doi-is-not-retracted                                 75 non-null     object 
+ 15  repo-doi-grants-count                                     84 non-null     object 
  16  repo-doi-grants                                           0 non-null      object 
  17  repo-includes-readme                                      9587 non-null   float64
  18  repo-includes-contributing                                9587 non-null   float64
@@ -527,10 +516,10 @@ Data columns (total 62 columns):
  36  repo-packages-ecosystems-count                            9587 non-null   float64
  37  repo-packages-versions-count                              9587 non-null   float64
  38  repo-social-media-platforms-count                         9295 non-null   float64
- 39  repo-doi-valid-format                                     90 non-null     float64
- 40  repo-doi-https-resolvable                                 84 non-null     float64
- 41  repo-doi-cited-by-count                                   75 non-null     float64
- 42  repo-days-between-doi-publication-date-and-latest-commit  75 non-null     float64
+ 39  repo-doi-valid-format                                     90 non-null     object 
+ 40  repo-doi-https-resolvable                                 84 non-null     object 
+ 41  repo-doi-cited-by-count                                   75 non-null     object 
+ 42  repo-days-between-doi-publication-date-and-latest-commit  75 non-null     object 
  43  repo-gh-workflow-success-ratio                            463 non-null    float64
  44  repo-gh-workflow-succeeding-runs                          463 non-null    float64
  45  repo-gh-workflow-failing-runs                             463 non-null    float64
@@ -541,21 +530,17 @@ Data columns (total 62 columns):
  50  repo-code-coverage-total-lines                            0 non-null      object 
  51  repo-code-coverage-executed-lines                         0 non-null      object 
  52  repo-agg-info-entropy                                     9587 non-null   float64
- 53  repo-almanack-score_json                                  9631 non-null   object 
- 54  repo-packages-ecosystems_json                             9631 non-null   object 
- 55  repo-social-media-platforms_json                          9631 non-null   object 
+ 53  repo-almanack-score_json                                  9631 non-null   str    
+ 54  repo-packages-ecosystems_json                             9631 non-null   str    
+ 55  repo-social-media-platforms_json                          9631 non-null   str    
  56  checks_total                                              9587 non-null   float64
  57  checks_passed                                             9587 non-null   float64
  58  checks_pct                                                9587 non-null   float64
  59  repo-social-media-platforms                               0 non-null      float64
- 60  almanack_error                                            6000 non-null   object 
- 61  repo-doi-grants_json                                      4200 non-null   object 
-dtypes: float64(42), object(20)
-memory usage: 4.6+ MB
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/tmp/ipykernel_3444/2236761407.py:21: FutureWarning: The behavior of DataFrame concatenation with empty or all-NA entries is deprecated. In a future version, this will no longer exclude empty or all-NA columns when determining the result dtypes. To retain the old behavior, exclude the relevant entries before the concat operation.
-  df = pd.concat(
+ 60  almanack_error                                            6000 non-null   str    
+ 61  repo-doi-grants_json                                      4200 non-null   str    
+dtypes: float64(35), object(15), str(12)
+memory usage: 6.9+ MB
 </pre></div>
 </div>
 </div>
@@ -595,8 +580,8 @@ Sustained, incremental updates help prevent this stagnation and ensure that a pr
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dormant
-True     8708
-False     923
+True     8786
+False     845
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -623,7 +608,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3850a47f8524b53f4e833635115df87b36bb7f12ec5caf9e99efc59fac75d981.png" src="../../_images/3850a47f8524b53f4e833635115df87b36bb7f12ec5caf9e99efc59fac75d981.png" />
+<img alt="../../_images/82995526c9d4527e90232be484494cfc2941848ae49ac585fcc7450b0d20a374.png" src="../../_images/82995526c9d4527e90232be484494cfc2941848ae49ac585fcc7450b0d20a374.png" />
 </div>
 </div>
 </section>
@@ -696,7 +681,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d8b78867750bed58605abf73e639450961bd62f89dde385b7fec2d728a0eb17f.png" src="../../_images/d8b78867750bed58605abf73e639450961bd62f89dde385b7fec2d728a0eb17f.png" />
+<img alt="../../_images/8e36b8867d6bca79b6d9990a536cbeac33752b62e8e1572e4a845880e6d8223f.png" src="../../_images/8e36b8867d6bca79b6d9990a536cbeac33752b62e8e1572e4a845880e6d8223f.png" />
 </div>
 </div>
 </section>
@@ -745,7 +730,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/146fecbe1999e0284861f50daa4c93163860162f31056c00fe8df465227943e4.png" src="../../_images/146fecbe1999e0284861f50daa4c93163860162f31056c00fe8df465227943e4.png" />
+<img alt="../../_images/d8e5adfda8b6de31b0b6bffe511d8bf9e904c0361d285bfd957092fcf79701ff.png" src="../../_images/d8e5adfda8b6de31b0b6bffe511d8bf9e904c0361d285bfd957092fcf79701ff.png" />
 </div>
 </div>
 </section>
@@ -779,7 +764,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d8e0e0989c7780f41e31264a84121eab2726c2676405c6c7389fee74b7e840b1.png" src="../../_images/d8e0e0989c7780f41e31264a84121eab2726c2676405c6c7389fee74b7e840b1.png" />
+<img alt="../../_images/9c0d075c059f88e95662adcef25a55383ef9681ea1097fe542af73e5c562fd72.png" src="../../_images/9c0d075c059f88e95662adcef25a55383ef9681ea1097fe542af73e5c562fd72.png" />
 </div>
 </div>
 </section>
@@ -821,7 +806,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/4032e0b5932c17c7491c953a42cc5e7e3d8fd2e67b862ff3fe4ec498a243d918.png" src="../../_images/4032e0b5932c17c7491c953a42cc5e7e3d8fd2e67b862ff3fe4ec498a243d918.png" />
+<img alt="../../_images/70d1e63d2ca893c5222025385c9b01ee46055217620fd4ccef2603ed85a26081.png" src="../../_images/70d1e63d2ca893c5222025385c9b01ee46055217620fd4ccef2603ed85a26081.png" />
 </div>
 </div>
 </section>
@@ -868,7 +853,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/31ca6cfcb8f8ab23b292e45c012d3352c6b372b82ae28449c96d31eeaf92f3a4.png" src="../../_images/31ca6cfcb8f8ab23b292e45c012d3352c6b372b82ae28449c96d31eeaf92f3a4.png" />
+<img alt="../../_images/845e2af9d93cbd1aaa45c0b2851e20f4254e2cbe6f6bc26e3323d3403a9fe0b5.png" src="../../_images/845e2af9d93cbd1aaa45c0b2851e20f4254e2cbe6f6bc26e3323d3403a9fe0b5.png" />
 </div>
 </div>
 </section>
@@ -909,7 +894,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/113fe45084bed099eb7965686c20ff259dba9450da8473fa5eb3a13ea4555058.png" src="../../_images/113fe45084bed099eb7965686c20ff259dba9450da8473fa5eb3a13ea4555058.png" />
+<img alt="../../_images/45869499c5de26629d67436f2363566a1f6fca4d5cce0de63e9f2526fcd6e520.png" src="../../_images/45869499c5de26629d67436f2363566a1f6fca4d5cce0de63e9f2526fcd6e520.png" />
 </div>
 </div>
 </section>
@@ -961,7 +946,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e1b92cbd183d76f2d3c606debdbe1d5dd0a726c6a06f1027aa2024faaa076c48.png" src="../../_images/e1b92cbd183d76f2d3c606debdbe1d5dd0a726c6a06f1027aa2024faaa076c48.png" />
+<img alt="../../_images/55f961718303dc66cfd846ca553774a575fe22842589a122dc2b428824d06b9d.png" src="../../_images/55f961718303dc66cfd846ca553774a575fe22842589a122dc2b428824d06b9d.png" />
 </div>
 </div>
 <span class="target" id="id1"></span></section>
@@ -994,7 +979,7 @@ Primary language is determined as the language which has the most lines of code 
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -1022,14 +1007,16 @@ Primary language is determined as the language which has the most lines of code 
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-extraction">Data Extraction</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-many-repositories-are-dormant">How many repositories are dormant?</a></li>
@@ -1088,8 +1075,8 @@ By The Software Gardening Community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>

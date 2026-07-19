@@ -14,44 +14,47 @@
   
   <script data-cfasync="false">
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/bootstrap.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
 
-  
-  <link href="../_static/vendor/fontawesome/6.5.1/css/all.min.css?digest=8d27b9dea8ad943066ae" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../_static/vendor/fontawesome/6.5.1/webfonts/fa-regular-400.woff2" />
-
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=384b581d" />
-    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
-    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=3fce4d98" />
+    <link rel="stylesheet" type="text/css" href="../_static/custom.css?v=bb2be437" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae" />
-  <script src="../_static/vendor/fontawesome/6.5.1/js/all.min.js?digest=8d27b9dea8ad943066ae"></script>
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
     <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
-    <script src="../_static/scripts/sphinx-book-theme.js?v=efea14e4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script>let toggleHintShow = 'Click to show';</script>
     <script>let toggleHintHide = 'Click to hide';</script>
     <script>let toggleOpenOnPrint = 'true';</script>
-    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/togglebutton.js?v=b8b12719"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
@@ -67,6 +70,7 @@
     <link rel="prev" title="Garden Circle" href="garden-circle.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -74,31 +78,16 @@
 
   
   
-  <a id="pst-skip-link" class="skip-link" href="#main-content">Skip to main content</a>
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
   
   <div id="pst-scroll-pixel-helper"></div>
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
-    <i class="fa-solid fa-arrow-up"></i>
-    Back to top
-  </button>
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__primary"
-          id="__primary"/>
-  <label class="overlay overlay-primary" for="__primary"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          name="__secondary"
-          id="__secondary"/>
-  <label class="overlay overlay-secondary" for="__secondary"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../search.html"
       method="get">
@@ -106,7 +95,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -114,10 +102,15 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
   
-    <header class="bd-header navbar navbar-expand-lg bd-navbar">
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
     </header>
   
 
@@ -126,7 +119,8 @@
       
       
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -141,6 +135,8 @@
         <div class="sidebar-primary-item">
 
   
+    
+  
 
 <a class="navbar-brand logo" href="../introduction.html">
   
@@ -154,21 +150,17 @@
     
     
     <img src="../_static/software-gardening-logo.png" class="logo__image only-light" alt="The Software Gardening Almanack - Home"/>
-    <script>document.write(`<img src="../_static/software-gardening-logo.png" class="logo__image only-dark" alt="The Software Gardening Almanack - Home"/>`);</script>
+    <img src="../_static/software-gardening-logo.png" class="logo__image only-dark pst-js-only" alt="The Software Gardening Almanack - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -180,27 +172,27 @@
             </li>
         </ul>
         <ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../garden-lattice/garden-lattice.html">1. Garden Lattice</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-1"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../garden-lattice/garden-lattice.html">1. Garden Lattice</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../garden-lattice/understanding.html">Understanding</a></li>
 </ul>
-</li>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="../software-forest/software-forest.html">2. Software Forest</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../verdant-sundial/verdant-sundial.html">3. Verdant Sundial</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-2"><i class="fa-solid fa-chevron-down"></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../seed-bank/seed-bank.html">Seed Bank</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../seed-bank/almanack-example/almanack-example.html">Software Gardening Almanack Package Example Use</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../seed-bank/pubmed-github-repositories/understanding-pubmed-github-repos.html">PubMed GitHub Repository Software Information Entropy</a></li>
 </ul>
-</li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../checks/index.html">Checks Index</a><input class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-3"><i class="fa-solid fa-chevron-down"></i></label><ul class="simple">
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../checks/index.html">Checks Index</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="simple">
 </ul>
-</li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="garden-circle.html">Garden Circle</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-4" name="toctree-checkbox-4" type="checkbox"/><label class="toctree-toggle" for="toctree-checkbox-4"><i class="fa-solid fa-chevron-down"></i></label><ul class="current">
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="garden-circle.html">Garden Circle</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Contributing</a></li>
 <li class="toctree-l2"><a class="reference internal" href="garden-map.html">Garden Map</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pavilion.html">Pavilion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="package-api.html">Almanack Package API</a></li>
 </ul>
-</li>
+</details></li>
 </ul>
 
     </div>
@@ -209,14 +201,19 @@
   
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
   </div>
-  
-  <div id="rtd-footer-container"></div>
 
 
       </div>
       
-      <main id="main-content" class="bd-main">
+      <main id="main-content" class="bd-main" role="main">
         
         
 
@@ -225,14 +222,14 @@
           <div class="bd-content">
             <div class="bd-article-container">
               
-              <div class="bd-header-article">
+              <div class="bd-header-article d-print-none">
 <div class="header-article-items header-article__inner">
   
     <div class="header-article-items__start">
       
-        <div class="header-article-item"><label class="sidebar-toggle primary-toggle btn btn-sm" for="__primary" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
   <span class="fa-solid fa-bars"></span>
-</label></div>
+</button></div>
       
     </div>
   
@@ -341,7 +338,7 @@
 
 
 <button onclick="toggleFullScreen()"
-  class="btn btn-sm btn-fullscreen-button"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
   title="Fullscreen mode"
   data-bs-placement="bottom" data-bs-toggle="tooltip"
 >
@@ -355,27 +352,19 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="theme-switch nav-link" data-mode="light"><i class="fa-solid fa-sun fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="dark"><i class="fa-solid fa-moon fa-lg"></i></span>
-    <span class="theme-switch nav-link" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg"></i></span>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm navbar-btn search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
-<label class="sidebar-toggle secondary-toggle btn btn-sm" for="__secondary"title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <span class="fa-solid fa-list"></span>
-</label>
+</button>
 </div></div>
       
     </div>
@@ -516,7 +505,7 @@ When appropriate, reference issues (via <code class="docutils literal notranslat
 <h2>Development<a class="headerlink" href="#development" title="Link to this heading">#</a></h2>
 <section id="overview">
 <h3>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h3>
-<p>We write and develop the Software Gardening Almanack in <a class="reference external" href="https://www.python.org/">Python</a> through <a class="reference external" href="https://jupyterbook.org/">Jupyter Book</a> with related environments managed by Python <a class="reference external" href="https://python-poetry.org/">Poetry</a>.
+<p>We write and develop the Software Gardening Almanack in <a class="reference external" href="https://www.python.org/">Python</a> through <a class="reference external" href="https://jupyterbook.org/">Jupyter Book</a> with related environments managed by <a class="reference external" href="https://docs.astral.sh/uv/"><code class="docutils literal notranslate"><span class="pre">uv</span></code></a>.
 We use <a class="reference external" href="https://nodejs.org">Node</a> and <a class="reference external" href="https://www.npmjs.com/">NPM</a> dependencies to assist development activities (such as performing linting checks or other capabilities).
 We use <a class="reference external" href="https://docs.github.com/en/actions">GitHub actions</a> for <a class="reference external" href="https://en.wikipedia.org/wiki/CI/CD">CI/CD</a> procedures such as automated tests.</p>
 </section>
@@ -525,25 +514,25 @@ We use <a class="reference external" href="https://docs.github.com/en/actions">G
 <p>To enable local development, perform the following steps.</p>
 <ol class="arabic simple">
 <li><p><a class="reference external" href="https://www.python.org/downloads/">Install Python</a> (suggested: use <a class="reference external" href="https://github.com/pyenv/pyenv"><code class="docutils literal notranslate"><span class="pre">pyenv</span></code></a> for managing Python versions)</p></li>
-<li><p><a class="reference external" href="https://python-poetry.org/docs/#installation">Install Poetry</a></p></li>
-<li><p><a class="reference external" href="https://python-poetry.org/docs/basic-usage/#installing-dependencies">Install Poetry environment</a>: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">install</span></code></p></li>
+<li><p><a class="reference external" href="https://docs.astral.sh/uv/getting-started/installation/">Install uv</a></p></li>
+<li><p>Install the uv environment: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">sync</span> <span class="pre">--all-groups</span></code></p></li>
 <li><p><a class="reference external" href="https://nodejs.org/en/download">Install Node</a> (suggested: use <a class="reference external" href="https://github.com/nvm-sh/nvm"><code class="docutils literal notranslate"><span class="pre">nvm</span></code></a> for managing Node versions)</p></li>
 <li><p><a class="reference external" href="https://docs.npmjs.com/cli/v9/commands/npm-install">Install Node environment</a>: <code class="docutils literal notranslate"><span class="pre">npm</span> <span class="pre">install</span></code></p></li>
-<li><p><a class="reference external" href="https://vale.sh/docs/cli">Install Vale dependencies</a>: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">vale</span> <span class="pre">sync</span></code></p></li>
-<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/advanced/pdf.html">Optional: install book PDF rendering dependencies</a>: <code class="docutils literal notranslate"><span class="pre">poetry</span> <span class="pre">run</span> <span class="pre">playwright</span> <span class="pre">install</span> <span class="pre">--with-deps</span> <span class="pre">chromium</span></code></p></li>
+<li><p><a class="reference external" href="https://vale.sh/docs/cli">Install Vale dependencies</a>: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">--all-groups</span> <span class="pre">vale</span> <span class="pre">sync</span></code></p></li>
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/advanced/pdf.html">Optional: install book PDF rendering dependencies</a>: <code class="docutils literal notranslate"><span class="pre">uv</span> <span class="pre">run</span> <span class="pre">--all-groups</span> <span class="pre">playwright</span> <span class="pre">install</span> <span class="pre">--with-deps</span> <span class="pre">chromium</span></code></p></li>
 </ol>
 </section>
 <section id="development-tasks">
 <h3>Development Tasks<a class="headerlink" href="#development-tasks" title="Link to this heading">#</a></h3>
 <p>We use <a class="reference external" href="https://poethepoet.natn.io/">Poe the Poet</a> to define common development tasks, which simplifies repeated commands.
-We include Poe the Poet as a Python Poetry <code class="docutils literal notranslate"><span class="pre">dev</span></code> group dependency, which users access through the Poetry environment.
+We include Poe the Poet as a Python <code class="docutils literal notranslate"><span class="pre">dev</span></code> dependency group dependency, which users access through the uv environment.
 Please see the <a class="reference external" href="https://github.com/software-gardening/almanack/blob/main/pyproject.toml"><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></a> file’s <code class="docutils literal notranslate"><span class="pre">[tool.poe.tasks]</span></code> table for a list of available tasks.</p>
 <p>For example:</p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># example of how Poe the Poet commands may be used.</span>
-poetry<span class="w"> </span>run<span class="w"> </span>poe<span class="w"> </span>&lt;task_name&gt;
+uv<span class="w"> </span>run<span class="w"> </span>--all-groups<span class="w"> </span>poe<span class="w"> </span>&lt;task_name&gt;
 
 <span class="c1"># example of a task which runs jupyter-book build for the project</span>
-poetry<span class="w"> </span>run<span class="w"> </span>poe<span class="w"> </span>build-book
+uv<span class="w"> </span>run<span class="w"> </span>--all-groups<span class="w"> </span>poe<span class="w"> </span>build-book
 </pre></div>
 </div>
 </section>
@@ -579,7 +568,7 @@ See below for an overview of how this works.</p>
 <h4>Version specifications<a class="headerlink" href="#version-specifications" title="Link to this heading">#</a></h4>
 <p>We follow <a class="reference external" href="https://en.wikipedia.org/wiki/Software_versioning#Semantic_versioning">semantic version</a> (semver) specifications with this project through the following technologies.</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://github.com/mtkennerly/poetry-dynamic-versioning"><code class="docutils literal notranslate"><span class="pre">poetry-dynamic-versioning</span></code></a> leveraging <a class="reference external" href="https://github.com/mtkennerly/dunamai"><code class="docutils literal notranslate"><span class="pre">dunamai</span></code></a> creates version data based on <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and commits.</p></li>
+<li><p><a class="reference external" href="https://setuptools-scm.readthedocs.io/"><code class="docutils literal notranslate"><span class="pre">setuptools-scm</span></code></a> creates version data based on <a class="reference external" href="https://git-scm.com/book/en/v2/Git-Basics-Tagging">git tags</a> and commits.</p></li>
 <li><p><a class="reference external" href="https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases">GitHub Releases</a> automatically create git tags and source code collections available from the GitHub repository.</p></li>
 <li><p><a class="reference external" href="https://github.com/release-drafter/release-drafter"><code class="docutils literal notranslate"><span class="pre">release-drafter</span></code></a> infers and describes changes since last release within automatically drafted GitHub Releases after pull requests are merged (draft releases are published as decided by maintainers).</p></li>
 </ul>
@@ -640,7 +629,7 @@ Big thanks go to the developers and contributors of that repository.</p>
               
               
               
-                <footer class="prev-next-footer">
+                <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
     <a class="left-prev"
@@ -668,14 +657,16 @@ Big thanks go to the developers and contributors of that repository.</p>
             
             
               
-                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
-  <div class="sidebar-secondary-item">
-  <div class="page-toc tocsection onthispage">
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
     <i class="fa-solid fa-list"></i> Contents
   </div>
-  <nav class="bd-toc-nav page-toc">
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#code-of-conduct">Code of conduct</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#security">Security</a></li>
@@ -750,8 +741,8 @@ By The Software Gardening Community
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../_static/scripts/bootstrap.js?digest=8d27b9dea8ad943066ae"></script>
-<script src="../_static/scripts/pydata-sphinx-theme.js?digest=8d27b9dea8ad943066ae"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
 
   <footer class="bd-footer">
   </footer>
