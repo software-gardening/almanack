@@ -65,6 +65,11 @@ def build_jupyter_book(tmp_path: pathlib.Path) -> pathlib.Path:
 
     check_subproc_run_for_nonzero(completed_proc=result)
 
+    html_pages = list(
+        (jupyter_book_test_source / "src" / "book" / "_build" / "html").glob("*.html")
+    )
+    assert html_pages, "Jupyter Book build completed without producing HTML pages"
+
     return jupyter_book_test_source / "src" / "book"
 
 
