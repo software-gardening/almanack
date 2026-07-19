@@ -11,6 +11,8 @@ Program via LLNL under Contract DE-AC52-07NA27344; and by the National Science
 Foundation (NSF) via SHI under Grant No. 2327079.
 """
 
+from importlib.metadata import PackageNotFoundError, version
+
 from .batch_processing import (
     process_repositories_batch,
     sanitize_for_parquet,
@@ -23,6 +25,10 @@ from .metrics.entropy.calculate_entropy import (
     calculate_normalized_entropy,
 )
 
-# note: version placeholder is updated during build
-# by poetry-dynamic-versioning.
-__version__ = "0.0.0"
+try:
+    from ._version import __version__
+except ImportError:
+    try:
+        __version__ = version("almanack")
+    except PackageNotFoundError:
+        __version__ = "0.0.0"

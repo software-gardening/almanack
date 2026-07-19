@@ -21,7 +21,7 @@ jobs:
         uses: ./.github/actions/install-python-env
       - name: Install vale dependencies
         run: |
-          poetry run vale sync
+          uv run --all-groups vale sync
       # run pre-commmit checks using prek for faster execution
       - uses: j178/prek-action@v2
         id: pre_commit

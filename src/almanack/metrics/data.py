@@ -4,7 +4,6 @@ This module computes data for GitHub Repositories
 
 import ast
 import configparser
-import importlib
 import json
 import logging
 import pathlib
@@ -12,6 +11,7 @@ import shutil
 import sys
 import tempfile
 from datetime import datetime, timedelta, timezone
+from importlib.metadata import PackageNotFoundError, version
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
@@ -1827,8 +1827,7 @@ def process_repo_for_almanack(
 
 def _get_almanack_version() -> str:
     """
-    Seeks the current version of almanack using either pkg_resources
-    or dunamai to determine the current version being used.
+    Seeks the current version of almanack from package metadata.
 
     Returns:
         str
@@ -1836,17 +1835,9 @@ def _get_almanack_version() -> str:
     """
 
     try:
-        # attempt to gather the development version from dunamai
-        # for scenarios where almanack from source is used.
-        dunamai = importlib.import_module("dunamai")
-
-        return dunamai.Version.from_any_vcs().serialize()
-    except (RuntimeError, ModuleNotFoundError):
-        # else grab a static version from __init__.py
-        # for scenarios where the built/packaged almanack is used.
-        almanack = importlib.import_module("almanack")
-
-        return almanack.__version__
+        return version("almanack")
+    except PackageNotFoundError:
+        return "0.0.0"
 
 
 def get_github_build_metrics(

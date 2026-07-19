@@ -18,4 +18,4 @@ jobs:
         if: runner.os == 'Linux'
       - name: Run pytest on links
         run: |
-          poetry run pytest tests/test_build.py -m "links" -vvv
+          uv run --all-groups pytest tests/test_build.py -m "links" -vvv

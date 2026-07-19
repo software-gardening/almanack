@@ -8,7 +8,7 @@ We created this poster to share the Almanack with audiences attending the [CU An
 
 We also archived the work for reference here: https://doi.org/10.5281/zenodo.16943577
 
-<iframe src="../_posters/2025/almanack-2025-poster.pdf" width="100%" height="600px"></iframe>
+<iframe src="../_static/almanack-2025-poster.pdf" width="100%" height="600px"></iframe>
 
 ## BSSw Blog Post Introducing the Almanack - April 2025
 
@@ -20,9 +20,9 @@ We also archived the work for reference here: https://doi.org/10.5281/zenodo.153
 
 ## OSSci Monthly Call - January 2025
 
-The [OpenSource.science (OSSci)](https://www.opensource.science/) [Map of Open Source (MOSS)](https://www.opensource.science/moss) interest group invited us to present on the Almanack on 1/13/2025.
+The [Open Source Science Initiative (OSSci)](https://numfocus.org/open-source-science-initiative-ossci) [Map of Open Source Science (MOSS)](https://github.com/numfocus/MOSS) interest group invited us to present on the Almanack on 1/13/2025.
 
-Please see the [presentation recording](https://youtu.be/b0sZWTl5Fsg?si=xGxYFA8SfbV4wBYB&t=506) or <a>slides below<a href="../_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf"> as a reference to this presentation.
+Please see the [presentation recording](https://youtu.be/b0sZWTl5Fsg?si=xGxYFA8SfbV4wBYB&t=506) or [slides below](../_static/OSSci%20Monthly%20Call%20Jan%202025%20-%20Software_Gardening_Almanack.pdf) as a reference to this presentation.
 
 <iframe src="../_static/OSSci Monthly Call Jan 2025 - Software_Gardening_Almanack.pdf" width="100%" height="600px"></iframe>
 

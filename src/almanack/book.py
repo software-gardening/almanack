@@ -4,6 +4,7 @@ Almanack book content through a Python package.
 """
 
 import pathlib
+import sysconfig
 from typing import Optional
 
 import yaml
@@ -30,6 +31,8 @@ def read(chapter_name: Optional[str] = None):
 
     # gather base path for book content
     book_base_path = pathlib.Path(__file__).parent.parent / "book"
+    if not book_base_path.exists():
+        book_base_path = pathlib.Path(sysconfig.get_path("data")) / "book"
 
     # read the table of contents
     with open(book_base_path / "_toc.yml", "r") as file:

@@ -3,7 +3,7 @@ Used for generating example data to work within from the context of the
 Almanack book content.
 
 Suggested way to run this module:
-`poetry run python tests/data/examples/pubmed/generate_data.py`
+`uv run python tests/data/examples/pubmed/generate_data.py`
 
 """
 
