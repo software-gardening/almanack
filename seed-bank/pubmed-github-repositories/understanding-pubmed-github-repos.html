@@ -494,13 +494,13 @@ Data columns (total 62 columns):
  14  repo-doi-is-not-retracted                                 75 non-null     object 
  15  repo-doi-grants-count                                     84 non-null     object 
  16  repo-doi-grants                                           0 non-null      object 
- 17  repo-includes-readme                                      9587 non-null   float64
- 18  repo-includes-contributing                                9587 non-null   float64
- 19  repo-includes-code-of-conduct                             9587 non-null   float64
- 20  repo-includes-license                                     9587 non-null   float64
- 21  repo-is-citable                                           9587 non-null   float64
- 22  repo-default-branch-not-master                            9587 non-null   float64
- 23  repo-includes-common-docs                                 9587 non-null   float64
+ 17  repo-includes-readme                                      9587 non-null   object 
+ 18  repo-includes-contributing                                9587 non-null   object 
+ 19  repo-includes-code-of-conduct                             9587 non-null   object 
+ 20  repo-includes-license                                     9587 non-null   object 
+ 21  repo-is-citable                                           9587 non-null   object 
+ 22  repo-default-branch-not-master                            9587 non-null   object 
+ 23  repo-includes-common-docs                                 9587 non-null   object 
  24  repo-unique-contributors                                  9587 non-null   float64
  25  repo-unique-contributors-past-year                        9587 non-null   float64
  26  repo-unique-contributors-past-182-days                    9587 non-null   float64
@@ -537,9 +537,9 @@ Data columns (total 62 columns):
  57  checks_passed                                             9587 non-null   float64
  58  checks_pct                                                9587 non-null   float64
  59  repo-social-media-platforms                               0 non-null      float64
- 60  almanack_error                                            6000 non-null   str    
- 61  repo-doi-grants_json                                      4200 non-null   str    
-dtypes: float64(35), object(15), str(12)
+ 60  repo-doi-grants_json                                      4200 non-null   str    
+ 61  almanack_error                                            6000 non-null   str    
+dtypes: float64(28), object(22), str(12)
 memory usage: 6.9+ MB
 </pre></div>
 </div>
@@ -580,8 +580,8 @@ Sustained, incremental updates help prevent this stagnation and ensure that a pr
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dormant
-True     8786
-False     845
+True     8815
+False     816
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -608,7 +608,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/82995526c9d4527e90232be484494cfc2941848ae49ac585fcc7450b0d20a374.png" src="../../_images/82995526c9d4527e90232be484494cfc2941848ae49ac585fcc7450b0d20a374.png" />
+<img alt="../../_images/ae9517d42a8b64da5bc3575d6076c0ca57922f43b157c2952723f0e7f385b0e3.png" src="../../_images/ae9517d42a8b64da5bc3575d6076c0ca57922f43b157c2952723f0e7f385b0e3.png" />
 </div>
 </div>
 </section>
@@ -681,7 +681,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/8e36b8867d6bca79b6d9990a536cbeac33752b62e8e1572e4a845880e6d8223f.png" src="../../_images/8e36b8867d6bca79b6d9990a536cbeac33752b62e8e1572e4a845880e6d8223f.png" />
+<img alt="../../_images/80f405a69470f2f02460844b8e9ad55539744cf97631fb8ab5226a3b46a14856.png" src="../../_images/80f405a69470f2f02460844b8e9ad55539744cf97631fb8ab5226a3b46a14856.png" />
 </div>
 </div>
 </section>
@@ -730,7 +730,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/d8e5adfda8b6de31b0b6bffe511d8bf9e904c0361d285bfd957092fcf79701ff.png" src="../../_images/d8e5adfda8b6de31b0b6bffe511d8bf9e904c0361d285bfd957092fcf79701ff.png" />
+<img alt="../../_images/11ff9fc64383e526ab5f3045583c4413cb98861ac4f92eac2ea03123a9e93893.png" src="../../_images/11ff9fc64383e526ab5f3045583c4413cb98861ac4f92eac2ea03123a9e93893.png" />
 </div>
 </div>
 </section>
@@ -764,7 +764,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/9c0d075c059f88e95662adcef25a55383ef9681ea1097fe542af73e5c562fd72.png" src="../../_images/9c0d075c059f88e95662adcef25a55383ef9681ea1097fe542af73e5c562fd72.png" />
+<img alt="../../_images/f81fb75a49f02828a30b7e0ed18ab85a83303e8d1a9e9d76bddf963dfab8438f.png" src="../../_images/f81fb75a49f02828a30b7e0ed18ab85a83303e8d1a9e9d76bddf963dfab8438f.png" />
 </div>
 </div>
 </section>
@@ -806,7 +806,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/70d1e63d2ca893c5222025385c9b01ee46055217620fd4ccef2603ed85a26081.png" src="../../_images/70d1e63d2ca893c5222025385c9b01ee46055217620fd4ccef2603ed85a26081.png" />
+<img alt="../../_images/7a67042418ebd29e9e88f9648dcf52cba9ef5f1cb29049cfe0187b13aeadf759.png" src="../../_images/7a67042418ebd29e9e88f9648dcf52cba9ef5f1cb29049cfe0187b13aeadf759.png" />
 </div>
 </div>
 </section>
@@ -853,7 +853,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/845e2af9d93cbd1aaa45c0b2851e20f4254e2cbe6f6bc26e3323d3403a9fe0b5.png" src="../../_images/845e2af9d93cbd1aaa45c0b2851e20f4254e2cbe6f6bc26e3323d3403a9fe0b5.png" />
+<img alt="../../_images/e8e8611cd3bc27f62d71bacd3381150120e235b5649deb36db1d5714b17adf3a.png" src="../../_images/e8e8611cd3bc27f62d71bacd3381150120e235b5649deb36db1d5714b17adf3a.png" />
 </div>
 </div>
 </section>
@@ -894,7 +894,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/45869499c5de26629d67436f2363566a1f6fca4d5cce0de63e9f2526fcd6e520.png" src="../../_images/45869499c5de26629d67436f2363566a1f6fca4d5cce0de63e9f2526fcd6e520.png" />
+<img alt="../../_images/ae81a32244242649103a69f8c7df2d4103748610ff9f442835fa342252200b44.png" src="../../_images/ae81a32244242649103a69f8c7df2d4103748610ff9f442835fa342252200b44.png" />
 </div>
 </div>
 </section>
@@ -946,7 +946,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/55f961718303dc66cfd846ca553774a575fe22842589a122dc2b428824d06b9d.png" src="../../_images/55f961718303dc66cfd846ca553774a575fe22842589a122dc2b428824d06b9d.png" />
+<img alt="../../_images/d851871c254e3fdc15e53016a551c0aa2e09100fbab32c6b42fed2bbf2f63715.png" src="../../_images/d851871c254e3fdc15e53016a551c0aa2e09100fbab32c6b42fed2bbf2f63715.png" />
 </div>
 </div>
 <span class="target" id="id1"></span></section>
