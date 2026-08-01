@@ -35,7 +35,7 @@ repos:
     -   id: pyproject-fmt
 
 -   repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
+    rev: v2.4.3
     hooks:
       # Detects and corrects common typos in the codebase, improving
       # readability and reducing minor mistakes.
@@ -104,7 +104,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.15.21"
+    rev: "v0.16.0"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
