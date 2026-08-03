@@ -211,7 +211,7 @@ class AlmanackCLI(object):
         # exit with zero (no failures)
         sys.exit(0)
 
-    def batch(  # noqa: PLR0913
+    def batch(  # noqa: PLR0913, PLR0917
         self,
         output_path: Optional[str] = None,
         parquet_path: Optional[str] = None,
