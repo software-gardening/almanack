@@ -554,7 +554,7 @@ def test_default_branch_is_not_master(tmp_path):
     ],
 )
 # add noqa rule below to avoid warnings about too many parameters
-def test_commit_frequency_data(  # noqa: PLR0913
+def test_commit_frequency_data(  # noqa: PLR0913, PLR0917
     tmp_path: pathlib.Path,
     files: List[Dict[str, str]],
     expected_commits: int,
@@ -1831,7 +1831,7 @@ def test_get_programming_extensions_parses_linguist(monkeypatch):
         ),
     ],
 )
-def test_dependency_vs_environment_managers(  # noqa: PLR0913
+def test_dependency_vs_environment_managers(  # noqa: PLR0913, PLR0917
     tmp_path,
     files,
     expected_dep_managers,

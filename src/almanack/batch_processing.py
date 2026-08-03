@@ -73,7 +73,7 @@ def _nullable_dtype(dtype: Any) -> Any:
     return dtype
 
 
-def process_repositories_batch(  # noqa: C901, PLR0913, PLR0912, PLR0915
+def process_repositories_batch(  # noqa: C901, PLR0912, PLR0913, PLR0915, PLR0917
     repo_urls: Sequence[str],
     output_path: Optional[Union[str, Path]] = None,
     split_batches: bool = False,

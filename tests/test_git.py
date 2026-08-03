@@ -428,7 +428,7 @@ def test_file_exists_in_repo_subdir(
         ),
     ],
 )
-def test_find_file(  # noqa: PLR0913
+def test_find_file(  # noqa: PLR0913, PLR0917
     repo_files: List[Dict[str, Dict[str, str]]],
     filepath: str,
     case_insensitive: bool,
