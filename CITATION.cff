@@ -27,6 +27,17 @@ authors:
   - given-names: Vincent
     family-names: Rubinetti
     orcid: "https://orcid.org/0000-0002-4655-3773"
+  - given-names: Aditi
+    family-names: Gopalan
+  - given-names: Jineta
+    family-names: Banerjee
+    orcid: "https://orcid.org/0000-0002-1775-3645"
+  - given-names: Kelly
+    family-names: Sovacool
+    orcid: "https://orcid.org/0000-0003-3283-829X"
+  - given-names: Erik
+    family-names: Serrano
+    orcid: "https://orcid.org/0000-0003-4188-9080"
   - given-names: Gregory
     family-names: Way
     orcid: "https://orcid.org/0000-0002-0503-9348"
