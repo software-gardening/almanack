@@ -38,6 +38,15 @@ authors:
   - given-names: Erik
     family-names: Serrano
     orcid: "https://orcid.org/0000-0003-4188-9080"
+  - given-names: Cody
+    family-names: Baker
+    orcid: "https://orcid.org/0000-0002-0829-4790"
+  - given-names: Malvika
+    family-names: Sharan
+    orcid: "https://orcid.org/0000-0001-6619-7369"
+  - given-names: Yaroslav
+    family-names: Halchenko
+    orcid: "https://orcid.org/0000-0003-3456-2493"
   - given-names: Gregory
     family-names: Way
     orcid: "https://orcid.org/0000-0002-0503-9348"
