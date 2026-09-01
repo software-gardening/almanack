@@ -23,7 +23,7 @@ jobs:
         run: |
           uv run --all-groups vale sync
       # run pre-commmit checks using prek for faster execution
-      - uses: j178/prek-action@v2.0.6
+      - uses: j178/prek-action@v3.0.0
         id: pre_commit
       # run pre-commit ci lite for automated fixes
       - uses: pre-commit-ci/lite-action@v1.1.0
