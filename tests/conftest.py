@@ -39,9 +39,9 @@ def build_jupyter_book(tmp_path: pathlib.Path) -> pathlib.Path:
             ".pytest_cache",
             ".ruff_cache",
             ".venv",
+            "_build",
             "build",
             "dist",
-            "src/book/_build",
         ),
     )
     shutil.copy(
