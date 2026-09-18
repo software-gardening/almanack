@@ -545,13 +545,13 @@ Data columns (total 62 columns):
  14  repo-doi-is-not-retracted                                 75 non-null     object 
  15  repo-doi-grants-count                                     84 non-null     object 
  16  repo-doi-grants                                           0 non-null      object 
- 17  repo-includes-readme                                      9587 non-null   float64
- 18  repo-includes-contributing                                9587 non-null   float64
- 19  repo-includes-code-of-conduct                             9587 non-null   float64
- 20  repo-includes-license                                     9587 non-null   float64
- 21  repo-is-citable                                           9587 non-null   float64
- 22  repo-default-branch-not-master                            9587 non-null   float64
- 23  repo-includes-common-docs                                 9587 non-null   float64
+ 17  repo-includes-readme                                      9587 non-null   object 
+ 18  repo-includes-contributing                                9587 non-null   object 
+ 19  repo-includes-code-of-conduct                             9587 non-null   object 
+ 20  repo-includes-license                                     9587 non-null   object 
+ 21  repo-is-citable                                           9587 non-null   object 
+ 22  repo-default-branch-not-master                            9587 non-null   object 
+ 23  repo-includes-common-docs                                 9587 non-null   object 
  24  repo-unique-contributors                                  9587 non-null   float64
  25  repo-unique-contributors-past-year                        9587 non-null   float64
  26  repo-unique-contributors-past-182-days                    9587 non-null   float64
@@ -566,31 +566,31 @@ Data columns (total 62 columns):
  35  repo-subscribers-count                                    6024 non-null   float64
  36  repo-packages-ecosystems-count                            9587 non-null   float64
  37  repo-packages-versions-count                              9587 non-null   float64
- 38  repo-social-media-platforms                               0 non-null      float64
- 39  repo-social-media-platforms-count                         9295 non-null   float64
- 40  repo-doi-valid-format                                     90 non-null     object 
- 41  repo-doi-https-resolvable                                 84 non-null     object 
- 42  repo-doi-cited-by-count                                   75 non-null     object 
- 43  repo-days-between-doi-publication-date-and-latest-commit  75 non-null     object 
- 44  repo-gh-workflow-success-ratio                            463 non-null    float64
- 45  repo-gh-workflow-succeeding-runs                          463 non-null    float64
- 46  repo-gh-workflow-failing-runs                             463 non-null    float64
- 47  repo-gh-workflow-queried-total                            463 non-null    float64
- 48  repo-code-coverage-percent                                0 non-null      object 
- 49  repo-date-of-last-coverage-run                            0 non-null      object 
- 50  repo-days-between-last-coverage-run-latest-commit         0 non-null      object 
- 51  repo-code-coverage-total-lines                            0 non-null      object 
- 52  repo-code-coverage-executed-lines                         0 non-null      object 
- 53  repo-agg-info-entropy                                     9587 non-null   float64
- 54  repo-almanack-score_json                                  9631 non-null   str    
- 55  repo-packages-ecosystems_json                             9631 non-null   str    
+ 38  repo-social-media-platforms-count                         9295 non-null   float64
+ 39  repo-doi-valid-format                                     90 non-null     object 
+ 40  repo-doi-https-resolvable                                 84 non-null     object 
+ 41  repo-doi-cited-by-count                                   75 non-null     object 
+ 42  repo-days-between-doi-publication-date-and-latest-commit  75 non-null     object 
+ 43  repo-gh-workflow-success-ratio                            463 non-null    float64
+ 44  repo-gh-workflow-succeeding-runs                          463 non-null    float64
+ 45  repo-gh-workflow-failing-runs                             463 non-null    float64
+ 46  repo-gh-workflow-queried-total                            463 non-null    float64
+ 47  repo-code-coverage-percent                                0 non-null      object 
+ 48  repo-date-of-last-coverage-run                            0 non-null      object 
+ 49  repo-days-between-last-coverage-run-latest-commit         0 non-null      object 
+ 50  repo-code-coverage-total-lines                            0 non-null      object 
+ 51  repo-code-coverage-executed-lines                         0 non-null      object 
+ 52  repo-agg-info-entropy                                     9587 non-null   float64
+ 53  repo-almanack-score_json                                  9631 non-null   str    
+ 54  repo-packages-ecosystems_json                             9631 non-null   str    
+ 55  repo-social-media-platforms_json                          9631 non-null   str    
  56  checks_total                                              9587 non-null   float64
  57  checks_passed                                             9587 non-null   float64
  58  checks_pct                                                9587 non-null   float64
- 59  repo-social-media-platforms_json                          9631 non-null   str    
- 60  almanack_error                                            6000 non-null   str    
- 61  repo-doi-grants_json                                      4200 non-null   str    
-dtypes: float64(35), object(15), str(12)
+ 59  repo-social-media-platforms                               0 non-null      float64
+ 60  repo-doi-grants_json                                      4200 non-null   str    
+ 61  almanack_error                                            6000 non-null   str    
+dtypes: float64(28), object(22), str(12)
 memory usage: 6.9+ MB
 </pre></div>
 </div>
@@ -631,8 +631,8 @@ Sustained, incremental updates help prevent this stagnation and ensure that a pr
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>dormant
-True     8946
-False     685
+True     9022
+False     609
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -659,7 +659,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/aadd87ec4c0a42c2572682268b081ddbd51253bc63515ecc5e68d799695733bd.png" src="../../_images/aadd87ec4c0a42c2572682268b081ddbd51253bc63515ecc5e68d799695733bd.png" />
+<img alt="../../_images/5ad41ee57e2245fb6492a17789d23bf94db14f414d682bee2be2969e1a5b0dff.png" src="../../_images/5ad41ee57e2245fb6492a17789d23bf94db14f414d682bee2be2969e1a5b0dff.png" />
 </div>
 </div>
 </section>
@@ -732,7 +732,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3c8b38dede83a3a0b5bc731ad3d926977e143772018929f3998c3f938be0cb0d.png" src="../../_images/3c8b38dede83a3a0b5bc731ad3d926977e143772018929f3998c3f938be0cb0d.png" />
+<img alt="../../_images/729dd48fb77c008b6fc1f93f9a6a1cb3f77b9c9b7a7a89afff93077fd8465458.png" src="../../_images/729dd48fb77c008b6fc1f93f9a6a1cb3f77b9c9b7a7a89afff93077fd8465458.png" />
 </div>
 </div>
 </section>
@@ -781,7 +781,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/80489b49353fb8c25f04f19f756f0da5f1fb26e810b75196193d214dece1b5f0.png" src="../../_images/80489b49353fb8c25f04f19f756f0da5f1fb26e810b75196193d214dece1b5f0.png" />
+<img alt="../../_images/770240b59d5cf318df2b5ef6e3385ad83ee7048a5eaebc70713a3aedf35403db.png" src="../../_images/770240b59d5cf318df2b5ef6e3385ad83ee7048a5eaebc70713a3aedf35403db.png" />
 </div>
 </div>
 </section>
@@ -815,7 +815,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/e5cc7b589bf144e91b7e15a16a4d8c0b4ed5d44a20844da20eacc0bc61335d00.png" src="../../_images/e5cc7b589bf144e91b7e15a16a4d8c0b4ed5d44a20844da20eacc0bc61335d00.png" />
+<img alt="../../_images/0fa04143068b72fbafa7372de8324080275f1a8fc656a3f7e29d39e49b0ddd1e.png" src="../../_images/0fa04143068b72fbafa7372de8324080275f1a8fc656a3f7e29d39e49b0ddd1e.png" />
 </div>
 </div>
 </section>
@@ -857,7 +857,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/79495b476bab99506cd57975de3f4882a55204255a45b9ce28a20afc8e2059b1.png" src="../../_images/79495b476bab99506cd57975de3f4882a55204255a45b9ce28a20afc8e2059b1.png" />
+<img alt="../../_images/18755cf834345e41a75fa08f5d8c11df9a60ddf7e7b50b2ac7a25d826d0f3774.png" src="../../_images/18755cf834345e41a75fa08f5d8c11df9a60ddf7e7b50b2ac7a25d826d0f3774.png" />
 </div>
 </div>
 </section>
@@ -904,7 +904,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/583ae60d4509f49285f6d3b18f4172eeb20944747a32cac62d85f5c1db7cd0ff.png" src="../../_images/583ae60d4509f49285f6d3b18f4172eeb20944747a32cac62d85f5c1db7cd0ff.png" />
+<img alt="../../_images/7626fcc155b190afc9b3dd644e20bb3fcbb095b912977d547d4174070b898a72.png" src="../../_images/7626fcc155b190afc9b3dd644e20bb3fcbb095b912977d547d4174070b898a72.png" />
 </div>
 </div>
 </section>
@@ -945,7 +945,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a7fd08c00a10e5194b6b4c6f9029303583408b927dbd1e58bdd2065b51298bcc.png" src="../../_images/a7fd08c00a10e5194b6b4c6f9029303583408b927dbd1e58bdd2065b51298bcc.png" />
+<img alt="../../_images/10400499997abd2a67d6e02f817b662b07f437ec2abc60abb01c65777c0c66d2.png" src="../../_images/10400499997abd2a67d6e02f817b662b07f437ec2abc60abb01c65777c0c66d2.png" />
 </div>
 </div>
 </section>
@@ -997,7 +997,7 @@ Primary language is determined as the language which has the most lines of code 
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b03380487ad58d42f2fcf32fb02d1d4ad92489811d654dc5f23d7bc452155aba.png" src="../../_images/b03380487ad58d42f2fcf32fb02d1d4ad92489811d654dc5f23d7bc452155aba.png" />
+<img alt="../../_images/94f602589359980d4e226d8b609592466d486296d4efe55e6c64ef73cf979c59.png" src="../../_images/94f602589359980d4e226d8b609592466d486296d4efe55e6c64ef73cf979c59.png" />
 </div>
 </div>
 <span class="target" id="id1"></span></section>
