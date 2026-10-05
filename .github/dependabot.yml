@@ -23,6 +23,10 @@ updates:
     schedule:
       # Check for updates every month
       interval: "monthly"
+    ignore:
+      - dependency-name: "jupyter-book"
+        update-types:
+          - "version-update:semver-major"
     groups:
       python-packages:
         patterns:
