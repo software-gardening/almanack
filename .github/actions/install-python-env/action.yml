@@ -25,4 +25,4 @@ runs:
     - name: Install uv dependencies
       shell: bash
       run: |
-        uv sync --all-groups --frozen
+        uv sync --all-groups --frozen --python "${{ inputs.python-version }}"
