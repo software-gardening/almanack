@@ -11,13 +11,13 @@ license-files = [ "LICENSE.txt" ]
 authors = [
   { name = "Software Gardening Community" },
 ]
-requires-python = ">=3.10,<3.14"
+requires-python = ">=3.11,<3.15"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
 ]
 dynamic = [ "version" ]
 dependencies = [
@@ -32,7 +32,6 @@ dependencies = [
   "pyyaml>=6.0.1,<7",
   "requests>=2.32.3,<3",
   "tabulate>=0.9,<0.11",
-  "tomli>=2; python_version<'3.11'",
 ]
 scripts.almanack = "almanack.cli:trigger"
 
