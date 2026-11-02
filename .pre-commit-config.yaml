@@ -63,7 +63,7 @@ repos:
         exclude: pre-commit-config.yaml
 
 -   repo: https://github.com/psf/black
-    rev: 26.5.1
+    rev: 26.10.1
     hooks:
       # Formats Python code to follow the Black code style,
       # promoting consistency and readability across the codebase.
@@ -88,7 +88,7 @@ repos:
         -   "--ignore-init-module-imports"
 
 -   repo: https://github.com/PyCQA/isort
-    rev: 9.0.1
+    rev: 9.0.2
     hooks:
       # Sorts imports in Python files, making the code easier to
       # navigate and reducing merge conflicts in import statements.
@@ -104,7 +104,7 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: "v0.16.9"
+    rev: "v0.17.2"
     hooks:
       # A fast linter that checks for stylistic errors in Python code,
       # helping maintain code quality and adherence to style guidelines.
