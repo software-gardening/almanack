@@ -75,6 +75,13 @@ def test_cli_almanack_table(tmp_path):
     results2 = [val for val in results2 if val["name"] != "almanack-table-datetime"]
     results = [val for val in results if val["name"] != "almanack-table-datetime"]
 
+    # remove metrics which depend on live external API calls (OpenAlex) so
+    # transient network or API failures don't cause the two table runs to
+    # disagree even though the CLI behaved identically.
+    live_api_metrics = ["repo-software-mentions-count", "repo-software-mentions"]
+    results2 = [val for val in results2 if val["name"] not in live_api_metrics]
+    results = [val for val in results if val["name"] not in live_api_metrics]
+
     assert results == results2
 
 
