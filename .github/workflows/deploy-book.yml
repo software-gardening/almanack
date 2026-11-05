@@ -9,7 +9,7 @@ on:
 
 jobs:
   deploy-book:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     # only build and deploy docs if the actor is not dependabot
     if: ${{ github.actor != 'dependabot[bot]' }}
     steps:

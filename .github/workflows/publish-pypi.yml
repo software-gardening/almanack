@@ -9,7 +9,7 @@ on:
 
 jobs:
   publish_pypi:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     environment: release
     permissions:
       # IMPORTANT: this permission is mandatory for trusted publishing
